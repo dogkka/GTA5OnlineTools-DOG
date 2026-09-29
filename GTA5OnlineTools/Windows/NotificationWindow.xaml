@@ -49,7 +49,7 @@
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
                     原作者项目：https://github.com/CrazyZhang666/GTA5OnlineTools
                     <LineBreak />
-                    二次开发：<Run FontWeight="Bold">DOG</Run>（大写）
+                    二次开发：<Run FontWeight="Bold">DOG</Run>
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
                     三步上手
