@@ -1,41 +1,41 @@
-## sch的分支，小助手已经永久停更了，仅用于注入Yimmenu。这里不发布二进制文件，详见 https://github.com/sch-lda/yctest2
+# GTA5 线上小助手 · DOG 二次开发版
 
-# GTA5线上小助手
+> 完全离线 · 内置简体中文 YimMenuV2 · 内置 FSL V6 · 教程界面 · 联系二维码
+>
+> 二次开发：**DOG** ｜ 基于原作者 **CrazyZhang** 的《GTA5 线上小助手》（MIT 许可）二次开发
 
-一个完全免费的GTA5线上模式小工具
+## ⬇ 直接下载（免安装，推荐给不使用源码的用户）
 
-## 下载
+**[点此下载 GTA5线上小助手-DOG版.exe（约 89 MB，免安装单文件）](https://github.com/dogkka/GTA5OnlineTools-DOG/releases/latest)**
 
-[最新版本发布地址](https://github.com/CrazyZhang666/GTA5OnlineTools/releases)  
+- 单文件、免安装、**内置 .NET 运行时**，换电脑也能直接跑
+- 下载后双击运行（程序需要管理员权限，会正常弹 UAC 请求）
+- 校验：Release 附件里附带 `SHA256.txt`，下载后可自行核对
 
-## 编译
+## 三步使用
 
-* Windows 10 专业版 22H2 x64  
-* Visual Studio 2022 企业版  
-* .NET 6.0  
+1. **关闭反作弊**：Rockstar 启动器 → 设置 → 我的已安装游戏 → Grand Theft Auto V Enhanced → 取消勾选 **BattlEye**
+   （Steam 启动项加 `-nobattleye` 更稳）
+2. **装 FSL**：程序 `YimMenu` 页 → `FSL管理` → 点 **安装FSL-Steam**（使用内置 FSL V6，离线安装）
+3. **注入菜单**：游戏进到 **主菜单** → `YimMenu` 页 → `YimMenu V2` 卡片 → 点 **内嵌版** → 游戏里按 `INSERT`（或 `Ctrl+\`）呼出中文菜单
 
-## 环境
+## 本版特色
 
-* SDK
+- **完全离线**：不检查公告、不检查更新、不访问任何第三方服务器
+- **内置中文菜单 DLL**：自编译简体中文 YimMenuV2（官方源码 + 3769 条中文词典 + 中文字形）
+- **内置 FSL V6**：FSL 管理一键离线安装，不再下载旧版 v3
+- **教程式界面**：主页含 软件介绍 / 三步教程 / 名词解释 / 故障排查；首次启动弹出《关于 / 使用说明》
+- **"联系"按钮**：顶部导航最右侧，扫码加作者微信
 
-> https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/sdk-6.0.420-windows-x64-installer
+## 源码与文档
 
-* Runtime
+- 二改说明与构建方法：[README-DOG.md](README-DOG.md)
+- 文件级改动清单：[CHANGES-DOG.md](CHANGES-DOG.md)
+- 原作者项目：https://github.com/CrazyZhang666/GTA5OnlineTools
+- 上游基础仓库（sch 分支）：https://github.com/sch-lda/GTA5OnlineTools
 
-> https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/runtime-desktop-6.0.28-windows-x64-installer
+## 许可
 
-## 技术
-
-* WPF
-* CSharp
-* MVVM
-
-## 预览
-
-![02](https://github.com/CrazyZhang666/GTA5OnlineTools/assets/28080853/0e16eeb4-1774-4939-9152-6c756b971948)
-
-![03](https://github.com/CrazyZhang666/GTA5OnlineTools/assets/28080853/7ca772f3-31b4-40f3-8c67-6bb90bb0e77c)
-
-## 鸣谢
-
-感谢 Aure、Alice、sch、Blue-Flag 等对小助手的贡献（排名不分先后）
+- 原项目：MIT License（见 [LICENSE.txt](LICENSE.txt)）
+- 内置的 YimMenuV2 中文版 DLL：基于 GPL-2.0 源码编译
+- 内置 FSL V6：来自 UnknownCheats 帖子 616977（作者发布）
