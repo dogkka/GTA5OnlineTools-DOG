@@ -1,3 +1,5 @@
+using GTA5Shared.Helper;
+
 namespace GTA5OnlineTools.Windows;
 
 /// <summary>
@@ -13,5 +15,14 @@ public partial class NotificationWindow
     private void Button_Dismiss_Click(object sender, RoutedEventArgs e)
     {
         this.Close();
+    }
+
+    /// <summary>
+    /// [DOG] 超链接：点击后用默认浏览器打开
+    /// </summary>
+    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+    {
+        ProcessHelper.OpenLink(e.Uri.OriginalString);
+        e.Handled = true;
     }
 }

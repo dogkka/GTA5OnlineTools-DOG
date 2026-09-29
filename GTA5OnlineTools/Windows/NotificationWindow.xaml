@@ -42,12 +42,18 @@
                     关于本程序（DOG 二次开发版）
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
-                    本程序基于原作者 CrazyZhang 的《GTA5 线上小助手》二次开发（开源仓库：https://github.com/sch-lda/GTA5OnlineTools ，MIT 许可）。
+                    本程序基于原作者 CrazyZhang 的《GTA5 线上小助手》二次开发（上游基础仓库：
+                    <Hyperlink NavigateUri="https://github.com/sch-lda/GTA5OnlineTools" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/sch-lda/GTA5OnlineTools</Hyperlink>
+                    ，MIT 许可）。
                     已替换为自编译的简体中文 YimMenuV2 菜单 DLL，并把 FSL 安装改为内置 FSL V6，
                     同时<Run FontWeight="Bold">完全移除了联网检查公告 / 更新与网络版下载</Run>，不会访问任何第三方服务器。
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
-                    原作者项目：https://github.com/CrazyZhang666/GTA5OnlineTools
+                    原作者项目：
+                    <Hyperlink NavigateUri="https://github.com/CrazyZhang666/GTA5OnlineTools" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/CrazyZhang666/GTA5OnlineTools</Hyperlink>
+                    <LineBreak />
+                    本二改仓库：
+                    <Hyperlink NavigateUri="https://github.com/dogkka/GTA5OnlineTools-DOG" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/dogkka/GTA5OnlineTools-DOG</Hyperlink>
                     <LineBreak />
                     二次开发：<Run FontWeight="Bold">DOG</Run>
                 </Paragraph>

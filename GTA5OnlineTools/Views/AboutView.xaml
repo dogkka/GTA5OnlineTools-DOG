@@ -33,14 +33,26 @@
         <TextBlock
             Margin="5"
             HorizontalAlignment="Center"
-            FontSize="15"
-            Text="原作者项目：https://github.com/CrazyZhang666/GTA5OnlineTools" />
+            FontSize="15">
+            原作者项目（CrazyZhang）：
+            <Hyperlink NavigateUri="https://github.com/CrazyZhang666/GTA5OnlineTools" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/CrazyZhang666/GTA5OnlineTools</Hyperlink>
+        </TextBlock>
 
         <TextBlock
             Margin="5"
             HorizontalAlignment="Center"
-            FontSize="15"
-            Text="二次开发仓库（本版本基础）：https://github.com/sch-lda/GTA5OnlineTools" />
+            FontSize="15">
+            上游基础仓库（sch 分支，MIT）：
+            <Hyperlink NavigateUri="https://github.com/sch-lda/GTA5OnlineTools" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/sch-lda/GTA5OnlineTools</Hyperlink>
+        </TextBlock>
+
+        <TextBlock
+            Margin="5"
+            HorizontalAlignment="Center"
+            FontSize="15">
+            本二改仓库（DOG）：
+            <Hyperlink NavigateUri="https://github.com/dogkka/GTA5OnlineTools-DOG" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/dogkka/GTA5OnlineTools-DOG</Hyperlink>
+        </TextBlock>
 
         <TextBlock
             Margin="5,10,5,5"
