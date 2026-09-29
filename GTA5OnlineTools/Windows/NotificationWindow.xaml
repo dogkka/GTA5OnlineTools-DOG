@@ -1,0 +1,83 @@
+<ui:Window
+    x:Class="GTA5OnlineTools.Windows.NotificationWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    x:Name="Window_Notification"
+    Title="关于 / 使用说明  -  DOG"
+    Width="760"
+    Height="520"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    ResizeMode="NoResize"
+    Style="{StaticResource SystemWindowStyle}"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+
+    <ui:Window.TitleContent>
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+            <Image
+                Height="20"
+                Margin="5"
+                Source="/Assets/Favicon.ico"
+                Style="{StaticResource ImageStyle_HighQuality}" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="14"
+                FontWeight="Bold"
+                Text="关于 / 使用说明  -  DOG" />
+        </StackPanel>
+    </ui:Window.TitleContent>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <RichTextBox Margin="5" Style="{StaticResource RichTextBoxStyle_ReadMe}">
+            <FlowDocument>
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="19" Foreground="Black">
+                    关于本程序（DOG 二次开发版）
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                    本程序基于原作者 CrazyZhang 的《GTA5 线上小助手》二次开发（开源仓库：https://github.com/sch-lda/GTA5OnlineTools ，MIT 许可）。
+                    已替换为自编译的简体中文 YimMenuV2 菜单 DLL，并把 FSL 安装改为内置 FSL V6，
+                    同时<Run FontWeight="Bold">完全移除了联网检查公告 / 更新与网络版下载</Run>，不会访问任何第三方服务器。
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                    原作者项目：https://github.com/CrazyZhang666/GTA5OnlineTools
+                    <LineBreak />
+                    二次开发：<Run FontWeight="Bold">DOG</Run>（大写）
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
+                    三步上手
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                    1. 打开 Rockstar 启动器 → 设置 → Grand Theft Auto V Enhanced → 取消勾选 BattlEye。
+                    <LineBreak />
+                    2. 本程序 Hacks 页 → FSL管理 → 安装FSL-Steam（使用内置 FSL V6，不再联网下载）。
+                    <LineBreak />
+                    3. 游戏进入主菜单后 → YimMenu V2 卡片 → 点“内嵌版”注入 → 游戏里按 INSERT 呼出中文菜单。
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15" Foreground="#C0392B">
+                    提示：本版本已禁用“网络版”和在线 Lua 下载按钮，请一律使用“内嵌版”（内置文件，离线可用）。
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                x:Name="Button_Dismiss"
+                Margin="0,5,5,5"
+                Background="#34A853"
+                Click="Button_Dismiss_Click"
+                Content="我知道了" />
+        </StackPanel>
+    </Grid>
+
+</ui:Window>

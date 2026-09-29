@@ -1,0 +1,128 @@
+﻿<ui:Window
+    x:Class="GTA5OnlineTools.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    x:Name="Window_Main"
+    Title="GTA5线上小助手-非官方"
+    Width="1100"
+    Height="620"
+    CaptionHeight="40"
+    Closing="Window_Main_Closing"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    Loaded="Window_Main_Loaded"
+    ResizeMode="CanMinimize"
+    Style="{StaticResource SystemWindowStyle}"
+    mc:Ignorable="d">
+
+    <ui:Window.TitleContent>
+        <DockPanel>
+            <StackPanel
+                VerticalAlignment="Center"
+                DockPanel.Dock="Left"
+                Orientation="Horizontal">
+                <Image
+                    Height="25"
+                    Margin="5"
+                    Source="/Assets/Favicon.ico"
+                    Style="{StaticResource ImageStyle_HighQuality}" />
+                <TextBlock
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Text="GTA5线上小助手-非官方" />
+            </StackPanel>
+            <!--  /////////////////////////  -->
+            <StackPanel
+                VerticalAlignment="Center"
+                DockPanel.Dock="Right"
+                Orientation="Horizontal">
+                <TextBlock x:Name="Status_Text" Margin="5" Text="{Binding MainModel.Status, FallbackValue='错误'}" >
+                    <Hyperlink NavigateUri="https://discord.gg/7GuNzajfhD" RequestNavigate="Hyperlink_RequestNavigate">
+                        &#xe6e3;
+                    </Hyperlink>
+                </TextBlock>
+                    
+                <Border
+                    Width="2"
+                    Margin="5"
+                    Background="#808080"
+                    SnapsToDevicePixels="True" />
+                <TextBlock Margin="5" Text="{Binding MainModel.AppRunTime, FallbackValue='00:00:00'}" />
+                <TextBlock
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    IsEnabled="{Binding MainModel.IsGTA5Run}"
+                    Style="{StaticResource TextBlockStyle_IconFontGTA5IsRun}"
+                    Text="&#xe64d;" />
+            </StackPanel>
+            <!--  /////////////////////////  -->
+            <StackPanel
+                x:Name="StackPanel_NavMenu"
+                DockPanel.Dock="Left"
+                Orientation="Horizontal"
+                WindowChrome.IsHitTestVisibleInChrome="True">
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="HomeView"
+                    Content="主页"
+                    GroupName="NavMenu"
+                    Icon="&#xe734;"
+                    IsChecked="True"
+                    Style="{StaticResource NavMenuStyle_Main}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="HacksView"
+                    Content="YimMenu"
+                    GroupName="NavMenu"
+                    Icon="&#xe63b;"
+                    Style="{StaticResource NavMenuStyle_Main}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="GTA5View"
+                    Content="功能"
+                    GroupName="NavMenu"
+                    Icon="&#xe666;"
+                    Style="{StaticResource NavMenuStyle_Main}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="ToolsView"
+                    Content="工具"
+                    GroupName="NavMenu"
+                    Icon="&#xe648;"
+                    Style="{StaticResource NavMenuStyle_Main}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="OptionsView"
+                    Content="选项"
+                    GroupName="NavMenu"
+                    Icon="&#xe646;"
+                    Style="{StaticResource NavMenuStyle_Main}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="AboutView"
+                    Content="关于"
+                    GroupName="NavMenu"
+                    Icon="&#xe644;"
+                    Style="{StaticResource NavMenuStyle_Main}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="Contact"
+                    Content="联系"
+                    GroupName="NavMenu"
+                    Icon="&#xe6e3;"
+                    Style="{StaticResource NavMenuStyle_Main}" />
+            </StackPanel>
+        </DockPanel>
+    </ui:Window.TitleContent>
+
+    <Grid>
+        <!--  内容区域  -->
+        <ContentControl x:Name="ContentControl_NavRegion" FocusVisualStyle="{x:Null}" />
+    </Grid>
+
+</ui:Window>

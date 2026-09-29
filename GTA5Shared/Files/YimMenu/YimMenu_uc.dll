@@ -1,0 +1,14 @@
+{
+  "alphabet_type": "chinese",
+  "default_language_set": true,
+  "fallback_default_language": "zh_TW",
+  "fallback_languages": {
+    "zh_TW": {
+      "alphabet_type": "chinese",
+      "file": "zh_TW.json",
+      "name": "Chinese (TW)"
+    }
+  },
+  "selected_language": "zh_TW",
+  "version": 128
+}

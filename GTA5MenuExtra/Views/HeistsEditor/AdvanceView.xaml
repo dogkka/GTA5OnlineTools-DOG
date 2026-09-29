@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="GTA5MenuExtra.Views.HeistsEditor.AdvanceView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="600"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    mc:Ignorable="d">
+
+    <UniformGrid Columns="3">
+        <StackPanel>
+            <ui:LabelIcon Content="实验性功能" />
+            <WrapPanel Margin="5,0,5,0">
+                <Button
+                    x:Name="Button_InstantFmMissionController"
+                    Click="Button_InstantFmMissionController_Click"
+                    Content="即时完成 公寓抢劫 | 末日豪劫 | 名钻赌场豪劫" />
+                <Button
+                    x:Name="Button_InstantFmMissionController2020"
+                    Click="Button_InstantFmMissionController2020_Click"
+                    Content="即时完成 改装铺合约 | 佩里科岛 | 德瑞" />
+                <Button
+                    x:Name="Button_AloneLaunchHeist"
+                    Click="Button_AloneLaunchHeist_Click"
+                    Content="单人启动任务（这应该允许你能完整的玩末日将至）" />
+            </WrapPanel>
+        </StackPanel>
+    </UniformGrid>
+
+</UserControl>

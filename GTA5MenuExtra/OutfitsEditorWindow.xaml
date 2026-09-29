@@ -1,0 +1,246 @@
+﻿<ui:Window
+    x:Class="GTA5MenuExtra.OutfitsEditorWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    x:Name="Window_OutfitsEditor"
+    Title="GTA5线上小助手 - 角色服装编辑器"
+    Width="800"
+    Height="620"
+    Closing="Window_OutfitsEditor_Closing"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    Loaded="Window_OutfitsEditor_Loaded"
+    ResizeMode="CanMinimize"
+    Style="{StaticResource SystemWindowStyle}"
+    mc:Ignorable="d">
+
+    <ui:Window.TitleContent>
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+            <Image
+                Height="20"
+                Margin="5"
+                Source="/Assets/Favicon.ico"
+                Style="{StaticResource ImageStyle_HighQuality}" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="14"
+                FontWeight="Bold"
+                Text="{Binding ElementName=Window_OutfitsEditor, Path=Title}" />
+        </StackPanel>
+    </ui:Window.TitleContent>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--  //////////////  -->
+        <WrapPanel HorizontalAlignment="Center">
+            <TextBlock
+                Margin="5"
+                VerticalAlignment="Center"
+                Text="服装槽" />
+            <ComboBox
+                x:Name="ComboBox_OutfitIndex"
+                Width="120"
+                SelectionChanged="ComboBox_OutfitIndex_SelectionChanged">
+                <ComboBoxItem Content="槽位00" />
+                <ComboBoxItem Content="槽位01" />
+                <ComboBoxItem Content="槽位02" />
+                <ComboBoxItem Content="槽位03" />
+                <ComboBoxItem Content="槽位04" />
+                <ComboBoxItem Content="槽位05" />
+                <ComboBoxItem Content="槽位06" />
+                <ComboBoxItem Content="槽位07" />
+                <ComboBoxItem Content="槽位08" />
+                <ComboBoxItem Content="槽位09" />
+                <ComboBoxItem Content="槽位10" />
+                <ComboBoxItem Content="槽位11" />
+                <ComboBoxItem Content="槽位12" />
+                <ComboBoxItem Content="槽位13" />
+                <ComboBoxItem Content="槽位14" />
+                <ComboBoxItem Content="槽位15" />
+                <ComboBoxItem Content="槽位16" />
+                <ComboBoxItem Content="槽位17" />
+                <ComboBoxItem Content="槽位18" />
+                <ComboBoxItem Content="槽位19" />
+            </ComboBox>
+            <!--  //////////////  -->
+            <TextBlock
+                Margin="5"
+                VerticalAlignment="Center"
+                Text="服装槽名称" />
+            <TextBox
+                x:Name="TextBox_OutfitName"
+                Width="120"
+                Margin="5" />
+            <!--  //////////////  -->
+            <Button
+                x:Name="Button_Read"
+                Click="Button_Read_Click"
+                Content="读取数据" />
+            <Button
+                x:Name="Button_Write"
+                Margin="0,5,5,5"
+                Click="Button_Write_Click"
+                Content="写入数据" />
+        </WrapPanel>
+        <!--  ////////////////////////////  -->
+        <UniformGrid Grid.Row="1" Columns="2">
+            <UniformGrid.Resources>
+                <Style x:Key="StackPanelStyle_Item" TargetType="{x:Type StackPanel}">
+                    <Setter Property="Orientation" Value="Horizontal" />
+                    <Setter Property="HorizontalAlignment" Value="Right" />
+                </Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+                <Style BasedOn="{StaticResource TextBoxStyle_Base}" TargetType="{x:Type TextBox}">
+                    <Setter Property="Width" Value="70" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+            </UniformGrid.Resources>
+            <!--  ////////////////////////////  -->
+            <StackPanel Margin="5">
+                <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="搭配" />
+                <!--  0 Head  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Head（头部）" />
+                    <TextBox x:Name="TextBox_HEAD" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_HEAD_TEX" />
+                </StackPanel>
+                <!--  1 Masks  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Masks（面具）" />
+                    <TextBox x:Name="TextBox_MASKS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_MASKS_TEX" />
+                </StackPanel>
+                <!--  2 Hair  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Hair（发型）" />
+                    <TextBox x:Name="TextBox_HAIR" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_HAIR_TEX" />
+                </StackPanel>
+                <!--  3 Torsos  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Torsos（手套）" />
+                    <TextBox x:Name="TextBox_TORSOS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_TORSOS_TEX" />
+                </StackPanel>
+                <!--  4 Legs  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Legs（裤子）" />
+                    <TextBox x:Name="TextBox_LEGS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_LEGS_TEX" />
+                </StackPanel>
+                <!--  5 Bags and Parachutes  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Bags（背包）" />
+                    <TextBox x:Name="TextBox_BAGS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_BAGS_TEX" />
+                </StackPanel>
+                <!--  6 Shoes  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Shoes（鞋子）" />
+                    <TextBox x:Name="TextBox_SHOES" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_SHOES_TEX" />
+                </StackPanel>
+                <!--  7 Accessories  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Accessories（配件）" />
+                    <TextBox x:Name="TextBox_ACCESSORIES" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_ACCESSORIES_TEX" />
+                </StackPanel>
+                <!--  8 Undershirts  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Undershirts（内衣）" />
+                    <TextBox x:Name="TextBox_UNDERSHIRTS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_UNDERSHIRTS_TEX" />
+                </StackPanel>
+                <!--  9 Body Armors  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Armors（护甲）" />
+                    <TextBox x:Name="TextBox_ARMORS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_ARMORS_TEX" />
+                </StackPanel>
+                <!--  10 Decals  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Decals（印花）" />
+                    <TextBox x:Name="TextBox_DECALS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_DECALS_TEX" />
+                </StackPanel>
+                <!--  11 Tops  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Tops（上衣）" />
+                    <TextBox x:Name="TextBox_TOPS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_TOPS_TEX" />
+                </StackPanel>
+            </StackPanel>
+            <!--  ////////////////////////////  -->
+            <StackPanel Margin="5">
+                <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="配件" />
+                <!--  0 Hats  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Hats（帽子）" />
+                    <TextBox x:Name="TextBox_HATS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_HATS_TEX" />
+                </StackPanel>
+                <!--  1 Glasses  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Glasses（眼镜）" />
+                    <TextBox x:Name="TextBox_GLASSES" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_GLASSES_TEX" />
+                </StackPanel>
+                <!--  2 Ears  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Ears（耳环）" />
+                    <TextBox x:Name="TextBox_EARS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_EARS_TEX" />
+                </StackPanel>
+                <!--  6 Watches  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Watches（手表）" />
+                    <TextBox x:Name="TextBox_WATCHES" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_WATCHES_TEX" />
+                </StackPanel>
+                <!--  7 Bracelets  -->
+                <StackPanel Style="{StaticResource StackPanelStyle_Item}">
+                    <TextBlock Text="Bracelets（手环）" />
+                    <TextBox x:Name="TextBox_BRACELETS" />
+                    <TextBlock Text="TEX" />
+                    <TextBox x:Name="TextBox_BRACELETS_TEX" />
+                </StackPanel>
+
+                <!--  //////////////  -->
+                <TextBlock Margin="5" VerticalAlignment="Center">
+                    <Hyperlink NavigateUri="https://wiki.rage.mp/index.php?title=Clothes" RequestNavigate="Hyperlink_RequestNavigate">
+                        角色服装数据查询网站
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    提示：自定义玩家已保存的服装，可以获取一些特殊服装和配件，具体功能可参考BincoHax
+                </TextBlock>
+            </StackPanel>
+        </UniformGrid>
+    </Grid>
+
+</ui:Window>

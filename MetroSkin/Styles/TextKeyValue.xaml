@@ -1,0 +1,37 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:MetroSkin.Controls">
+
+    <Style TargetType="{x:Type controls:TextKeyValue}">
+        <Setter Property="Foreground" Value="#7F7D7C" />
+        <Setter Property="Icon" Value="&#xe603;" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:TextKeyValue}">
+                    <Border Margin="5" VerticalAlignment="Center">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <controls:IconFont VerticalAlignment="Center" Icon="{TemplateBinding Icon}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="7,0,7,0"
+                                VerticalAlignment="Center"
+                                Text="{TemplateBinding Key}" />
+                            <TextBlock
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Text="{TemplateBinding Value}"
+                                TextAlignment="Right" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

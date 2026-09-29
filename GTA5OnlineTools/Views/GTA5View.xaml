@@ -1,0 +1,35 @@
+﻿<UserControl
+    x:Class="GTA5OnlineTools.Views.GTA5View"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="620"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    Style="{StaticResource UserControlStyle_Loaded}"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <WrapPanel>
+            <!--  ///////////////////  -->
+            <!--  ///////////////////  -->
+            <!--  ///////////////////  -->
+            <!--  ///////////////////  -->
+            <!--  ///////////////////  -->
+        </WrapPanel>
+        <!--  ///////////////////  -->
+        <Separator Margin="8,13,8,5" Background="#EAEAEA" />
+        <!--  ///////////////////  -->
+        <WrapPanel>
+            <ui:ButtonIcon
+                Title="替换故事模式完美存档"
+                Command="{Binding GTA5FuncClickCommand}"
+                CommandParameter="StoryProfiles"
+                Icon="&#xe602;"
+                Style="{StaticResource ButtonStyle_GTA5Func}" />
+        </WrapPanel>
+    </StackPanel>
+
+</UserControl>

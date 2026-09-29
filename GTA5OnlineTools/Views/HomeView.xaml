@@ -1,0 +1,69 @@
+<UserControl
+    x:Class="GTA5OnlineTools.Views.HomeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="620"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    Style="{StaticResource UserControlStyle_Loaded}"
+    mc:Ignorable="d">
+
+    <RichTextBox Margin="5,5,2.5,5" Style="{StaticResource RichTextBoxStyle_ReadMe}">
+        <FlowDocument>
+
+            <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="19">
+                软件介绍
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                本程序是《GTA5 线上小助手》的离线二次开发版（作者：<Run FontWeight="Bold">DOG</Run>）。
+                内置了自编译的简体中文 YimMenuV2 菜单 DLL 和 FSL V6，
+                可以一键安装 FSL、一键注入中文菜单，并提供配置目录、日志查看、脚本目录等常用工具。
+                本版本<Run FontWeight="Bold">已完全离线化</Run>：不会检查公告、不会检查更新、不会从任何第三方服务器下载文件。
+            </Paragraph>
+
+            <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="19">
+                精简教程
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                <Run FontWeight="Bold">第 1 步 · 关闭反作弊</Run><LineBreak />
+                打开 Rockstar 启动器 → 设置 → 我的已安装游戏 → Grand Theft Auto V Enhanced → 取消勾选 BattlEye。
+                （Steam 启动项加上 -nobattleye 更稳。）
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                <Run FontWeight="Bold">第 2 步 · 安装 FSL</Run><LineBreak />
+                切到本程序 <Run FontWeight="Bold">YimMenu</Run> 页 → 点 <Run FontWeight="Bold">FSL管理</Run> → 点
+                <Run FontWeight="Bold">安装FSL-Steam</Run>。程序会使用内置的 FSL V6 直接写入游戏根目录（不再联网下载）。
+                想卸载就点“移除FSL-Steam”。
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                <Run FontWeight="Bold">第 3 步 · 注入中文菜单</Run><LineBreak />
+                启动游戏并进入<Run FontWeight="Bold">主菜单</Run> → 回到本程序 YimMenu 页 →
+                <Run FontWeight="Bold">YimMenu V2</Run> 卡片 → 点 <Run FontWeight="Bold">内嵌版</Run> →
+                提示“注入成功”后回到游戏，按 <Run FontWeight="Bold">INSERT</Run>（或 Ctrl+\）呼出中文菜单。
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                <Run FontWeight="Bold">名词解释</Run><LineBreak />
+                · <Run FontWeight="Bold">内嵌版</Run>：使用本程序内置的中文菜单 DLL，离线可用，推荐使用。<LineBreak />
+                · <Run FontWeight="Bold">网络版</Run>：原版功能，从原作者服务器下载最新菜单 DLL；本版本<Run FontWeight="Bold">已禁用</Run>，避免访问第三方服务器。<LineBreak />
+                · <Run FontWeight="Bold">FSL</Run>：把线上存档重定向到本地的组件，用于降低账号风险。
+            </Paragraph>
+
+            <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="19">
+                故障排查
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                · <Run FontWeight="Bold">提示“未发现 GTA5 进程”</Run>：先把游戏开到主菜单，再点注入。<LineBreak />
+                · <Run FontWeight="Bold">注入失败</Run>：确认游戏进程是 GTA5_Enhanced.exe（不是 _BE.exe）、BattlEye 已关闭，尝试用管理员身份运行本程序。<LineBreak />
+                · <Run FontWeight="Bold">FSL 安装失败</Run>：先关闭游戏再装；确认游戏目录有写入权限。<LineBreak />
+                · <Run FontWeight="Bold">菜单呼不出来</Run>：确认注入提示成功，游戏内按 INSERT 或 Ctrl+\；可到“配置目录/程序日志”查看输出。<LineBreak />
+                · <Run FontWeight="Bold">游戏更新后菜单失效</Run>：需要等 YimMenu 官方适配新版本后，重新编译内置 DLL（本版本不联网更新）。<LineBreak />
+                · <Run FontWeight="Bold">其他问题</Run>：点右上角“联系”按钮，扫码加作者微信。
+            </Paragraph>
+
+        </FlowDocument>
+    </RichTextBox>
+
+</UserControl>

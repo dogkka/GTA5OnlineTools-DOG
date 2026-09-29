@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="/MetroSkin;component/Styles/Global.xaml" />
+
+        <ResourceDictionary Source="/MetroSkin;component/Styles/ScrollViewer.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/IconFont.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/BlurImage.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/ContextMenu.xaml" />
+
+        <ResourceDictionary Source="/MetroSkin;component/Styles/TextBlock.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/Image.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/TextBox.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/RichTextBox.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/Button.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/ToggleButton.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/Slider.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/GroupBox.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/ComboBox.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/CheckBox.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/RadioButton.xaml" />
+
+        <ResourceDictionary Source="/MetroSkin;component/Styles/LabelIcon.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/ButtonIcon.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/SliderIcon.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/TextBoxHint.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/GroupBoxHack.xaml" />
+
+        <ResourceDictionary Source="/MetroSkin;component/Styles/NavMenu.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/TextKeyValue.xaml" />
+
+        <ResourceDictionary Source="/MetroSkin;component/Styles/ListBox.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/ListBox2.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/ListBox3.xaml" />
+
+        <ResourceDictionary Source="/MetroSkin;component/Styles/TabControlIcon.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/ListView.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/DataGrid.xaml" />
+
+        <ResourceDictionary Source="/MetroSkin;component/Styles/LoadingSpinner.xaml" />
+
+        <ResourceDictionary Source="/MetroSkin;component/Styles/UserControl.xaml" />
+        <ResourceDictionary Source="/MetroSkin;component/Styles/Window.xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

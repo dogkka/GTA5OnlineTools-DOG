@@ -1,0 +1,152 @@
+﻿<UserControl
+    x:Class="GTA5OnlineTools.Views.HacksView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="620"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    Style="{StaticResource UserControlStyle_Loaded}"
+    mc:Ignorable="d">
+
+    <WrapPanel>
+        <!--  YimMenu 注入式菜单  -->
+        <ui:GroupBoxHack
+            Title="YimMenu"
+            Image="pack://application:,,,/GTA5OnlineTools;component/Assets/Hacks/YimMenu.png" Width="541" Height="186" Background="White">
+            <ui:GroupBoxHack.TitleContent>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="繁体" IsChecked="{Binding HacksModel.IsYimMenuLangZhTw}" />
+                    <TextBlock Margin="5,0,5,0" VerticalAlignment="Center">
+                        <Hyperlink Command="{Binding ReadMeClickCommand}" CommandParameter="YimMenu">
+                            说明
+                        </Hyperlink>
+                    </TextBlock>
+                    <Button
+                        Command="{Binding HacksClickCommand}"
+                        CommandParameter="YimMenu_Local"
+                        Content="内嵌版" />
+                    <Button
+                        Command="{Binding HacksClickCommand}"
+                        CommandParameter="YimMenu_Online"
+                        Content="网络版" />
+                </StackPanel>
+            </ui:GroupBoxHack.TitleContent>
+            <ui:GroupBoxHack.DescriptionContent>
+                <StackPanel Margin="0,-23,0,0">
+                    <TextBlock Foreground="Red" TextWrapping="Wrap" Text="适用于传承版,没有活跃的贡献者参与开发,部分功能失效,建议游玩GTA V增强版.务必阅读说明.必须先从R星启动器关闭Battleye开关" />
+                    <WrapPanel>
+                        <Button
+                        Background="#FE780A"
+                        Command="{Binding ExtraClickCommand}"
+                        CommandParameter="YimMenuDirectory"
+                        Content="配置目录" />
+                        <Button
+                        Background="#FE780A"
+                        Command="{Binding ExtraClickCommand}"
+                        CommandParameter="YimMenuScriptsDirectory"
+                        Content="脚本目录" />
+                        <Button
+                        Background="#34A853"
+                        Command="{Binding ExtraClickCommand}"
+                        CommandParameter="EditYimMenuConfig"
+                        Content="配置文件" />
+                        <Button
+                        Background="#34A853"
+                        Command="{Binding ExtraClickCommand}"
+                        CommandParameter="ViewYimMenuLogger"
+                        Content="程序日志" />
+                        <Button
+                        Background="#EA4335"
+                        Command="{Binding ExtraClickCommand}"
+                        CommandParameter="ResetYimMenuConfig"
+                        Content="重置配置文件" />
+                    </WrapPanel>
+                </StackPanel>
+            </ui:GroupBoxHack.DescriptionContent>
+        </ui:GroupBoxHack>
+
+        <ui:ButtonIcon
+            Title="下载Lua脚本"
+            Command="{Binding HacksFuncClickCommand}"
+            CommandParameter="OnlineLua"
+            Description="在线下载YimMenu脚本"
+            Icon="&#xe72e;"
+            Style="{StaticResource ButtonStyle_HacksFunc}" />
+        <ui:ButtonIcon
+            Title="FSL管理"
+            Command="{Binding HacksFuncClickCommand}"
+            CommandParameter="FSLmanage"
+            Description="为传承版和增强版 安装FSL V6(内置)"
+            Icon="&#xE72E;"
+            Style="{StaticResource ButtonStyle_HacksFunc}" />
+        <ui:GroupBoxHack
+            Title="YimMenu V2 (仍在开发)"
+            Image="pack://application:,,,/GTA5OnlineTools;component/Assets/Hacks/NewBase.png" Width="541" Height="186" Background="White">
+            <ui:GroupBoxHack.TitleContent>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="5,0,5,0" VerticalAlignment="Center"><Hyperlink Command="{Binding ReadMeClickCommand}" CommandParameter="YimMenuV2"><Run Text="说明"/></Hyperlink></TextBlock>
+                    <Button
+                        Command="{Binding HacksClickCommand}"
+                        CommandParameter="YimMenu_v2"
+                        Content="内嵌版" />
+                    <Button
+                        Command="{Binding HacksClickCommand}"
+                        CommandParameter="YimMenu_v2_Online"
+                        Content="网络版" />
+                </StackPanel>
+            </ui:GroupBoxHack.TitleContent>
+            <ui:GroupBoxHack.DescriptionContent>
+                <StackPanel Margin="0,-23,0,0">
+                    <TextBlock Foreground="Red" TextWrapping="Wrap" Text="适用于增强版,处于正在开发但不完善的阶段,由yeahsch进行初步汉化,不支持Lua脚本.必须先从R星启动器关闭Battleye开关." />
+                    <WrapPanel>
+                        <Button
+                            Background="#FE780A"
+                            Command="{Binding ExtraClickCommand}"
+                            CommandParameter="YimMenuV2Directory"
+                            Content="配置目录" />
+                        <Button
+                            Background="#FE780A"
+                            Command="{Binding ExtraClickCommand}"
+                            CommandParameter="YimMenuV2ScriptsDirectory"
+                            Content="脚本目录" />
+                        <Button
+                            Background="#34A853"
+                            Command="{Binding ExtraClickCommand}"
+                            CommandParameter="EditYimMenuV2Config"
+                            Content="配置文件" />
+                        <Button
+                            Background="#34A853"
+                            Command="{Binding ExtraClickCommand}"
+                            CommandParameter="ViewYimMenuV2Logger"
+                            Content="程序日志" />
+                        <Button
+                            Background="#EA4335"
+                            Command="{Binding ExtraClickCommand}"
+                            CommandParameter="ResetYimMenuV2Config"
+                            Content="重置配置文件" />
+                    </WrapPanel>
+                </StackPanel>
+            </ui:GroupBoxHack.DescriptionContent>
+        </ui:GroupBoxHack>
+        <ui:ButtonIcon
+            Title="网络版Yim"
+            Command="{Binding HacksFuncClickCommand}"
+            CommandParameter="YimDL"
+            Description="启用网络版Yimmenu和在线更新功能"
+            Icon="&#xE72E;"
+            Style="{StaticResource ButtonStyle_HacksFunc}" />
+        <ui:ButtonIcon
+            Title="通知公告"
+            Command="{Binding HacksFuncClickCommand}"
+            CommandParameter="ntf"
+            Description="查看通知和公告"
+            Icon="&#xE72E;"
+            Style="{StaticResource ButtonStyle_HacksFunc}" />
+
+    </WrapPanel>
+
+</UserControl>
