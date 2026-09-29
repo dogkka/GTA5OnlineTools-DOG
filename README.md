@@ -6,7 +6,7 @@
 
 ## ⬇ 直接下载（免安装，推荐给不使用源码的用户）
 
-**[点此下载 GTA5线上小助手-DOG版.exe（约 89 MB，免安装单文件）](https://github.com/dogkka/GTA5OnlineTools-DOG/releases/latest)**
+**[点此下载 GTA5OnlineTools-DOG-v1.0.0.exe（约 89 MB，免安装单文件）](https://github.com/dogkka/GTA5OnlineTools-DOG/releases/latest)**
 
 - 单文件、免安装、**内置 .NET 运行时**，换电脑也能直接跑
 - 下载后双击运行（程序需要管理员权限，会正常弹 UAC 请求）
