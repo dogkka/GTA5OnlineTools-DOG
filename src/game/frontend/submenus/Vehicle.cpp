@@ -126,6 +126,8 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<ConditionalItem>("rainbowpaint"_J, std::make_shared<IntCommandItem>("rainbowspeed"_J, "速度")));
 		misc->AddItem(std::make_shared<BoolCommandItem>("autodrive"_J));
 		misc->AddItem(std::make_shared<ConditionalItem>("autodrive"_J, std::make_shared<ListCommandItem>("autodrivemode"_J)));
+		misc->AddItem(std::make_shared<BoolCommandItem>("vehnocol"_J));
+		misc->AddItem(std::make_shared<BoolCommandItem>("bulletprooftyres"_J));
 
 		main->AddItem(globals);
 		main->AddItem(tools);
