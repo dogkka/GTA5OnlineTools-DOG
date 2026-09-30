@@ -116,3 +116,20 @@
 - MSVC 构建需 `/utf-8`（中文源码）；版本注入 `VERSION` = 2.0.0
 - 源码：分支 [`yimmenu-v2`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/yimmenu-v2)（每功能独立 commit）
 - DLL SHA256（b0ed7fee 版）：`7524722d4bd965542021e2f316402941bda7c076445aca08ace3f135740acfd8`
+
+
+---
+
+## 软件版本 v2.0.0（2026-10-01）
+
+**主版本发布：内置菜单全面升级为 DOG 增强版**
+
+### 软件侧
+- 程序版本号 `1.1.0.0` → **`2.0.0.0`**（关于页、标题栏、启动弹窗、更新检测全部自动同步）
+- 新增 Release 自动构建：推送 `v2.0.0` 标签后由 GitHub Actions 自动打包单文件 exe 并发布
+
+### 菜单侧（NewBase.dll，SHA256 见 README）
+- 增强功能 43 项：载具 16 项、玩家操作 15 项、个人 10 项、世界 4 项（详见 CHANGES 上文各轮记录）
+- 脚本事件防护：30+ 类恶意事件拦截 + 总开关 + 中文通知 + 防护日志面板
+- 全量简体中文本地化（含 CJK 字体）
+- 菜单源码：分支 [yimmenu-v2](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/yimmenu-v2)
