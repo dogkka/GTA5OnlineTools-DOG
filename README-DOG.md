@@ -1,7 +1,7 @@
 # GTA5 线上小助手 · DOG 二次开发版
 
-> **v2.0.0**（2026-10-01）：内置菜单升级为 **DOG 增强版**（43 项新功能 + 脚本事件防护 + 全量中文化）。
-> 详见 [CHANGES-DOG.md](CHANGES-DOG.md) 的「菜单增强版 2.0.0」章节。
+> **v2.1.0**（2026-10-01）：内置菜单为 **DOG 增强版 2.1.0**（60+ 项增强功能 + 脚本事件防护 + 网络恶搞包 + 全量中文化）。
+> 详见 [CHANGES-DOG.md](CHANGES-DOG.md) 的「软件版本 v2.1.0」章节。
 
 本仓库是 [sch-lda/GTA5OnlineTools](https://github.com/sch-lda/GTA5OnlineTools)
 （原作者 **CrazyZhang** 的《GTA5 线上小助手》，MIT 许可）的**二次开发版**。
