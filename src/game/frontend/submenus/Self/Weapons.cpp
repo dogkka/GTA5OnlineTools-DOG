@@ -285,6 +285,9 @@ namespace YimMenu::Submenus
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("tpgun"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("repairgun"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("deletegun"_J));
+		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("norecoil"_J));
+		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("nospread"_J));
+		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("infiniterange"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("infiniteparachutes"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("ExplosiveAmmo"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("ExplosiveAmmo"_J, std::make_shared<ListCommandItem>("selectedexplosion"_J)));
