@@ -9,6 +9,7 @@
 #include "game/frontend/items/DrawHotkey.hpp"
 #include "game/frontend/submenus/Settings/LuaScripts.hpp"
 #include "game/frontend/submenus/Settings/GUISettings.hpp"
+#include "game/features/protections/ScriptEventProtection.hpp"
 
 namespace YimMenu::Submenus
 {
@@ -103,6 +104,19 @@ namespace YimMenu::Submenus
 
 		chat->AddItem(std::make_shared<CommandItem>("clearchat"_J));
 		protection->AddItem(std::make_shared<BoolCommandItem>("scripteventprotection"_J));
+		protection->AddItem(std::make_shared<ImGuiItem>([] {
+			ImGui::Text("累计拦截：%llu", Features::GetProtectionBlockCount());
+
+			if (ImGui::BeginChild("##protechistory", ImVec2(0, 140), true))
+			{
+				for (auto& entry : Features::GetProtectionLogSnapshot())
+					ImGui::Text("%s  %s  %s", entry.Time.c_str(), entry.Player.c_str(), entry.Event.c_str());
+			}
+			ImGui::EndChild();
+
+			if (ImGui::Button("清空记录"))
+				Features::ClearProtectionLog();
+		}));
 
 		game->AddItem(playerEsp);
 		game->AddItem(pedEsp);

@@ -4,6 +4,7 @@
 #include "core/commands/BoolCommand.hpp"
 #include "core/commands/Commands.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "game/features/protections/ScriptEventProtection.hpp"
 #include "types/network/netGameEvent.hpp"
 #include "types/script/globals/GPBD_FM_3.hpp"
 #include "types/script/globals/GlobalPlayerBD.hpp"
@@ -73,6 +74,8 @@ namespace YimMenu::Hooks
 			return true;
 
 		s_LastNotify[key] = now;
+
+		Features::PushProtectionLog(player.GetName(), LocalizeEventName(name));
 
 		Notifications::Show("脚本事件防护", "已拦截 '" + std::string(LocalizeEventName(name)) + "' 来自 " + player.GetName(), NotificationType::Warning);
 
