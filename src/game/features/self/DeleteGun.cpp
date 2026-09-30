@@ -1,4 +1,5 @@
 #include "core/commands/LoopedCommand.hpp"
+#include "game/backend/Self.hpp"
 #include "game/gta/Natives.hpp"
 #include "game/gta/RayCast.hpp"
 #include "types/pad/ControllerInputs.hpp"
@@ -20,6 +21,14 @@ namespace YimMenu::Features
 			Entity target(nullptr);
 			RayCast raycast(&target);
 			if (!raycast.Cast() || !target.IsValid())
+				return;
+
+			auto ped = Self::GetPed();
+			if (!ped)
+				return;
+
+			// never delete yourself or other players
+			if (target.IsPlayer() || target.GetHandle() == ped.GetHandle())
 				return;
 
 			target.Delete();
