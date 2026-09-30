@@ -57,6 +57,7 @@ namespace YimMenu::Submenus
 		auto objectEsp = std::make_shared<Group>("物体 ESP");
 		auto overlay = std::make_shared<Group>("叠加层");
 		auto chat = std::make_shared<Group>("聊天");
+		auto protection = std::make_shared<Group>("防护");
 
 		hotkeys->AddItem(std::make_shared<ImGuiItem>(Hotkeys));
 
@@ -101,10 +102,12 @@ namespace YimMenu::Submenus
 		overlay->AddItem(std::make_shared<ConditionalItem>("overlay"_J, std::make_shared<BoolCommandItem>("overlayfps"_J)));
 
 		chat->AddItem(std::make_shared<CommandItem>("clearchat"_J));
+		protection->AddItem(std::make_shared<BoolCommandItem>("scripteventprotection"_J));
 
 		game->AddItem(playerEsp);
 		game->AddItem(pedEsp);
 		game->AddItem(objectEsp);
+		game->AddItem(protection);
 
 		gui->AddItem(uiStyle);
 		gui->AddItem(overlay);

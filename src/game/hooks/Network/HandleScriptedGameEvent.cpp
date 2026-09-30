@@ -1,6 +1,8 @@
 #include "game/backend/Self.hpp"
 #include "game/hooks/Hooks.hpp"
 #include "game/pointers/Pointers.hpp"
+#include "core/commands/BoolCommand.hpp"
+#include "core/commands/Commands.hpp"
 #include "core/frontend/Notifications.hpp"
 #include "types/network/netGameEvent.hpp"
 #include "types/script/globals/GPBD_FM_3.hpp"
@@ -15,8 +17,17 @@
 
 namespace YimMenu::Hooks
 {
-	static void BlockEvent(Player player, const char* name)
+	static bool IsProtectionEnabled()
 	{
+		static auto cmd = Commands::GetCommand<BoolCommand>("scripteventprotection"_J);
+		return !cmd || cmd->GetState();
+	}
+
+	static bool BlockEvent(Player player, const char* name)
+	{
+		if (!IsProtectionEnabled())
+			return false;
+
 		static std::unordered_map<uint64_t, std::chrono::steady_clock::time_point> s_LastNotify;
 
 		const auto key = (static_cast<uint64_t>(player.GetId()) << 32) | Joaat(name);
@@ -24,11 +35,13 @@ namespace YimMenu::Hooks
 
 		auto it = s_LastNotify.find(key);
 		if (it != s_LastNotify.end() && now - it->second < std::chrono::seconds(5))
-			return;
+			return true;
 
 		s_LastNotify[key] = now;
 
 		Notifications::Show("脚本事件防护", "已拦截 '" + std::string(name) + "' 来自 " + player.GetName(), NotificationType::Warning);
+
+		return true;
 	}
 
 	static bool CheckLuaScripts(Player player, CScriptedGameEvent& event)
@@ -109,128 +122,146 @@ namespace YimMenu::Hooks
 		}
 		case ScriptEventIndex::CeoMoney:
 		{
-			if (player.GetId() != GPBD_FM_3::Get()->Entries[Self::GetPlayer().GetId()].BossGoon.Boss)
-			{
-				BlockEvent(player, "CeoMoney");
+			if (player.GetId() != GPBD_FM_3::Get()->Entries[Self::GetPlayer().GetId()].BossGoon.Boss && BlockEvent(player, "CeoMoney"))
 				return false;
-			}
 
 			break;
 		}
 		case ScriptEventIndex::CeoBan:
 		{
-			BlockEvent(player, "CeoBan");
-			return false;
+			if (BlockEvent(player, "CeoBan"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::Crash:
 		case ScriptEventIndex::Crash2:
 		case ScriptEventIndex::Crash3:
 		{
-			BlockEvent(player, "Crash");
-			return false;
+			if (BlockEvent(player, "Crash"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::NotificationCrash1:
 		case ScriptEventIndex::NotificationCrash2:
 		{
-			BlockEvent(player, "NotificationCrash");
-			return false;
+			if (BlockEvent(player, "NotificationCrash"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::SoundSpam:
 		{
-			BlockEvent(player, "SoundSpam");
-			return false;
+			if (BlockEvent(player, "SoundSpam"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::NetworkBail:
 		{
-			BlockEvent(player, "NetworkBail");
-			return false;
+			if (BlockEvent(player, "NetworkBail"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::KickFromInterior:
 		{
-			BlockEvent(player, "KickFromInterior");
-			return false;
+			if (BlockEvent(player, "KickFromInterior"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::VehicleKick:
 		{
-			BlockEvent(player, "VehicleKick");
-			return false;
+			if (BlockEvent(player, "VehicleKick"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::TSECommand:
 		case ScriptEventIndex::TSECommandRotateCam:
 		case ScriptEventIndex::TSECommandSound:
 		case ScriptEventIndex::TSECommandLaunchHeist:
 		{
-			BlockEvent(player, "TSECommand");
-			return false;
+			if (BlockEvent(player, "TSECommand"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::NotificationMoneyBanked:
 		case ScriptEventIndex::NotificationMoneyRemoved:
 		case ScriptEventIndex::NotificationMoneyStolen:
 		{
-			BlockEvent(player, "Fake Money Notification");
-			return false;
+			if (BlockEvent(player, "Fake Money Notification"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::Notification:
 		{
-			BlockEvent(player, "Notification");
-			return false;
+			if (BlockEvent(player, "Notification"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::GtaBanner:
 		{
-			BlockEvent(player, "GtaBanner");
-			return false;
+			if (BlockEvent(player, "GtaBanner"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::DestroyPersonalVehicle:
 		case ScriptEventIndex::PersonalVehicleDestroyed:
 		{
-			BlockEvent(player, "PersonalVehicle");
-			return false;
+			if (BlockEvent(player, "PersonalVehicle"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::ClearWantedLevel:
 		{
-			BlockEvent(player, "ClearWantedLevel");
-			return false;
+			if (BlockEvent(player, "ClearWantedLevel"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::RemoteOffradar:
 		{
-			BlockEvent(player, "RemoteOffradar");
-			return false;
+			if (BlockEvent(player, "RemoteOffradar"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::Spectate:
 		{
-			BlockEvent(player, "Spectate");
-			return false;
+			if (BlockEvent(player, "Spectate"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::ForceMission:
 		{
-			BlockEvent(player, "ForceMission");
-			return false;
+			if (BlockEvent(player, "ForceMission"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::StartActivity:
 		{
-			BlockEvent(player, "StartActivity");
-			return false;
+			if (BlockEvent(player, "StartActivity"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::StartScriptBegin:
 		case ScriptEventIndex::StartScriptProceed:
 		{
-			BlockEvent(player, "StartScript");
-			return false;
+			if (BlockEvent(player, "StartScript"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::MarkPlayerAsBeast:
 		{
-			BlockEvent(player, "MarkPlayerAsBeast");
-			return false;
+			if (BlockEvent(player, "MarkPlayerAsBeast"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::RequestRandomEvent:
 		{
-			BlockEvent(player, "RequestRandomEvent");
-			return false;
+			if (BlockEvent(player, "RequestRandomEvent"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::GiveCollectible:
 		{
-			BlockEvent(player, "Collectible");
-			return false;
+			if (BlockEvent(player, "Collectible"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::Teleport:
 		case ScriptEventIndex::MCTeleport:
@@ -239,13 +270,15 @@ namespace YimMenu::Hooks
 		case ScriptEventIndex::SendToCayoPerico:
 		case ScriptEventIndex::SendToCutscene:
 		{
-			BlockEvent(player, "Remote Teleport");
-			return false;
+			if (BlockEvent(player, "Remote Teleport"))
+				return false;
+			break;
 		}
 		case ScriptEventIndex::TriggerCEORaid:
 		{
-			BlockEvent(player, "TriggerCEORaid");
-			return false;
+			if (BlockEvent(player, "TriggerCEORaid"))
+				return false;
+			break;
 		}
 		default:
 			break;
