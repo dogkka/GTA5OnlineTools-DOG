@@ -40,7 +40,7 @@ namespace YimMenu::Submenus
 		timeGroup->AddItem(std::make_shared<CommandItem>("setnetworktime"_J));
 		timeGroup->AddItem(std::make_shared<BoolCommandItem>("freezenetworktime"_J));
 
-		auto otherOpts = std::make_shared<Group>("其他", 1);
+		auto otherOpts = std::make_shared<Group>("其他", -1);
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("pedsignore"_J));
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("PedRiotMode"_J));
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("CopsDispatch"_J));

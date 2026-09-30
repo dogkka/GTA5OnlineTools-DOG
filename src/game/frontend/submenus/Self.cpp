@@ -12,9 +12,11 @@ namespace YimMenu::Submenus
 	    Submenu::Submenu("个人", ICON_FA_USER)
 	{
 		auto main = std::make_shared<Category>("基础");
-		auto globalsGroup = std::make_shared<Group>("全局");
-		auto movementGroup = std::make_shared<Group>("移动");
-		auto toolsGroup = std::make_shared<Group>("工具", 2);
+		auto globalsGroup = std::make_shared<Group>("状态", -1);
+		auto extraGroup = std::make_shared<Group>("辅助", 2);
+		auto movementGroup = std::make_shared<Group>("移动", -1);
+		auto toolsGroup = std::make_shared<Group>("日常工具", -1);
+		auto tools2Group = std::make_shared<Group>("进阶工具", -1);
 		auto specialAbilityGroup = std::make_shared<Group>("特殊能力");
 		auto wantedGroup = std::make_shared<Group>("通缉");
 
@@ -28,11 +30,12 @@ namespace YimMenu::Submenus
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("formatmoney"_J));
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("mobileradio"_J));
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("keepplayerclean"_J));
-		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("disablecriticalhits"_J));
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("passivemode"_J));
-		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("nofalldamage"_J));
-		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("nightvision"_J));
-		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("thermalvision"_J));
+
+		extraGroup->AddItem(std::make_shared<BoolCommandItem>("disablecriticalhits"_J));
+		extraGroup->AddItem(std::make_shared<BoolCommandItem>("nofalldamage"_J));
+		extraGroup->AddItem(std::make_shared<BoolCommandItem>("nightvision"_J));
+		extraGroup->AddItem(std::make_shared<BoolCommandItem>("thermalvision"_J));
 
 		toolsGroup->AddItem(std::make_shared<CommandItem>("skipcutscene"_J));
 		toolsGroup->AddItem(std::make_shared<CommandItem>("skipconversation"_J));
@@ -41,11 +44,12 @@ namespace YimMenu::Submenus
 		toolsGroup->AddItem(std::make_shared<CommandItem>("cleardamage"_J));
 		toolsGroup->AddItem(std::make_shared<CommandItem>("fillinventory"_J));
 		toolsGroup->AddItem(std::make_shared<CommandItem>("openwardrobe"_J));
-		toolsGroup->AddItem(std::make_shared<BoolCommandItem>("fastrespawn"_J));
-		toolsGroup->AddItem(std::make_shared<CommandItem>("cleanplayer"_J));
-		toolsGroup->AddItem(std::make_shared<BoolCommandItem>("bodyguards"_J));
-		toolsGroup->AddItem(std::make_shared<BoolCommandItem>("flamethrower"_J));
-		toolsGroup->AddItem(std::make_shared<BoolCommandItem>("orbitalstrike"_J));
+
+		tools2Group->AddItem(std::make_shared<BoolCommandItem>("fastrespawn"_J));
+		tools2Group->AddItem(std::make_shared<CommandItem>("cleanplayer"_J));
+		tools2Group->AddItem(std::make_shared<BoolCommandItem>("bodyguards"_J));
+		tools2Group->AddItem(std::make_shared<BoolCommandItem>("flamethrower"_J));
+		tools2Group->AddItem(std::make_shared<BoolCommandItem>("orbitalstrike"_J));
 
 		auto clearWanted = std::make_shared<Group>("", 1);
 		clearWanted->AddItem(std::make_shared<ConditionalItem>("neverwanted"_J, std::make_shared<CommandItem>("clearwanted"_J), true));
@@ -75,7 +79,9 @@ namespace YimMenu::Submenus
 		specialAbilityGroup->AddItem(std::move(specialInMp));
 
 		main->AddItem(globalsGroup);
+		main->AddItem(extraGroup);
 		main->AddItem(toolsGroup);
+		main->AddItem(tools2Group);
 		main->AddItem(specialAbilityGroup);
 		main->AddItem(wantedGroup);
 		main->AddItem(movementGroup);

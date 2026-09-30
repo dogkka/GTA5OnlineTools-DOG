@@ -18,10 +18,13 @@ namespace YimMenu::Submenus
 		auto main = std::make_shared<Category>("基础");
 
 		auto globals = std::make_shared<Group>("全局");
-		auto tools = std::make_shared<Group>("工具", 2);
+		auto tools = std::make_shared<Group>("工具", -1);
 		auto seatsAndDoors = std::make_shared<Group>("座位与车门", 2);
 		auto hydraulics = std::make_shared<Group>("液压悬挂", 2);
-		auto misc = std::make_shared<Group>("杂项");
+		auto driving = std::make_shared<Group>("行驶辅助", -1);
+		auto appearance = std::make_shared<Group>("外观与灯光", -1);
+		auto misc = std::make_shared<Group>("安全与杂项", -1);
+		auto tuning = std::make_shared<Group>("载具调校", -1);
 
 		globals->AddItem(std::make_shared<BoolCommandItem>("vehiclegodmode"_J));
 		globals->AddItem(std::make_shared<BoolCommandItem>("keepfixed"_J));
@@ -108,47 +111,53 @@ namespace YimMenu::Submenus
 		hydraulics->AddItem(std::make_shared<CommandItem>("raisehydraulicwheel"_J));
 		hydraulics->AddItem(std::make_shared<CommandItem>("lowerhydraulicwheel"_J));
 
+		driving->AddItem(std::make_shared<BoolCommandItem>("instantbrake"_J));
+		driving->AddItem(std::make_shared<BoolCommandItem>("keepenginerunning"_J));
+		driving->AddItem(std::make_shared<BoolCommandItem>("turnsignals"_J));
+		driving->AddItem(std::make_shared<ConditionalItem>("turnsignals"_J, std::make_shared<ListCommandItem>("turnsignalsmode"_J)));
+		driving->AddItem(std::make_shared<BoolCommandItem>("fly"_J));
+		driving->AddItem(std::make_shared<ConditionalItem>("fly"_J, std::make_shared<FloatCommandItem>("flyspeed"_J, std::nullopt, true)));
+		driving->AddItem(std::make_shared<BoolCommandItem>("driveonwater"_J));
+		driving->AddItem(std::make_shared<BoolCommandItem>("vehjump"_J));
+		driving->AddItem(std::make_shared<BoolCommandItem>("autodrive"_J));
+		driving->AddItem(std::make_shared<ConditionalItem>("autodrive"_J, std::make_shared<ListCommandItem>("autodrivemode"_J)));
+		driving->AddItem(std::make_shared<BoolCommandItem>("keeponground"_J));
+
+		appearance->AddItem(std::make_shared<BoolCommandItem>("rainbowpaint"_J));
+		appearance->AddItem(std::make_shared<ConditionalItem>("rainbowpaint"_J, std::make_shared<IntCommandItem>("rainbowspeed"_J, "速度")));
+		appearance->AddItem(std::make_shared<StringCommandItem>("platetext"_J));
+		appearance->AddItem(std::make_shared<CommandItem>("plateeditor"_J));
+		appearance->AddItem(std::make_shared<BoolCommandItem>("disablesiren"_J));
+		appearance->AddItem(std::make_shared<BoolCommandItem>("vehicleinvis"_J));
+		appearance->AddItem(std::make_shared<BoolCommandItem>("vehiclestrong"_J));
+
 		misc->AddItem(std::make_shared<BoolCommandItem>("speedometer"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("seatbelt"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("lowervehiclestance"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("allowhatsinvehicles"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("lsccustomsbypass"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("dlcvehicles"_J));
-		misc->AddItem(std::make_shared<BoolCommandItem>("instantbrake"_J));
-		misc->AddItem(std::make_shared<BoolCommandItem>("keepenginerunning"_J));
-		misc->AddItem(std::make_shared<BoolCommandItem>("turnsignals"_J));
-		misc->AddItem(std::make_shared<ConditionalItem>("turnsignals"_J, std::make_shared<ListCommandItem>("turnsignalsmode"_J)));
-		misc->AddItem(std::make_shared<BoolCommandItem>("fly"_J));
-		misc->AddItem(std::make_shared<ConditionalItem>("fly"_J, std::make_shared<FloatCommandItem>("flyspeed"_J, std::nullopt, true)));
-		misc->AddItem(std::make_shared<BoolCommandItem>("driveonwater"_J));
-		misc->AddItem(std::make_shared<BoolCommandItem>("vehjump"_J));
-		misc->AddItem(std::make_shared<BoolCommandItem>("rainbowpaint"_J));
-		misc->AddItem(std::make_shared<ConditionalItem>("rainbowpaint"_J, std::make_shared<IntCommandItem>("rainbowspeed"_J, "速度")));
-		misc->AddItem(std::make_shared<BoolCommandItem>("autodrive"_J));
-		misc->AddItem(std::make_shared<ConditionalItem>("autodrive"_J, std::make_shared<ListCommandItem>("autodrivemode"_J)));
 		misc->AddItem(std::make_shared<BoolCommandItem>("vehnocol"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("bulletprooftyres"_J));
-		misc->AddItem(std::make_shared<StringCommandItem>("platetext"_J));
-		misc->AddItem(std::make_shared<CommandItem>("plateeditor"_J));
-		misc->AddItem(std::make_shared<BoolCommandItem>("disablesiren"_J));
-		misc->AddItem(std::make_shared<BoolCommandItem>("vehicleinvis"_J));
-		misc->AddItem(std::make_shared<BoolCommandItem>("vehiclestrong"_J));
-		misc->AddItem(std::make_shared<BoolCommandItem>("keeponground"_J));
-		misc->AddItem(std::make_shared<BoolCommandItem>("handlingedit"_J));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingmass"_J, "重量", true)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingaccel"_J, "动力", true)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtopspeed"_J, "极速", true)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtopspeedval"_J, "极速直设", true)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingbrake"_J, "刹车", true)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtraction"_J, "抓地", true)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<BoolCommandItem>("handlingnodeform"_J)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<BoolCommandItem>("handlingengineimmune"_J)));
+
+		tuning->AddItem(std::make_shared<BoolCommandItem>("handlingedit"_J));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingmass"_J, "重量", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingaccel"_J, "动力", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtopspeed"_J, "极速", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtopspeedval"_J, "极速直设", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingbrake"_J, "刹车", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtraction"_J, "抓地", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<BoolCommandItem>("handlingnodeform"_J)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<BoolCommandItem>("handlingengineimmune"_J)));
 
 		main->AddItem(globals);
 		main->AddItem(tools);
 		main->AddItem(seatsAndDoors);
 		main->AddItem(hydraulics);
+		main->AddItem(driving);
+		main->AddItem(appearance);
 		main->AddItem(misc);
+		main->AddItem(tuning);
 
 		AddCategory(std::move(main));
 		auto presets = std::make_shared<Category>("预设车辆");

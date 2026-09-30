@@ -6,7 +6,7 @@ namespace YimMenu::Submenus
 	{
 		auto tab = std::make_shared<TabItem>("末日豪劫");
 
-		auto cuts = std::make_shared<Group>("抢劫分红", 2);
+		auto cuts = std::make_shared<Group>("抢劫分红", -1);
 		auto setups = std::make_shared<Group>("抢劫设置");
 		auto misc = std::make_shared<Group>("其他", 1);
 

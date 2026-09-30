@@ -8,9 +8,9 @@ namespace YimMenu::Submenus
 
 		auto target = std::make_shared<Group>("主要目标", 1);
 		auto general = std::make_shared<Group>("常规采购", 2);
-		auto preps = std::make_shared<Group>("前置任务", 2);
+		auto preps = std::make_shared<Group>("前置任务", -1);
 		auto scoping = std::make_shared<Group>("侦察", 2);
-		auto finale = std::make_shared<Group>("终章辅助", 2);
+		auto finale = std::make_shared<Group>("终章辅助", -1);
 		auto action = std::make_shared<Group>("", 1);
 
 		target->AddItem(std::make_shared<ListCommandItem>("kortzcenterheistprimarytarget"_J));

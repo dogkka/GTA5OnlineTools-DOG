@@ -19,7 +19,7 @@ namespace YimMenu::Submenus
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopkill"_J));
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopbounty"_J));
 
-		auto events = std::make_shared<Group>("脚本事件");
+		auto events = std::make_shared<Group>("脚本事件", -1);
 		events->AddItem(std::make_shared<PlayerCommandItem>("sendbounty"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("fakeban"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("vehkick"_J));

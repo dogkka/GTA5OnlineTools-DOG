@@ -273,7 +273,8 @@ namespace YimMenu::Submenus
 	{
 		auto weapons = std::make_shared<Category>("武器");
 
-		auto weaponsGlobalsGroup = std::make_shared<Group>("全局", 12);
+		auto weaponsGlobalsGroup = std::make_shared<Group>("全局", -1);
+		auto weaponsCustomGroup = std::make_shared<Group>("增强", -1);
 		auto weaponsToolsGroup = std::make_shared<Group>("工具", 1);
 		auto weaponsAmmuNationGroup = std::make_shared<Group>("武装国度");
 		auto weaponsAimbotGroup = std::make_shared<Group>("自瞄", 1);
@@ -281,21 +282,21 @@ namespace YimMenu::Submenus
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("infiniteammo"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("infiniteclip"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("rapidfire"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("triggerbot"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("tpgun"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("repairgun"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("deletegun"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("norecoil"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("nospread"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("infiniterange"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("bigclip"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("bigclip"_J, std::make_shared<IntCommandItem>("bigclipsize"_J, "容量")));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("damageboost"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("damageboost"_J, std::make_shared<FloatCommandItem>("damagemultiplier"_J, "倍率", true)));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("fastfire"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("fastfire"_J, std::make_shared<FloatCommandItem>("firerate"_J, "倍率", true)));
-		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("longrange"_J));
-		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("longrange"_J, std::make_shared<FloatCommandItem>("weaponrange"_J, "射程", true)));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("triggerbot"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("tpgun"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("repairgun"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("deletegun"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("norecoil"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("nospread"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("infiniterange"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("bigclip"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<ConditionalItem>("bigclip"_J, std::make_shared<IntCommandItem>("bigclipsize"_J, "容量")));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("damageboost"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<ConditionalItem>("damageboost"_J, std::make_shared<FloatCommandItem>("damagemultiplier"_J, "倍率", true)));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("fastfire"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<ConditionalItem>("fastfire"_J, std::make_shared<FloatCommandItem>("firerate"_J, "倍率", true)));
+		weaponsCustomGroup->AddItem(std::make_shared<BoolCommandItem>("longrange"_J));
+		weaponsCustomGroup->AddItem(std::make_shared<ConditionalItem>("longrange"_J, std::make_shared<FloatCommandItem>("weaponrange"_J, "射程", true)));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("infiniteparachutes"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("ExplosiveAmmo"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("ExplosiveAmmo"_J, std::make_shared<ListCommandItem>("selectedexplosion"_J)));
@@ -323,6 +324,7 @@ namespace YimMenu::Submenus
 		weaponsAimbotGroup->AddItem(std::make_shared<ConditionalItem>("aimbot"_J, std::make_shared<BoolCommandItem>("aimbotreleasedeadped"_J)));
 
 		weapons->AddItem(weaponsGlobalsGroup);
+		weapons->AddItem(weaponsCustomGroup);
 		weapons->AddItem(weaponsToolsGroup);
 		weapons->AddItem(weaponsAmmuNationGroup);
 		weapons->AddItem(weaponsAimbotGroup);
