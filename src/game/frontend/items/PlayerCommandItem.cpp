@@ -35,5 +35,26 @@ namespace YimMenu
 		{
 			ImGui::SetTooltip("%s", description.c_str());
 		}
+
+		if (ImGui::BeginPopupContextItem())
+		{
+			auto all_cmd = Commands::GetCommand<PlayerAllCommand>(Joaat(m_Command->GetName() + "all"));
+
+			if (all_cmd)
+			{
+				if (ImGui::MenuItem("对全部玩家执行"))
+				{
+					FiberPool::Push([all_cmd] {
+						all_cmd->Call();
+					});
+				}
+			}
+			else
+			{
+				ImGui::MenuItem("对全部玩家执行（不可用）", nullptr, false, false);
+			}
+
+			ImGui::EndPopup();
+		}
 	}
 }
