@@ -18,5 +18,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static TyreBurst _TyreBurst{"tyreburst", "Burst Tyres", "Bursts all tyres of the player's vehicle"};
+	static TyreBurst _TyreBurst{"tyreburst", "爆胎", "爆掉目标玩家载具的所有轮胎"};
 }

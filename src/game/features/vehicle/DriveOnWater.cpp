@@ -27,5 +27,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static DriveOnWater _DriveOnWater{"driveonwater", "Drive On Water", "Keeps your vehicle floating on the water surface"};
+	static DriveOnWater _DriveOnWater{"driveonwater", "水上行驶", "让载具浮在水面上行驶"};
 }

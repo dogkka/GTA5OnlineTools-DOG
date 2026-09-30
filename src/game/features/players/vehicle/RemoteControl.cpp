@@ -20,7 +20,7 @@ namespace YimMenu::Features
 			auto veh = player.GetPed().GetVehicle();
 			if (!veh)
 			{
-				Notifications::Show("Remote Control", "The player is not in a vehicle.", NotificationType::Warning);
+				Notifications::Show("遥控载具", "该玩家不在载具中。", NotificationType::Warning);
 				return;
 			}
 
@@ -29,11 +29,11 @@ namespace YimMenu::Features
 			if (auto cmd = Commands::GetCommand<BoolCommand>("remotecontrol"_J))
 				cmd->SetState(true);
 
-			Notifications::Show("Remote Control", "Now controlling the target vehicle. W/S to drive, A/D to steer.", NotificationType::Info);
+			Notifications::Show("遥控载具", "已夺取目标载具控制权。W/S 前进后退，A/D 转向。", NotificationType::Info);
 		}
 	};
 
-	static RemoteControlTarget _RemoteControlTarget{"rcvehicle", "Remote Control", "Take control of the player's vehicle"};
+	static RemoteControlTarget _RemoteControlTarget{"rcvehicle", "遥控载具", "夺取目标玩家载具的控制权"};
 
 	class RemoteControl : public LoopedCommand
 	{
@@ -84,5 +84,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static RemoteControl _RemoteControl{"remotecontrol", "Remote Control", "Drive the last targeted player's vehicle with your controls"};
+	static RemoteControl _RemoteControl{"remotecontrol", "遥控开关", "用你的按键驾驶上次锁定的目标载具"};
 }

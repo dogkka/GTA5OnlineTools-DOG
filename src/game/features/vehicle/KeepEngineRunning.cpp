@@ -18,5 +18,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static KeepEngineRunning _KeepEngineRunning{"keepenginerunning", "Keep Engine Running", "Keeps the engine running even when you leave the vehicle"};
+	static KeepEngineRunning _KeepEngineRunning{"keepenginerunning", "引擎保持运转", "离开载具后引擎保持运转"};
 }

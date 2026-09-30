@@ -7,7 +7,7 @@
 
 namespace YimMenu::Features
 {
-	static IntCommand _RainbowPaintSpeed{"rainbowspeed", "Rainbow Speed", "Speed of the rainbow color cycle", 1, 25, 5};
+	static IntCommand _RainbowPaintSpeed{"rainbowspeed", "彩虹速度", "彩虹变色的速度", 1, 25, 5};
 
 	class RainbowPaint : public LoopedCommand
 	{
@@ -57,5 +57,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static RainbowPaint _RainbowPaint{"rainbowpaint", "Rainbow Paint", "Cycles your vehicle's paint through rainbow colors"};
+	static RainbowPaint _RainbowPaint{"rainbowpaint", "彩虹车漆", "让载具车漆循环彩虹色"};
 }

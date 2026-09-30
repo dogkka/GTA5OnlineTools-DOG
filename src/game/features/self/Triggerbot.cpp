@@ -32,5 +32,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static Triggerbot _Triggerbot{"triggerbot", "Triggerbot", "Automatically shoots when your crosshair is on a ped"};
+	static Triggerbot _Triggerbot{"triggerbot", "自动开火", "准星对准人形时自动开火"};
 }

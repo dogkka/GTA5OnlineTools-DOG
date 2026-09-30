@@ -42,5 +42,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static PedRain _PedRain{"pedrain", "Ped Rain", "Rains pedestrians from the sky around you"};
+	static PedRain _PedRain{"pedrain", "人形雨", "在你头顶下起人形雨"};
 }

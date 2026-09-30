@@ -4,7 +4,7 @@
 
 namespace YimMenu::Features
 {
-	static ListCommand _GravityLevel{"gravitylevel", "Gravity Level", "The world gravity level", {{0, "Normal"}, {1, "Low"}, {2, "Moon"}}, 0};
+	static ListCommand _GravityLevel{"gravitylevel", "重力等级", "世界重力等级", {{0, "正常"}, {1, "低"}, {2, "月球"}}, 0};
 
 	class Gravity : public LoopedCommand
 	{
@@ -21,5 +21,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static Gravity _Gravity{"gravity", "Gravity", "Changes the world gravity"};
+	static Gravity _Gravity{"gravity", "重力", "修改世界重力"};
 }

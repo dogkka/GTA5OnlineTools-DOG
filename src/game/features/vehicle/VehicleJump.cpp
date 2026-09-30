@@ -22,5 +22,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static VehicleJump _VehicleJump{"vehjump", "Vehicle Jump", "Press the handbrake to jump with your vehicle"};
+	static VehicleJump _VehicleJump{"vehjump", "载具跳跃", "按手刹让载具跳跃"};
 }

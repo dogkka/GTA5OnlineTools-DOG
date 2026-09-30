@@ -4,7 +4,7 @@
 
 namespace YimMenu::Features
 {
-	static ListCommand _LockVehicleMode{"lockvehiclemode", "Lock Mode", "Whether to lock or unlock the player's vehicle", {{0, "Lock"}, {1, "Unlock"}}, 0};
+	static ListCommand _LockVehicleMode{"lockvehiclemode", "锁定模式", "选择锁定还是解锁", {{0, "锁定"}, {1, "解锁"}}, 0};
 
 	class LockVehicle : public PlayerCommand
 	{
@@ -20,5 +20,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static LockVehicle _LockVehicle{"lockvehicle", "Lock Vehicle", "Locks or unlocks the player's vehicle"};
+	static LockVehicle _LockVehicle{"lockvehicle", "锁车门", "锁定或解锁目标玩家的载具"};
 }

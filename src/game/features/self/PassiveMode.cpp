@@ -18,5 +18,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static PassiveMode _PassiveMode{"passivemode", "Passive Mode", "Toggles passive mode on yourself"};
+	static PassiveMode _PassiveMode{"passivemode", "被动模式", "开启自己的被动模式"};
 }

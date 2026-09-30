@@ -18,5 +18,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static InstantBrake _InstantBrake{"instantbrake", "Instant Brake", "Instantly stops the current vehicle"};
+	static InstantBrake _InstantBrake{"instantbrake", "瞬间刹车", "立即让当前载具停下"};
 }

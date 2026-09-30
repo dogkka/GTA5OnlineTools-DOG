@@ -18,5 +18,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static Blackout _Blackout{"blackout", "Blackout", "Turns off all artificial lights in the world"};
+	static Blackout _Blackout{"blackout", "全城断电", "关闭世界中所有人工照明"};
 }

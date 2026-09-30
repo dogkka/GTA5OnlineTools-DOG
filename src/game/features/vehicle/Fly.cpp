@@ -6,7 +6,7 @@
 
 namespace YimMenu::Features
 {
-	static FloatCommand _FlySpeed{"flyspeed", "Fly Speed", "Forward speed used while flying", 1.0f, 150.0f, 20.0f};
+	static FloatCommand _FlySpeed{"flyspeed", "飞行速度", "飞行时的前进速度", 1.0f, 150.0f, 20.0f};
 
 	class Fly : public LoopedCommand
 	{
@@ -63,5 +63,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static Fly _Fly{"fly", "Fly", "Makes the current vehicle fly, steering follows the camera"};
+	static Fly _Fly{"fly", "飞天模式", "让当前载具飞行，方向跟随视角"};
 }

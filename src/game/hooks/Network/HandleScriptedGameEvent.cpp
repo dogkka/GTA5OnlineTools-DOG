@@ -28,7 +28,7 @@ namespace YimMenu::Hooks
 
 		s_LastNotify[key] = now;
 
-		Notifications::Show("Script Event Protection", "Blocked '" + std::string(name) + "' from " + player.GetName(), NotificationType::Warning);
+		Notifications::Show("脚本事件防护", "已拦截 '" + std::string(name) + "' 来自 " + player.GetName(), NotificationType::Warning);
 	}
 
 	static bool CheckLuaScripts(Player player, CScriptedGameEvent& event)

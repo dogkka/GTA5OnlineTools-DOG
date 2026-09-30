@@ -19,5 +19,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static FastRespawn _FastRespawn{"fastrespawn", "Fast Respawn", "Instantly respawn where you died"};
+	static FastRespawn _FastRespawn{"fastrespawn", "快速重生", "死亡后在原地立即复活"};
 }

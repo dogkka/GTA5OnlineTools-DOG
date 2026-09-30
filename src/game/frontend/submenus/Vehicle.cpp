@@ -123,7 +123,7 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<BoolCommandItem>("driveonwater"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("vehjump"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("rainbowpaint"_J));
-		misc->AddItem(std::make_shared<ConditionalItem>("rainbowpaint"_J, std::make_shared<IntCommandItem>("rainbowspeed"_J, "Speed")));
+		misc->AddItem(std::make_shared<ConditionalItem>("rainbowpaint"_J, std::make_shared<IntCommandItem>("rainbowspeed"_J, "速度")));
 
 		main->AddItem(globals);
 		main->AddItem(tools);

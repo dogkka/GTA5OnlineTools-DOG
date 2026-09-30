@@ -5,7 +5,7 @@
 
 namespace YimMenu::Features
 {
-	static ListCommand _TurnSignalsMode{"turnsignalsmode", "Turn Signals Mode", "Which indicator to show", {{0, "Off"}, {1, "Left"}, {2, "Right"}}, 0};
+	static ListCommand _TurnSignalsMode{"turnsignalsmode", "转向灯模式", "选择要显示的指示灯", {{0, "关闭"}, {1, "左转"}, {2, "右转"}}, 0};
 
 	class TurnSignals : public LoopedCommand
 	{
@@ -45,5 +45,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static TurnSignals _TurnSignals{"turnsignals", "Turn Signals", "Turns on the left or right indicator"};
+	static TurnSignals _TurnSignals{"turnsignals", "转向灯", "打开左转或右转指示灯"};
 }
