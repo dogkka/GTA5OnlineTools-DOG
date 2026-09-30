@@ -20,11 +20,12 @@ namespace YimMenu::Features
 	static constexpr uintptr_t OFF_ENGINE_DMG   = 0xFC;
 
 	static BoolCommand _CustomHandling{"handlingedit", "载具调校", "自定义当前载具的操控性能（实时生效）"};
-	static FloatCommand _MassMult{"handlingmass", "重量倍率", "质量倍率，越小越轻快", 0.1f, 5.0f, 0.6f};
-	static FloatCommand _AccelMult{"handlingaccel", "动力倍率", "加速与驱动力倍率", 0.5f, 10.0f, 1.5f};
-	static FloatCommand _TopSpeedMult{"handlingtopspeed", "极速倍率", "最高速度倍率", 0.5f, 10.0f, 1.5f};
-	static FloatCommand _BrakeMult{"handlingbrake", "刹车倍率", "制动力倍率", 0.5f, 10.0f, 1.5f};
-	static FloatCommand _TractionMult{"handlingtraction", "抓地倍率", "轮胎抓地力倍率", 0.5f, 10.0f, 1.3f};
+	static FloatCommand _MassMult{"handlingmass", "重量倍率", "质量倍率，越小越轻快", 0.05f, 5.0f, 0.6f};
+	static FloatCommand _AccelMult{"handlingaccel", "动力倍率", "加速与驱动力倍率", 0.5f, 20.0f, 1.5f};
+	static FloatCommand _TopSpeedMult{"handlingtopspeed", "极速倍率", "最高速度倍率", 0.5f, 20.0f, 1.5f};
+	static FloatCommand _TopSpeedOverride{"handlingtopspeedval", "极速直设", "0=按倍率计算；大于 0 时直接设为该速度（约 150 ≈ 540km/h）", 0.0f, 300.0f, 0.0f};
+	static FloatCommand _BrakeMult{"handlingbrake", "刹车倍率", "制动力倍率", 0.5f, 20.0f, 1.5f};
+	static FloatCommand _TractionMult{"handlingtraction", "抓地倍率", "轮胎抓地力倍率", 0.5f, 20.0f, 1.3f};
 	static BoolCommand _NoDeform{"handlingnodeform", "防变形", "碰撞时车身不变形", false};
 	static BoolCommand _EngineImmune{"handlingengineimmune", "引擎免疫", "碰撞不损伤引擎", false};
 
@@ -103,7 +104,8 @@ namespace YimMenu::Features
 			WriteFloat(handling, OFF_MASS, m_OgMass * _MassMult.GetState());
 			WriteFloat(handling, OFF_ACCELERATION, m_OgAccel * _AccelMult.GetState());
 			WriteFloat(handling, OFF_DRIVE_FORCE, m_OgForce * _AccelMult.GetState());
-			WriteFloat(handling, OFF_MAX_FLAT_VEL, m_OgMaxFlat * _TopSpeedMult.GetState());
+			const float top_speed_override = _TopSpeedOverride.GetState();
+			WriteFloat(handling, OFF_MAX_FLAT_VEL, top_speed_override > 0.0f ? top_speed_override : m_OgMaxFlat * _TopSpeedMult.GetState());
 			WriteFloat(handling, OFF_BRAKE_FORCE, m_OgBrake * _BrakeMult.GetState());
 			WriteFloat(handling, OFF_TRACTION_MAX, m_OgTraction * _TractionMult.GetState());
 			WriteFloat(handling, OFF_DEFORMATION, _NoDeform.GetState() ? 0.0f : m_OgDeform);

@@ -15,6 +15,8 @@ namespace YimMenu::Submenus
 	static BoolCommand spawnVehicleMaxed{"spawnvehmaxed", "满改生成", "生成满改载具。"};
 	static BoolCommand spawnInsidePersonalVehicle{"spawninsidepv", "车内生成", "在个人载具内部生成。"};
 	static BoolCommand spawnClonePersonalVehicle{"spawnclonepv", "生成复制品", "生成个人载具的复制品。"};
+	static BoolCommand spawnPreviewMode{"spawnpreviewmode", "预览模式", "点击列表中的车辆会替换上一辆预览车，方便逐一查看车型。", true};
+	static int g_LastPreviewVehicle = 0;
 
 	std::shared_ptr<TabItem> RenderSpawnNewVehicle()
 	{
@@ -103,6 +105,12 @@ namespace YimMenu::Submenus
 							if (ImGui::Selectable(name.c_str()))
 							{
 								FiberPool::Push([hash] {
+									if (spawnPreviewMode.GetState())
+									{
+										if (g_LastPreviewVehicle != 0 && ENTITY::DOES_ENTITY_EXIST(g_LastPreviewVehicle))
+											Vehicle(g_LastPreviewVehicle).Delete();
+									}
+
 									auto handle = Vehicle::Create(hash, Vehicle::GetSpawnLocRelToPed(Self::GetPed().GetHandle(), hash), Self::GetPed().GetHeading());
 
 									if (spawnInsideVehicle.GetState())
@@ -110,6 +118,8 @@ namespace YimMenu::Submenus
 
 									if (spawnVehicleMaxed.GetState())
 										handle.Upgrade();
+
+									g_LastPreviewVehicle = handle ? handle.GetHandle() : 0;
 								});
 							}
 							ImGui::PopID();
@@ -123,6 +133,7 @@ namespace YimMenu::Submenus
 
 		settings->AddItem(std::make_shared<BoolCommandItem>("spawninsideveh"_J));
 		settings->AddItem(std::make_shared<BoolCommandItem>("spawnvehmaxed"_J));
+		settings->AddItem(std::make_shared<BoolCommandItem>("spawnpreviewmode"_J));
 
 		tab->AddItem(spawn);
 		tab->AddItem(settings);

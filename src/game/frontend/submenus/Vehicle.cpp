@@ -119,7 +119,7 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<BoolCommandItem>("turnsignals"_J));
 		misc->AddItem(std::make_shared<ConditionalItem>("turnsignals"_J, std::make_shared<ListCommandItem>("turnsignalsmode"_J)));
 		misc->AddItem(std::make_shared<BoolCommandItem>("fly"_J));
-		misc->AddItem(std::make_shared<ConditionalItem>("fly"_J, std::make_shared<FloatCommandItem>("flyspeed"_J, std::nullopt, false)));
+		misc->AddItem(std::make_shared<ConditionalItem>("fly"_J, std::make_shared<FloatCommandItem>("flyspeed"_J, std::nullopt, true)));
 		misc->AddItem(std::make_shared<BoolCommandItem>("driveonwater"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("vehjump"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("rainbowpaint"_J));
@@ -135,11 +135,12 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<BoolCommandItem>("vehiclestrong"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("keeponground"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("handlingedit"_J));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingmass"_J, "重量", false)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingaccel"_J, "动力", false)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtopspeed"_J, "极速", false)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingbrake"_J, "刹车", false)));
-		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtraction"_J, "抓地", false)));
+		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingmass"_J, "重量", true)));
+		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingaccel"_J, "动力", true)));
+		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtopspeed"_J, "极速", true)));
+		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtopspeedval"_J, "极速直设", true)));
+		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingbrake"_J, "刹车", true)));
+		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtraction"_J, "抓地", true)));
 		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<BoolCommandItem>("handlingnodeform"_J)));
 		misc->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<BoolCommandItem>("handlingengineimmune"_J)));
 
