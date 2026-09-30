@@ -17,18 +17,19 @@ namespace YimMenu::Features
 		float m_G = 0.0f;
 		float m_B = 0.0f;
 
-		virtual void OnEnable() override
-		{
-			auto veh = Self::GetVehicle();
-			if (veh)
-				VEHICLE::SET_VEHICLE_MOD_KIT(veh.GetHandle(), 0);
-		}
+		int m_LastVehicle = 0;
 
 		virtual void OnTick() override
 		{
 			auto veh = Self::GetVehicle();
 			if (!veh)
 				return;
+
+			if (veh.GetHandle() != m_LastVehicle)
+			{
+				m_LastVehicle = veh.GetHandle();
+				VEHICLE::SET_VEHICLE_MOD_KIT(veh.GetHandle(), 0);
+			}
 
 			const float speed = static_cast<float>(_RainbowPaintSpeed.GetState());
 

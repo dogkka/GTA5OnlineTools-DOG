@@ -39,6 +39,8 @@ namespace YimMenu::Features
 	{
 		using LoopedCommand::LoopedCommand;
 
+		int m_ControlRequestTimer = 0;
+
 		virtual void OnDisable() override
 		{
 			g_RemoteControlHandle = 0;
@@ -58,9 +60,15 @@ namespace YimMenu::Features
 			Vehicle veh(g_RemoteControlHandle);
 			if (!veh.HasControl())
 			{
-				veh.RequestControl(0);
+				if (++m_ControlRequestTimer >= 30)
+				{
+					m_ControlRequestTimer = 0;
+					veh.RequestControl(0);
+				}
 				return;
 			}
+
+			m_ControlRequestTimer = 0;
 
 			VEHICLE::SET_VEHICLE_ENGINE_ON(veh.GetHandle(), true, true, false);
 			VEHICLE::SET_VEHICLE_DOORS_LOCKED(veh.GetHandle(), 4);
