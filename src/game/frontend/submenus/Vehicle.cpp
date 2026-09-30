@@ -40,6 +40,8 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<BoolCommandItem>("keepenginerunning"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("turnsignals"_J));
 		misc->AddItem(std::make_shared<ConditionalItem>("turnsignals"_J, std::make_shared<ListCommandItem>("turnsignalsmode"_J)));
+		misc->AddItem(std::make_shared<BoolCommandItem>("fly"_J));
+		misc->AddItem(std::make_shared<ConditionalItem>("fly"_J, std::make_shared<FloatCommandItem>("flyspeed"_J, std::nullopt, false)));
 
 		main->AddItem(globals);
 		main->AddItem(tools);
