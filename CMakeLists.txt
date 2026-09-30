@@ -2,7 +2,22 @@ cmake_minimum_required(VERSION 3.20.x)
 
 include(cmake/cross-compile.cmake)
 
-project(YimMenuV2 VERSION 0.0.1 DESCRIPTION "A new base using new C++ features optimised for speed and ease of use")
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" YIMMENU_VERSION LIMIT_COUNT 1)
+string(STRIP "${YIMMENU_VERSION}" YIMMENU_VERSION)
+if(NOT YIMMENU_VERSION MATCHES "^[0-9]+\\.[0-9]+\\.[0-9]+$")
+    message(FATAL_ERROR "VERSION must contain a semantic version such as 1.0.1")
+endif()
+
+project(YimMenuV2 VERSION "${YIMMENU_VERSION}" DESCRIPTION "A new base using new C++ features optimised for speed and ease of use")
+
+set(YIMMENU_RELEASE_TAG "v${PROJECT_VERSION}-zh-cn")
+set(YIMMENU_DEV_TAG "v${PROJECT_VERSION}-zh-cn-dev")
+set(YIMMENU_BUILD_TAG "${YIMMENU_DEV_TAG}" CACHE STRING "Full Chinese release tag embedded in the build")
+if(NOT "${YIMMENU_BUILD_TAG}" STREQUAL "${YIMMENU_RELEASE_TAG}" AND NOT "${YIMMENU_BUILD_TAG}" STREQUAL "${YIMMENU_DEV_TAG}")
+    message(FATAL_ERROR "YIMMENU_BUILD_TAG must be ${YIMMENU_RELEASE_TAG}, or ${YIMMENU_DEV_TAG} for a local build")
+endif()
+
+configure_file(cmake/Version.hpp.in generated/Version.hpp @ONLY)
 
 # libs
 include(cmake/async-logger.cmake)
@@ -30,9 +45,14 @@ add_compile_definitions(
     IMGUI_DEFINE_MATH_OPERATORS
 )
 
+if(MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /utf-8)
+endif()
+
 message(STATUS "Setting up include directories.")
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${SRC_DIR}"
+    "${CMAKE_CURRENT_BINARY_DIR}/generated"
     "${imgui_SOURCE_DIR}"
     "${minhook_SOURCE_DIR}/include"
     "${minhook_SOURCE_DIR}/src/hde"
