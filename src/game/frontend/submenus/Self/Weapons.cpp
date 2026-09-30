@@ -288,6 +288,14 @@ namespace YimMenu::Submenus
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("norecoil"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("nospread"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("infiniterange"_J));
+		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("bigclip"_J));
+		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("bigclip"_J, std::make_shared<IntCommandItem>("bigclipsize"_J, "容量")));
+		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("damageboost"_J));
+		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("damageboost"_J, std::make_shared<FloatCommandItem>("damagemultiplier"_J, "倍率", false)));
+		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("fastfire"_J));
+		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("fastfire"_J, std::make_shared<FloatCommandItem>("firerate"_J, "倍率", false)));
+		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("longrange"_J));
+		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("longrange"_J, std::make_shared<FloatCommandItem>("weaponrange"_J, "射程", false)));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("infiniteparachutes"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("ExplosiveAmmo"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<ConditionalItem>("ExplosiveAmmo"_J, std::make_shared<ListCommandItem>("selectedexplosion"_J)));
