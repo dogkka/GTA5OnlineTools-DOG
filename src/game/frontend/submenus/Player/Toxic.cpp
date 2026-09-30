@@ -13,6 +13,7 @@ namespace YimMenu::Submenus
 
 		auto griefing = std::make_shared<Group>("骚扰");
 		griefing->AddItem(std::make_shared<PlayerCommandItem>("ceokick"_J));
+		griefing->AddItem(std::make_shared<PlayerCommandItem>("sendsquad"_J));
 
 		menu->AddItem(damage);
 		menu->AddItem(griefing);
