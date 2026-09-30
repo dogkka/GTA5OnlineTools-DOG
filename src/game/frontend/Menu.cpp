@@ -76,7 +76,10 @@ namespace YimMenu
 			auto fullPath = fontsPath / candidate;
 			if (std::filesystem::exists(fullPath))
 			{
-				io.Fonts->AddFontFromFileTTF(fullPath.string().c_str(), size, &FontCfg, io.Fonts->GetGlyphRangesChineseFull());
+				// NOTE: use the simplified-common range (~2500 glyphs). The full CJK range (20k+ glyphs)
+				// across all five font sets would overflow the ImGui font atlas and corrupt later fonts
+				// (which is why modern themes rendered garbled before).
+				io.Fonts->AddFontFromFileTTF(fullPath.string().c_str(), size, &FontCfg, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 				break;
 			}
 		}
