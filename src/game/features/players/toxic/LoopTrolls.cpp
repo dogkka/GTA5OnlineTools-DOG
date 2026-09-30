@@ -49,6 +49,29 @@ namespace YimMenu::Features
 		}
 	};
 
+	class LoopKill : public LoopedCommand
+	{
+		using LoopedCommand::LoopedCommand;
+
+		int m_Timer = 0;
+
+		virtual void OnTick() override
+		{
+			if (++m_Timer < 120)
+				return;
+
+			m_Timer = 0;
+
+			auto player = Players::GetSelected();
+			if (!player.IsValid() || player.IsLocal())
+				return;
+
+			if (auto ped = player.GetPed(); ped && !ped.IsDead())
+				ped.Kill();
+		}
+	};
+
 	static LoopExplode _LoopExplode{"loopexplode", "循环爆炸", "持续引爆选中的玩家（每 2 秒一次）"};
 	static LoopRagdoll _LoopRagdoll{"loopragdoll", "循环跌倒", "让选中的玩家反复摔倒"};
+	static LoopKill _LoopKill{"loopkill", "循环击杀", "持续击杀选中的玩家（每 2 秒一次）"};
 }

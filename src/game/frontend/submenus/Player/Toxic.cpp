@@ -16,6 +16,7 @@ namespace YimMenu::Submenus
 		griefing->AddItem(std::make_shared<PlayerCommandItem>("sendsquad"_J));
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopexplode"_J));
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopragdoll"_J));
+		griefing->AddItem(std::make_shared<BoolCommandItem>("loopkill"_J));
 
 		menu->AddItem(damage);
 		menu->AddItem(griefing);
