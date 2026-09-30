@@ -36,6 +36,10 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<BoolCommandItem>("allowhatsinvehicles"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("lsccustomsbypass"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("dlcvehicles"_J));
+		misc->AddItem(std::make_shared<BoolCommandItem>("instantbrake"_J));
+		misc->AddItem(std::make_shared<BoolCommandItem>("keepenginerunning"_J));
+		misc->AddItem(std::make_shared<BoolCommandItem>("turnsignals"_J));
+		misc->AddItem(std::make_shared<ConditionalItem>("turnsignals"_J, std::make_shared<ListCommandItem>("turnsignalsmode"_J)));
 
 		main->AddItem(globals);
 		main->AddItem(tools);
