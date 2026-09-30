@@ -9,11 +9,12 @@
 
 ## 二改内容一览
 
-1. **完全离线化**
+1. **离线化（只保留 GitHub 更新检测）**
    - `GTA5Shared/Helper/HttpHelper.cs`：所有 HTTP 请求直接返回空，不再访问任何第三方服务器
    - 移除启动时的"检查公告 + 检查更新"线程
    - 禁用"网络版 YimMenu 下载"和"在线 Lua 下载"入口（点击提示"本版本已离线化"）
    - 移除原项目 2027-04-06 域名过期警告
+   - 新增 **更新检测**：只访问本仓库的 `api.github.com` 接口（失败回退 `releases.atom`），不碰原项目的任何第三方域名
 2. **内置中文菜单 DLL**：`GTA5Shared/Files/YimMenu/NewBase.dll` 替换为自编译的简体中文 YimMenuV2
    （官方源码 + 3769 条中文词典 + 中文字形，SHA256 `1aae7acd8fdd8af3f27f3dd5b8ac1e802fc852c83a04b2a8ecea686b52aa9b8d`）
 3. **内置 FSL V6**：`GTA5Shared/Files/FSL/WINMM.dll`（2026-09-19 hotfix，SHA256 `b02d704b821e0ff499fdbb72b2b56d5e29b389dfd65b8fd6a9ab08126d8d5bfe`）
@@ -22,6 +23,8 @@
 5. **启动弹窗重做**：`Windows/NotificationWindow.xaml` 改为《关于 / 使用说明》（含原作者署名与 DOG）
 6. **新增"联系"按钮**：`Windows/ContactWindow.xaml`，点击显示微信二维码（`Assets/contact_wechat.jpg`）
 7. **品牌**：主窗口标题改为 `GTA5线上小助手-DOG版 <版本号>`
+8. **更新检测（v1.1.0）**：启动自动查一次新版本，"选项"页 / "关于"页也可手动查；
+   发现新版本弹出提示窗口（版本对比、更新内容、打开发布页面、复制下载链接、跳过此版本）
 
 详细文件级改动见 [CHANGES-DOG.md](CHANGES-DOG.md)。
 

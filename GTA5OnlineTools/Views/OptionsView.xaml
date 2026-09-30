@@ -47,6 +47,13 @@
                     <TextBlock
                         Width="100"
                         Margin="5"
+                        Text="线上最新版本" />
+                    <TextBlock x:Name="TextBlock_Latest" Margin="5" Text="未检测" />
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock
+                        Width="100"
+                        Margin="5"
                         Text="最后编译时间" />
                     <TextBlock x:Name="TextBlock_Build" Margin="5" />
                 </DockPanel>
@@ -54,7 +61,50 @@
         </StackPanel>
         <!--  ////////////////////////  -->
         <!--  ////////////////////////  -->
-        <StackPanel />
+        <StackPanel>
+            <ui:LabelIcon Content="软件更新" />
+            <StackPanel Margin="5">
+                <TextBlock
+                    Margin="5"
+                    FontSize="13"
+                    Foreground="Gray"
+                    TextWrapping="Wrap"
+                    Text="点下面的按钮，程序会去我们自己的 GitHub 仓库查一下有没有新版本（只访问 GitHub 官方接口，不会连接任何第三方服务器）。" />
+
+                <StackPanel
+                    Margin="5,12,5,5"
+                    Orientation="Horizontal">
+                    <Button
+                        x:Name="Button_CheckUpdate"
+                        Padding="16,5"
+                        Background="#34A853"
+                        Click="Button_CheckUpdate_Click"
+                        Content="检查更新" />
+                    <TextBlock Margin="14,0,0,0" VerticalAlignment="Center">
+                        <Hyperlink
+                            NavigateUri="https://github.com/dogkka/GTA5OnlineTools-DOG/releases/latest"
+                            RequestNavigate="Hyperlink_RequestNavigate">
+                            打开发布页面
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+
+                <TextBlock
+                    x:Name="TextBlock_UpdateState"
+                    Margin="5,6,5,5"
+                    FontSize="13"
+                    Foreground="Gray"
+                    TextWrapping="Wrap"
+                    Text="状态：未检测" />
+
+                <TextBlock
+                    Margin="5,10,5,5"
+                    FontSize="12"
+                    Foreground="Gray"
+                    TextWrapping="Wrap"
+                    Text="更新方法：下载新的 exe，覆盖掉旧的这个文件就行，配置和存档都保留。启动程序时也会自动检测一次，检测失败不会影响使用。" />
+            </StackPanel>
+        </StackPanel>
     </UniformGrid>
 
 </UserControl>

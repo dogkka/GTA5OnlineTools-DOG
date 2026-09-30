@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
     x:Name="Window_Main"
-    Title="GTA5线上小助手-非官方"
+    Title="GTA5线上小助手-DOG版"
     Width="1100"
     Height="620"
     CaptionHeight="40"
@@ -33,7 +33,7 @@
                     VerticalAlignment="Center"
                     FontSize="18"
                     FontWeight="Bold"
-                    Text="GTA5线上小助手-非官方" />
+                    Text="GTA5线上小助手-DOG版" />
             </StackPanel>
             <!--  /////////////////////////  -->
             <StackPanel

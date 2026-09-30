@@ -99,12 +99,12 @@ public partial class MainWindow
             IsBackground = true
         }.Start();
 
-        // [DOG 离线版] 已移除联网检查公告/更新线程，不再访问任何第三方服务器
-        MainModel.Status = "离线版（不联网）";
+        // [DOG 离线版] 原版的公告线程、云端哈希校验线程已移除，不再访问任何第三方服务器
+        MainModel.Status = "DOG 版 · 已就绪";
 
-        // 首次运行显示使用说明窗口（关于/教程）
-        this.Dispatcher.BeginInvoke(new Action(() =>
+        this.Dispatcher.BeginInvoke(new Action(async () =>
         {
+            // 首次运行显示使用说明窗口（关于/教程）
             try
             {
                 var shown = IniHelper.ReadValue("Dog", "AboutShown");
@@ -115,6 +115,22 @@ public partial class MainWindow
                 }
             }
             catch { }
+
+            // [DOG] 启动时自动检测一次新版本（只访问本二改仓库的 GitHub 接口）
+            // 检测失败、没网都静默忽略，不会打扰用户
+            try
+            {
+                await Task.Delay(1500);
+
+                var result = await UpdateHelper.CheckAndPromptAsync(null, true);
+
+                if (result.State == UpdateCheckState.UpdateAvailable)
+                    MainModel.Status = $"发现新版本 {result.RemoteVersionText}";
+            }
+            catch (Exception ex)
+            {
+                LoggerHelper.Warn($"启动时检查更新失败：{ex.Message}");
+            }
         }));
     }
 

@@ -21,7 +21,8 @@
                 本程序是《GTA5 线上小助手》的离线二次开发版（作者：<Run FontWeight="Bold">DOG</Run>）。
                 内置了自编译的简体中文 YimMenuV2 菜单 DLL 和 FSL V6，
                 可以一键安装 FSL、一键注入中文菜单，并提供配置目录、日志查看、脚本目录等常用工具。
-                本版本<Run FontWeight="Bold">已完全离线化</Run>：不会检查公告、不会检查更新、不会从任何第三方服务器下载文件。
+                本版本<Run FontWeight="Bold">已移除原版的公告服务器与云端校验</Run>，不会从任何第三方服务器下载文件；
+                只保留了向本二改仓库的 GitHub 官方接口查询新版本（“选项”页或“关于”页点“检查更新”）。
             </Paragraph>
 
             <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="19">
@@ -60,6 +61,7 @@
                 · <Run FontWeight="Bold">FSL 安装失败</Run>：先关闭游戏再装；确认游戏目录有写入权限。<LineBreak />
                 · <Run FontWeight="Bold">菜单呼不出来</Run>：确认注入提示成功，游戏内按 INSERT 或 Ctrl+\；可到“配置目录/程序日志”查看输出。<LineBreak />
                 · <Run FontWeight="Bold">游戏更新后菜单失效</Run>：需要等 YimMenu 官方适配新版本后，重新编译内置 DLL（本版本不联网更新）。<LineBreak />
+                · <Run FontWeight="Bold">更新检测失败</Run>：只访问 GitHub 官方接口，被加速器或公司网络拦了就会超时，换个网络或挂代理再点一次即可。<LineBreak />
                 · <Run FontWeight="Bold">其他问题</Run>：点右上角“联系”按钮，扫码加作者微信。
             </Paragraph>
 

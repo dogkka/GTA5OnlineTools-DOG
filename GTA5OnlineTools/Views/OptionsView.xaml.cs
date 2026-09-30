@@ -9,6 +9,11 @@ namespace GTA5OnlineTools.Views;
 /// </summary>
 public partial class OptionsView : UserControl
 {
+    /// <summary>
+    /// 是否正在检查更新，防止连点
+    /// </summary>
+    private bool _updateChecking;
+
     public OptionsView()
     {
         InitializeComponent();
@@ -20,6 +25,35 @@ public partial class OptionsView : UserControl
         TextBlock_Admin.Text = $"{CoreUtil.GetAdminState()}";
         TextBlock_Version.Text = $"{CoreUtil.ClientVersion}";
         TextBlock_Build.Text = $"{CoreUtil.BuildDate}";
+    }
+
+    /// <summary>
+    /// [DOG] 手动检查更新（只访问本二改仓库的 GitHub 接口）
+    /// </summary>
+    private async void Button_CheckUpdate_Click(object sender, RoutedEventArgs e)
+    {
+        if (_updateChecking)
+            return;
+
+        _updateChecking = true;
+        Button_CheckUpdate.IsEnabled = false;
+
+        try
+        {
+            var result = await UpdateHelper.CheckAndPromptAsync(text => TextBlock_UpdateState.Text = $"状态：{text}");
+
+            TextBlock_Latest.Text = result.RemoteVersionText;
+        }
+        catch (Exception ex)
+        {
+            TextBlock_UpdateState.Text = "状态：检查更新失败";
+            NotifierHelper.ShowException(ex);
+        }
+        finally
+        {
+            Button_CheckUpdate.IsEnabled = true;
+            _updateChecking = false;
+        }
     }
 
     /// <summary>

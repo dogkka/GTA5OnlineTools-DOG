@@ -46,7 +46,8 @@
                     <Hyperlink NavigateUri="https://github.com/sch-lda/GTA5OnlineTools" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/sch-lda/GTA5OnlineTools</Hyperlink>
                     ，MIT 许可）。
                     已替换为自编译的简体中文 YimMenuV2 菜单 DLL，并把 FSL 安装改为内置 FSL V6，
-                    同时<Run FontWeight="Bold">完全移除了联网检查公告 / 更新与网络版下载</Run>，不会访问任何第三方服务器。
+                    同时<Run FontWeight="Bold">移除了原版的公告服务器、云端哈希校验与网络版下载</Run>，不会访问任何第三方服务器；
+                    只保留了向本二改仓库的 GitHub 官方接口查询新版本这一项联网功能。
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
                     原作者项目：
@@ -69,6 +70,16 @@
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15" Foreground="#C0392B">
                     提示：本版本已禁用“网络版”和在线 Lua 下载按钮，请一律使用“内嵌版”（内置文件，离线可用）。
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
+                    关于更新
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                    程序启动时会自动查一次新版本，也可以随时点“选项”页或“关于”页的
+                    <Run FontWeight="Bold">检查更新</Run> 按钮手动查。
+                    <LineBreak />
+                    发现新版本后，按提示打开发布页面下载新的 exe，<Run FontWeight="Bold">覆盖掉旧的这个 exe 就行</Run>，
+                    配置和存档都不会丢，也不用重新安装。
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>

@@ -66,15 +66,32 @@
             HorizontalAlignment="Center"
             FontSize="14"
             Foreground="Gray"
-            Text="已内置中文 YimMenuV2 菜单 DLL 与 FSL V6 · 完全离线（不访问第三方服务器）" />
+            Text="已内置中文 YimMenuV2 菜单 DLL 与 FSL V6 · 不访问任何第三方服务器" />
 
-        <Button
-            Margin="0,18,0,0"
-            Padding="18,6"
+        <TextBlock
+            x:Name="TextBlock_AboutVersion"
+            Margin="5,8,5,0"
             HorizontalAlignment="Center"
-            Background="#34A853"
-            Click="Button_About_Click"
-            Content="查看使用说明 / 教程" />
+            FontSize="14"
+            Foreground="Gray"
+            Text="当前版本：" />
+
+        <StackPanel
+            Margin="0,16,0,0"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Padding="18,6"
+                Background="#34A853"
+                Click="Button_About_Click"
+                Content="查看使用说明 / 教程" />
+            <Button
+                x:Name="Button_AboutCheckUpdate"
+                Margin="10,0,0,0"
+                Padding="18,6"
+                Click="Button_CheckUpdate_Click"
+                Content="检查更新" />
+        </StackPanel>
     </StackPanel>
 
 </UserControl>

@@ -1,0 +1,154 @@
+<ui:Window
+    x:Class="GTA5OnlineTools.Windows.UpdateWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    x:Name="Window_Update"
+    Title="发现新版本 - DOG"
+    Width="700"
+    Height="580"
+    ResizeMode="NoResize"
+    Style="{StaticResource SystemWindowStyle}"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+
+    <ui:Window.TitleContent>
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+            <Image
+                Height="20"
+                Margin="5"
+                Source="/Assets/Favicon.ico"
+                Style="{StaticResource ImageStyle_HighQuality}" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="14"
+                FontWeight="Bold"
+                Text="发现新版本 - DOG" />
+        </StackPanel>
+    </ui:Window.TitleContent>
+
+    <Grid Margin="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            x:Name="TextBlock_Title"
+            FontSize="20"
+            FontWeight="Bold"
+            Text="发现新版本" />
+
+        <StackPanel Grid.Row="1" Margin="0,8,0,0">
+            <DockPanel>
+                <TextBlock
+                    Width="80"
+                    FontSize="13"
+                    Foreground="Gray"
+                    Text="当前版本" />
+                <TextBlock x:Name="TextBlock_Local" FontSize="13" />
+            </DockPanel>
+            <DockPanel Margin="0,4,0,0">
+                <TextBlock
+                    Width="80"
+                    FontSize="13"
+                    Foreground="Gray"
+                    Text="最新版本" />
+                <TextBlock
+                    x:Name="TextBlock_Remote"
+                    FontSize="13"
+                    FontWeight="Bold"
+                    Foreground="#34A853" />
+            </DockPanel>
+            <DockPanel Margin="0,4,0,0">
+                <TextBlock
+                    Width="80"
+                    FontSize="13"
+                    Foreground="Gray"
+                    Text="发布时间" />
+                <TextBlock x:Name="TextBlock_Date" FontSize="13" />
+            </DockPanel>
+            <DockPanel Margin="0,4,0,0">
+                <TextBlock
+                    Width="80"
+                    FontSize="13"
+                    Foreground="Gray"
+                    Text="安装包" />
+                <TextBlock
+                    x:Name="TextBlock_Asset"
+                    FontSize="13"
+                    TextWrapping="Wrap" />
+            </DockPanel>
+        </StackPanel>
+
+        <DockPanel Grid.Row="2" Margin="0,12,0,0">
+            <TextBlock
+                DockPanel.Dock="Top"
+                Margin="0,0,0,6"
+                FontSize="14"
+                FontWeight="Bold"
+                Text="更新内容" />
+            <ScrollViewer
+                Padding="8"
+                Background="#FAFAFA"
+                BorderBrush="#DDDDDD"
+                BorderThickness="1"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+                <TextBlock
+                    x:Name="TextBlock_Notes"
+                    FontSize="13"
+                    LineHeight="21"
+                    TextWrapping="Wrap" />
+            </ScrollViewer>
+        </DockPanel>
+
+        <StackPanel Grid.Row="3" Margin="0,12,0,0">
+            <TextBlock
+                FontSize="12"
+                Foreground="#C0392B"
+                TextWrapping="Wrap"
+                Text="更新方法：点“打开发布页面”下载新的 exe，然后覆盖掉你现在用的旧文件即可。程序配置和线上存档不会丢，不用重新安装。" />
+            <TextBlock
+                x:Name="TextBlock_Status"
+                Margin="0,6,0,0"
+                FontSize="12"
+                Foreground="Gray"
+                TextWrapping="Wrap" />
+
+            <StackPanel
+                Margin="0,10,0,0"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button
+                    x:Name="Button_Page"
+                    Padding="18,6"
+                    Background="#34A853"
+                    Click="Button_Page_Click"
+                    Content="打开发布页面" />
+                <Button
+                    x:Name="Button_Copy"
+                    Margin="8,0,0,0"
+                    Padding="18,6"
+                    Click="Button_Copy_Click"
+                    Content="复制下载链接" />
+                <Button
+                    x:Name="Button_Skip"
+                    Margin="8,0,0,0"
+                    Padding="18,6"
+                    Click="Button_Skip_Click"
+                    Content="跳过此版本" />
+                <Button
+                    Margin="8,0,0,0"
+                    Padding="18,6"
+                    Click="Button_Close_Click"
+                    Content="关闭" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+
+</ui:Window>
