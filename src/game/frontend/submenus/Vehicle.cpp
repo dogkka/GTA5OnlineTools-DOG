@@ -130,6 +130,9 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<BoolCommandItem>("bulletprooftyres"_J));
 		misc->AddItem(std::make_shared<StringCommandItem>("platetext"_J));
 		misc->AddItem(std::make_shared<CommandItem>("plateeditor"_J));
+		misc->AddItem(std::make_shared<BoolCommandItem>("disablesiren"_J));
+		misc->AddItem(std::make_shared<BoolCommandItem>("vehicleinvis"_J));
+		misc->AddItem(std::make_shared<BoolCommandItem>("vehiclestrong"_J));
 
 		main->AddItem(globals);
 		main->AddItem(tools);

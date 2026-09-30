@@ -50,6 +50,7 @@ namespace YimMenu::Submenus
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("gravity"_J));
 		otherOpts->AddItem(std::make_shared<ConditionalItem>("gravity"_J, std::make_shared<ListCommandItem>("gravitylevel"_J)));
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("pedrain"_J));
+		otherOpts->AddItem(std::make_shared<CommandItem>("spawntrain"_J));
 
 		main->AddItem(std::move(killPeds));
 		main->AddItem(std::move(deleteOpts));
