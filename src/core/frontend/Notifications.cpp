@@ -63,17 +63,16 @@ namespace YimMenu
 		return false;
 	}
 
-	static void DrawNotification(Notification& notification, int position)
+	static float DrawNotification(Notification& notification, int position, float y_position)
 	{
-		float y_pos = position * 100;
 		float x_pos = 10;
-		ImVec2 cardSize(m_CardSizeX, m_CardSizeY);
 
-		ImGui::SetNextWindowSize(cardSize, ImGuiCond_Always);
-		ImGui::SetNextWindowPos(ImVec2(x_pos + notification.m_AnimationOffset, y_pos + 10), ImGuiCond_Always);
+		// height is auto-fit to the content so multi-line (e.g. Chinese) messages are not clipped
+		ImGui::SetNextWindowSize(ImVec2(m_CardSizeX, 0.f), ImGuiCond_Always);
+		ImGui::SetNextWindowPos(ImVec2(x_pos + notification.m_AnimationOffset, y_position + 10), ImGuiCond_Always);
 
 		std::string windowTitle = std::to_string(position);
-		ImGui::Begin(windowTitle.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoFocusOnAppearing);
+		ImGui::Begin(windowTitle.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_AlwaysAutoResize);
 
 		auto timeElapsed = (float)std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - notification.m_CreatedOn).count();
 
@@ -118,7 +117,9 @@ namespace YimMenu
 				});
 		}
 
+		const float height = ImGui::GetWindowSize().y;
 		ImGui::End();
+		return height;
 	}
 
 	void Notifications::DrawImpl()
@@ -127,10 +128,12 @@ namespace YimMenu
 		{
 			std::lock_guard<std::mutex> lock(m_mutex);
 			int position = 0;
+			float y_cursor = 0.0f;
 
 			for (auto& [id, notification] : m_Notifications)
 			{
-				DrawNotification(notification, position);
+				const float card_height = DrawNotification(notification, position, y_cursor);
+				y_cursor += card_height + 10.0f;
 
 				if (!notification.m_Erasing)
 				{
