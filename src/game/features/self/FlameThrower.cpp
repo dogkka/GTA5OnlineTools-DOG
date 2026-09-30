@@ -21,7 +21,7 @@ namespace YimMenu::Features
 			if (!PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
 				return;
 
-			if (++m_Timer < 4)
+			if (++m_Timer < 6)
 				return;
 
 			m_Timer = 0;

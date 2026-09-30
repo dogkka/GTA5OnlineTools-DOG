@@ -26,6 +26,14 @@ namespace YimMenu::Features
 	    {"vigilante"_J, "义警（蝙蝠车）"},
 	    {"oppressor2"_J, "暴君 MK2"},
 	    {"scramjet"_J, "冲锋号"},
+	    {"phantom"_J, "幻影卡车（擎天柱风）"},
+	    {"gauntlet"_J, "挑战者（大黄蜂风，刷出后改黄色）"},
+	    {"ruiner2"_J, "毁灭者 2000（霹雳游侠）"},
+	    {"thruster"_J, "喷气背包（钢铁侠风）"},
+	    {"stromberg"_J, "斯特龙伯格（水陆两栖）"},
+	    {"turismor"_J, "图里斯莫 R（法拉利风）"},
+	    {"bati"_J, "巴提 801（摩托车）"},
+	    {"nightshark"_J, "夜鲨（装甲越野）"},
 	};
 
 	static std::vector<std::pair<int, const char*>> MakePresetList()

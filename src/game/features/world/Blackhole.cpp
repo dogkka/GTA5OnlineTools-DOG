@@ -33,8 +33,13 @@ namespace YimMenu::Features
 			const float cy = pos.y + cosf(rad) * 12.0f;
 			const float cz = pos.z + 2.0f;
 
+			auto self_vehicle = Self::GetVehicle();
+
 			auto pull = [&](int handle) {
 				if (handle == ped.GetHandle())
+					return;
+
+				if (self_vehicle && handle == self_vehicle.GetHandle())
 					return;
 
 				const auto p    = ENTITY::GET_ENTITY_COORDS(handle, true);
