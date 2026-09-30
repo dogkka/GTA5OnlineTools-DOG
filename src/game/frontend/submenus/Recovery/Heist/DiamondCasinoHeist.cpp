@@ -4,12 +4,12 @@ namespace YimMenu::Submenus
 {
 	std::shared_ptr<TabItem> RenderDiamondCasinoHeistMenu()
 	{
-		auto tab = std::make_shared<TabItem>("Diamond Casino Heist");
+		auto tab = std::make_shared<TabItem>("名钻赌场豪劫");
 
-		auto cuts = std::make_shared<Group>("Heist Cuts", 2);
-		auto setups = std::make_shared<Group>("Heist Setups");
-		auto loots = std::make_shared<Group>("Loots", 2);
-		auto misc = std::make_shared<Group>("Misc", 1);
+		auto cuts = std::make_shared<Group>("抢劫分红", 2);
+		auto setups = std::make_shared<Group>("抢劫设置");
+		auto loots = std::make_shared<Group>("收益", 2);
+		auto misc = std::make_shared<Group>("其他", 1);
 
 		cuts->AddItem(std::make_shared<IntCommandItem>("diamondcasinoheistcut1"_J));
 		cuts->AddItem(std::make_shared<IntCommandItem>("diamondcasinoheistcut3"_J));
@@ -33,8 +33,8 @@ namespace YimMenu::Submenus
 
 		loots->AddItem(std::make_shared<IntCommandItem>("diamondcasinoheistpotentialtake"_J));
 		loots->AddItem(std::make_shared<IntCommandItem>("diamondcasinoheistactualtake"_J));
-		loots->AddItem(std::make_shared<CommandItem>("diamondcasinoheistsetpotentialtake"_J, "Set##potentialtake"));
-		loots->AddItem(std::make_shared<CommandItem>("diamondcasinoheistsetactualtake"_J, "Set##actualtake"));
+		loots->AddItem(std::make_shared<CommandItem>("diamondcasinoheistsetpotentialtake"_J, "设置##potentialtake"));
+		loots->AddItem(std::make_shared<CommandItem>("diamondcasinoheistsetactualtake"_J, "设置##actualtake"));
 
 		misc->AddItem(std::make_shared<CommandItem>("diamondcasinoheistskiphacking"_J));
 		misc->AddItem(std::make_shared<CommandItem>("diamondcasinoheistskipdrilling"_J));

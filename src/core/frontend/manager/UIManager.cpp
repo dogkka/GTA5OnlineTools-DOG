@@ -6,17 +6,17 @@
 namespace YimMenu::Features
 {
 	static const std::vector<std::pair<int, const char*>> g_StyleOptions = {
-		{0, "Classic"},
-		{1, "Modern"},
-		{2, "Modern (Vertical)"},
-	    {3, "Modern (Modular)"},
+		{0, "经典"},
+		{1, "现代"},
+		{2, "现代（纵向）"},
+	    {3, "现代（模块化）"},
 	};
 
 	// Expose as global reference so other code can use it
 	static ListCommand _StyleSelector{
 		"styleselector",
-		"UI Style",
-		"Choose the UI style",
+		"界面样式",
+		"选择要使用的界面样式",
 		g_StyleOptions,
 		0};
 }

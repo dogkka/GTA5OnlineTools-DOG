@@ -1,7 +1,9 @@
 #include "PersonalVehicles.hpp"
 #include "core/backend/FiberPool.hpp"
 #include "core/backend/ScriptMgr.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/Self.hpp"
+#include "game/gta/Vehicle.hpp"
 #include "game/gta/data/VehicleValues.hpp"
 #include "game/gta/Natives.hpp"
 #include "game/gta/ScriptFunction.hpp"
@@ -13,10 +15,73 @@
 #include "types/script/globals/FreemodeGeneral.hpp"
 #include "types/script/globals/g_SavedMPGlobals.hpp"
 
+#include <string_view>
+#include <unordered_map>
+
 #define MAX_GARAGE_NUM 36
 
 namespace YimMenu
 {
+	namespace
+	{
+		using namespace std::literals;
+
+		std::string LocalizeGarageName(std::string_view name)
+		{
+			static const std::unordered_map<std::string_view, std::string_view> translations = {
+			    {"LSIA Hangar 1"sv, "洛圣都国际机场 1 号机库"sv},
+			    {"LSIA Hangar A17"sv, "洛圣都国际机场 A17 机库"sv},
+			    {"Fort Zancudo Hangar A2"sv, "桑库多堡 A2 机库"sv},
+			    {"Fort Zancudo Hangar 3497"sv, "桑库多堡 3497 机库"sv},
+			    {"Fort Zancudo Hangar 3499"sv, "桑库多堡 3499 机库"sv},
+			    {"Grand Senora Desert Facility"sv, "大索诺拉沙漠设施"sv},
+			    {"Route 68 Facility"sv, "68 号公路设施"sv},
+			    {"Sandy Shores Facility"sv, "沙滩海岸设施"sv},
+			    {"Mount Gordo Facility"sv, "戈多山设施"sv},
+			    {"Paleto Bay Facility"sv, "佩立托湾设施"sv},
+			    {"Lago Zancudo Facility"sv, "桑库多湖设施"sv},
+			    {"Zancudo River Facility"sv, "桑库多河设施"sv},
+			    {"Ron Alternates Wind Farm Facility"sv, "罗恩风电场设施"sv},
+			    {"Land Act Reservoir Facility"sv, "土地法案水库设施"sv},
+			    {"Nightclub Service Entrance"sv, "夜总会服务通道入口"sv},
+			    {"Nightclub B1"sv, "夜总会 B1"sv},
+			    {"Nightclub B2"sv, "夜总会 B2"sv},
+			    {"Nightclub B3"sv, "夜总会 B3"sv},
+			    {"Nightclub B4"sv, "夜总会 B4"sv},
+			    {"Arena Workshop"sv, "竞技场工坊"sv},
+			    {"Arena Workshop B1"sv, "竞技场工坊 B1"sv},
+			    {"Arena Workshop B2"sv, "竞技场工坊 B2"sv},
+			    {"Casino Penthouse"sv, "赌场顶层公寓"sv},
+			    {"Arcade"sv, "游戏厅"sv},
+			    {"Auto Shop"sv, "改装铺"sv},
+			    {"Agency"sv, "事务所"sv},
+			    {"Eclipse Blvd Garage B1"sv, "日蚀大道车库 B1"sv},
+			    {"Eclipse Blvd Garage B2"sv, "日蚀大道车库 B2"sv},
+			    {"Eclipse Blvd Garage B3"sv, "日蚀大道车库 B3"sv},
+			    {"Eclipse Blvd Garage B4"sv, "日蚀大道车库 B4"sv},
+			    {"Eclipse Blvd Garage B5"sv, "日蚀大道车库 B5"sv},
+			    {"Basement Level 1"sv, "地下 1 层车库"sv},
+			    {"Basement Level 2"sv, "地下 2 层车库"sv},
+			    {"Basement Level 3"sv, "地下 3 层车库"sv},
+			    {"Basement Level 4"sv, "地下 4 层车库"sv},
+			    {"Basement Level 5"sv, "地下 5 层车库"sv},
+			    {"Bail Office"sv, "保释事务所"sv},
+			    {"Garment Factory"sv, "制衣厂"sv},
+			    {"The Tongva Estate"sv, "通瓦庄园"sv},
+			    {"Richman Villa"sv, "里奇曼别墅"sv},
+			    {"The Vinewood Residence"sv, "好麦坞豪宅"sv},
+			    {"Mobile Operations Center"sv, "机动作战中心"sv},
+			    {"Terrorbyte"sv, "恐霸"sv},
+			    {"Kosatka"sv, "虎鲸潜艇"sv},
+			};
+
+			if (const auto it = translations.find(name); it != translations.end())
+				return std::string(it->second);
+
+			return Localization::Translate(name);
+		}
+	}
+
 	// TO-DO: Use script functions for these instead?
 
 	static int GetPropertyGarageOffset(int property)
@@ -259,7 +324,7 @@ namespace YimMenu
 	{
 		m_Model = m_Data->VehicleModel;
 		m_Plate = m_Data->NumberPlateText;
-		m_Name = std::format("{} ({})##{}", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_Model)), m_Plate, m_Id);
+		m_Name = std::format("{} ({})##{}", Vehicle::GetLocalizedDisplayName(m_Model, false, false), m_Plate, m_Id);
 
 		SetGarage();
 	}
@@ -311,11 +376,11 @@ namespace YimMenu
 						auto staticPropertyString = GetStaticPropertyName(propertyIterator, garageSlotIterator);
 						if (staticPropertyString.empty())
 						{
-							m_Garage = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(ScriptGlobal(1312440).At(propertyStatState, 1951).At(16).As<const char*>());
+							m_Garage = LocalizeGarageName(HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(ScriptGlobal(1312440).At(propertyStatState, 1951).At(16).As<const char*>()));
 						}
 						else
 						{
-							m_Garage = staticPropertyString;
+							m_Garage = LocalizeGarageName(staticPropertyString);
 						}
 						return;
 					}

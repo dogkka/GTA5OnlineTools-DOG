@@ -1,4 +1,6 @@
+#include "ClaimSafeEarnings.hpp"
 #include "core/commands/ListCommand.hpp"
+#include "core/frontend/Notifications.hpp"
 #include "game/backend/Self.hpp"
 #include "game/gta/ScriptGlobal.hpp"
 #include "game/pointers/Pointers.hpp"
@@ -7,84 +9,99 @@
 
 namespace YimMenu::Features
 {
-	enum class eAppVinewoodMenuSafe
+	namespace BusinessSafes
 	{
-		NIGHTCLUB,
-		ARCADE,
-		AGENCY,
-		SALVAGE_YARD,
-		BAIL_OFFICE,
-		GARMENT_FACTORY,
-		HANDS_ON_CAR_WASH
-	};
+		std::optional<BalanceList> GetBalances()
+		{
+			if (!Pointers.IsSessionStarted || !*Pointers.IsSessionStarted)
+				return std::nullopt;
+
+			const auto player = Self::GetPlayer();
+			if (!player.IsValid())
+				return std::nullopt;
+
+			const int playerId = player.GetId();
+			if (playerId < 0 || playerId >= 32)
+				return std::nullopt;
+
+			auto gpbdFm = GPBD_FM::Get();
+			auto gpbdFm2 = GPBD_FM_2::Get();
+			if (!gpbdFm || !gpbdFm2)
+				return std::nullopt;
+
+			const auto& propertyData = gpbdFm->Entries[playerId].PropertyData;
+			return BalanceList{
+			    propertyData.NightclubData.SafeCashValue,
+			    propertyData.ArcadeData.SafeCashValue,
+			    propertyData.FixerHQData.SafeCashValue,
+			    propertyData.SalvageYardData.TotalEarnings,
+			    propertyData.BailShopData.SafeCashValue,
+			    propertyData.HackerDenData.SafeCashValue,
+			    gpbdFm2->Entries[playerId].SYVehSaleData.HOWCData.SafeCashValue,
+			};
+		}
+	}
 
 	static std::vector<std::pair<int, const char*>> businessNames = {
-	    {static_cast<int>(eAppVinewoodMenuSafe::NIGHTCLUB), "Nightclub"},
-	    {static_cast<int>(eAppVinewoodMenuSafe::ARCADE), "Arcade"},
-	    {static_cast<int>(eAppVinewoodMenuSafe::AGENCY), "Agency"},
-	    {static_cast<int>(eAppVinewoodMenuSafe::SALVAGE_YARD), "Salvage Yard"},
-	    {static_cast<int>(eAppVinewoodMenuSafe::BAIL_OFFICE), "Bail Office"},
-	    {static_cast<int>(eAppVinewoodMenuSafe::GARMENT_FACTORY), "Garment Factory"},
-	    {static_cast<int>(eAppVinewoodMenuSafe::HANDS_ON_CAR_WASH), "Hands on Car Wash"}};
+	    {static_cast<int>(BusinessSafes::Business::Nightclub), BusinessSafes::Names[0].data()},
+	    {static_cast<int>(BusinessSafes::Business::Arcade), BusinessSafes::Names[1].data()},
+	    {static_cast<int>(BusinessSafes::Business::Agency), BusinessSafes::Names[2].data()},
+	    {static_cast<int>(BusinessSafes::Business::SalvageYard), BusinessSafes::Names[3].data()},
+	    {static_cast<int>(BusinessSafes::Business::BailOffice), BusinessSafes::Names[4].data()},
+	    {static_cast<int>(BusinessSafes::Business::GarmentFactory), BusinessSafes::Names[5].data()},
+	    {static_cast<int>(BusinessSafes::Business::HandsOnCarWash), BusinessSafes::Names[6].data()},
+	};
 
-	static ListCommand _SelectedBusiness{"businesssafe", "Business", "Business to claim earning from.", businessNames, 0};
+	static ListCommand _SelectedBusiness{"businesssafe", "产业", "要领取保险箱收益的产业。", businessNames, 0};
 
-	class ClaimSafeEarnings : public Command
+	class ClaimSafeEarnings final : public Command
 	{
 		using Command::Command;
 
-		virtual void OnCall() override
+		void OnCall() override
 		{
-			if (!*Pointers.IsSessionStarted)
+			if (!Pointers.IsSessionStarted || !*Pointers.IsSessionStarted)
+			{
+				Notifications::Show("领取产业保险箱收益", "请先进入 GTA 在线模式。", NotificationType::Error);
 				return;
+			}
 
-			switch (static_cast<eAppVinewoodMenuSafe>(_SelectedBusiness.GetState()))
+			const int selected = _SelectedBusiness.GetState();
+			const auto balances = BusinessSafes::GetBalances();
+			if (!balances || selected < 0 || selected >= static_cast<int>(BusinessSafes::Business::Count))
 			{
-			case eAppVinewoodMenuSafe::NIGHTCLUB:
+				Notifications::Show("领取产业保险箱收益", "产业余额当前不可访问。", NotificationType::Error);
+				return;
+			}
+
+			if ((*balances)[selected] <= 0)
 			{
-				if (GPBD_FM::Get()->Entries[Self::GetPlayer().GetId()].PropertyData.NightclubData.SafeCashValue > 0)
-					*ScriptGlobal(2708943).As<BOOL*>() = TRUE;
-				break;
+				Notifications::Show("领取产业保险箱收益", "所选产业的保险箱当前没有可领取收益。", NotificationType::Warning);
+				return;
 			}
-			case eAppVinewoodMenuSafe::ARCADE:
+
+			static constexpr std::array<int, static_cast<std::size_t>(BusinessSafes::Business::Count)> claimGlobals = {
+			    2708943,
+			    2708952,
+			    2708961,
+			    2708970,
+			    2708979,
+			    2708994,
+			    2709001,
+			};
+
+			auto claimRequest = ScriptGlobal(claimGlobals[selected]);
+			if (!claimRequest.CanAccess())
 			{
-				if (GPBD_FM::Get()->Entries[Self::GetPlayer().GetId()].PropertyData.ArcadeData.SafeCashValue > 0)
-					*ScriptGlobal(2708952).As<BOOL*>() = TRUE;
-				break;
+				Notifications::Show("领取产业保险箱收益", "领取请求全局变量当前不可访问。", NotificationType::Error);
+				return;
 			}
-			case eAppVinewoodMenuSafe::AGENCY:
-			{
-				if (GPBD_FM::Get()->Entries[Self::GetPlayer().GetId()].PropertyData.FixerHQData.SafeCashValue > 0)
-					*ScriptGlobal(2708961).As<BOOL*>() = TRUE;
-				break;
-			}
-			case eAppVinewoodMenuSafe::SALVAGE_YARD:
-			{
-				if (GPBD_FM::Get()->Entries[Self::GetPlayer().GetId()].PropertyData.SalvageYardData.TotalEarnings > 0)
-					*ScriptGlobal(2708970).As<BOOL*>() = TRUE;
-				break;
-			}
-			case eAppVinewoodMenuSafe::BAIL_OFFICE:
-			{
-				if (GPBD_FM::Get()->Entries[Self::GetPlayer().GetId()].PropertyData.BailShopData.SafeCashValue > 0)
-					*ScriptGlobal(2708979).As<BOOL*>() = TRUE;
-				break;
-			}
-			case eAppVinewoodMenuSafe::GARMENT_FACTORY:
-			{
-				if (GPBD_FM::Get()->Entries[Self::GetPlayer().GetId()].PropertyData.HackerDenData.SafeCashValue > 0)
-					*ScriptGlobal(2708994).As<BOOL*>() = TRUE;
-				break;
-			}
-			case eAppVinewoodMenuSafe::HANDS_ON_CAR_WASH:
-			{
-				if (GPBD_FM_2::Get()->Entries[Self::GetPlayer().GetId()].SYVehSaleData.HOWCData.SafeCashValue > 0)
-					*ScriptGlobal(2709001).As<BOOL*>() = TRUE;
-				break;
-			}
-			}
+
+			*claimRequest.As<BOOL*>() = TRUE;
+			LOG(INFO) << "已提交 " << BusinessSafes::Names[selected] << " 保险箱收益领取请求，余额=" << (*balances)[selected];
+			Notifications::Show("领取产业保险箱收益", std::format("已提交{}的领取请求。", BusinessSafes::Names[selected]), NotificationType::Success);
 		}
 	};
 
-	static ClaimSafeEarnings _ClaimSafeEarnings{"claimsafeearnings", "Claim Safe Earnings", "Claims your safe earnings from the selected business."};
+	static ClaimSafeEarnings _ClaimSafeEarnings{"claimsafeearnings", "领取产业保险箱收益", "领取所选产业的保险箱收益。"};
 }

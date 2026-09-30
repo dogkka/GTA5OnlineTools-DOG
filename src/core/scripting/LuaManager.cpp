@@ -82,7 +82,10 @@ namespace YimMenu
 
 					if (script->IsMalfunctioning())
 					{
-						Notifications::Show("Lua Scripting", std::format("Script {} has been unloaded due to a malfunction. Check the console for more details", script->GetName()), NotificationType::Warning);
+						Notifications::Show(
+						    "Lua 脚本",
+						    std::format("脚本 {} 因发生故障已被卸载。请查看控制台了解更多详情", script->GetName()),
+						    NotificationType::Warning);
 						unload = true;
 					}
 					else if (script->GetLoadState() == LuaScript::LoadState::WANT_UNLOAD)

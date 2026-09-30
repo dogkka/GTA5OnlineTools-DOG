@@ -2,14 +2,20 @@
 #include "core/backend/FiberPool.hpp"
 #include "core/backend/ScriptMgr.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/Self.hpp"
 #include "game/gta/Object.hpp"
 #include "types/entity/DecalTypes.hpp"
 #include "types/script/Timer.hpp"
 #include "game/gta/RayCast.hpp"
 
-namespace YimMenu::Features
-{
+	namespace YimMenu::Features
+	{
+		static void ShowCustomWeaponNotification(std::string_view message, NotificationType type)
+		{
+			Notifications::Show("自定义武器", Localization::Translate(message), type);
+		}
+
 	void CustomWeapon::OnTick()
 	{
 		bool isCustomWeaponActionAllowed = !_CustomWeaponEnabledOnWeaponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2);
@@ -44,7 +50,7 @@ namespace YimMenu::Features
 							}
 							else
 							{
-								Notifications::Show("Custom Weapon", "Entity is not a ped.", NotificationType::Warning);
+								ShowCustomWeaponNotification("目标实体不是行人。", NotificationType::Warning);
 							}
 						}
 					});
@@ -61,14 +67,14 @@ namespace YimMenu::Features
 					if (RayCast(&m_Entity).Cast())
 					{
 						if (m_Entity.IsPed() && m_Entity.IsPlayer())
-							Notifications::Show("Custom Weapon", "Player entity cannot be deleted.", NotificationType::Warning);
+							ShowCustomWeaponNotification("不能删除玩家实体。", NotificationType::Warning);
 						else
 						{
 							auto location = m_Entity.GetPosition();
 							auto distance = Self::GetPed().GetPosition().GetDistance(location);
 
 							if (distance > 500)
-								Notifications::Show("Custom Weapon", "Entity is too far.", NotificationType::Warning);
+								ShowCustomWeaponNotification("目标实体距离过远。", NotificationType::Warning);
 							else
 								m_Entity.Delete();
 						}
@@ -134,7 +140,7 @@ namespace YimMenu::Features
 
 							if (m_Entity.IsPed() && m_Entity.IsPlayer())
 							{
-								Notifications::Show("Custom Weapon", "Gravity gun cannot be applied on player entity.", NotificationType::Warning);
+								ShowCustomWeaponNotification("重力枪不能作用于玩家实体。", NotificationType::Warning);
 							}
 							else
 							{
@@ -147,7 +153,7 @@ namespace YimMenu::Features
 
 								if (tempDistance > 500)
 								{
-									Notifications::Show("Custom Weapon", "Entity is too far.", NotificationType::Warning);
+									ShowCustomWeaponNotification("目标实体距离过远。", NotificationType::Warning);
 								}
 								else
 								{
@@ -218,7 +224,7 @@ namespace YimMenu::Features
 						}
 						else
 						{
-							Notifications::Show("Custom Weapon", "Invalid vehicle.", NotificationType::Warning);
+							ShowCustomWeaponNotification("无效载具。", NotificationType::Warning);
 						}
 					}
 				}
@@ -239,7 +245,7 @@ namespace YimMenu::Features
 						}
 						else
 						{
-							Notifications::Show("Custom Weapon", "Invalid vehicle.", NotificationType::Warning);
+							ShowCustomWeaponNotification("无效载具。", NotificationType::Warning);
 						}
 					}
 				}
@@ -256,14 +262,14 @@ namespace YimMenu::Features
 				{
 					if (!_VehicleGunModel.GetString().length())
 					{
-						Notifications::Show("Custom Weapon", "No vehicle model name provided.", NotificationType::Error);
+						ShowCustomWeaponNotification("未提供载具模型名称。", NotificationType::Error);
 						return;
 					}
 
 					auto modelHash = Joaat(_VehicleGunModel.GetString());
 					if (!STREAMING::IS_MODEL_IN_CDIMAGE(modelHash))
 					{
-						Notifications::Show("Custom Weapon", "Invalid vehicle model name provided.", NotificationType::Error);
+						ShowCustomWeaponNotification("提供的载具模型名称无效。", NotificationType::Error);
 					}
 					else
 					{

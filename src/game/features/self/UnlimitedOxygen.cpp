@@ -18,5 +18,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static UnlimitedOxygen _UnlimitedOxygen{"unlimitedoxygen", "Unlimited Oxygen", "Allows you to stay underwater without losing oxygen."};
+	static UnlimitedOxygen _UnlimitedOxygen{"unlimitedoxygen", "无限氧气", "让你在水下不会消耗氧气。"};
 }

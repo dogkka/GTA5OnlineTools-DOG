@@ -3,6 +3,7 @@
 #include "core/commands/BoolCommand.hpp"
 #include "core/backend/ScriptMgr.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/Self.hpp"
 #include "game/backend/ScriptPatches.hpp"
 #include "game/backend/Tunables.hpp"
@@ -31,23 +32,28 @@
 
 namespace YimMenu::Features
 {
-	static ListCommand hiddenCacheIndex = {"hiddencacheindex", "Hidden Cache", "Selected Hidden Cache", {{0, "Hidden Cache 1"}, {1, "Hidden Cache 2"}, {2, "Hidden Cache 3"}, {3, "Hidden Cache 4"}, {4, "Hidden Cache 5"}, {5, "Hidden Cache 6"}, {6, "Hidden Cache 7"}, {7, "Hidden Cache 8"}, {8, "Hidden Cache 9"}, {9, "Hidden Cache 10"}}};
+	static void ShowLocalizedNotification(std::string_view title, std::string_view message, NotificationType type = NotificationType::Info)
+	{
+		Notifications::Show(Localization::Translate(title), Localization::Translate(message), type);
+	}
 
-	static ListCommand treasureChestIndex = {"treasurechestindex", "Treasure Chest", "Selected Treasure Chest", {{0, "Treasure Chest 1"}, {1, "Treasure Chest 2"}}};
+	static ListCommand hiddenCacheIndex = {"hiddencacheindex", "隐藏补给箱", "当前隐藏补给箱", {{0, "隐藏补给箱 1"}, {1, "隐藏补给箱 2"}, {2, "隐藏补给箱 3"}, {3, "隐藏补给箱 4"}, {4, "隐藏补给箱 5"}, {5, "隐藏补给箱 6"}, {6, "隐藏补给箱 7"}, {7, "隐藏补给箱 8"}, {8, "隐藏补给箱 9"}, {9, "隐藏补给箱 10"}}};
 
-	static ListCommand buriedStashIndex = {"buriedstashindex", "Buried Stash", "Selected Buried Stash", {{0, "Buried Stash 1"}, {1, "Buried Stash 2"}}};
+	static ListCommand treasureChestIndex = {"treasurechestindex", "宝箱", "当前宝箱", {{0, "宝箱 1"}, {1, "宝箱 2"}}};
 
-	static ListCommand skydiveIndex = {"skydiveindex", "Skydive", "Selected Skydive", {{0, "Skydive 1"}, {1, "Skydive 2"}, {2, "Skydive 3"}, {3, "Skydive 4"}, {4, "Skydive 5"}, {5, "Skydive 6"}, {6, "Skydive 7"}, {7, "Skydive 8"}, {8, "Skydive 9"}, {9, "Skydive 10"}}};
+	static ListCommand buriedStashIndex = {"buriedstashindex", "埋藏战利品", "当前埋藏战利品", {{0, "埋藏战利品 1"}, {1, "埋藏战利品 2"}}};
 
-	static ListCommand timeTrialIndex = {"timetrialindex", "Time Trial", "Selected Time Trial", {{0, "Standard Time Trial"}, {1, "RC Bandito Time Trial"}, {2, "Junk Energy Bike Time Trial"}}};
+	static ListCommand skydiveIndex = {"skydiveindex", "高空跳伞", "当前高空跳伞点", {{0, "高空跳伞 1"}, {1, "高空跳伞 2"}, {2, "高空跳伞 3"}, {3, "高空跳伞 4"}, {4, "高空跳伞 5"}, {5, "高空跳伞 6"}, {6, "高空跳伞 7"}, {7, "高空跳伞 8"}, {8, "高空跳伞 9"}, {9, "高空跳伞 10"}}};
 
-	static ListCommand streetDealerIndex = {"streetdealerindex", "Street Dealer", "Selected Street Dealer", {{0, "Street Dealer 1"}, {1, "Street Dealer 2"}, {2, "Street Dealer 3"}}};
+	static ListCommand timeTrialIndex = {"timetrialindex", "时间挑战赛", "当前时间挑战赛", {{0, "标准时间挑战赛"}, {1, "RC 迷你车时间挑战赛"}, {2, "拉机能量单车时间挑战赛"}}};
 
-	static ListCommand lsTagIndex = {"lstagindex", "LS Tag", "Selected LS Tag", {{0, "LS Tag 1"}, {1, "LS Tag 2"}, {2, "LS Tag 3"}, {3, "LS Tag 4"}, {4, "LS Tag 5"}}};
+	static ListCommand streetDealerIndex = {"streetdealerindex", "街头贩子", "当前街头贩子", {{0, "街头贩子 1"}, {1, "街头贩子 2"}, {2, "街头贩子 3"}}};
 
-	static ListCommand animalIndex = {"animalindex", "Animal", "Selected Animal", {{0, "Animal 1"}, {1, "Animal 2"}, {2, "Animal 3"}}};
+	static ListCommand lsTagIndex = {"lstagindex", "洛圣都涂鸦", "当前洛圣都涂鸦", {{0, "洛圣都涂鸦 1"}, {1, "洛圣都涂鸦 2"}, {2, "洛圣都涂鸦 3"}, {3, "洛圣都涂鸦 4"}, {4, "洛圣都涂鸦 5"}}};
 
-	static ListCommand productIndex = {"productindex", "Product", "Selected Product", {{0, "Product 1"}, {1, "Product 2"}, {2, "Product 3"}, {3, "Product 4"}, {4, "Product 5"}, {5, "Product 6"}, {6, "Product 7"}, {7, "Product 8"}, {8, "Product 9"}, {9, "Product 10"}}};
+	static ListCommand animalIndex = {"animalindex", "动物", "当前动物", {{0, "动物 1"}, {1, "动物 2"}, {2, "动物 3"}}};
+
+	static ListCommand productIndex = {"productindex", "货物", "当前货物", {{0, "货物 1"}, {1, "货物 2"}, {2, "货物 3"}, {3, "货物 4"}, {4, "货物 5"}, {5, "货物 6"}, {6, "货物 7"}, {7, "货物 8"}, {8, "货物 9"}, {9, "货物 10"}}};
 
 	static constexpr auto wildlifePhotographyAnimalHashes = std::to_array({"A_C_Boar"_J, "A_C_Cat_01"_J, "A_C_Cow"_J, "A_C_Coyote"_J, "A_C_Deer"_J, "A_C_Husky"_J, "A_C_MtLion"_J, "A_C_Pig"_J, "A_C_Poodle"_J, "A_C_Pug"_J, "A_C_Rabbit_01"_J, "A_C_Retriever"_J, "A_C_Rottweiler"_J, "A_C_shepherd"_J, "A_C_Westy"_J, "A_C_Chickenhawk"_J, "A_C_Cormorant"_J, "A_C_Crow"_J, "A_C_Hen"_J, "A_C_Seagull"_J});
 
@@ -248,7 +254,7 @@ namespace YimMenu::Features
 				return;
 
 			SetAllDailyActivitiesCompleted(true);
-			Notifications::Show("Daily Activities", "Completed all activities, switch session to apply the changes.");
+			ShowLocalizedNotification("日常活动", "已将全部日常活动标记为完成，请切换战局以应用更改。");
 		}
 	};
 
@@ -262,7 +268,7 @@ namespace YimMenu::Features
 				return;
 
 			SetAllDailyActivitiesCompleted(false);
-			Notifications::Show("Daily Activities", "Reset all activities, switch session to apply the changes.");
+			ShowLocalizedNotification("日常活动", "已重置全部日常活动进度，请切换战局以应用更改。");
 		}
 	};
 
@@ -300,7 +306,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Hidden Caches", "This Hidden Cache has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("隐藏补给箱", "该隐藏补给箱已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -320,7 +326,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Hidden Caches", "This Hidden Cache has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("隐藏补给箱", "该隐藏补给箱已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -340,7 +346,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Treasure Chests", "This Treasure Chest has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("宝箱", "该宝箱已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -360,7 +366,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Treasure Chests", "This Treasure Chest has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("宝箱", "该宝箱已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -404,7 +410,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Shipwreck", "Shipwreck has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("沉船", "沉船奖励已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -424,7 +430,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Shipwreck", "Shipwreck has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("沉船", "沉船奖励已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -444,7 +450,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Buried Stashes", "This Buried Stash has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("埋藏战利品", "该埋藏战利品已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -464,7 +470,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Buried Stashes", "This Buried Stash has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("埋藏战利品", "该埋藏战利品已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -567,7 +573,7 @@ namespace YimMenu::Features
 
 			if (stat.empty() || Stats::GetInt(stat) != -1)
 			{
-				Notifications::Show("Time Trials", "This Time Trial has already been beaten.", NotificationType::Error);
+				ShowLocalizedNotification("时间挑战赛", "该时间挑战赛已经完成过了。", NotificationType::Error);
 				return;
 			}
 
@@ -589,7 +595,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Time Trials", "Please enable the blip from the Interaction Menu.", NotificationType::Error);
+				ShowLocalizedNotification("时间挑战赛", "请先在互动菜单中启用标记。", NotificationType::Error);
 			}
 		}
 	};
@@ -613,7 +619,7 @@ namespace YimMenu::Features
 
 			if (stat.empty() || Stats::GetInt(stat) != -1)
 			{
-				Notifications::Show("Time Trials", "This Time Trial has already been beaten.", NotificationType::Error);
+				ShowLocalizedNotification("时间挑战赛", "该时间挑战赛已经完成过了。", NotificationType::Error);
 				return;
 			}
 
@@ -678,7 +684,7 @@ namespace YimMenu::Features
 
 			if (GPBD_Flow::Get()->Entries[Self::GetPlayer().GetId()].TunerCBVDeliveredFlags.Value == 1023)
 			{
-				Notifications::Show("Exotic Exports", "You have already delivered all the vehicles.", NotificationType::Error);
+				ShowLocalizedNotification("异域出口", "你已经交付了所有载具。", NotificationType::Error);
 				return;
 			}
 
@@ -701,13 +707,13 @@ namespace YimMenu::Features
 
 			if (GPBD_Flow::Get()->Entries[Self::GetPlayer().GetId()].TunerCBVDeliveredFlags.Value == 1023)
 			{
-				Notifications::Show("Exotic Exports", "You have already delivered all the vehicles.", NotificationType::Error);
+				ShowLocalizedNotification("异域出口", "你已经交付了所有载具。", NotificationType::Error);
 				return;
 			}
 
 			/*if (!FreemodeDelivery::Get()->DeliveryCooldown1.HasTimePassed(30000))
 			{
-				Notifications::Show("Exotic Exports", "You have just delivered a vehicle, wait a moment.", NotificationType::Error);
+				ShowLocalizedNotification("异域出口", "你刚刚交付了一辆载具，请稍等片刻。", NotificationType::Error);
 				return;
 			}*/
 
@@ -733,7 +739,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("G's Cache", "G's Cache has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("G 的藏匿点", "G 的藏匿点奖励已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -753,7 +759,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("G's Cache", "G's Cache has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("G 的藏匿点", "G 的藏匿点奖励已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -778,7 +784,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Stash House", "Stash House has already been raided.", NotificationType::Error);
+				ShowLocalizedNotification("藏匿屋", "藏匿屋已经洗劫过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -848,7 +854,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("LS Tags", "This LS Tag has already been sprayed.", NotificationType::Error);
+				ShowLocalizedNotification("洛圣都涂鸦", "该洛圣都涂鸦已经喷涂过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -868,7 +874,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("LS Tags", "This LS Tag has already been sprayed.", NotificationType::Error);
+				ShowLocalizedNotification("洛圣都涂鸦", "该洛圣都涂鸦已经喷涂过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -884,7 +890,7 @@ namespace YimMenu::Features
 
 			if (Stats::GetInt("MPX_BAIL_OFFICE_OWNED") == 0)
 			{
-				Notifications::Show("Madrazo Hits", "You must own a Bail Office.", NotificationType::Error);
+				ShowLocalizedNotification("玛德拉索暗杀", "你必须拥有保释事务所。", NotificationType::Error);
 				return;
 			}
 
@@ -899,7 +905,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Madrazo Hits", "Madrazo Hit has already been completed.", NotificationType::Error);
+				ShowLocalizedNotification("玛德拉索暗杀", "玛德拉索暗杀任务已经完成过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -942,7 +948,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Shoot Animals Photography", "This animal has already been photographed.", NotificationType::Error);
+				ShowLocalizedNotification("野生动物摄影", "这只动物已经拍摄过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -968,7 +974,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Shoot Animals Photography", "This animal has already been photographed.", NotificationType::Error);
+				ShowLocalizedNotification("野生动物摄影", "这只动物已经拍摄过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -984,7 +990,7 @@ namespace YimMenu::Features
 
 			if (Stats::GetInt("MPX_SB_WEED_SHOP_OWNED") == 0)
 			{
-				Notifications::Show("Smoke on the Water", "You must own a Smoke on the Water property.", NotificationType::Error);
+				ShowLocalizedNotification("喷云吐雾馆", "你必须拥有“喷云吐雾馆”产业。", NotificationType::Error);
 				return;
 			}
 
@@ -994,7 +1000,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Smoke on the Water", "This product has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("喷云吐雾馆", "该货物已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -1010,7 +1016,7 @@ namespace YimMenu::Features
 
 			if (Stats::GetInt("MPX_SB_WEED_SHOP_OWNED") == 0)
 			{
-				Notifications::Show("Smoke on the Water", "You must own a Smoke on the Water property.", NotificationType::Error);
+				ShowLocalizedNotification("喷云吐雾馆", "你必须拥有“喷云吐雾馆”产业。", NotificationType::Error);
 				return;
 			}
 
@@ -1020,7 +1026,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Smoke on the Water", "This product has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("喷云吐雾馆", "该货物已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -1040,7 +1046,7 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Golden Clover", "Golden Clover has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("金色四叶草", "金色四叶草已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
@@ -1060,60 +1066,60 @@ namespace YimMenu::Features
 			}
 			else
 			{
-				Notifications::Show("Golden Clover", "Golden Clover has already been collected.", NotificationType::Error);
+				ShowLocalizedNotification("金色四叶草", "金色四叶草已经收集过了。", NotificationType::Error);
 			}
 		}
 	};
 
-	static SetAllActivitiesCompleted _SetAllActivitiesCompleted{"setallactivitiescompleted", "Set All Activities Completed", "Switch session to apply the changes."};
-	static ResetAllActivities _ResetAllActivities{"resetallactivities", "Reset All Activities", "Switch session to apply the changes."};
+	static SetAllActivitiesCompleted _SetAllActivitiesCompleted{"setallactivitiescompleted", "完成全部日常活动", "将全部日常活动标记为已完成；切换战局后生效。"};
+	static ResetAllActivities _ResetAllActivities{"resetallactivities", "重置日常活动进度", "将全部日常活动重置为未完成；切换战局后生效。"};
 
-	static CompleteAllChallenges _CompleteAllChallenges{"completeallchallenges", "Complete All Challenges", "Completes all the Daily Objectives and the Weekly Challenge."};
+	static CompleteAllChallenges _CompleteAllChallenges{"completeallchallenges", "完成每日与每周挑战", "完成全部每日目标和当前每周挑战。"};
 
-	static TeleportToHiddenCache _TeleportToHiddenCache{"tptohiddencache", "Teleport to Hidden Cache", "Teleports to the selected Hidden Cache."};
-	static CollectHiddenCache _CollectHiddenCache{"collecthiddencache", "Collect Hidden Cache", "Collects the selected Hidden Cache."};
+	static TeleportToHiddenCache _TeleportToHiddenCache{"tptohiddencache", "传送到隐藏补给箱", "传送到所选隐藏补给箱。"};
+	static CollectHiddenCache _CollectHiddenCache{"collecthiddencache", "收集隐藏补给箱", "收集所选隐藏补给箱。"};
 
-	static TeleportToTreasureChest _TeleportToTreasureChest{"tptotreasurechest", "Teleport to Treasure Chest", "Teleports to the selected Treasure Chest."};
-	static CollectTreasureChest _CollectTreasureChest{"collecttreasurechest", "Collect Treasure Chest", "Collects the selected Treasure Chest."};
-	static EnableTreasureChestInLS _EnableTreasureChestInLS{"enabletreasurechestinls", "Enable Treasure Chests in LS", "Enables Treasure Chests in Los Santos, so you don't have to go to Cayo Perico."};
+	static TeleportToTreasureChest _TeleportToTreasureChest{"tptotreasurechest", "传送到宝箱", "传送到所选宝箱。"};
+	static CollectTreasureChest _CollectTreasureChest{"collecttreasurechest", "收集宝箱", "收集所选宝箱。"};
+	static EnableTreasureChestInLS _EnableTreasureChestInLS{"enabletreasurechestinls", "在洛圣都启用宝箱", "在洛圣都启用宝箱，这样你就不必前往佩里科岛。"};
 
-	static TeleportToShipwrecked _TeleportToShipwrecked{"tptoshipwrecked", "Teleport to Shipwreck", "Teleports to Shipwreck."};
-	static CollectShipwrecked _CollectShipwrecked{"collectshipwrecked", "Collect Shipwreck", "Collects Shipwreck."};
+	static TeleportToShipwrecked _TeleportToShipwrecked{"tptoshipwrecked", "传送到沉船", "传送到沉船位置。"};
+	static CollectShipwrecked _CollectShipwrecked{"collectshipwrecked", "收集沉船奖励", "收集沉船奖励。"};
 
-	static TeleportToBuriedStash _TeleportToBuriedStash{"tptoburiedstash", "Teleport to Buried Stash", "Teleports to the selected Buried Stash."};
-	static CollectBuriedStash _CollectBuriedStash{"collectburiedstash", "Collect Buried Stash", "Collects the selected Buried Stash."};
-	static EnableBuriedStashInLS _EnableBuriedStashInLS{"enableburiedstashinls", "Enable Buried Stashes in LS", "Enables Buried Stashes in Los Santos, so you don't have to go to Cayo Perico."};
+	static TeleportToBuriedStash _TeleportToBuriedStash{"tptoburiedstash", "传送到埋藏战利品", "传送到所选埋藏战利品。"};
+	static CollectBuriedStash _CollectBuriedStash{"collectburiedstash", "收集埋藏战利品", "收集所选埋藏战利品。"};
+	static EnableBuriedStashInLS _EnableBuriedStashInLS{"enableburiedstashinls", "在洛圣都启用埋藏战利品", "在洛圣都启用埋藏战利品，这样你就不必前往佩里科岛。"};
 
-	static TeleportToSkydive _TeleportToSkydive{"tptoskydive", "Teleport to Skydive", "Teleports to the selected Skydive."};
-	static CompleteSkydive _CompleteSkydive{"completeskydive", "Complete Skydive", "Completes the selected Skydive."};
+	static TeleportToSkydive _TeleportToSkydive{"tptoskydive", "传送到高空跳伞点", "传送到所选高空跳伞点。"};
+	static CompleteSkydive _CompleteSkydive{"completeskydive", "完成高空跳伞", "完成所选高空跳伞。"};
 
-	static TeleportToTimeTrial _TeleportToTimeTrial{"tptotimetrial", "Teleport to Time Trial", "Teleports to the selected Time Trial."};
-	static BeatTimeTrial _BeatTimeTrial{"beattimetrial", "Beat Time Trial", "Completes the selected Time Trial."};
+	static TeleportToTimeTrial _TeleportToTimeTrial{"tptotimetrial", "传送到时间挑战赛", "传送到所选时间挑战赛。"};
+	static BeatTimeTrial _BeatTimeTrial{"beattimetrial", "完成时间挑战赛", "完成所选时间挑战赛。"};
 
-	static TeleportToExoticExportsVehicle _TeleportToExoticExportsVehicle{"tptoexoticexportsvehicle", "Teleport to Exotic Exports Vehicle", "Teleports to the next Exotic Exports vehicle."};
-	static DeliverNextExoticExportsVehicle _DeliverNextExoticExportsVehicle{"delivernextexoticexportsvehicle", "Deliver Next Exotic Exports Vehicle", "Directly delivers the next Exotic Exports vehicle."};
+	static TeleportToExoticExportsVehicle _TeleportToExoticExportsVehicle{"tptoexoticexportsvehicle", "传送到出口珍品载具", "传送到下一辆出口珍品载具。"};
+	static DeliverNextExoticExportsVehicle _DeliverNextExoticExportsVehicle{"delivernextexoticexportsvehicle", "交付下一辆出口珍品载具", "直接交付下一辆出口珍品载具。"};
 
-	static TeleportToDeadDrop _TeleportToDeadDrop{"tptodeaddrop", "Teleport to G's Cache", "Teleports to G's Cache."};
-	static CollectDeadDrop _CollectDeadDrop{"collectdeaddrop", "Collect G's Cache", "Collects G's Cache."};
+	static TeleportToDeadDrop _TeleportToDeadDrop{"tptodeaddrop", "传送到 G 的藏匿点", "传送到 G 的藏匿点。"};
+	static CollectDeadDrop _CollectDeadDrop{"collectdeaddrop", "领取 G 的藏匿点奖励", "直接领取 G 的藏匿点奖励。"};
 
-	static TeleportToStashHouse _TeleportToStashHouse{"tptostashhouse", "Teleport to Stash House", "Teleports to Stash House."};
-	static EnterStashHouseSafeCode _EnterStashHouseSafeCode{"enterstashhousesafecode", "Enter Stash House Safe Code", "Enters the Stash House safe code."};
+	static TeleportToStashHouse _TeleportToStashHouse{"tptostashhouse", "传送到藏匿屋", "传送到藏匿屋。"};
+	static EnterStashHouseSafeCode _EnterStashHouseSafeCode{"enterstashhousesafecode", "输入藏匿屋保险箱密码", "输入藏匿屋保险箱密码。"};
 
-	static TeleportToStreetDealer _TeleportToStreetDealer{"tptostreetdealer", "Teleport to Dealer", "Teleports to the selected Street Dealer."};
-	static _OpenStreetDealerMenu __OpenStreetDealerMenu{"openstreetdealermenu", "Open Street Dealer Menu", "Allows you to access the selected Street Dealer remotely."};
+	static TeleportToStreetDealer _TeleportToStreetDealer{"tptostreetdealer", "传送到街头贩子", "传送到所选街头贩子。"};
+	static _OpenStreetDealerMenu __OpenStreetDealerMenu{"openstreetdealermenu", "远程交易", "远程打开所选街头贩子的交易界面。"};
 
-	static TeleportToLSTag _TeleportToLSTag{"tptolstag", "Teleport to LS Tag", "Teleports to the selected LS Tag."};
-	static SprayLSTag _SprayLSTag{"spraylstag", "Spray LS Tag", "Sprays the selected LS Tag."};
+	static TeleportToLSTag _TeleportToLSTag{"tptolstag", "传送到洛圣都涂鸦", "传送到所选洛圣都涂鸦。"};
+	static SprayLSTag _SprayLSTag{"spraylstag", "喷涂洛圣都涂鸦", "喷涂所选洛圣都涂鸦。"};
 
-	static TeleportToMadrazoHit _TeleportToMadrazoHit{"tptomadrazohit", "Teleport to Madrazo Hit", "Teleports to Madrazo Hit."};
-	static TeleportToMadrazoHitTarget _TeleportToMadrazoHitTarget{"tptomadrazohittarget", "Teleport to Madrazo Hit Target", "Teleports to Madrazo Hit Target."};
+	static TeleportToMadrazoHit _TeleportToMadrazoHit{"tptomadrazohit", "传送到玛德拉索暗杀任务", "传送到玛德拉索暗杀任务地点。"};
+	static TeleportToMadrazoHitTarget _TeleportToMadrazoHitTarget{"tptomadrazohittarget", "传送到玛德拉索暗杀目标", "传送到玛德拉索暗杀目标位置。"};
 
-	static SpawnAnimal _SpawnAnimal{"spawnanimal", "Spawn Animal", "Spawns the selected animal."};
-	static PhotographAnimal _PhotographAnimal{"photographanimal", "Photograph Animal", "Photographs the selected animal."};
+	static SpawnAnimal _SpawnAnimal{"spawnanimal", "生成动物", "生成所选动物。"};
+	static PhotographAnimal _PhotographAnimal{"photographanimal", "拍摄动物", "拍摄所选动物。"};
 
-	static TeleportToProduct _TeleportToProduct{"tptoproduct", "Teleport to Product", "Teleports to the selected product."};
-	static CollectProduct _CollectProduct{"collectproduct", "Collect Product", "Collects the selected product."};
+	static TeleportToProduct _TeleportToProduct{"tptoproduct", "传送到货物", "传送到所选货物。"};
+	static CollectProduct _CollectProduct{"collectproduct", "收集货物", "收集所选货物。"};
 
-	static TeleportToGoldenClover _TeleportToGoldenClover{"tptogoldenclover", "Teleport to Golden Clover", "Teleports to the Golden Clover."};
-	static CollectGoldenClover _CollectGoldenClover{"collectgoldenclover", "Collect Golden Clover", "Collects the Golden Clover."};
+	static TeleportToGoldenClover _TeleportToGoldenClover{"tptogoldenclover", "传送到金色四叶草", "传送到金色四叶草。"};
+	static CollectGoldenClover _CollectGoldenClover{"collectgoldenclover", "收集金色四叶草", "收集金色四叶草。"};
 }

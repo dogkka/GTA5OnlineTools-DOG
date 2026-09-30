@@ -56,10 +56,10 @@ namespace YimMenu
 			    LuaManager::ForAllLoadedScripts([](std::shared_ptr<LuaScript>& script) {
 				    script->GetUserInterface().DrawImGuiCallbacks();
 			    });
-		    },
-		    -4);
-		
-		Renderer::SetSafeToRender();
+			    },
+			    -4);
+
+			Renderer::SetSafeToRender();
 	}
 
 	void GUI::ToggleMouse()

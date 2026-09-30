@@ -1,5 +1,6 @@
 #include "core/commands/Command.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/PersonalVehicles.hpp"
 #include "game/pointers/Pointers.hpp"
 
@@ -23,11 +24,11 @@ namespace YimMenu::Features
 			}
 
 			if (count > 0)
-				Notifications::Show("Fix All Vehicles", std::format("{} vehicles fixed.", count), NotificationType::Success);
+				Notifications::Show(Localization::Translate("修复所有载具"), std::format("已修复 {} 辆载具。", count), NotificationType::Success);
 			else
-				Notifications::Show("Fix All Vehicles", "No vehicles to fix.");
+				Notifications::Show(Localization::Translate("修复所有载具"), Localization::Translate("没有可修复的载具。"));
 		}
 	};
 
-	static FixAllVehicles _FixAllVehicles{"fixallvehicles", "Fix All Vehicles", "Fixes all of your destroyed personal vehicles."};
+	static FixAllVehicles _FixAllVehicles{"fixallvehicles", "修复全部个人载具", "修复所有已损毁的个人载具。"};
 }

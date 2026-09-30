@@ -23,5 +23,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static NoChangeAppearanceCooldown _NoChangeAppearanceCooldown{"nochangeappearancecooldown", "No Change Appearance Cooldown", "Removes the cooldown for changing appearance"};
+	static NoChangeAppearanceCooldown _NoChangeAppearanceCooldown{"nochangeappearancecooldown", "移除外观更改冷却", "移除更改角色外观的冷却时间。"};
 }

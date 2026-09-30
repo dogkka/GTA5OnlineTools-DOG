@@ -9,7 +9,7 @@
 
 namespace YimMenu::Features
 {
-	static FloatCommand _FreecamSpeed{"freecamspeed", "Freecam Speed", "How fast the freecam will move positions", 0.01f, 10.0f, 0.10f};
+	static FloatCommand _FreecamSpeed{"freecamspeed", "自由视角速度", "自由视角移动速度", 0.01f, 10.0f, 0.10f};
 
 	class Freecam : public LoopedCommand
 	{
@@ -143,5 +143,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static Freecam _Freecam{"freecam", "Freecam", "Detaches your camera and allows you to go anywhere!"};
+	static Freecam _Freecam{"freecam", "自由视角", "分离镜头并允许你自由移动到任何地方！"};
 }

@@ -7,7 +7,7 @@
 namespace YimMenu::Features
 {
 	static constexpr ControllerInputs controls[] = {ControllerInputs::INPUT_SPRINT, ControllerInputs::INPUT_MOVE_UP_ONLY, ControllerInputs::INPUT_MOVE_DOWN_ONLY, ControllerInputs::INPUT_MOVE_LEFT_ONLY, ControllerInputs::INPUT_MOVE_RIGHT_ONLY, ControllerInputs::INPUT_DUCK, ControllerInputs::INPUT_VEH_HORN};
-	static FloatCommand _NoclipSpeed{"noclipspeed", "Noclip Speed", "Features", 0.1f, 2.0f, 0.14f};
+	static FloatCommand _NoclipSpeed{"noclipspeed", "穿墙速度", "启用穿墙时的移动速度", 0.1f, 2.0f, 0.14f};
 
 	class Noclip : public LoopedCommand
 	{
@@ -93,5 +93,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static Noclip _NoClip{"noclip", "No Clip", "Allows you to fly through the map"};
+	static Noclip _NoClip{"noclip", "穿墙", "允许你在地图中自由穿行"};
 }

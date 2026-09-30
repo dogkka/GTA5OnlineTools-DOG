@@ -27,5 +27,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static Godmode _Godmode{"godmode", "God Mode", "Blocks all incoming damage"};
+	static Godmode _Godmode{"godmode", "无敌模式", "阻止一切传入伤害"};
 }

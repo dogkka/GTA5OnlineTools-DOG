@@ -20,6 +20,6 @@ namespace YimMenu::Features
 		}
 	};
 
-	static CopsDispatch _CopsDispatch{"CopsDispatch", "Cops Dispatch", "When you are wanted, no police will be spawned."};
+	static CopsDispatch _CopsDispatch{"CopsDispatch", "禁用警察调度", "当你被通缉时，不再生成警察。"};
 
 }

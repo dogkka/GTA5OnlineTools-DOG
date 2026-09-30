@@ -22,5 +22,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static NullFunctionKick _NullFunctionKick{"nfkick", "Null Function Kick", "Kicks the player by forcing them to call a null script function"};
+	static NullFunctionKick _NullFunctionKick{"nfkick", "空函数踢出", "通过强制玩家调用空脚本函数来踢出对方"};
 }

@@ -8,8 +8,8 @@ namespace YimMenu::Features
 {
 	static FloatCommand _MeleeDamageScale{
 	    "meleedamagescale",
-	    "Melee Damage Scale",
-	    "Sets the damage scale for melee",
+	    "近战伤害倍率",
+	    "设置近战伤害倍率",
 	    0.0f,
 	    10.0f,
 	    1.0f};
@@ -100,6 +100,6 @@ namespace YimMenu::Features
 
 	static MeleeDamage _MeleeDamage{
 	    "meleedamage",
-	    "Melee Damage",
-	    "Allows altering your melee damage output"};
+	    "近战伤害",
+	    "允许修改你的近战伤害输出"};
 }

@@ -14,5 +14,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static TeleportToPlayer _TeleportToPlayer{"tptoplayer", "Teleport to Player", "Teleports you to the selected player"};
+	static TeleportToPlayer _TeleportToPlayer{"tptoplayer", "传送到玩家", "将你传送到所选玩家身边"};
 }

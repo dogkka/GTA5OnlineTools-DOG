@@ -17,5 +17,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static GivePlayerAllWeapon _GivePlayerAllWeapon{"giveweapons", "Give Weapons", "Gives all weapons to the player"};
+	static GivePlayerAllWeapon _GivePlayerAllWeapon{"giveweapons", "给玩家全部武器", "为所选玩家添加全部武器。"};
 }

@@ -28,5 +28,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static SendGooch _SendGooch{"sendgooch", "Send Gooch", "Sends the Gooch to the specified player."};
+	static SendGooch _SendGooch{"sendgooch", "派遣古奇", "将古奇派到指定玩家身边。"};
 }

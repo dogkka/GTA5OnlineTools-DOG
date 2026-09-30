@@ -11,6 +11,7 @@
 #include "game/gta/Scripts.hpp"
 #include "game/gta/invoker/Invoker.hpp"
 #include "game/gta/Natives.hpp"
+#include "core/localization/Localization.hpp"
 
 namespace
 {
@@ -33,37 +34,37 @@ namespace
 namespace YimMenu::Features
 {
 	// Players
-	BoolCommand _ESPDrawPlayers("espdrawplayers", "Draw Players", "Should the ESP draw players?");
-	BoolCommand _ESPDrawDeadPlayers("espdrawdeadplayers", "Draw Dead Players", "Should the ESP draw dead players?");
+	BoolCommand _ESPDrawPlayers("espdrawplayers", "绘制玩家", "是否为玩家显示 ESP？");
+	BoolCommand _ESPDrawDeadPlayers("espdrawdeadplayers", "绘制死亡玩家", "是否为已死亡的玩家显示 ESP？");
 
-	BoolCommand _ESPName("espnameplayers", "Show Player Name", "Should the ESP draw player names?");
-	BoolCommand _ESPDistance("espdistanceplayers", "Show Player Distance", "Should the ESP draw player distance?");
-	BoolCommand _ESPSkeleton("espskeletonplayers", "Show Player Skeleton", "Should the ESP draw player skeletons?");
+	BoolCommand _ESPName("espnameplayers", "显示玩家名称", "是否显示玩家名称？");
+	BoolCommand _ESPDistance("espdistanceplayers", "显示玩家距离", "是否显示玩家距离？");
+	BoolCommand _ESPSkeleton("espskeletonplayers", "显示玩家骨骼", "是否显示玩家骨骼？");
 
-	ColorCommand _NameColorPlayers("namecolorplayers", "Player Name Color", "Changes the color of the name ESP for players", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
-	ColorCommand _DistanceColorPlayers("distancecolorplayers", "Player Distance Color", "Changes the color of the distance ESP for players", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
-	ColorCommand _SkeletonColorPlayers("skeletoncolorplayers", "Player Skeleton Color", "Changes the color of the skeleton ESP for players", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
+	ColorCommand _NameColorPlayers("namecolorplayers", "玩家名称颜色", "更改玩家名称 ESP 的颜色。", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
+	ColorCommand _DistanceColorPlayers("distancecolorplayers", "玩家距离颜色", "更改玩家距离 ESP 的颜色。", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
+	ColorCommand _SkeletonColorPlayers("skeletoncolorplayers", "玩家骨骼颜色", "更改玩家骨骼 ESP 的颜色。", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
 
 	// Peds
-	BoolCommand _ESPDrawPeds("espdrawpeds", "Draw Peds", "Should the ESP draw peds?");
-	BoolCommand _ESPDrawDeadPeds("espdrawdeadpeds", "Draw Dead Peds", "Should the ESP draw dead peds?");
+	BoolCommand _ESPDrawPeds("espdrawpeds", "绘制行人", "是否为行人显示 ESP？");
+	BoolCommand _ESPDrawDeadPeds("espdrawdeadpeds", "绘制死亡行人", "是否为已死亡的行人显示 ESP？");
 
-	BoolCommand _ESPModelPeds("espmodelspeds", "Show Ped Model", "Should the ESP draw ped models?");
-	BoolCommand _ESPNetworkInfoPeds("espnetinfopeds", "Show Ped Network Info", "Should the ESP draw network info?");
-	BoolCommand _ESPScriptInfoPeds("espscriptinfopeds", "Show Ped Script Info", "Should the ESP draw script info?");
-	BoolCommand _ESPDistancePeds("espdistancepeds", "Show Ped Distance", "Should the ESP draw distance?");
-	BoolCommand _ESPSkeletonPeds("espskeletonpeds", "Show Ped Skeleton", "Should the ESP draw the skeleton?");
+	BoolCommand _ESPModelPeds("espmodelspeds", "显示行人模型", "是否显示行人模型？");
+	BoolCommand _ESPNetworkInfoPeds("espnetinfopeds", "显示行人网络信息", "是否显示行人的网络信息？");
+	BoolCommand _ESPScriptInfoPeds("espscriptinfopeds", "显示行人脚本信息", "是否显示行人的脚本信息？");
+	BoolCommand _ESPDistancePeds("espdistancepeds", "显示行人距离", "是否显示行人距离？");
+	BoolCommand _ESPSkeletonPeds("espskeletonpeds", "显示行人骨骼", "是否显示行人骨骼？");
 
-	ColorCommand _HashColorPeds("hashcolorpeds", "Ped Hash Color", "Changes the color of the hash ESP for peds", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
-	ColorCommand _SkeletonColorPeds("skeletoncolorpeds", "Ped Skeleton Color", "Changes the color of the skeleton ESP for peds", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
+	ColorCommand _HashColorPeds("hashcolorpeds", "行人哈希颜色", "更改行人哈希 ESP 的颜色。", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
+	ColorCommand _SkeletonColorPeds("skeletoncolorpeds", "行人骨骼颜色", "更改行人骨骼 ESP 的颜色。", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
 
 	// Objects
-	BoolCommand _ESPDrawObjects("espdrawobjects", "Draw Special Objects", "Should the ESP draw special objects?");
-	BoolCommand _ESPNetworkInfoObjects("espnetinfoobjects", "Show Object Network Info", "Should the ESP draw network info?");
-	BoolCommand _ESPScriptInfoObjects("espscriptinfoobjects", "Show Object Script Info", "Should the ESP draw script info?");
-	BoolCommand _ESPDistanceObjects("espdistanceobjects", "Show Object Distance", "Should the ESP draw distance?");
+	BoolCommand _ESPDrawObjects("espdrawobjects", "绘制特殊物体", "是否为特殊物体显示 ESP？");
+	BoolCommand _ESPNetworkInfoObjects("espnetinfoobjects", "显示物体网络信息", "是否显示物体的网络信息？");
+	BoolCommand _ESPScriptInfoObjects("espscriptinfoobjects", "显示物体脚本信息", "是否显示物体的脚本信息？");
+	BoolCommand _ESPDistanceObjects("espdistanceobjects", "显示物体距离", "是否显示物体距离？");
 
-	ColorCommand _HashColorObjects("hashcolorobjects", "Object Hash Color", "Changes the color of the hash ESP for objects", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
+	ColorCommand _HashColorObjects("hashcolorobjects", "物体哈希颜色", "更改物体哈希 ESP 的颜色。", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
 }
 
 namespace YimMenu
@@ -301,16 +302,16 @@ namespace YimMenu
 		if (is_camera)
 		{
 			color = Red;
-			info += " (Camera)";
+			info += std::format(" ({})", YimMenu::Localization::Translate("Camera"));
 		}
 		else if (is_signal_jammer)
 		{
 			color = Red;
-			info += " (Jammer)";
+			info += std::format(" ({})", YimMenu::Localization::Translate("Jammer"));
 		}
 		else if (is_mission_object)
 		{
-			info += " (Mission)";
+			info += std::format(" ({})", YimMenu::Localization::Translate("Mission Object"));
 		}
 
 		if (auto screenPos = worldToScreen(coords))

@@ -18,7 +18,7 @@ namespace YimMenu
 	// thanks to https://github.com/DurtyFree/gta-v-data-dumps
 	const IPLLibrary IPLs[] = {
 	    {
-	        "North Yankton",
+	        "北扬克顿",
 	        {3211.42, -4836.89, 111.81},
 	        {{"prologue01"}, {"prologue01c"}, {"prologue01d"}, {"prologue01e"}, {"prologue01f"}, {"prologue01g"}, {"prologue01h"}, {"prologue01i"}, {"prologue01j"}, {"prologue01k"}, {"prologue01z"}, {"prologue02"}, {"prologue03"}, {"prologue03_grv_cov"}, {"prologue03_grv_dug"}, {"prologue03_grv_fun"}, {"prologue03b"}, {"prologue_grv_torch"}, {"des_protree_end"}, {"des_protree_start"}, {"prologue04"}, {"prologue04_cover"}, {"prologue04b"}, {"prologue05"}, {"prologue05b"}, {"prologue06"}, {"prologue06_int"}, {"prologue06_pannel"}, {"prologue06b"}, {"prologue_m2_door"}, {"prologue_occl"}, {"prologuerd"}, {"prologuerdb"}},
 	        {{""}},
@@ -34,56 +34,56 @@ namespace YimMenu
 	    //},
 
 	    {
-	        "Dignity Party Yacht",
+	        "尊荣号派对游艇",
 	        {-2045.8, -1031.2, 11.9},
 	        {{"smboat"}, {"apa_smboat_lodlights"}, {"ba_sm_boat_window"}},
 	        {{""}},
 	        {{""}},
 	    },
 	    {
-	        "Aircraft Carrier",
+	        "航空母舰",
 	        {3069.33, -4632.4, 15.04},
 	        {{"hei_carrier_lodlights"}, {"hei_carrier"}, {"hei_carrier_int1"}, {"hei_carrier_int2"}, {"hei_carrier_int3"}, {"hei_carrier_int4"}, {"hei_carrier_int5"}, {"hei_carrier_int6"}},
 	        {{""}},
 	        {{""}},
 	    },
 	    {
-	        "Sunken Cargo Ship",
+	        "沉没货船",
 	        {-162.89, -2365.76, 0.0},
 	        {{"sunk_ship_fire"}, {"sunkcargoship"}},
 	        {{"cargoship"}},
 	        {{"cargoship"}},
 	    },
 	    {
-	        "Destroyed Pillbox Hospital",
+	        "被摧毁的中心医院",
 	        {297.84, -584.41, 43.26},
 	        {{"rc12b_hospitalinterior"}},
 	        {{"rc12b_default"}},
 	        {{"rc12b_default"}},
 	    },
 	    {
-	        "O'Neil Farm Destroyed",
+	        "被摧毁的奥尼尔农场",
 	        {2471.49, 4954.18, 45.12},
 	        {{"farm_burnt"}, {"farm_burnt_props"}},
 	        {{"farm"}, {"farmint"}, {"farmint_cap"}, {"farm_props"}, {"des_farmhs_startimap"}},
 	        {{"farm"}, {"farmint"}, {"farmint_cap"}, {"farm_props"}, {"des_farmhs_startimap"}},
 	    },
 	    {
-	        "LifeInvader Interior",
+	        "生活入侵者公司内部",
 	        {-1082.77, -258.67, 37.76},
 	        {{"facelobby"}},
 	        {{"facelobbyfake"}},
 	        {{"facelobbyfake"}},
 	    },
 	    {
-	        "Jewelry Store Interior",
+	        "珠宝店内部",
 	        {-630.4, -236.7, 40.0},
 	        {{"post_hiest_unload"}},
 	        {{"jewel2fake"}},
 	        {{"jewel2fake"}, {"bh1_16_refurb"}},
 	    },
 	    {
-	        "Coroner Morgue Interior",
+	        "验尸官停尸房内部",
 	        {244.9, -1374.7, 39.5},
 	        {{"coroner_int_on"}, {"coronertrash"}},
 	        {{"coroner_int_off"}},

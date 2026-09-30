@@ -13,5 +13,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static SkipCutscene _SkipCutscene{"skipcutscene", "Skip Cutscene", "Skips any currently playing cutscene"};
+	static SkipCutscene _SkipCutscene{"skipcutscene", "跳过过场动画", "跳过当前正在播放的过场动画"};
 }

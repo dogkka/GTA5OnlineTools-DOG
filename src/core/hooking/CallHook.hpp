@@ -11,18 +11,18 @@ namespace YimMenu
 			return instance;
 		}
 
-		void* AllocateJumpSequenceImpl(void* func);
+		void* AllocateJumpSequenceImpl(void* func, void* location);
 		void DestroyImpl();
 
 		PointerCalculator m_Memory;
-		int m_Offset;
+		std::size_t m_Offset;
 
 	public:
 		CallHookMemory();
 
-		static void* AllocateJumpSequence(void* func)
+		static void* AllocateJumpSequence(void* func, void* location)
 		{
-			return GetInstance().AllocateJumpSequenceImpl(func);
+			return GetInstance().AllocateJumpSequenceImpl(func, location);
 		}
 
 		static void Destroy()

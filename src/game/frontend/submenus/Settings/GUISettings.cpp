@@ -3,7 +3,10 @@
 #include "core/commands/Command.hpp"
 #include "core/commands/FloatCommand.hpp"
 #include "core/frontend/manager/styles/Themes.hpp"
+#include "core/localization/Localization.hpp"
+#include <format>
 #include <regex>
+#include <sstream>
 
 namespace YimMenu
 {
@@ -24,10 +27,17 @@ namespace YimMenu
 	static std::string PrettyPrintLabel(const std::string& raw)
 	{
 		std::string out = raw;
+		std::string suffix;
 		if (out.size() > 2 && out.compare(out.size() - 2, 2, "_X") == 0)
-			out.replace(out.size() - 2, 2, " Horizontal");
+		{
+			out.erase(out.size() - 2, 2);
+			suffix = "水平";
+		}
 		else if (out.size() > 2 && out.compare(out.size() - 2, 2, "_Y") == 0)
-			out.replace(out.size() - 2, 2, " Vertical");
+		{
+			out.erase(out.size() - 2, 2);
+			suffix = "垂直";
+		}
 
 		std::string spaced;
 		spaced.reserve(out.size() + 10);
@@ -41,7 +51,25 @@ namespace YimMenu
 		std::regex uscore_re("_");
 		spaced = std::regex_replace(spaced, uscore_re, " ");
 
-		return spaced;
+		auto translated = Localization::Translate(spaced);
+		if (translated == spaced)
+		{
+			std::istringstream stream(spaced);
+			std::string token;
+			std::string fallback;
+			while (stream >> token)
+			{
+				if (!fallback.empty())
+					fallback.push_back(' ');
+				fallback.append(Localization::Translate(token));
+			}
+			translated = fallback;
+		}
+
+		if (!suffix.empty())
+			translated.append(" ").append(suffix);
+
+		return translated;
 	}
 
 	void SyncColorCommandsToStyle()
@@ -145,11 +173,14 @@ namespace YimMenu
 			return;
 		auto& style = ImGui::GetStyle();
 		for (int i = 0; i < ImGuiCol_COUNT; ++i)
+		{
+			const auto colorName = PrettyPrintLabel(ImGui::GetStyleColorName(i));
 			g_ColorCommands.emplace_back(std::make_unique<ColorCommand>(
 			    "ColorCommand." + std::string(ImGui::GetStyleColorName(i)),
 			    ImGui::GetStyleColorName(i),
-			    "Edit color for " + std::string(ImGui::GetStyleColorName(i)),
+			    std::format("编辑颜色：{}", colorName),
 			    style.Colors[i]));
+		}
 
 		if (!g_RoundingInit)
 		{
@@ -177,9 +208,9 @@ namespace YimMenu
 
 		// Use global float commands map
 		if (!g_FloatCommands.count(nameX))
-			g_FloatCommands[nameX] = std::make_unique<FloatCommand>(nameX.c_str(), nameX.c_str(), "Adjust " + nameX, min, max, x);
+			g_FloatCommands[nameX] = std::make_unique<FloatCommand>(nameX.c_str(), nameX.c_str(), std::format("调整 {}", PrettyPrintLabel(nameX)), min, max, x);
 		if (!g_FloatCommands.count(nameY))
-			g_FloatCommands[nameY] = std::make_unique<FloatCommand>(nameY.c_str(), nameY.c_str(), "Adjust " + nameY, min, max, y);
+			g_FloatCommands[nameY] = std::make_unique<FloatCommand>(nameY.c_str(), nameY.c_str(), std::format("调整 {}", PrettyPrintLabel(nameY)), min, max, y);
 
 		float newX = g_FloatCommands[nameX]->GetState();
 		float newY = g_FloatCommands[nameY]->GetState();
@@ -203,7 +234,13 @@ namespace YimMenu
 		std::string name(label);
 
 		if (!g_FloatCommands.count(name))
-			g_FloatCommands[name] = std::make_unique<FloatCommand>(name.c_str(), name.c_str(), "Adjust " + name, min, max, v);
+			g_FloatCommands[name] = std::make_unique<FloatCommand>(
+			    name.c_str(),
+			    name.c_str(),
+			    std::format("调整 {}", PrettyPrintLabel(name)),
+			    min,
+			    max,
+			    v);
 
 		float newVal = g_FloatCommands[name]->GetState();
 		if (ImGui::SliderFloat(PrettyPrintLabel(name).c_str(), &newVal, min, max, "%.1f"))
@@ -217,7 +254,7 @@ namespace YimMenu
 	static void DrawColorsTab()
 	{
 		bool changed = false;
-		ImGui::Text("Modify Colors:");
+		ImGui::Text("%s", "调整颜色：");
 		ImGui::Separator();
 		for (int i = 0; i < ImGuiCol_COUNT; ++i)
 		{
@@ -240,7 +277,7 @@ namespace YimMenu
 	static void DrawRoundingTab()
 	{
 		bool changed = false;
-		ImGui::Text("Adjust Rounding:");
+		ImGui::Text("%s", "调整圆角：");
 		ImGui::Separator();
 		for (auto& [k, v] : g_RoundingValues)
 			if (ImGui::SliderFloat(PrettyPrintLabel(k).c_str(), &v, 0.0f, 20.0f, "%.1f"))
@@ -256,7 +293,7 @@ namespace YimMenu
 	static void DrawLayoutTab()
 	{
 		auto& s = ImGui::GetStyle();
-		ImGui::Text("Layout & Alignment:");
+		ImGui::Text("%s", "布局与对齐：");
 		ImGui::Separator();
 		DrawStyleVec2("WindowPadding", s.WindowPadding.x, s.WindowPadding.y, 0.f, 32.f);
 		DrawStyleVec2("ItemSpacing", s.ItemSpacing.x, s.ItemSpacing.y, 0.f, 32.f);
@@ -275,7 +312,7 @@ namespace YimMenu
 	static void DrawBorderTab()
 	{
 		auto& s = ImGui::GetStyle();
-		ImGui::Text("Border Sizes:");
+		ImGui::Text("%s", "边框尺寸：");
 		ImGui::Separator();
 		DrawStyleFloat("WindowBorderSize", s.WindowBorderSize, 0.f, 8.f);
 		DrawStyleFloat("FrameBorderSize", s.FrameBorderSize, 0.f, 8.f);
@@ -286,7 +323,7 @@ namespace YimMenu
 	static void DrawGlobalTab()
 	{
 		auto& s = ImGui::GetStyle();
-		ImGui::Text("Global Settings:");
+		ImGui::Text("%s", "全局设置：");
 		ImGui::Separator();
 		DrawStyleFloat("GlobalAlpha", s.Alpha, 0.1f, 1.f);
 		DrawStyleFloat("DisabledAlpha", s.DisabledAlpha, 0.f, 1.f);
@@ -298,49 +335,49 @@ namespace YimMenu
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		static float scale = io.FontGlobalScale;
-		ImGui::Text("Font Configuration:");
+		ImGui::Text("%s", "字体配置：");
 		ImGui::Separator();
-		ImGui::Text("Current Scale: %.2f", io.FontGlobalScale);
-		ImGui::SliderFloat("Font Scale", &scale, 0.5f, 2.0f, "%.2f");
-		if (ImGui::Button("Apply Font Scale"))
+		ImGui::Text("当前缩放：%.2f", io.FontGlobalScale);
+		ImGui::SliderFloat("字体缩放", &scale, 0.5f, 2.0f, "%.2f");
+		if (ImGui::Button("应用字体缩放"))
 			io.FontGlobalScale = scale;
 	}
 
 	std::shared_ptr<Category> DrawGUISettingsMenu()
 	{
 		InitializeColorCommands();
-		auto imGuiCustomStyle = std::make_shared<Category>("Customize");
+		auto imGuiCustomStyle = std::make_shared<Category>("自定义");
 		imGuiCustomStyle->AddItem(std::make_unique<ImGuiItem>([] {
-			ImGui::Text("ImGui Style Editor");
+			ImGui::Text("%s", "ImGui 样式编辑器");
 			ImGui::Separator();
 			if (ImGui::BeginTabBar("StyleTabs"))
 			{
-				if (ImGui::BeginTabItem("Colors"))
+				if (ImGui::BeginTabItem("颜色"))
 				{
 					DrawColorsTab();
 					ImGui::EndTabItem();
 				}
-				if (ImGui::BeginTabItem("Rounding"))
+				if (ImGui::BeginTabItem("圆角"))
 				{
 					DrawRoundingTab();
 					ImGui::EndTabItem();
 				}
-				if (ImGui::BeginTabItem("Layout"))
+				if (ImGui::BeginTabItem("布局"))
 				{
 					DrawLayoutTab();
 					ImGui::EndTabItem();
 				}
-				if (ImGui::BeginTabItem("Border"))
+				if (ImGui::BeginTabItem("边框"))
 				{
 					DrawBorderTab();
 					ImGui::EndTabItem();
 				}
-				if (ImGui::BeginTabItem("Global"))
+				if (ImGui::BeginTabItem("全局"))
 				{
 					DrawGlobalTab();
 					ImGui::EndTabItem();
 				}
-				if (ImGui::BeginTabItem("Fonts"))
+				if (ImGui::BeginTabItem("字体"))
 				{
 					DrawFontTab();
 					ImGui::EndTabItem();

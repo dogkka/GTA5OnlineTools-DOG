@@ -1,12 +1,12 @@
+#include "VehicleDeliveryCooldown.hpp"
 #include "core/commands/Command.hpp"
 #include "core/backend/ScriptMgr.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/Self.hpp"
 #include "game/gta/Scripts.hpp"
 #include "game/gta/ScriptLocal.hpp"
-#include "game/gta/ScriptGlobal.hpp"
 #include "game/pointers/Pointers.hpp"
-#include "types/script/Timer.hpp"
 
 namespace YimMenu::Features
 {
@@ -18,7 +18,7 @@ namespace YimMenu::Features
 		{
 			if (!*Pointers.IsSessionStarted || Scripts::IsScriptActive("AM_CONTACT_REQUESTS"_J))
 			{
-				Notifications::Show("Mechanic", "Not safe to call the mechanic at the moment.", NotificationType::Error);
+				Notifications::Show("技工", "当前不适合呼叫技工。", NotificationType::Error);
 				return;
 			}
 
@@ -36,16 +36,17 @@ namespace YimMenu::Features
 					if (auto thread = Scripts::FindScriptThreadByID(id))
 					{
 						*ScriptLocal(thread, 535).As<int*>() = 1;
-						ScriptGlobal(2686124).At(4373).At(260).At(7, 2).As<TIMER*>()->Destroy();
+						if (!ResetVehicleDeliveryCooldown())
+							Notifications::Show("技工", "载具配送冷却变量当前不可访问。", NotificationType::Warning);
 					}
 				}
 				else
 				{
-					Notifications::Show("Mechanic", "Failed to call the mechanic.", NotificationType::Error);
+					Notifications::Show("技工", "呼叫技工失败。", NotificationType::Error);
 				}
 			}
 		}
 	};
 
-	static CallMechanic _CallMechanic{"callmechanic", "Call Mechanic", "Allows you to request your personal vehicles."};
+	static CallMechanic _CallMechanic{"callmechanic", "呼叫技工", "打开技工的个人载具选择界面。"};
 }

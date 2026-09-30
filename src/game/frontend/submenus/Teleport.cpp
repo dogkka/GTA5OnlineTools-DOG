@@ -2,12 +2,25 @@
 
 #include "core/frontend/Notifications.hpp"
 #include "core/backend/FiberPool.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/SavedLocations.hpp"
 #include "game/backend/Self.hpp"
 #include "game/frontend/items/Items.hpp"
 
 namespace YimMenu::Submenus
 {
+	namespace
+	{
+		std::string NormalizeSavedLocationCategory(std::string_view category)
+		{
+			const auto localizedDefault = Localization::Translate("Default");
+			if (category.empty() || category == localizedDefault)
+				return "Default";
+
+			return std::string(category);
+		}
+	}
+
 	static float GetDistanceFromLocation(const SavedLocation& t)
 	{
 		return rage::fvector3(t.x, t.y, t.z).GetDistance(Self::GetPed().GetPosition());
@@ -17,7 +30,7 @@ namespace YimMenu::Submenus
 	{
 		ImGui::BeginGroup();
 		static std::string newLocationName{};
-		static std::string category = "Default";
+		static std::string category = Localization::Translate("Default");
 		static SavedLocation locationToDelete;
 
 		if (!std::string(locationToDelete.name).empty())
@@ -25,18 +38,18 @@ namespace YimMenu::Submenus
 
 		if (ImGui::BeginPopupModal("##deletelocation", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
 		{
-			ImGui::Text("Are you sure you want to delete %s?", locationToDelete.name.data());
+			ImGui::Text("确定要删除 %s 吗？", locationToDelete.name.data());
 
 			ImGui::Spacing();
 
-			if (ImGui::Button("Yes"))
+			if (ImGui::Button("是"))
 			{
-				SavedLocations::DeleteSavedLocation(category, locationToDelete.name);
+				SavedLocations::DeleteSavedLocation(NormalizeSavedLocationCategory(category), locationToDelete.name);
 				locationToDelete.name = "";
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::SameLine();
-			if (ImGui::Button("No"))
+			if (ImGui::Button("否"))
 			{
 				locationToDelete.name = "";
 				ImGui::CloseCurrentPopup();
@@ -46,22 +59,22 @@ namespace YimMenu::Submenus
 		}
 
 		ImGui::PushItemWidth(300);
-		InputTextWithHint("Category", "Category", &category).Draw();
+		InputTextWithHint("分类", "分类", &category).Draw();
 
 		ImGui::PushItemWidth(200);
-		InputTextWithHint("Location Name", "New location", &newLocationName).Draw();
+		InputTextWithHint("地点名称", "新地点", &newLocationName).Draw();
 		ImGui::PopItemWidth();
 
-		if (ImGui::Button("Save Current Location")) // Button widget still crashes
+		if (ImGui::Button("保存当前位置")) // Button widget still crashes
 		{
 			FiberPool::Push([=] {
 				if (newLocationName.empty())
 				{
-					Notifications::Show("Custom Teleport", "Please enter a valid name", NotificationType::Warning);
+					Notifications::Show("自定义传送", "请输入有效名称", NotificationType::Warning);
 				}
 				else if (SavedLocations::GetSavedLocationByName(newLocationName))
 				{
-					Notifications::Show("Custom Teleport", std::format("Location with name {} already exists", newLocationName));
+					Notifications::Show("自定义传送", std::format("名为 {} 的地点已存在", newLocationName));
 				}
 				else
 				{
@@ -78,7 +91,7 @@ namespace YimMenu::Submenus
 					teleportLocation.yaw = teleportEntity.GetHeading();
 					teleportLocation.pitch = 0.0f; // why do we need pitch and roll anyway?
 					teleportLocation.roll = 0.0f;
-					SavedLocations::SaveNewLocation(category, teleportLocation);
+					SavedLocations::SaveNewLocation(NormalizeSavedLocationCategory(category), teleportLocation);
 				}
 			});
 		};
@@ -86,27 +99,28 @@ namespace YimMenu::Submenus
 
 		ImGui::Separator();
 
-		ImGui::Text("Double click to teleport\nShift click to delete");
+		ImGui::Text("%s", "双击可传送\n按住 Shift 点击可删除");
 
 		ImGui::Spacing();
 
 		static std::string filter{};
-		InputTextWithHint("##filter", "Search", &filter).Draw();
+		InputTextWithHint("##filter", "搜索", &filter).Draw();
 
 		ImGui::BeginGroup();
-		ImGui::Text("Categories");
+		ImGui::Text("%s", "分类");
 		if (ImGui::BeginListBox("##categories", {200, -1}))
 		{
 			for (auto& l : SavedLocations::GetAllSavedLocations() | std::ranges::views::keys)
 			{
-				if (ImGui::Selectable(l.data(), l == category))
+				const auto translatedCategory = Localization::Translate(l);
+				if (ImGui::Selectable(translatedCategory.c_str(), l == NormalizeSavedLocationCategory(category)))
 				{
-					category = l;
+					category = translatedCategory;
 				}
 
 				if (category.empty())
 				{
-					category = l;
+					category = translatedCategory;
 				}
 			}
 			ImGui::EndListBox();
@@ -114,17 +128,18 @@ namespace YimMenu::Submenus
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
-		ImGui::Text("Locations");
+		ImGui::Text("%s", "地点");
 		if (ImGui::BeginListBox("##saved_locs", {200, -1})) // Need automatic dimensions instead of hard coded
 		{
-			if (SavedLocations::GetAllSavedLocations().find(category) != SavedLocations::GetAllSavedLocations().end())
+			const auto categoryKey = NormalizeSavedLocationCategory(category);
+			if (SavedLocations::GetAllSavedLocations().find(categoryKey) != SavedLocations::GetAllSavedLocations().end())
 			{
 				std::vector<SavedLocation> current_list{};
 
 				if (!filter.empty())
 					current_list = SavedLocations::SavedLocationsFilteredList(filter);
 				else
-					current_list = SavedLocations::GetAllSavedLocations().at(category);
+					current_list = SavedLocations::GetAllSavedLocations().at(categoryKey);
 
 				for (const auto& l : current_list)
 				{
@@ -151,7 +166,7 @@ namespace YimMenu::Submenus
 						ImGui::BeginTooltip();
 						if (l.name.length() > 27)
 							ImGui::Text("%s", l.name.data());
-						ImGui::Text("Distance: %f", GetDistanceFromLocation(l));
+						ImGui::Text("距离：%f", GetDistanceFromLocation(l));
 						ImGui::EndTooltip();
 					}
 				}
@@ -191,10 +206,10 @@ namespace YimMenu::Submenus
 
 	Teleport::Teleport() :
 		#define ICON_FA_TELEPORT "\xef\x8f\x85"
-	    Submenu::Submenu("Teleport", ICON_FA_TELEPORT)
+	    Submenu::Submenu("传送", ICON_FA_TELEPORT)
 	{
-		auto main = std::make_shared<Category>("Main");
-		auto miscGroup = std::make_shared<Group>("Misc");
+		auto main = std::make_shared<Category>("基础");
+		auto miscGroup = std::make_shared<Group>("杂项");
 
 		miscGroup->AddItem(std::make_shared<ConditionalItem>("autotptowaypoint"_J, std::make_shared<CommandItem>("tptowaypoint"_J), true));
 		miscGroup->AddItem(std::make_shared<BoolCommandItem>("autotptowaypoint"_J));
@@ -205,7 +220,7 @@ namespace YimMenu::Submenus
 
 		main->AddItem(miscGroup);
 
-		auto customteleport = std::make_shared<Category>("Saved");
+		auto customteleport = std::make_shared<Category>("已保存");
 		customteleport->AddItem(std::make_shared<ImGuiItem>([] {
 			RenderCustomTeleport();
 		}));

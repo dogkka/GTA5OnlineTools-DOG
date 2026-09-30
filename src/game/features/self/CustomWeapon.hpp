@@ -38,22 +38,22 @@ namespace YimMenu::Features
 	};
 
 	static std::vector<std::pair<int, const char*>> g_CustomWeaponTypes = {
-		{static_cast<int>(CustomWeapons::CAGE_GUN), "Cage Gun"},
-		{static_cast<int>(CustomWeapons::DELETE_GUN), "Delete Gun"},
-		{static_cast<int>(CustomWeapons::GRAVITY_GUN), "Gravity Gun"},
-		{static_cast<int>(CustomWeapons::STEAL_VEHICLE_GUN), "Steal Vehicle Gun"},
-		{static_cast<int>(CustomWeapons::REPAIR_GUN), "Repair Gun"},
-		{static_cast<int>(CustomWeapons::VEHICLE_GUN), "Vehicle Gun"},
-		{static_cast<int>(CustomWeapons::TELEPORT_GUN), "Teleport Gun"},
-		{static_cast<int>(CustomWeapons::PAINT_GUN), "Paint Gun"},
+		{static_cast<int>(CustomWeapons::CAGE_GUN), "笼子枪"},
+		{static_cast<int>(CustomWeapons::DELETE_GUN), "删除枪"},
+		{static_cast<int>(CustomWeapons::GRAVITY_GUN), "重力枪"},
+		{static_cast<int>(CustomWeapons::STEAL_VEHICLE_GUN), "偷车枪"},
+		{static_cast<int>(CustomWeapons::REPAIR_GUN), "修理枪"},
+		{static_cast<int>(CustomWeapons::VEHICLE_GUN), "载具枪"},
+		{static_cast<int>(CustomWeapons::TELEPORT_GUN), "传送枪"},
+		{static_cast<int>(CustomWeapons::PAINT_GUN), "喷漆枪"},
 	};
-	static ListCommand _CustomWeaponType{"customweapontype", "Weapon Type", "The type of custom weapon to use", g_CustomWeaponTypes, static_cast<int>(CustomWeapons::CAGE_GUN)};
+	static ListCommand _CustomWeaponType{"customweapontype", "武器类型", "要使用的自定义武器类型", g_CustomWeaponTypes, static_cast<int>(CustomWeapons::CAGE_GUN)};
 
 	static std::vector<std::pair<int, const char*>> g_PaintGunRainbowColorStyles = {
-		{static_cast<int>(RainbowColorStyle::Fade), "Fade"},
-		{static_cast<int>(RainbowColorStyle::Spasm), "Spasm"}
+		{static_cast<int>(RainbowColorStyle::Fade), "渐变"},
+		{static_cast<int>(RainbowColorStyle::Spasm), "闪变"}
 	};
-	static ListCommand _PaintGunRainbowColorStyle{"paintgunrainbowcolorstyle", "Rainbow Color Style", "Style of rainbow color for paint gun", g_PaintGunRainbowColorStyles, static_cast<int>(RainbowColorStyle::Fade)};
+	static ListCommand _PaintGunRainbowColorStyle{"paintgunrainbowcolorstyle", "彩虹颜色样式", "喷漆枪彩虹颜色的变化样式", g_PaintGunRainbowColorStyles, static_cast<int>(RainbowColorStyle::Fade)};
 
 	class CustomWeapon : public LoopedCommand
 	{
@@ -62,11 +62,11 @@ namespace YimMenu::Features
 		virtual void OnTick() override;
 	};
 
-	static CustomWeapon _CustomWeapon{"customweapon", "Custom Weapon", "Modifies weapon ability"};
-	static BoolCommand _CustomWeaponEnabledOnWeaponOut{"customweaponenabledonweaponout", "Enable Only if Weapon is Out", "Enables custom weapon only when weapon is out", true};
-	static BoolCommand _GravityGunLaunchOnRelease{"gravitygunlaunchonrelease", "Launch Entity on Release", "Launches entity when released", false};
-	static StringCommand _VehicleGunModel{"vehiclegunmodel", "Vehicle Model", "Model of the vehicle"};
-	static ColorCommand _PaintGunColor{"paintguncolor", "Paint Gun Color", "Color of the paint gun"};
-	static BoolCommand _PaintGunRainbowColorEnabled{"paintgunrainbowcolorenabled", "Rainbow Color", "Enables rainbow color for paint gun", false};
-	static IntCommand _PaintGunRainbowColorSpeed{"paintgunrainbowcolorspeed", "Rainbow Color Speed", "Speed of rainbow color for paint gun", 1, 10, 1};
+	static CustomWeapon _CustomWeapon{"customweapon", "自定义武器", "修改武器能力"};
+	static BoolCommand _CustomWeaponEnabledOnWeaponOut{"customweaponenabledonweaponout", "仅在持枪时启用", "仅在武器拿出时启用自定义武器", true};
+	static BoolCommand _GravityGunLaunchOnRelease{"gravitygunlaunchonrelease", "松手时发射实体", "在释放实体时将其发射出去", false};
+	static StringCommand _VehicleGunModel{"vehiclegunmodel", "载具模型", "载具的模型名称"};
+	static ColorCommand _PaintGunColor{"paintguncolor", "喷漆枪颜色", "喷漆枪使用的颜色"};
+	static BoolCommand _PaintGunRainbowColorEnabled{"paintgunrainbowcolorenabled", "彩虹颜色", "为喷漆枪启用彩虹颜色", false};
+	static IntCommand _PaintGunRainbowColorSpeed{"paintgunrainbowcolorspeed", "彩虹颜色速度", "喷漆枪彩虹颜色的变化速度", 1, 10, 1};
 }

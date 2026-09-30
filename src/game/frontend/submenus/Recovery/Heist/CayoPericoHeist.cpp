@@ -4,12 +4,12 @@ namespace YimMenu::Submenus
 {
 	std::shared_ptr<TabItem> RenderCayoPericoHeistMenu()
 	{
-		auto tab = std::make_shared<TabItem>("Cayo Perico Heist");
+		auto tab = std::make_shared<TabItem>("佩里科岛抢劫");
 
-		auto cuts = std::make_shared<Group>("Heist Cuts", 2);
-		auto setups = std::make_shared<Group>("Heist Setups");
-		auto loots = std::make_shared<Group>("Loots", 2);
-		auto misc = std::make_shared<Group>("Misc", 1);
+		auto cuts = std::make_shared<Group>("抢劫分红", 2);
+		auto setups = std::make_shared<Group>("抢劫设置");
+		auto loots = std::make_shared<Group>("收益", 2);
+		auto misc = std::make_shared<Group>("其他", 1);
 
 		cuts->AddItem(std::make_shared<IntCommandItem>("cayopericoheistcut1"_J));
 		cuts->AddItem(std::make_shared<IntCommandItem>("cayopericoheistcut3"_J));
@@ -25,8 +25,8 @@ namespace YimMenu::Submenus
 
 		loots->AddItem(std::make_shared<IntCommandItem>("cayopericoheistprimarytargetvalue"_J));
 		loots->AddItem(std::make_shared<IntCommandItem>("cayopericoheistsecondarytakevalue"_J));
-		loots->AddItem(std::make_shared<CommandItem>("cayopericoheistsetprimarytargetvalue"_J, "Set##primarytargetvalue"));
-		loots->AddItem(std::make_shared<CommandItem>("cayopericoheistsetsecondarytakevalue"_J, "Set##secondarytakevalue"));
+		loots->AddItem(std::make_shared<CommandItem>("cayopericoheistsetprimarytargetvalue"_J, "设置##primarytargetvalue"));
+		loots->AddItem(std::make_shared<CommandItem>("cayopericoheistsetsecondarytakevalue"_J, "设置##secondarytakevalue"));
 
 		misc->AddItem(std::make_shared<CommandItem>("cayopericoheistskiphacking"_J));
 		misc->AddItem(std::make_shared<CommandItem>("cayopericoheistcutsewer"_J));

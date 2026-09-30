@@ -30,5 +30,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static ForceThunder _ForceThunder{"forcethunder", "Force Thunder", "Forces the weather to thunder for all players in the session"};
+	static ForceThunder _ForceThunder{"forcethunder", "强制雷雨", "强制当前战局所有玩家的天气变为雷雨"};
 }

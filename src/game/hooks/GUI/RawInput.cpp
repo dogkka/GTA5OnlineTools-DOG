@@ -8,17 +8,12 @@ namespace YimMenu::Hooks
 	{
 		auto result = BaseHook::Get<RawInput::GetRawInputData, DetourHook<decltype(&RawInput::GetRawInputData)>>()->Original()(hRawInput, uiCommand, pData, pcbSize, cbSizeHeader);
 
-		if (result > 0 && pData && uiCommand == RID_INPUT)
+		constexpr auto failure = static_cast<UINT>(-1);
+		if (result != failure && result > 0 && pData && uiCommand == RID_INPUT && Renderer::IsInitialized() && ImGui::GetCurrentContext() && ImGui::GetIO().WantCaptureMouse)
 		{
-			if (Renderer::IsInitialized() && ImGui::GetIO().WantCaptureMouse)
-			{
-				auto& raw = *(RAWINPUT*)pData;
-				if (raw.header.dwType == RIM_TYPEMOUSE && raw.data.mouse.usButtonFlags)
-				{
-					// Zero out button flags to prevent game from seeing clicks while menu is open
-					raw.data.mouse.usButtonFlags = 0;
-				}
-			}
+			auto& raw = *static_cast<RAWINPUT*>(pData);
+			if (raw.header.dwType == RIM_TYPEMOUSE)
+				raw.data.mouse.usButtonFlags = 0;
 		}
 
 		return result;

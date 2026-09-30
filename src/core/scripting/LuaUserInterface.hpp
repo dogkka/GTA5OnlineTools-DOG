@@ -106,7 +106,7 @@ namespace YimMenu
 
 		void AddImGuiCallback(int func_ref);
 		void AddAlwaysDrawImGuiCallback(int func_ref);
-		
+
 		void DrawImGuiCallbacks();
 		void DrawAlwaysDrawImGuiCallbacks();
 

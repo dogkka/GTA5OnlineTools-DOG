@@ -127,7 +127,7 @@ namespace YimMenu
 	{
 		if (!m_Script)
 			return;
-			
+
 		std::vector<int> refs;
 		{
 			std::lock_guard lock(m_Script->GetExecutionLock());

@@ -1,4 +1,5 @@
 #include "Submenu.hpp"
+#include "core/localization/Localization.hpp"
 
 namespace YimMenu
 {
@@ -37,7 +38,8 @@ namespace YimMenu
 				if (!active)
 					ImGui::PushStyleColor(ImGuiCol_Button, color);
 
-				if (ImGui::Button(category->m_Name.data(), ImVec2(category->GetLength(), 35)))
+				const auto translatedName = Localization::Translate(category->m_Name);
+				if (ImGui::Button(translatedName.c_str(), ImVec2(category->GetLength(), 35)))
 				{
 					SetActiveCategory(category);
 				}

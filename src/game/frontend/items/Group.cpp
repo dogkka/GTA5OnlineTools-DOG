@@ -2,6 +2,7 @@
 #include "core/commands/Command.hpp"
 #include "core/commands/Commands.hpp"
 #include "core/backend/FiberPool.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/frontend/Menu.hpp"
 
 namespace YimMenu
@@ -17,7 +18,8 @@ namespace YimMenu
 		if (!m_Name.empty())
 		{
 			ImGui::PushFont(Menu::Font::g_ChildTitleFont);
-			ImGui::Text("%s", m_Name.c_str());
+			const auto translatedName = Localization::Translate(m_Name);
+			ImGui::Text("%s", translatedName.c_str());
 			ImGui::PopFont();
 			ImGui::Separator();
 			ImGui::Spacing();

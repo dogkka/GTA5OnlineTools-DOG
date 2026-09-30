@@ -10,6 +10,7 @@
 #include "core/backend/ScriptMgr.hpp"
 #include "game/backend/NodeHooks.hpp"
 #include "game/backend/Players.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/gta/Vehicle.hpp"
 #include "types/network/sync/nodes/vehicle/CVehicleProximityMigrationDataNode.hpp"
 #include "game/backend/Self.hpp"
@@ -56,7 +57,8 @@ namespace YimMenu
 	{
 		if (!IsValid())
 		{
-			return "Invalid";
+			static const std::string invalidName = Localization::Translate("Invalid");
+			return invalidName.c_str();
 		}
 
 		return m_Handle->GetName();

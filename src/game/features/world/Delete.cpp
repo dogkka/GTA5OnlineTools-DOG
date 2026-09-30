@@ -59,8 +59,8 @@ namespace YimMenu::Features
 		}
 	};
 
-	static DeleteAllCameras _DeleteAllCameras("delcams", "Delete All Cameras", "Deletes all cameras");
-	static DeleteAllObjects _DeleteAllObjects{"delobjs", "Delete All Objects", "Deletes all objects in the game world, including mission critical objects"};
-	static DeleteAllPeds _DeleteAllPeds{"delpeds", "Delete All Peds", "Deletes all peds in the game world, including mission critical peds"};
-	static DeleteAllVehs _DeleteAllVehs{"delvehs", "Delete All Vehicles", "Deletes all vehicles in the game world, including mission critical vehicles"};
+	static DeleteAllCameras _DeleteAllCameras("delcams", "删除全部摄像头", "删除所有摄像头");
+	static DeleteAllObjects _DeleteAllObjects{"delobjs", "删除全部物体", "删除游戏世界中的全部物体，包括任务关键物体"};
+	static DeleteAllPeds _DeleteAllPeds{"delpeds", "删除全部行人", "删除游戏世界中的全部行人，包括任务关键行人"};
+	static DeleteAllVehs _DeleteAllVehs{"delvehs", "删除全部载具", "删除游戏世界中的全部载具，包括任务关键载具"};
 }

@@ -1,276 +1,337 @@
 #include "OutfitEditor.hpp"
+
+#include "core/backend/FiberPool.hpp"
+#include "core/frontend/Notifications.hpp"
+#include "core/util/Strings.hpp"
+#include "game/backend/Outfit.hpp"
+#include "game/backend/Self.hpp"
 #include "game/frontend/items/Items.hpp"
 #include "core/backend/FiberPool.hpp"
 #include "game/backend/Outfit.hpp"
 #include "core/frontend/Notifications.hpp"
 #include "game/backend/Self.hpp"
 #include "game/gta/Natives.hpp"
-#include "core/util/Strings.hpp"
+
 #include "misc/cpp/imgui_stdlib.h"
+
+#include <algorithm>
+#include <cctype>
+#include <mutex>
 
 namespace YimMenu
 {
-	class OutfitEditorMenu
+	class OutfitEditorMenu final
 	{
-		Outfit::OutfitComponents components{};
-		Outfit::OutfitProps props{};
-		std::vector<std::string> folders{}, files{};
-		std::string folder{}, file{};
-		char outfitName[64]{}, newFolder[50]{};
+		Outfit::OutfitComponents m_Components{};
+		Outfit::OutfitProps m_Props{};
+		std::vector<std::string> m_Folders{};
+		std::vector<std::string> m_Files{};
+		std::string m_Folder{};
+		std::string m_File{};
+		char m_OutfitName[64]{};
+		char m_NewFolder[50]{};
+		bool m_ApplyHair = false;
+		bool m_Initialized = false;
+		std::mutex m_Mutex;
 
-	public:
-		// refreshes the outfit editor data to current ped outfit
 		void RefreshStats()
 		{
-			auto ped = Self::GetPed().GetHandle();
-			for (auto& t : components.items)
+			auto self = Self::GetPed();
+			if (!self)
+				return;
+
+			Outfit::OutfitComponents components;
+			Outfit::OutfitProps props;
+			const auto ped = self.GetHandle();
+
+			for (auto& [id, item] : components.items)
 			{
-				auto& item = t.second;
-				item.drawable_id = PED::GET_PED_DRAWABLE_VARIATION(ped, t.first);
-				item.drawable_id_max = PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(ped, t.first) - 1;
-				item.texture_id = PED::GET_PED_TEXTURE_VARIATION(ped, t.first);
-				item.texture_id_max = PED::GET_NUMBER_OF_PED_TEXTURE_VARIATIONS(ped, t.first, item.drawable_id) - 1;
+				item.drawableId = PED::GET_PED_DRAWABLE_VARIATION(ped, id);
+				item.maxDrawableId = std::max(0, PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(ped, id) - 1);
+				item.textureId = PED::GET_PED_TEXTURE_VARIATION(ped, id);
+				item.maxTextureId = std::max(0, PED::GET_NUMBER_OF_PED_TEXTURE_VARIATIONS(ped, id, item.drawableId) - 1);
 			}
 
-			for (auto& t : props.items)
+			for (auto& [id, item] : props.items)
 			{
-				auto& item = t.second;
-				item.drawable_id = PED::GET_PED_PROP_INDEX(ped, t.first, 0);
-				item.drawable_id_max = PED::GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS(ped, t.first) - 1;
-				item.texture_id = PED::GET_PED_PROP_TEXTURE_INDEX(ped, t.first);
-				item.texture_id_max = PED::GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS(ped, t.first, item.drawable_id) - 1;
+				item.drawableId = PED::GET_PED_PROP_INDEX(ped, id, 0);
+				item.maxDrawableId = std::max(0, PED::GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS(ped, id) - 1);
+				item.textureId = item.drawableId < 0 ? 0 : PED::GET_PED_PROP_TEXTURE_INDEX(ped, id);
+				item.maxTextureId = item.drawableId < 0 ? 0 : std::max(0, PED::GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS(ped, id, item.drawableId) - 1);
 			}
+
+			std::scoped_lock lock(m_Mutex);
+			m_Components = std::move(components);
+			m_Props = std::move(props);
+		}
+
+		void RefreshFiles(const std::string& selectedFolder)
+		{
+			std::vector<std::string> folders;
+			std::vector<std::string> files;
+			if (!Outfit::OutfitEditor::RefreshList(selectedFolder, folders, files))
+				return;
+
+			std::scoped_lock lock(m_Mutex);
+			m_Folders = std::move(folders);
+			if (m_Folder == selectedFolder)
+				m_Files = std::move(files);
+		}
+
+		void EnsureInitialized()
+		{
+			if (m_Initialized)
+				return;
+
+			m_Initialized = true;
+			FiberPool::Push([this] {
+				RefreshStats();
+				RefreshFiles({});
+			});
 		}
 
 		void RenderComponents()
 		{
-			ImGui::BeginGroup();
-			for (auto& t : components.items)
+			std::scoped_lock lock(m_Mutex);
+			ImGui::TextUnformatted("服装组件");
+			for (auto& [id, item] : m_Components.items)
 			{
-				auto& item = t.second;
-				ImGui::SetNextItemWidth(120);
-				if (ImGui::InputInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
+				ImGui::PushID(id);
+				ImGui::TextUnformatted(item.label.c_str());
+				ImGui::SameLine(68.0f);
+				ImGui::SetNextItemWidth(105.0f);
+				if (ImGui::InputInt("##模型", &item.drawableId))
 				{
 					Outfit::OutfitEditor::CheckBoundsDrawable(item, 0);
-					FiberPool::Push([id = t.first, item, this] {
-						PED::SET_PED_COMPONENT_VARIATION(Self::GetPed().GetHandle(), id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(Self::GetPed().GetHandle(), id));
+					item.textureId = 0;
+					const auto selected = item;
+					FiberPool::Push([this, id, selected] {
+						auto self = Self::GetPed();
+						if (self)
+							PED::SET_PED_COMPONENT_VARIATION(self.GetHandle(), id, selected.drawableId, 0, PED::GET_PED_PALETTE_VARIATION(self.GetHandle(), id));
 						RefreshStats();
 					});
 				}
-			}
-			ImGui::EndGroup();
-		}
-
-		void RenderComponentsTextures()
-		{
-			ImGui::BeginGroup();
-			for (auto& t : components.items)
-			{
-				auto& item = t.second;
-				ImGui::SetNextItemWidth(120);
-				if (ImGui::InputInt(std::format("{} TEX [0,{}]##2", item.label, item.texture_id_max).c_str(), &item.texture_id))
+				ImGui::SameLine();
+				ImGui::SetNextItemWidth(105.0f);
+				if (ImGui::InputInt("##纹理", &item.textureId))
 				{
 					Outfit::OutfitEditor::CheckBoundsTexture(item, 0);
-					FiberPool::Push([id = t.first, item, this] {
-						PED::SET_PED_COMPONENT_VARIATION(Self::GetPed().GetHandle(), id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(Self::GetPed().GetHandle(), id));
+					const auto selected = item;
+					FiberPool::Push([this, id, selected] {
+						auto self = Self::GetPed();
+						if (self)
+							PED::SET_PED_COMPONENT_VARIATION(self.GetHandle(), id, selected.drawableId, selected.textureId, PED::GET_PED_PALETTE_VARIATION(self.GetHandle(), id));
 						RefreshStats();
 					});
 				}
+				ImGui::PopID();
 			}
-			ImGui::EndGroup();
 		}
 
 		void RenderProps()
 		{
-			for (auto& t : props.items)
+			std::scoped_lock lock(m_Mutex);
+			ImGui::TextUnformatted("配件");
+			for (auto& [id, item] : m_Props.items)
 			{
-				auto& item = t.second;
-				ImGui::SetNextItemWidth(120);
-				if (ImGui::InputInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
+				ImGui::PushID(id + 100);
+				ImGui::TextUnformatted(item.label.c_str());
+				ImGui::SameLine(68.0f);
+				ImGui::SetNextItemWidth(105.0f);
+				if (ImGui::InputInt("##模型", &item.drawableId))
 				{
 					Outfit::OutfitEditor::CheckBoundsDrawable(item, -1);
-					FiberPool::Push([id = t.first, item, this] {
-						if (item.drawable_id == -1)
-							PED::CLEAR_PED_PROP(Self::GetPed().GetHandle(), id, 1);
-						else
-							PED::SET_PED_PROP_INDEX(Self::GetPed().GetHandle(), id, item.drawable_id, 0, TRUE, 0);
+					item.textureId = 0;
+					const auto selected = item;
+					FiberPool::Push([this, id, selected] {
+						auto self = Self::GetPed();
+						if (self && selected.drawableId < 0)
+							PED::CLEAR_PED_PROP(self.GetHandle(), id, 1);
+						else if (self)
+							PED::SET_PED_PROP_INDEX(self.GetHandle(), id, selected.drawableId, 0, TRUE, 0);
 						RefreshStats();
 					});
 				}
-			}
-		}
-
-		void RenderPropsTextures()
-		{
-			for (auto& t : props.items)
-			{
-				auto& item = t.second;
-				ImGui::SetNextItemWidth(120);
-				if (ImGui::InputInt(std::format("{} TEX [0,{}]##4", item.label, item.texture_id_max).c_str(), &item.texture_id))
+				ImGui::SameLine();
+				ImGui::SetNextItemWidth(105.0f);
+				if (ImGui::InputInt("##纹理", &item.textureId))
 				{
-					Outfit::OutfitEditor::CheckBoundsTexture(item, -1);
-					FiberPool::Push([id = t.first, item, this] {
-						PED::SET_PED_PROP_INDEX(Self::GetPed().GetHandle(), id, item.drawable_id, item.texture_id, TRUE, 0);
+					Outfit::OutfitEditor::CheckBoundsTexture(item, 0);
+					const auto selected = item;
+					FiberPool::Push([this, id, selected] {
+						auto self = Self::GetPed();
+						if (self && selected.drawableId >= 0)
+							PED::SET_PED_PROP_INDEX(self.GetHandle(), id, selected.drawableId, selected.textureId, TRUE, 0);
 						RefreshStats();
 					});
 				}
+				ImGui::PopID();
 			}
 		}
 
-		void RenderOutfitList()
+		void RenderSavedOutfits()
 		{
-			ImGui::BeginGroup();
+			std::scoped_lock lock(m_Mutex);
+
+			ImGui::SetNextItemWidth(300.0f);
+			if (ImGui::BeginCombo("文件夹", m_Folder.empty() ? "根目录" : m_Folder.c_str()))
 			{
-				// folders
-				ImGui::SetNextItemWidth(300.f);
-				if (ImGui::BeginCombo("", folder.empty() ? "Root" : folder.c_str()))
+				if (ImGui::Selectable("根目录", m_Folder.empty()))
 				{
-					if (ImGui::Selectable("Root", folder == ""))
+					m_Folder.clear();
+					m_File.clear();
+					FiberPool::Push([this] {
+						RefreshFiles({});
+					});
+				}
+
+				for (const auto& folderName : m_Folders)
+				{
+					if (ImGui::Selectable(folderName.c_str(), m_Folder == folderName))
 					{
-						folder.clear();
-						FiberPool::Push([this] {
-							Outfit::OutfitEditor::RefreshList(folder, folders, files);
+						m_Folder = folderName;
+						m_File.clear();
+						FiberPool::Push([this, folderName] {
+							RefreshFiles(folderName);
 						});
 					}
-
-					for (std::string folderName : folders)
-						if (ImGui::Selectable(folderName.c_str(), folder == folderName))
-						{
-							folder = folderName;
-							FiberPool::Push([this] {
-								Outfit::OutfitEditor::RefreshList(folder, folders, files);
-							});
-						}
-
-					ImGui::EndCombo();
 				}
+				ImGui::EndCombo();
+			}
 
-				// files
-				static std::string search;
-				ImGui::SetNextItemWidth(300);
-				if (ImGui::InputTextWithHint("###outfitname", "Search", &search))
-					std::transform(search.begin(), search.end(), search.begin(), tolower);
-				if (ImGui::BeginListBox("##saved_outfits", ImVec2(300, 300)))
+			static std::string search;
+			ImGui::SetNextItemWidth(300.0f);
+			if (ImGui::InputTextWithHint("##服装搜索", "搜索已保存服装", &search))
+			{
+				std::ranges::transform(search, search.begin(), [](unsigned char character) {
+					return static_cast<char>(std::tolower(character));
+				});
+			}
+
+			if (ImGui::BeginListBox("##已保存服装", ImVec2(300.0f, 260.0f)))
+			{
+				for (const auto& fileName : m_Files)
 				{
-					for (const auto& pair : files)
-					{
-						std::string pair_lower = pair;
-						std::transform(pair_lower.begin(), pair_lower.end(), pair_lower.begin(), tolower);
-						if (pair_lower.contains(search))
+					auto lowerName = fileName;
+					std::ranges::transform(lowerName, lowerName.begin(), [](unsigned char character) {
+						return static_cast<char>(std::tolower(character));
+					});
+					if (lowerName.contains(search) && ImGui::Selectable(fileName.c_str(), m_File == fileName))
+						m_File = fileName;
+				}
+				ImGui::EndListBox();
+			}
+
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+			if (ImGui::Button("刷新列表"))
+			{
+				const auto selectedFolder = m_Folder;
+				FiberPool::Push([this, selectedFolder] {
+					RefreshFiles(selectedFolder);
+				});
+			}
+
+			ImGui::Checkbox("应用发型", &m_ApplyHair);
+			if (ImGui::Button("应用所选服装"))
+			{
+				const auto selectedFolder = m_Folder;
+				const auto selectedFile = m_File;
+				const auto applyHair = m_ApplyHair;
+				m_ApplyHair = false;
+				FiberPool::Push([this, selectedFolder, selectedFile, applyHair] {
+					if (Outfit::OutfitEditor::ApplyOutfitFromJson(selectedFolder, selectedFile, applyHair))
+						RefreshStats();
+				});
+			}
+
+			ImGui::Spacing();
+			ImGui::TextUnformatted("服装名称");
+			ImGui::SetNextItemWidth(250.0f);
+			ImGui::InputText("##服装名称", m_OutfitName, IM_ARRAYSIZE(m_OutfitName));
+
+			if (m_Folder.empty())
+			{
+				ImGui::TextUnformatted("新文件夹（可选）");
+				ImGui::SetNextItemWidth(250.0f);
+				ImGui::InputText("##服装文件夹", m_NewFolder, IM_ARRAYSIZE(m_NewFolder));
+			}
+
+			if (ImGui::Button("保存当前服装"))
+			{
+				const auto fileName = TrimString(m_OutfitName);
+				const auto requestedFolder = TrimString(m_NewFolder);
+				const auto targetFolder = m_Folder.empty() && !requestedFolder.empty() ? requestedFolder : m_Folder;
+				m_OutfitName[0] = '\0';
+
+				if (fileName.empty())
+				{
+					Notifications::Show("服装编辑器", "服装名称不能为空。", NotificationType::Warning);
+				}
+				else
+				{
+					FiberPool::Push([this, fileName, targetFolder] {
+						if (!Outfit::OutfitEditor::SaveOutfit(fileName, targetFolder))
+							return;
+
 						{
-							auto fileName = pair.c_str();
-							if (ImGui::Selectable(fileName, file == pair, ImGuiSelectableFlags_AllowItemOverlap))
-								file = pair;
+							std::scoped_lock stateLock(m_Mutex);
+							m_Folder = targetFolder;
+							m_NewFolder[0] = '\0';
 						}
-					}
-					ImGui::EndListBox();
+						RefreshFiles(targetFolder);
+					});
 				}
 			}
 			ImGui::EndGroup();
 		}
 
-		void RenderSaveButton(bool saveToNewFolder)
+	public:
+		void Draw()
 		{
-			if (ImGui::Button("Save Outfit"))
-				FiberPool::Push([saveToNewFolder, this] {
-					std::string fileName = TrimString(outfitName);
-					strcpy(outfitName, "");
+			EnsureInitialized();
 
-					if (!fileName.size())
-					{
-						Notifications::Show("Outfit", "Filename empty!", NotificationType::Warning);
-						return;
-					}
-
-					Outfit::OutfitEditor::SaveOutfit(fileName, folder);
-
-					if (saveToNewFolder)
-					{
-						folder = newFolder; // set current folder to newly created folder
-						strcpy(newFolder, "");
-					}
-
-					Outfit::OutfitEditor::RefreshList(folder, folders, files);
-				});
-		};
-
-		void RenderOutfitListControls()
-		{
-			ImGui::BeginGroup();
+			if (ImGui::Button("刷新当前数据"))
 			{
-				if (ImGui::Button("Refresh list"))
-					FiberPool::Push([this] {
-						Outfit::OutfitEditor::RefreshList(folder, folders, files);
-					});
-				ImGui::Spacing();
-				static bool applyHair = false;
-				ImGui::Checkbox("Apply hair", &applyHair);
-				ImGui::Spacing();
-				if (ImGui::Button("Apply Selected Outfit"))
-					FiberPool::Push([this] {
-						Outfit::OutfitEditor::ApplyOutfitFromJson(folder, file, applyHair);
-						applyHair = false; // reset everytime
-						RefreshStats();
-					});
-
-				ImGui::Spacing();
-
-				// save outfit
-				ImGui::Text("Outfit Name");
-				ImGui::SameLine();
-				ImGui::SetNextItemWidth(250);
-				ImGui::InputText("##filename", outfitName, IM_ARRAYSIZE(outfitName));
-
-				if (folder.empty())
-				{
-					ImGui::Text("Folder Name");
-					ImGui::SameLine();
-					ImGui::SetNextItemWidth(250);
-					ImGui::InputText("##foldername", newFolder, IM_ARRAYSIZE(newFolder));
-					RenderSaveButton(true);
-				}
-				else
-					RenderSaveButton(false);
+				FiberPool::Push([this] {
+					RefreshStats();
+				});
 			}
-			ImGui::EndGroup();
+			ImGui::SameLine();
+			if (ImGui::Button("随机服装"))
+			{
+				FiberPool::Push([this] {
+					Outfit::OutfitEditor::RandomizeOutfit();
+					RefreshStats();
+				});
+			}
+
+			ImGui::Columns(2, "服装编辑列", false);
+			RenderComponents();
+			ImGui::NextColumn();
+			RenderProps();
+			ImGui::Columns(1);
+
+			ImGui::Spacing();
+			ImGui::Separator();
+			ImGui::Spacing();
+			RenderSavedOutfits();
 		}
 	};
 
 	std::shared_ptr<Category> CreateOutfitsMenu()
 	{
-		static OutfitEditorMenu editor{};
-		auto category = std::make_shared<Category>("Outfit Editor");
-
+		static OutfitEditorMenu editor;
+		auto category = std::make_shared<Category>("服装编辑器");
 		category->AddItem(std::make_shared<ImGuiItem>([] {
-			if (ImGui::Button("Refresh Stats"))
-				FiberPool::Push([] {
-					editor.RefreshStats();
-				});
-			ImGui::SameLine();
-			if (ImGui::Button("Randomize Outfit"))
-				FiberPool::Push([] {
-					Self::GetPed().RandomizeOutfit2();
-				});
+			if (!NativeInvoker::AreHandlersCached())
+				return ImGui::TextDisabled("Native 尚未缓存。");
+			if (!Self::GetPed())
+				return ImGui::TextDisabled("未找到玩家角色。");
 
-			editor.RenderComponents();
-			ImGui::SameLine();
-			editor.RenderComponentsTextures();
-			ImGui::SameLine();
-			ImGui::BeginGroup();
-			{
-				editor.RenderProps();
-				ImGui::Spacing();
-				editor.RenderPropsTextures();
-			}
-			ImGui::EndGroup();
-
-			ImGui::Spacing();
-
-			editor.RenderOutfitList();
-			ImGui::SameLine();
-			editor.RenderOutfitListControls();
+			editor.Draw();
 		}));
-
 		return category;
 	}
 }

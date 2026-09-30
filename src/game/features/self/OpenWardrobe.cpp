@@ -1,6 +1,7 @@
 #include "core/commands/Command.hpp"
 #include "core/backend/ScriptMgr.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/Self.hpp"
 #include "game/backend/ScriptPatches.hpp"
 #include "game/backend/NativeHooks.hpp"
@@ -36,7 +37,7 @@ namespace YimMenu::Features
 		{
 			if (!*Pointers.IsSessionStarted || Scripts::IsScriptActive("wardrobe_mp"_J))
 			{
-				Notifications::Show("Wardrobe", "Not safe to open the wardrobe at the moment.", NotificationType::Error);
+				Notifications::Show(Localization::Translate("衣柜"), Localization::Translate("当前时机不适合打开衣柜。"), NotificationType::Error);
 				return;
 			}
 
@@ -46,7 +47,7 @@ namespace YimMenu::Features
 			launchData.Heading = Self::GetPed().GetHeading();
 			if (!Scripts::StartScript("wardrobe_mp"_J, eStackSizes::SHOP, &launchData, SCR_SIZEOF(launchData)))
 			{
-				Notifications::Show("Wardrobe", "Failed to open the wardrobe.", NotificationType::Error);
+				Notifications::Show(Localization::Translate("衣柜"), Localization::Translate("打开衣柜失败。"), NotificationType::Error);
 				return;
 			}
 
@@ -95,7 +96,7 @@ namespace YimMenu::Features
 		}
 	};
 
-	static OpenWardrobe _OpenWardrobe{"openwardrobe", "Open Wardrobe", "Allows you to access your wardrobe remotely."};
+	static OpenWardrobe _OpenWardrobe{"openwardrobe", "打开衣柜", "允许你远程访问衣柜。"};
 
 	static void GetDistanceBetweenCoordsHook(rage::scrNativeCallContext* ctx)
 	{

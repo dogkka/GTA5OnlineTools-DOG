@@ -31,7 +31,7 @@ namespace YimMenu::Features
 		}
 	};
 
-	static CheaterPool _CheaterPool{"cheaterpool", "Join YimMenu-only Sessions", "Matchmaking will put you into sessions with other YimMenu users."};
+	static CheaterPool _CheaterPool{"cheaterpool", "加入仅限 YimMenu 的战局", "匹配时只会把你放进其他 YimMenu 用户所在的战局。"};
 }
 
 namespace YimMenu::Hooks
