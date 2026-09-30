@@ -1,5 +1,8 @@
 # GTA5 线上小助手 · DOG 二次开发版
 
+> **v2.0.0**（2026-10-01）：内置菜单升级为 **DOG 增强版**（43 项新功能 + 脚本事件防护 + 全量中文化）。
+> 详见 [CHANGES-DOG.md](CHANGES-DOG.md) 的「菜单增强版 2.0.0」章节。
+
 本仓库是 [sch-lda/GTA5OnlineTools](https://github.com/sch-lda/GTA5OnlineTools)
 （原作者 **CrazyZhang** 的《GTA5 线上小助手》，MIT 许可）的**二次开发版**。
 
@@ -15,8 +18,10 @@
    - 禁用"网络版 YimMenu 下载"和"在线 Lua 下载"入口（点击提示"本版本已离线化"）
    - 移除原项目 2027-04-06 域名过期警告
    - 新增 **更新检测**：只访问本仓库的 `api.github.com` 接口（失败回退 `releases.atom`），不碰原项目的任何第三方域名
-2. **内置中文菜单 DLL**：`GTA5Shared/Files/YimMenu/NewBase.dll` 替换为自编译的简体中文 YimMenuV2
-   （官方源码 + 3769 条中文词典 + 中文字形，SHA256 `1aae7acd8fdd8af3f27f3dd5b8ac1e802fc852c83a04b2a8ecea686b52aa9b8d`）
+2. **内置中文菜单 DLL（增强版 2.0.0）**：`GTA5Shared/Files/YimMenu/NewBase.dll` 为自编译的简体中文增强版
+   （YimMenuV2 官方 `39a0f22` + 社区中文维护版全量本地化 + DOG 增强功能包 + 中文字形，
+   SHA256 `7524722d4bd965542021e2f316402941bda7c076445aca08ace3f135740acfd8`）
+   增强内容与源码见分支 [yimmenu-v2](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/yimmenu-v2)
 3. **内置 FSL V6**：`GTA5Shared/Files/FSL/WINMM.dll`（2026-09-19 hotfix，SHA256 `b02d704b821e0ff499fdbb72b2b56d5e29b389dfd65b8fd6a9ab08126d8d5bfe`）
    FSL 管理窗口改为离线安装（不再下载旧版 v3）
 4. **主页改教程风**：`Views/HomeView.xaml`（软件介绍 / 三步教程 / 名词解释 / 故障排查）

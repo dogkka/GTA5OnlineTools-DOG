@@ -1,0 +1,48 @@
+﻿name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Verify menu DLL is embedded resource
+        shell: pwsh
+        run: |
+          if (-Not (Test-Path "GTA5Shared/Files/YimMenu/NewBase.dll")) {
+            throw "Missing GTA5Shared/Files/YimMenu/NewBase.dll"
+          }
+
+      - name: Publish single-file exe
+        run: >
+          dotnet publish GTA5OnlineTools/GTA5OnlineTools.csproj -c Release -r win-x64
+          --self-contained true -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:DebugType=none
+          -o publish
+
+      - name: Rename artifact
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          Move-Item publish/GTA5OnlineTools.exe "publish/GTA5OnlineTools-DOG-$tag.exe"
+          Get-ChildItem publish
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: publish/GTA5OnlineTools-DOG-*.exe
+          generate_release_notes: true
