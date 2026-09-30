@@ -23,6 +23,41 @@ namespace YimMenu::Hooks
 		return !cmd || cmd->GetState();
 	}
 
+	static const char* LocalizeEventName(const char* name)
+	{
+		static const std::unordered_map<std::string_view, std::string_view> s_Names = {
+		    {"CeoMoney", "CEO 工资"},
+		    {"CeoBan", "CEO 玩法禁用"},
+		    {"Crash", "崩溃攻击"},
+		    {"NotificationCrash", "通知崩溃"},
+		    {"SoundSpam", "声音轰炸"},
+		    {"NetworkBail", "强制断线"},
+		    {"KickFromInterior", "室内踢出"},
+		    {"VehicleKick", "踢出载具"},
+		    {"TSECommand", "TSE 工具命令"},
+		    {"Fake Money Notification", "假金钱通知"},
+		    {"Notification", "假通知"},
+		    {"GtaBanner", "假横幅"},
+		    {"PersonalVehicle", "损毁个人载具"},
+		    {"ClearWantedLevel", "清除通缉"},
+		    {"RemoteOffradar", "强制关闭雷达"},
+		    {"Spectate", "强制观战"},
+		    {"ForceMission", "强制任务"},
+		    {"StartActivity", "强制活动"},
+		    {"StartScript", "强制启动脚本"},
+		    {"MarkPlayerAsBeast", "变成野兽"},
+		    {"RequestRandomEvent", "随机事件骚扰"},
+		    {"Collectible", "塞收集品"},
+		    {"Remote Teleport", "强制传送"},
+		    {"TriggerCEORaid", "触发 CEO 突袭"},
+		};
+
+		if (auto it = s_Names.find(name); it != s_Names.end())
+			return it->second.data();
+
+		return name;
+	}
+
 	static bool BlockEvent(Player player, const char* name)
 	{
 		if (!IsProtectionEnabled())
@@ -39,7 +74,7 @@ namespace YimMenu::Hooks
 
 		s_LastNotify[key] = now;
 
-		Notifications::Show("脚本事件防护", "已拦截 '" + std::string(name) + "' 来自 " + player.GetName(), NotificationType::Warning);
+		Notifications::Show("脚本事件防护", "已拦截 '" + std::string(LocalizeEventName(name)) + "' 来自 " + player.GetName(), NotificationType::Warning);
 
 		return true;
 	}
