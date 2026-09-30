@@ -70,7 +70,22 @@ namespace YimMenu::Features
 		}
 	};
 
+	class KeepOnGround : public LoopedCommand
+	{
+		using LoopedCommand::LoopedCommand;
+
+		virtual void OnTick() override
+		{
+			auto veh = Self::GetVehicle();
+			if (!veh)
+				return;
+
+			VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh.GetHandle(), 5.0f);
+		}
+	};
+
 	static DisableSiren _DisableSiren{"disablesiren", "静音警报", "关闭当前载具的警报器"};
 	static VehicleInvisibility _VehicleInvisibility{"vehicleinvis", "载具隐形", "当前载具对本地不可见"};
 	static VehicleStrong _VehicleStrong{"vehiclestrong", "防撞车身", "载具碰撞不易变形"};
+	static KeepOnGround _KeepOnGround{"keeponground", "保持贴地", "载具不会离地翻起"};
 }

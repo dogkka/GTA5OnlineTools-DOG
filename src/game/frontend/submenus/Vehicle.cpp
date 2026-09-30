@@ -133,6 +133,7 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<BoolCommandItem>("disablesiren"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("vehicleinvis"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("vehiclestrong"_J));
+		misc->AddItem(std::make_shared<BoolCommandItem>("keeponground"_J));
 
 		main->AddItem(globals);
 		main->AddItem(tools);
