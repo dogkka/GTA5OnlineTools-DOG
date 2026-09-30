@@ -18,8 +18,18 @@ namespace YimMenu::Submenus
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopragdoll"_J));
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopkill"_J));
 
+		auto events = std::make_shared<Group>("脚本事件");
+		events->AddItem(std::make_shared<PlayerCommandItem>("sendbounty"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("fakeban"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("vehkick"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("ceoraid"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("forcemission"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("transerror"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("intkick"_J));
+
 		menu->AddItem(damage);
 		menu->AddItem(griefing);
+		menu->AddItem(events);
 
 		return menu;
 	}
