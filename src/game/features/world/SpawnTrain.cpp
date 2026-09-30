@@ -26,7 +26,7 @@ namespace YimMenu::Features
 			const float y = pos.y + cosf(rad) * 60.0f;
 
 			const int variation = rand() % 12;
-			const int train     = VEHICLE::CREATE_MISSION_TRAIN(variation, x, y, pos.z, true);
+			const int train     = VEHICLE::CREATE_MISSION_TRAIN(variation, x, y, pos.z, true, 0, 0);
 
 			if (train != 0)
 				Notifications::Show("生成火车", "火车已生成（需要附近有铁轨）。", NotificationType::Success);
