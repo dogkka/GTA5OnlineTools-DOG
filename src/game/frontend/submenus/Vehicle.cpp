@@ -42,6 +42,10 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<ConditionalItem>("turnsignals"_J, std::make_shared<ListCommandItem>("turnsignalsmode"_J)));
 		misc->AddItem(std::make_shared<BoolCommandItem>("fly"_J));
 		misc->AddItem(std::make_shared<ConditionalItem>("fly"_J, std::make_shared<FloatCommandItem>("flyspeed"_J, std::nullopt, false)));
+		misc->AddItem(std::make_shared<BoolCommandItem>("driveonwater"_J));
+		misc->AddItem(std::make_shared<BoolCommandItem>("vehjump"_J));
+		misc->AddItem(std::make_shared<BoolCommandItem>("rainbowpaint"_J));
+		misc->AddItem(std::make_shared<ConditionalItem>("rainbowpaint"_J, std::make_shared<IntCommandItem>("rainbowspeed"_J, "Speed")));
 
 		main->AddItem(globals);
 		main->AddItem(tools);
