@@ -102,7 +102,7 @@
 | 自动驾驶 | 自动驶向导航点 / 随机漫游（带接管检测） |
 | 武器整活 | 传送枪、修理枪、删除枪 |
 | 玩家载具 | 砸碎车窗、破坏引擎、掉头翻转、传送进车 |
-| 其他 | 玩家列表距离显示、清洁角色、防护日志面板（累计拦截 + 历史记录） |
+| 其他 | 玩家列表距离显示、清洁角色、防护日志面板（累计拦截 + 历史记录）、Tunables 编辑器、自定义车牌 |
 
 ### 新增防护
 
@@ -114,4 +114,4 @@
 
 - MSVC 构建需 `/utf-8`（中文源码）；版本注入 `VERSION` = 2.0.0
 - 源码：分支 [`yimmenu-v2`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/yimmenu-v2)（每功能独立 commit）
-- DLL SHA256（b0ed7fee 版）：`b0ed7fee5e0b863a6911132c79f794ba8e58dd0e908706f77a4b9a4d20de56b7`
+- DLL SHA256（b0ed7fee 版）：`d1ffdc0734fd7bec8267f9ee647acac2ea830d4abad8b35b16d043e9e614a60f`
