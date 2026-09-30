@@ -150,6 +150,12 @@ namespace YimMenu::Submenus
 		main->AddItem(misc);
 
 		AddCategory(std::move(main));
+		auto presets = std::make_shared<Category>("预设车辆");
+		auto presetGroup = std::make_shared<Group>("全改装神车", 1);
+		presetGroup->AddItem(std::make_shared<ListCommandItem>("presetvehicle"_J));
+		presetGroup->AddItem(std::make_shared<CommandItem>("spawnpresetvehicle"_J));
+		presets->AddItem(presetGroup);
+		AddCategory(std::move(presets));
 		AddCategory(BuildSpawnVehicleMenu());
 		AddCategory(BuildVehicleEditorMenu());
 		AddCategory(BuildSavedVehiclesMenu());

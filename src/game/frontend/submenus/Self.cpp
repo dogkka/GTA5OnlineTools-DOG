@@ -44,6 +44,7 @@ namespace YimMenu::Submenus
 		toolsGroup->AddItem(std::make_shared<BoolCommandItem>("fastrespawn"_J));
 		toolsGroup->AddItem(std::make_shared<CommandItem>("cleanplayer"_J));
 		toolsGroup->AddItem(std::make_shared<BoolCommandItem>("bodyguards"_J));
+		toolsGroup->AddItem(std::make_shared<BoolCommandItem>("flamethrower"_J));
 
 		auto clearWanted = std::make_shared<Group>("", 1);
 		clearWanted->AddItem(std::make_shared<ConditionalItem>("neverwanted"_J, std::make_shared<CommandItem>("clearwanted"_J), true));
