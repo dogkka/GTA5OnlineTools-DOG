@@ -8,7 +8,10 @@
 #include "core/frontend/widgets/imgui_colors.h"
 #include "game/backend/PlayerData.hpp"
 #include "game/backend/Players.hpp"
+#include "game/backend/Self.hpp"
 #include "game/frontend/items/Items.hpp"
+
+#include <cmath>
 #include "core/localization/Localization.hpp"
 
 namespace YimMenu::Submenus
@@ -64,6 +67,18 @@ namespace YimMenu::Submenus
 			for (auto& [id, player] : sortedPlayers)
 			{
 				std::string display_name = player.GetName();
+
+				if (!player.IsLocal() && player.GetPed() && Self::GetPed())
+				{
+					const auto pos      = player.GetPed().GetPosition();
+					const auto self_pos = Self::GetPed().GetPosition();
+					const float dx      = pos.x - self_pos.x;
+					const float dy      = pos.y - self_pos.y;
+					const float dz      = pos.z - self_pos.z;
+					const int distance  = static_cast<int>(std::sqrt(dx * dx + dy * dy + dz * dz));
+
+					display_name += " (" + std::to_string(distance) + "m)";
+				}
 
 				ImGui::PushID(id);
 				if (ImGui::Selectable(display_name.c_str(), (YimMenu::Players::GetSelected() == player)))
