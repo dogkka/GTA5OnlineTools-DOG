@@ -8,7 +8,7 @@ namespace YimMenu::Menu
 	namespace Font
 	{
 		inline ImFont* g_DefaultFont = nullptr;
-		inline float g_DefaultFontScale = 1.65f;
+		inline float g_DefaultFontScale = 1.0f; // keep the original menu font size (1.65 caused oversized text and broken modern-theme layouts)
 		inline float g_DefaultFontSize = 19.0f;
 
 		inline ImFont* g_OptionsFont = nullptr;

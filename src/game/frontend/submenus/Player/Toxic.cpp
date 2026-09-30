@@ -17,6 +17,7 @@ namespace YimMenu::Submenus
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopexplode"_J));
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopragdoll"_J));
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopkill"_J));
+		griefing->AddItem(std::make_shared<BoolCommandItem>("loopbounty"_J));
 
 		auto events = std::make_shared<Group>("脚本事件");
 		events->AddItem(std::make_shared<PlayerCommandItem>("sendbounty"_J));
@@ -26,6 +27,12 @@ namespace YimMenu::Submenus
 		events->AddItem(std::make_shared<PlayerCommandItem>("forcemission"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("transerror"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("intkick"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("forceminigame"_J));
+		events->AddItem(std::make_shared<ConditionalItem>("forceminigame"_J, std::make_shared<ListCommandItem>("minigame"_J)));
+		events->AddItem(std::make_shared<PlayerCommandItem>("fakemoneybanked"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("fakemoneyremoved"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("fakemoneystolen"_J));
+		events->AddItem(std::make_shared<IntCommandItem>("fakemoneyamount"_J, "金额", false));
 
 		menu->AddItem(damage);
 		menu->AddItem(griefing);
