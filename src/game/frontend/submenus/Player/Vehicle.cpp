@@ -17,6 +17,9 @@ namespace YimMenu::Submenus
 		group->AddItem(std::make_shared<PlayerCommandItem>("killengine"_J));
 		group->AddItem(std::make_shared<PlayerCommandItem>("flipvehicle"_J));
 		group->AddItem(std::make_shared<PlayerCommandItem>("tpintovehicle"_J));
+		group->AddItem(std::make_shared<PlayerCommandItem>("downgradevehicle"_J));
+		group->AddItem(std::make_shared<PlayerCommandItem>("upgradevehicle"_J));
+		group->AddItem(std::make_shared<PlayerCommandItem>("explodevehicle"_J));
 
 		menu->AddItem(group);
 
