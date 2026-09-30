@@ -128,6 +128,8 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<ConditionalItem>("autodrive"_J, std::make_shared<ListCommandItem>("autodrivemode"_J)));
 		misc->AddItem(std::make_shared<BoolCommandItem>("vehnocol"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("bulletprooftyres"_J));
+		misc->AddItem(std::make_shared<StringCommandItem>("platetext"_J));
+		misc->AddItem(std::make_shared<CommandItem>("plateeditor"_J));
 
 		main->AddItem(globals);
 		main->AddItem(tools);
