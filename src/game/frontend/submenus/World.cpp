@@ -52,6 +52,8 @@ namespace YimMenu::Submenus
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("pedrain"_J));
 		otherOpts->AddItem(std::make_shared<CommandItem>("spawntrain"_J));
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("meteorshower"_J));
+		otherOpts->AddItem(std::make_shared<BoolCommandItem>("blackhole"_J));
+		otherOpts->AddItem(std::make_shared<BoolCommandItem>("fireworks"_J));
 
 		main->AddItem(std::move(killPeds));
 		main->AddItem(std::move(deleteOpts));
