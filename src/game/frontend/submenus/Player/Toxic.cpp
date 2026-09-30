@@ -33,6 +33,7 @@ namespace YimMenu::Submenus
 		events->AddItem(std::make_shared<PlayerCommandItem>("fakemoneyremoved"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("fakemoneystolen"_J));
 		events->AddItem(std::make_shared<IntCommandItem>("fakemoneyamount"_J, "金额", false));
+		events->AddItem(std::make_shared<PlayerCommandItem>("moneyrain"_J));
 
 		menu->AddItem(damage);
 		menu->AddItem(griefing);
