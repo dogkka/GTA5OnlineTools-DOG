@@ -43,6 +43,9 @@ namespace YimMenu::Features
 
 		virtual void OnDisable() override
 		{
+			if (g_RemoteControlHandle != 0 && ENTITY::DOES_ENTITY_EXIST(g_RemoteControlHandle))
+				VEHICLE::SET_VEHICLE_DOORS_LOCKED(g_RemoteControlHandle, 1);
+
 			g_RemoteControlHandle = 0;
 		}
 

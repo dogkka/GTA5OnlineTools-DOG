@@ -13,7 +13,7 @@ namespace YimMenu::Features
 			if (!veh)
 				return;
 
-			for (int i = 0; i <= 5; i++)
+			for (int i = 0; i <= 7; i++)
 				VEHICLE::SET_VEHICLE_TYRE_BURST(veh.GetHandle(), i, true, 1000.0f);
 		}
 	};

@@ -1,8 +1,10 @@
 #include <iterator>
+#include <vector>
 
 #include "core/commands/LoopedCommand.hpp"
 #include "game/backend/Self.hpp"
 #include "game/gta/Ped.hpp"
+#include "game/gta/Natives.hpp"
 
 namespace YimMenu::Features
 {
@@ -20,7 +22,10 @@ namespace YimMenu::Features
 	{
 		using LoopedCommand::LoopedCommand;
 
+		static constexpr size_t s_MaxPeds = 60;
+
 		int m_Timer = 0;
+		std::vector<int> m_SpawnedPeds;
 
 		virtual void OnTick() override
 		{
@@ -33,12 +38,36 @@ namespace YimMenu::Features
 			if (!ped)
 				return;
 
+			// recycle the oldest peds to avoid performance degradation
+			if (m_SpawnedPeds.size() >= s_MaxPeds)
+			{
+				const int oldest = m_SpawnedPeds.front();
+				m_SpawnedPeds.erase(m_SpawnedPeds.begin());
+
+				if (ENTITY::DOES_ENTITY_EXIST(oldest))
+					Ped(oldest).Delete();
+			}
+
 			auto pos   = ped.GetPosition();
 			auto model = ped_models[rand() % std::size(ped_models)];
 
-			Ped::Create(model,
+			auto spawned = Ped::Create(model,
 			    rage::fvector3(pos.x + (float)(rand() % 20 - 10), pos.y + (float)(rand() % 20 - 10), pos.z + 15.0f),
 			    0.0f);
+
+			if (spawned)
+				m_SpawnedPeds.push_back(spawned.GetHandle());
+		}
+
+		virtual void OnDisable() override
+		{
+			for (const int handle : m_SpawnedPeds)
+			{
+				if (ENTITY::DOES_ENTITY_EXIST(handle))
+					Ped(handle).Delete();
+			}
+
+			m_SpawnedPeds.clear();
 		}
 	};
 

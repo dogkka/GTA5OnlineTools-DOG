@@ -20,6 +20,9 @@ namespace YimMenu::Features
 			if (!WATER::GET_WATER_HEIGHT_NO_WAVES(pos.x, pos.y, pos.z, &waterHeight))
 				return;
 
+			if (waterHeight < -50.0f)
+				return; // no actual water at this location
+
 			VEHICLE::SET_VEHICLE_ENGINE_ON(veh.GetHandle(), true, true, false);
 
 			if (pos.z < waterHeight + 0.2f)

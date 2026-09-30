@@ -22,5 +22,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static VehicleJump _VehicleJump{"vehjump", "载具跳跃", "按手刹让载具跳跃"};
+	static VehicleJump _VehicleJump{"vehjump", "载具跳跃", "按手刹（空格）让载具跳跃，手刹功能被占用"};
 }

@@ -12,21 +12,37 @@ namespace YimMenu::Features
 	{
 		using LoopedCommand::LoopedCommand;
 
-		virtual void OnEnable() override
+		int m_LastVehicle = 0;
+
+		void CleanupVehicle(int handle)
 		{
-			auto veh = Self::GetVehicle();
-			if (!veh)
+			if (handle == 0 || !ENTITY::DOES_ENTITY_EXIST(handle))
 				return;
 
-			VEHICLE::SET_VEHICLE_GRAVITY(veh.GetHandle(), false);
-			ENTITY::SET_ENTITY_COLLISION(veh.GetHandle(), false, false);
+			VEHICLE::SET_VEHICLE_GRAVITY(handle, true);
+			ENTITY::SET_ENTITY_COLLISION(handle, true, true);
+			VEHICLE::SET_VEHICLE_FORWARD_SPEED(handle, 0.0f);
 		}
 
 		virtual void OnTick() override
 		{
 			auto veh = Self::GetVehicle();
 			if (!veh)
+			{
+				if (m_LastVehicle != 0)
+				{
+					CleanupVehicle(m_LastVehicle);
+					m_LastVehicle = 0;
+				}
 				return;
+			}
+
+			if (veh.GetHandle() != m_LastVehicle)
+			{
+				CleanupVehicle(m_LastVehicle);
+				m_LastVehicle = veh.GetHandle();
+				ENTITY::SET_ENTITY_COLLISION(veh.GetHandle(), false, false);
+			}
 
 			auto cam_rot = CAMERA::GET_GAMEPLAY_CAM_ROT(0);
 			ENTITY::SET_ENTITY_ROTATION(veh.GetHandle(), cam_rot.x, cam_rot.y, cam_rot.z, 0, true);
@@ -53,13 +69,8 @@ namespace YimMenu::Features
 
 		virtual void OnDisable() override
 		{
-			auto veh = Self::GetVehicle();
-			if (!veh)
-				return;
-
-			VEHICLE::SET_VEHICLE_GRAVITY(veh.GetHandle(), true);
-			ENTITY::SET_ENTITY_COLLISION(veh.GetHandle(), true, true);
-			VEHICLE::SET_VEHICLE_FORWARD_SPEED(veh.GetHandle(), 0.0f);
+			CleanupVehicle(m_LastVehicle);
+			m_LastVehicle = 0;
 		}
 	};
 
