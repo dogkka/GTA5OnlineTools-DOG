@@ -10,6 +10,7 @@
 #include "game/frontend/submenus/Settings/LuaScripts.hpp"
 #include "game/frontend/submenus/Settings/GUISettings.hpp"
 #include "game/features/protections/ScriptEventProtection.hpp"
+#include "game/features/system/TunablesEditor.hpp"
 
 namespace YimMenu::Submenus
 {
@@ -59,6 +60,7 @@ namespace YimMenu::Submenus
 		auto overlay = std::make_shared<Group>("叠加层");
 		auto chat = std::make_shared<Group>("聊天");
 		auto protection = std::make_shared<Group>("防护");
+		auto tunables = std::make_shared<Group>("Tunables 编辑器");
 
 		hotkeys->AddItem(std::make_shared<ImGuiItem>(Hotkeys));
 
@@ -117,11 +119,15 @@ namespace YimMenu::Submenus
 			if (ImGui::Button("清空记录"))
 				Features::ClearProtectionLog();
 		}));
+		tunables->AddItem(std::make_shared<StringCommandItem>("tunablename"_J));
+		tunables->AddItem(std::make_shared<IntCommandItem>("tunablevalue"_J, "值", false));
+		tunables->AddItem(std::make_shared<ImGuiItem>([] { Features::RenderTunableEditor(); }));
 
 		game->AddItem(playerEsp);
 		game->AddItem(pedEsp);
 		game->AddItem(objectEsp);
 		game->AddItem(protection);
+		game->AddItem(tunables);
 
 		gui->AddItem(uiStyle);
 		gui->AddItem(overlay);
