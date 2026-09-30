@@ -31,6 +31,6 @@ namespace YimMenu::Features
 		}
 	};
 
-	static KillAll _KillAll{"killallpeds", "Kill All Peds", "Kills all peds in the game world"};
-	static KillAllEnemies _KillAllEnemies{"killallenemies", "Kill All Enemies", "Kills all enemies in the game world"};
+	static KillAll _KillAll{"killallpeds", "击杀全部行人", "击杀游戏世界中的全部行人"};
+	static KillAllEnemies _KillAllEnemies{"killallenemies", "击杀全部敌人", "击杀游戏世界中的全部敌人"};
 }

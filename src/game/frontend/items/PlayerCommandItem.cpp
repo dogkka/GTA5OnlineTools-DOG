@@ -2,6 +2,7 @@
 #include "game/commands/PlayerCommand.hpp"
 #include "core/commands/Commands.hpp"
 #include "core/backend/FiberPool.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/Players.hpp"
 
 namespace YimMenu
@@ -16,11 +17,13 @@ namespace YimMenu
 	{
 		if (!m_Command)
 		{
-			ImGui::Text("Unknown!");
+			ImGui::Text("%s", "未知！");
 			return;
 		}
 
-		if (ImGui::Button(m_LabelOverride.has_value() ? m_LabelOverride.value().data() : m_Command->GetLabel().data()))
+		const auto label = Localization::TranslateLabel(m_LabelOverride.has_value() ? m_LabelOverride.value() : m_Command->GetLabel());
+		const auto description = Localization::Translate(m_Command->GetDescription());
+		if (ImGui::Button(label.c_str()))
 		{
 			FiberPool::Push([this] {
 				if (Players::GetSelected().IsValid())
@@ -30,7 +33,7 @@ namespace YimMenu
 
 		if (ImGui::IsItemHovered())
 		{
-			ImGui::SetTooltip("%s", m_Command->GetDescription().data());
+			ImGui::SetTooltip("%s", description.c_str());
 		}
 	}
 }

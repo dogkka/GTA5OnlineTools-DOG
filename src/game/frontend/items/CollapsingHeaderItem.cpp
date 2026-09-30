@@ -1,4 +1,5 @@
 #include "Items.hpp"
+#include "core/localization/Localization.hpp"
 
 namespace YimMenu
 {
@@ -9,7 +10,8 @@ namespace YimMenu
 
 	void CollapsingHeaderItem::Draw()
 	{
-		if (ImGui::CollapsingHeader(m_Name.c_str()))
+		const auto translatedName = Localization::Translate(m_Name);
+		if (ImGui::CollapsingHeader(translatedName.c_str()))
 		{
 			for (auto& item : m_Items)
 			{

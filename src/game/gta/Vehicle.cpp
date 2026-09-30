@@ -1,12 +1,23 @@
 #include "Vehicle.hpp"
 #include "Natives.hpp"
 #include "core/backend/ScriptMgr.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/pointers/Pointers.hpp"
 #include "game/gta/data/VehicleValues.hpp"
 #include "game/gta/data/Vehicles.hpp"
 
+#include <algorithm>
+
 namespace YimMenu
 {
+	namespace
+	{
+		bool IsInvalidVehicleText(std::string_view text)
+		{
+			return text.empty() || text == "NULL" || text == "CARNOTFOUND";
+		}
+	}
+
 	Vehicle Vehicle::Create(std::uint32_t model, rage::fvector3 coords, float heading, bool setOnGroundProperly)
 	{
 		ENTITY_ASSERT_SCRIPT_CONTEXT();
@@ -143,6 +154,68 @@ namespace YimMenu
 		return VEHICLE::IS_VEHICLE_SEAT_FREE(GetHandle(), seat, true);
 	}
 
+	int Vehicle::GetMaxNumOfPassengers()
+	{
+		ENTITY_ASSERT_VALID();
+
+		return VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(GetHandle());
+	}
+
+	void Vehicle::ToggleAllDoors(bool open)
+	{
+		ENTITY_ASSERT_VALID();
+		ENTITY_ASSERT_CONTROL();
+		ENTITY_ASSERT_SCRIPT_CONTEXT();
+
+		const int vehicle = GetHandle();
+		for (int door = 0; door < 6; door++)
+		{
+			if (open)
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, door, FALSE, FALSE);
+			else
+				VEHICLE::SET_VEHICLE_DOOR_SHUT(vehicle, door, FALSE);
+		}
+	}
+
+	bool Vehicle::HasHydraulics()
+	{
+		ENTITY_ASSERT_VALID();
+
+		return VEHICLE::GET_NUM_VEHICLE_MODS(GetHandle(), static_cast<int>(VehicleModType::MOD_HYDRAULICS)) > 0;
+	}
+
+	bool Vehicle::RaiseHydraulicWheel(int wheelIndex, float raiseFactor)
+	{
+		static constexpr std::array hydraulicWheelIndexes = {0, 1, 4, 5};
+		if (wheelIndex < 0 || wheelIndex >= static_cast<int>(hydraulicWheelIndexes.size()) || !HasHydraulics())
+			return false;
+
+		ENTITY_ASSERT_CONTROL();
+		ENTITY_ASSERT_SCRIPT_CONTEXT();
+
+		const int vehicle = GetHandle();
+		const int wheelId = hydraulicWheelIndexes[wheelIndex];
+		raiseFactor = std::clamp(raiseFactor, 1.0f, 3.0f);
+		VEHICLE::SET_HYDRAULIC_WHEEL_STATE(vehicle, wheelId, 4, raiseFactor, 1);
+		ScriptMgr::Yield(250ms);
+		VEHICLE::SET_HYDRAULIC_WHEEL_STATE(vehicle, wheelId, 1, raiseFactor, 1);
+		return true;
+	}
+
+	bool Vehicle::LowerHydraulicWheel(int wheelIndex, float raiseFactor)
+	{
+		static constexpr std::array hydraulicWheelIndexes = {0, 1, 4, 5};
+		if (wheelIndex < 0 || wheelIndex >= static_cast<int>(hydraulicWheelIndexes.size()) || !HasHydraulics())
+			return false;
+
+		ENTITY_ASSERT_CONTROL();
+		ENTITY_ASSERT_SCRIPT_CONTEXT();
+
+		raiseFactor = std::clamp(raiseFactor, 1.0f, 3.0f);
+		VEHICLE::SET_HYDRAULIC_WHEEL_STATE(GetHandle(), hydraulicWheelIndexes[wheelIndex], 0, raiseFactor, 1);
+		return true;
+	}
+
 	bool Vehicle::SupportsBoost()
 	{
 		ENTITY_ASSERT_VALID();
@@ -189,22 +262,36 @@ namespace YimMenu
 		return VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(GetHandle(), 5.f);
 	}
 
-	std::string Vehicle::GetFullName()
+	std::string Vehicle::GetLocalizedDisplayName(joaat_t model, bool includeMaker, bool includeClass)
 	{
-		auto model = ENTITY::GET_ENTITY_MODEL(GetHandle());
 		std::string gxt = VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(model);
 		std::string display = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(gxt.c_str());
+		std::string finalName = IsInvalidVehicleText(display) ? gxt : display;
+		finalName = Localization::Translate(finalName);
 
-		std::string finalName = display == "NULL" ? gxt : display;
+		if (includeMaker)
+		{
+			std::string maker = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MAKE_NAME_FROM_VEHICLE_MODEL(model));
+			if (!IsInvalidVehicleText(maker))
+			{
+				maker = Localization::Translate(maker);
+				finalName = std::format("{} {}", maker, finalName);
+			}
+		}
 
-		std::string maker = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MAKE_NAME_FROM_VEHICLE_MODEL(model));
-		if (maker != "NULL")
-			finalName = maker + " " + finalName;
-
-		int id = VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(model);
-		finalName = std::string(g_VehicleClassNames[id]) + " " + finalName;
+		if (includeClass)
+		{
+			int id = VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(model);
+			if (id >= 0 && id < static_cast<int>(g_VehicleClassNames.size()))
+				finalName = std::format("{} {}", g_VehicleClassNames[id], finalName);
+		}
 
 		return finalName;
+	}
+
+	std::string Vehicle::GetFullName()
+	{
+		return GetLocalizedDisplayName(ENTITY::GET_ENTITY_MODEL(GetHandle()), true, true);
 	}
 
 	std::map<int, int32_t> Vehicle::GetOwnedMods()

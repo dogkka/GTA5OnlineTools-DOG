@@ -6,7 +6,7 @@
 
 namespace YimMenu::Features
 {
-	static FloatCommand _WeaponDamageScale{"weapondamagescale", "Weapon Damage Scale", "Sets the damage scale for weapons (including melee)", 0.0f, 10.0f, 1.0f};
+	static FloatCommand _WeaponDamageScale{"weapondamagescale", "武器伤害倍率", "设置武器伤害倍率（包括近战）", 0.0f, 10.0f, 1.0f};
 
 	class WeaponDamage : public LoopedCommand
 	{
@@ -37,5 +37,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static WeaponDamage _WeaponDamage{"weapondamage", "Weapon Damage", "Allows altering your weapons damage output"};
+	static WeaponDamage _WeaponDamage{"weapondamage", "武器伤害", "允许修改你的武器伤害输出"};
 }

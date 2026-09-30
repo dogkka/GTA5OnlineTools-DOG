@@ -1,6 +1,7 @@
 #include "Network.hpp"
 #include "core/backend/ScriptMgr.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/NativeHooks.hpp"
 #include "game/gta/Natives.hpp"
 #include "game/gta/ScriptGlobal.hpp"
@@ -34,7 +35,7 @@ namespace YimMenu::Network
 				{
 					if (!Pointers.JoinSessionByInfo(*Pointers.NetworkSession, &*session_to_join, 1, 1 | 2, nullptr, 0))
 					{
-						Notifications::Show("Joiner", "Failed to join session", NotificationType::Error);
+						Notifications::Show("加入器", "加入战局失败", NotificationType::Error);
 						NativeInvoker::GetNativeHandler(NativeIndex::NETWORK_SESSION_HOST)(ctx);
 					}
 					else
@@ -53,7 +54,7 @@ namespace YimMenu::Network
 
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("maintransition"_J) > 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 		{
-			Notifications::Show("Joiner", "An existing transition is in progress", NotificationType::Error);
+			Notifications::Show("加入器", "当前已有过渡流程正在进行", NotificationType::Error);
 			return;
 		}
 
@@ -79,13 +80,13 @@ namespace YimMenu::Network
 			}
 			else
 			{
-				Notifications::Show("Joiner", "Failed to get session info by RID", NotificationType::Error);
+				Notifications::Show("加入器", "无法通过 R星 ID 获取战局信息", NotificationType::Error);
 				return;
 			}
 		}
 		else
 		{
-			Notifications::Show("Joiner", "Failed to get session info by RID", NotificationType::Error);
+			Notifications::Show("加入器", "无法通过 R星 ID 获取战局信息", NotificationType::Error);
 			return;
 		}
 	}

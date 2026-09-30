@@ -2,6 +2,7 @@
 #include "core/commands/Command.hpp"
 #include "core/commands/Commands.hpp"
 #include "core/commands/ListCommand.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/frontend/widgets/toggle/imgui_toggle.hpp"
 
 namespace YimMenu
@@ -16,45 +17,50 @@ namespace YimMenu
 	{
 		if (!m_Command)
 		{
-			ImGui::Text("Unknown list!");
+			ImGui::Text("%s", "未知列表！");
 			return;
 		}
 
 		int current_val = m_Command->GetState();
 		auto& list = m_Command->GetList();
-		const char* largest_string = "";
-		std::size_t largest_string_len = 0;
+		std::string largestString;
+		std::size_t largestStringLen = 0;
+		const auto label = Localization::TranslateLabel(m_LabelOverride.value_or(m_Command->GetLabel()));
 
-		if (!m_SelectedItem.has_value() || !m_ItemWidth.has_value())
+		m_SelectedItem.reset();
+		for (auto& item : list)
 		{
-			for (auto& item : list)
+			if (item.first == current_val)
 			{
-				if (item.first == current_val)
-				{
-					m_SelectedItem = item.second;
-				}
-
-				int length = strlen(item.second);
-				if (length > largest_string_len)
-				{
-					largest_string = item.second;
-					largest_string_len = length;
-				}
+				m_SelectedItem = Localization::Translate(item.second);
 			}
 
-			if (!m_SelectedItem.has_value())
-				m_SelectedItem = "";
-
-			auto size = ImGui::CalcTextSize(largest_string);
-			m_ItemWidth = size.x + 40.0f;
+			auto translatedItem = Localization::Translate(item.second);
+			if (translatedItem.length() > largestStringLen)
+			{
+				largestString = std::move(translatedItem);
+				largestStringLen = largestString.length();
+			}
 		}
 
+		if (!m_SelectedItem.has_value())
+			m_SelectedItem = "";
+
+		const auto previewText = m_SelectedItem->length() > largestStringLen ? *m_SelectedItem : largestString;
+		const auto previewSize = ImGui::CalcTextSize(previewText.c_str());
+		const auto labelSize = label.empty() ? ImVec2{} : ImGui::CalcTextSize(label.c_str());
+		const auto framePadding = ImGui::GetStyle().FramePadding.x * 2.0f;
+		const auto arrowWidth = ImGui::GetFrameHeight();
+		const auto spacing = label.empty() ? 0.0f : ImGui::GetStyle().ItemInnerSpacing.x;
+		m_ItemWidth = static_cast<int>(std::max(220.0f, previewSize.x + labelSize.x + framePadding + arrowWidth + spacing + 48.0f));
+
 		ImGui::SetNextItemWidth(m_ItemWidth.value());
-		if (ImGui::BeginCombo(m_LabelOverride.value_or(m_Command->GetLabel()).c_str(), m_SelectedItem.value().c_str()))
+		if (ImGui::BeginCombo(label.c_str(), m_SelectedItem.value().c_str()))
 		{
 			for (auto& el : list)
 			{
-				if (ImGui::Selectable(el.second, el.first == current_val))
+				const auto translatedItem = Localization::Translate(el.second);
+				if (ImGui::Selectable(translatedItem.c_str(), el.first == current_val))
 				{
 					current_val = el.first;
 					m_Command->SetState(el.first);
@@ -62,7 +68,7 @@ namespace YimMenu
 
 				if (el.first == current_val)
 				{
-					m_SelectedItem = el.second; // just in case
+					m_SelectedItem = translatedItem; // just in case
 					ImGui::SetItemDefaultFocus();
 				}
 			}

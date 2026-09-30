@@ -21,5 +21,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static ForceScriptHost _ForceScriptHost{"forcescripthost", "Force Script Host", "Forces you to become freemode script host. Note that this might break some missions."};
+	static ForceScriptHost _ForceScriptHost{"forcescripthost", "强制脚本主机", "强制让你成为自由模式脚本主机，可能会导致某些任务异常。"};
 }

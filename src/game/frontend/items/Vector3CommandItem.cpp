@@ -2,6 +2,7 @@
 #include "core/commands/Command.hpp"
 #include "core/commands/Commands.hpp"
 #include "core/commands/Vector3Command.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/SavedLocations.hpp"
 #include "game/backend/Self.hpp"
 #include "game/pointers/Pointers.hpp"
@@ -18,7 +19,7 @@ namespace YimMenu
 	{
 		if (!m_Command)
 		{
-			ImGui::Text("Unknown!");
+			ImGui::Text("%s", "未知！");
 			return;
 		}
 
@@ -31,29 +32,30 @@ namespace YimMenu
 		if (Self::GetPed())
 		{
 			ImGui::SameLine();
-			if (ImGui::Button("Current"))
+			if (ImGui::Button("当前位置"))
 				m_Command->SetState(Self::GetPed().GetPosition());
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Saved..."))
+		if (ImGui::Button("已保存位置..."))
 			ImGui::OpenPopup("##saved");
 
 		if (ImGui::BeginPopup("##saved", ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize))
 		{
-			ImGui::Text("Click on a location to select it. Add more at Teleport > Saved");
-			InputTextWithHint("##filter", "Search", &m_CurrentFilter).Draw();
+			ImGui::Text("%s", "点击一个地点即可选择。可在 传送 > 已保存 中添加更多位置。");
+			InputTextWithHint("##filter", "搜索", &m_CurrentFilter).Draw();
 
 			const float max_length = *Pointers.ScreenResY / 3.2;
 
 			// TODO: duplicated code
 			ImGui::BeginGroup();
-			ImGui::Text("Categories");
+			ImGui::Text("%s", "分类");
 
 			if (ImGui::BeginListBox("##categories", {200, max_length}))
 			{
 				for (auto& l : SavedLocations::GetAllSavedLocations() | std::ranges::views::keys)
 				{
-					if (ImGui::Selectable(l.data(), l == m_CurrentCategory))
+					const auto translatedCategory = Localization::Translate(l);
+					if (ImGui::Selectable(translatedCategory.c_str(), l == m_CurrentCategory))
 					{
 						m_CurrentCategory = l;
 					}
@@ -68,7 +70,7 @@ namespace YimMenu
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::BeginGroup();
-			ImGui::Text("Locations");
+			ImGui::Text("%s", "地点");
 			if (ImGui::BeginListBox("##saved_locs", {200, max_length}))
 			{
 				if (SavedLocations::GetAllSavedLocations().find(m_CurrentCategory) != SavedLocations::GetAllSavedLocations().end())
@@ -102,7 +104,7 @@ namespace YimMenu
 
 			ImGui::EndGroup();
 
-			if (ImGui::Button("Close"))
+			if (ImGui::Button("关闭"))
 			{
 				ImGui::CloseCurrentPopup();
 			}
@@ -110,7 +112,7 @@ namespace YimMenu
 			ImGui::EndPopup();
 		}
 
-		auto& label = m_LabelOverride.has_value() ? m_LabelOverride.value() : m_Command->GetLabel();
+		const auto label = Localization::Translate(m_LabelOverride.has_value() ? m_LabelOverride.value() : m_Command->GetLabel());
 		if (!label.empty())
 		{
 			ImGui::SameLine();

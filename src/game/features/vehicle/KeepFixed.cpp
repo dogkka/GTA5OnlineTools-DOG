@@ -15,5 +15,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static KeepFixed _KeepFixed{"keepfixed", "Keep Vehicle Fixed", "Keeps your vehicle clean and fixed"};
+	static KeepFixed _KeepFixed{"keepfixed", "保持载具完好", "让你的载具始终保持干净并自动修复"};
 }

@@ -25,7 +25,7 @@ namespace YimMenu::Features
 	};
 
 	static IPLSelectorHelper g_IPLSelectorHelper{};
-	static ListCommand _IPLSelector{"iplselector", "IPL", "The IPL to load", g_IPLSelectorHelper.availableIplNames, 0};
+	static ListCommand _IPLSelector{"iplselector", "要加载的 IPL", "选择要加载的 IPL", g_IPLSelectorHelper.availableIplNames, 0};
 
 	class IPLLoader : public Command
 	{
@@ -77,7 +77,7 @@ namespace YimMenu::Features
 		}
 	};
 
-	static IPLLoader _IPLLoader{"loadipl", "Load IPL", "Load IPL"};
-	static IPLUnloader _IPLUnloader{"unloadipl", "Unload IPL", "Unload IPL"};
-	static IPLTeleport _IPLTeleport{"ipltp", "Teleport to IPL", "Teleport to the selected IPL"};
+	static IPLLoader _IPLLoader{"loadipl", "加载 IPL", "加载所选 IPL"};
+	static IPLUnloader _IPLUnloader{"unloadipl", "卸载 IPL", "卸载所选 IPL"};
+	static IPLTeleport _IPLTeleport{"ipltp", "传送到 IPL", "传送到所选 IPL"};
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include <string_view>
+#include <vector>
 
 namespace YimMenu
 {
@@ -30,6 +31,12 @@ namespace YimMenu
 
 		virtual bool Enable() = 0;
 		virtual bool Disable() = 0;
+		virtual void CommitQueuedState(bool)
+		{
+		}
+		virtual void ReconcileEnabledState(bool)
+		{
+		}
 
 	public:
 		template<auto HookFunc>
@@ -45,8 +52,10 @@ namespace YimMenu
 
 		static std::vector<BaseHook*>& Hooks();
 
-		static void EnableAll();
-		static void DisableAll();
+		static bool EnableAll();
+		static bool DisableAll();
+		static void CommitQueuedStates(bool success);
+		static void ReconcileEnabledStates(bool enabled);
 
 	private:
 		inline static std::vector<BaseHook*> m_Hooks;
@@ -56,6 +65,7 @@ namespace YimMenu
 	inline void BaseHook::Add(BaseHook* hook)
 	{
 		HookHelper<HookFunc>::m_Hook = hook;
+		m_Hooks.emplace_back(hook);
 	}
 
 	template<auto HookFunc, typename T>

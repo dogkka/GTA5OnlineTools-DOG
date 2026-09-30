@@ -6,7 +6,7 @@
 
 namespace YimMenu::Features  
 {  
-	static FloatCommand _ExplosionRadiusScale{"explosionradiusscale", "Weapon Explosion RadiusScale", "Modifying Weapon Explosion RadiusScale", 0.0f, 10.0f, 1.0f};  
+	static FloatCommand _ExplosionRadiusScale{"explosionradiusscale", "武器爆炸范围倍率", "修改武器爆炸范围倍率", 0.0f, 10.0f, 1.0f};
 
 	class ExplosionRadius : public LoopedCommand  
 	{  
@@ -22,5 +22,5 @@ namespace YimMenu::Features
 		}  
 	};  
 
-	static ExplosionRadius _ExplosionRadius{"explosionradius", "Weapon Explosion Radius", "Modifying Weapon Explosion Radius"};  
+	static ExplosionRadius _ExplosionRadius{"explosionradius", "武器爆炸范围", "修改武器爆炸范围"};
 }

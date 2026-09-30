@@ -51,5 +51,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static DLCVehicles _DLCVehicles{"dlcvehicles", "Enable All DLC Vehicles", "Enables all the DLC vehicles on websites."};
+	static DLCVehicles _DLCVehicles{"dlcvehicles", "解锁全部 DLC 载具", "在网站上启用全部 DLC 载具。"};
 }

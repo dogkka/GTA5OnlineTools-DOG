@@ -39,5 +39,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static NoIdleKick _NoIdleKick{"noidlekick", "No Idle Kick", "Prevents you from being kicked while idling."};
+	static NoIdleKick _NoIdleKick{"noidlekick", "防挂机踢出", "防止你因挂机而被踢出。"};
 }

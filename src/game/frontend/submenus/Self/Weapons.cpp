@@ -1,7 +1,9 @@
 #include "Weapons.hpp"
 #include "core/backend/FiberPool.hpp"
 #include "core/backend/ScriptMgr.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/Self.hpp"
+#include "game/gta/data/WeaponDisplayNames.hpp"
 #include "game/gta/data/Weapons.hpp"
 #include "game/gta/Natives.hpp"
 #include "game/gta/Scripts.hpp"
@@ -10,8 +12,66 @@
 #include "core/commands/Commands.hpp"
 #include "game/features/self/CustomWeapon.hpp"
 
+#include <string_view>
+#include <utility>
+
 namespace YimMenu::Submenus
 {
+	namespace
+	{
+		using namespace std::literals;
+
+		bool ContainsCjk(std::string_view text)
+		{
+			for (unsigned char ch : text)
+				if (ch & 0x80)
+					return true;
+
+			return false;
+		}
+
+		bool IsInvalidWeaponText(std::string_view text)
+		{
+			return text.empty() || text == "NULL"sv || text == "Invalid"sv;
+		}
+
+		std::string LocalizeWeaponName(joaat_t weaponHash, std::string_view display)
+		{
+			if (!IsInvalidWeaponText(display) && ContainsCjk(display))
+				return std::string(display);
+
+			if (!IsInvalidWeaponText(display))
+			{
+				const auto translatedDisplay = Localization::Translate(display);
+				if (translatedDisplay != display)
+					return translatedDisplay;
+			}
+
+			if (const auto fallback = GetWeaponDisplayNameFallback(weaponHash); !fallback.empty())
+				return std::string(fallback);
+
+			if (IsInvalidWeaponText(display))
+				return {};
+
+			return std::string(display);
+		}
+
+		std::string LocalizeWeaponDescription(std::string_view display)
+		{
+			if (IsInvalidWeaponText(display))
+				return {};
+
+			if (ContainsCjk(display))
+				return std::string(display);
+
+			const auto translatedDisplay = Localization::Translate(display);
+			if (translatedDisplay != display)
+				return translatedDisplay;
+
+			return {};
+		}
+	}
+
 	struct WeaponDisplay
 	{
 		std::string name;
@@ -49,7 +109,7 @@ namespace YimMenu::Submenus
 	static void RenderAmmuNationMenu()
 	{
 		static std::vector<WeaponDisplay> weaponDisplays;
-		static std::string selectedWeapon{"Select"};
+		static std::string selectedWeapon{"请选择"};
 		static joaat_t selectedWeaponHash{};
 		static char searchWeapon[64];
 
@@ -82,7 +142,10 @@ namespace YimMenu::Submenus
 							std::string nameDisplay = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(nameGxt.c_str());
 							std::string descDisplay = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(descGxt.c_str());
 
-							weaponDisplays.push_back({((nameDisplay.empty() || nameDisplay == "NULL" || nameDisplay == "Invalid") ? "" : nameDisplay), ((descDisplay.empty() || descDisplay == "NULL" || descDisplay == "Invalid") ? "" : descDisplay), weap});
+							auto localizedName = LocalizeWeaponName(weap, nameDisplay);
+							auto localizedDesc = LocalizeWeaponDescription(descDisplay);
+
+							weaponDisplays.push_back({std::move(localizedName), std::move(localizedDesc), weap});
 						}
 
 						thread->Kill();
@@ -93,7 +156,7 @@ namespace YimMenu::Submenus
 			return true;
 		}();
 
-		ImGui::BeginCombo("Weapons", selectedWeapon.c_str());
+		ImGui::BeginCombo("武器", selectedWeapon.c_str());
 		if (ImGui::IsItemActive() && !ImGui::IsPopupOpen("##weaponspopup"))
 		{
 			ImGui::OpenPopup("##weaponspopup");
@@ -101,7 +164,7 @@ namespace YimMenu::Submenus
 		}
 		if (ImGui::BeginPopup("##weaponspopup", ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
 		{
-			ImGui::Text("Search:");
+			ImGui::Text("%s", "搜索：");
 			ImGui::SameLine();
 			ImGui::SetNextItemWidth(250.f);
 			ImGui::InputText("##searchweapon", searchWeapon, sizeof(searchWeapon));
@@ -141,14 +204,14 @@ namespace YimMenu::Submenus
 			ImGui::EndPopup();
 		}
 
-		if (ImGui::Button("Give Weapon"))
+		if (ImGui::Button("获得武器"))
 		{
 			FiberPool::Push([] {
 				Self::GetPed().GiveWeapon(selectedWeaponHash, true);
 			});
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Remove Weapon"))
+		if (ImGui::Button("移除武器"))
 		{
 			FiberPool::Push([] {
 				Self::GetPed().RemoveWeapon(selectedWeaponHash);
@@ -157,17 +220,17 @@ namespace YimMenu::Submenus
 
 		if (*Pointers.IsSessionStarted && selectedWeaponHash != 0)
 		{
-			ImGui::Text("Kills With: %d", kills);
-			ImGui::Text("Deaths By: %d", deaths);
-			ImGui::Text("K/D Ratio: %.2f", kdRatio);
-			ImGui::Text("Headshots: %d", headshots);
-			ImGui::Text("Accuracy: %d%%", accuracy);
+			ImGui::Text("击杀数：%d", kills);
+			ImGui::Text("死亡数：%d", deaths);
+			ImGui::Text("击杀/死亡比：%.2f", kdRatio);
+			ImGui::Text("爆头数：%d", headshots);
+			ImGui::Text("命中率：%d%%", accuracy);
 		}
 	}
 
 	static std::shared_ptr<Group> RenderCustomWeaponsMenu()
 	{
-		auto customWeaponsGroup = std::make_shared<Group>("Custom Weapons");
+		auto customWeaponsGroup = std::make_shared<Group>("自定义武器");
 
 		auto cutomWeaponTypes = std::make_shared<Group>("", 1);
 		auto customWeapons = std::make_shared<Group>("");
@@ -208,12 +271,12 @@ namespace YimMenu::Submenus
 
 	std::shared_ptr<Category> BuildWeaponsMenu()
 	{
-		auto weapons = std::make_shared<Category>("Weapons");
+		auto weapons = std::make_shared<Category>("武器");
 
-		auto weaponsGlobalsGroup = std::make_shared<Group>("Globals", 12);
-		auto weaponsToolsGroup = std::make_shared<Group>("Tools", 1);
-		auto weaponsAmmuNationGroup = std::make_shared<Group>("Ammu-Nation");
-		auto weaponsAimbotGroup = std::make_shared<Group>("Aimbot", 1);
+		auto weaponsGlobalsGroup = std::make_shared<Group>("全局", 12);
+		auto weaponsToolsGroup = std::make_shared<Group>("工具", 1);
+		auto weaponsAmmuNationGroup = std::make_shared<Group>("武装国度");
+		auto weaponsAimbotGroup = std::make_shared<Group>("自瞄", 1);
 
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("infiniteammo"_J));
 		weaponsGlobalsGroup->AddItem(std::make_shared<BoolCommandItem>("infiniteclip"_J));

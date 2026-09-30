@@ -27,5 +27,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static OffTheRadar _OffTheRadar{"otr", "Off The Radar", "Hides you from other players on the radar"};
+	static OffTheRadar _OffTheRadar{"otr", "雷达隐身", "让你从其他玩家的雷达上消失"};
 }

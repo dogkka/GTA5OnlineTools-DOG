@@ -5,18 +5,18 @@
 namespace YimMenu::Features
 {
 	static std::vector<std::pair<int, const char*>> g_RegionCodes = {
-	    {0, "CIS"},
-	    {1, "South America"},
-	    {2, "US East"},
-	    {3, "Europe"},
-	    {4, "China"},
-	    {5, "Australia"},
-	    {6, "US West"},
-	    {7, "Japan"},
-	    {8, "Unknown"},
+	    {0, "独联体"},
+	    {1, "南美"},
+	    {2, "美国东部"},
+	    {3, "欧洲"},
+	    {4, "中国"},
+	    {5, "澳大利亚"},
+	    {6, "美国西部"},
+	    {7, "日本"},
+	    {8, "未知"},
 	};
 
-	static ListCommand _SpoofedRegion{"mmregion", "Matchmaking Region", "Matchmaking region to spoof to", g_RegionCodes, 0};
+	static ListCommand _SpoofedRegion{"mmregion", "匹配区域", "要伪装成的匹配区域", g_RegionCodes, 0};
 
 	class SpoofMatchmakingRegion : public LoopedCommand
 	{
@@ -40,5 +40,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static SpoofMatchmakingRegion _SpoofMatchmakingRegion{"spoofmmregion", "Spoof Matchmaking Region", "Change the region you matchmake in to the specified value"};
+	static SpoofMatchmakingRegion _SpoofMatchmakingRegion{"spoofmmregion", "伪装匹配区域", "将当前匹配区域伪装为指定值"};
 }

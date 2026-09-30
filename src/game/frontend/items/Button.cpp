@@ -1,5 +1,6 @@
 #include "Items.hpp"
 #include "core/backend/FiberPool.hpp"
+#include "core/localization/Localization.hpp"
 
 namespace YimMenu
 {
@@ -13,7 +14,8 @@ namespace YimMenu
 
 	void Button::Draw()
 	{
-		if (ImGui::Button(m_Name.data(), m_Size))
+		const auto translatedName = Localization::TranslateLabel(m_Name);
+		if (ImGui::Button(translatedName.c_str(), m_Size))
 		{
 			if (m_OnClick != nullptr)
 			{

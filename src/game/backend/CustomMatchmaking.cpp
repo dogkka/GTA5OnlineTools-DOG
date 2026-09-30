@@ -13,73 +13,73 @@
 namespace YimMenu::Features
 {
 	static std::vector<std::pair<int, const char*>> g_RegionCodes = {
-	    {0, "CIS"},
-	    {1, "South America"},
-	    {2, "US East"},
-	    {3, "Europe"},
-	    {4, "China"},
-	    {5, "Australia"},
-	    {6, "US West"},
-	    {7, "Japan"},
-	    {8, "Unknown"},
+	    {0, "独联体"},
+	    {1, "南美"},
+	    {2, "美国东部"},
+	    {3, "欧洲"},
+	    {4, "中国"},
+	    {5, "澳大利亚"},
+	    {6, "美国西部"},
+	    {7, "日本"},
+	    {8, "未知"},
 	};
 
 	static std::vector<std::pair<int, const char*>> g_LanguageTypes = {
-	    {0, "English"},
-	    {1, "French"},
-	    {2, "German"},
-	    {3, "Italian"},
-	    {4, "Spanish (Spain)"},
-	    {5, "Portuguese (Brazil)"},
-	    {6, "Polish"},
-	    {7, "Russian"},
-	    {8, "Korean"},
-	    {9, "Chinese (Traditional)"},
-	    {10, "Japanese"},
-	    {11, "Spanish (Mexico)"},
-	    {12, "Chinese (Simplified)"},
+	    {0, "英语"},
+	    {1, "法语"},
+	    {2, "德语"},
+	    {3, "意大利语"},
+	    {4, "西班牙语（西班牙）"},
+	    {5, "葡萄牙语（巴西）"},
+	    {6, "波兰语"},
+	    {7, "俄语"},
+	    {8, "韩语"},
+	    {9, "繁体中文"},
+	    {10, "日语"},
+	    {11, "西班牙语（墨西哥）"},
+	    {12, "简体中文"},
 	};
 
 	BoolCommand _SpoofRegionType{
 	    "mmspoofregiontype",
-	    "Spoof Region Type",
-	    "Spoofs the region type of the session"};
+	    "伪装地区类型",
+	    "伪装当前战局的地区类型"};
 	ListCommand _RegionType{
 	    "mmregiontype",
-	    "Region Type",
-	    "The region to spoof the session to",
+	    "地区类型",
+	    "要将战局伪装成的地区",
 		g_RegionCodes};
 
 	BoolCommand _SpoofLanguage{
 	    "mmspooflanguage",
-	    "Spoof Language",
-	    "Spoofs the session language"};
+	    "伪装语言",
+	    "伪装当前战局的语言"};
 	ListCommand _Language{
 	    "mmlanguage",
-	    "Language",
-	    "The language to spoof the session to",
+	    "语言",
+	    "要将战局伪装成的语言",
 	    g_LanguageTypes};
 
 	BoolCommand _SpoofPlayerCount{
 	    "mmspoofplayercount",
-	    "Spoof Player Count",
-	    "Spoofs the session player count"};
+	    "伪装玩家数量",
+	    "伪装当前战局的玩家数量"};
 	IntCommand _PlayerCount{
 	    "mmplayercount",
-	    "Player Count",
-	    "The player count to spoof the session to",
+	    "玩家数量",
+	    "要将战局伪装成的玩家数量",
 	    1,
 	    32,
 	    25};
 
 	BoolCommand _MultiplexSession{
 	    "mmmultiplexsession",
-	    "Multiplex Session",
-	    "Makes your session much more visible to other players by hosting multiple instances of it. High values may fill your session in seconds. Use at your own risk"};
+	    "多路广播战局",
+	    "通过同时广播多个战局实例来显著提升你战局的可见性。数值较高时可能在几秒内塞满战局，请自行承担风险"};
 	IntCommand _MultiplexCount{
 	    "mmmultiplexsessioncount",
-	    "Multiplex Session Count",
-	    "The number of sessions to advertise for matchmaking",
+	    "多路广播数量",
+	    "用于匹配广播的战局实例数量",
 	    2,
 	    7,
 	    5};

@@ -13,5 +13,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static DeleteVehicle _DeleteVehicle{"deleteveh", "Delete Vehicle", "Deletes the vehicle the player is in"};
+	static DeleteVehicle _DeleteVehicle{"deleteveh", "删除载具", "删除玩家当前所在的载具"};
 }

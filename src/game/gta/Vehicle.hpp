@@ -31,6 +31,15 @@ namespace YimMenu
 
 		// seats
 		bool IsSeatFree(int seat);
+		int GetMaxNumOfPassengers();
+
+		// doors
+		void ToggleAllDoors(bool open);
+
+		// hydraulics
+		bool HasHydraulics();
+		bool RaiseHydraulicWheel(int wheelIndex, float raiseFactor);
+		bool LowerHydraulicWheel(int wheelIndex, float raiseFactor);
 
 		// rocket boost
 		bool SupportsBoost();
@@ -45,6 +54,7 @@ namespace YimMenu
 		static Vector3 GetSpawnLocRelToPed(int ped, joaat_t hash);
 
 		// description
+		static std::string GetLocalizedDisplayName(joaat_t model, bool includeMaker = true, bool includeClass = false);
 		std::string GetFullName();
 	};
 }

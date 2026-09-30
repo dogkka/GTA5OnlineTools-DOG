@@ -13,5 +13,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static Kill _Kill{"kill", "Kill", "Kills the player"};
+	static Kill _Kill{"kill", "击杀", "击杀该玩家"};
 }

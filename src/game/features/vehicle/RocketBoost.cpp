@@ -5,10 +5,10 @@
 namespace YimMenu::Features
 {
 	static std::vector<std::pair<int, const char*>> g_BoostBehavior = {
-	    {0, "Infinite"},
-	    {1, "Instant recharge"}};
+	    {0, "无限"},
+	    {1, "瞬间充能"}};
 
-	static ListCommand _BoostBehavior{"boostbehavior", "Boost Behavior", "Desired rocket boost behavior", g_BoostBehavior, 0};
+	static ListCommand _BoostBehavior{"boostbehavior", "推进器行为", "火箭推进器的目标行为", g_BoostBehavior, 0};
 
 	class ModifyRocketBoost : public LoopedCommand
 	{
@@ -35,5 +35,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static ModifyRocketBoost _ModifyRocketBoost{"modifyboostbehavior", "Modify Boost Behavior", "Modify rocket boost behavior for vehicles that support it"};
+	static ModifyRocketBoost _ModifyRocketBoost{"modifyboostbehavior", "修改推进器行为", "修改支持火箭推进器的载具行为"};
 };

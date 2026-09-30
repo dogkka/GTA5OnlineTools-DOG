@@ -16,5 +16,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static Heal _Heal{"heal", "Heal", "Restores your health and armour."};
+	static Heal _Heal{"heal", "治疗", "恢复你的生命值与护甲。"};
 }

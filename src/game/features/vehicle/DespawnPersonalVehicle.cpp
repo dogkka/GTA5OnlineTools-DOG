@@ -17,5 +17,5 @@ namespace YimMenu
 		}
 	};
 
-	static DespawnPersonalVehicle _DespawnPersonalVehicle{"despawnpv", "Despawn Personal Vehicle", "Returns your current Personal Vehicle to storage."};
+	static DespawnPersonalVehicle _DespawnPersonalVehicle{"despawnpv", "收回个人载具", "将你当前的个人载具送回仓库。"};
 }

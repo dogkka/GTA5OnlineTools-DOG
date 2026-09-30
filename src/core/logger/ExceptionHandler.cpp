@@ -5,7 +5,6 @@
 #include <hde64.h>
 #include <unordered_set>
 
-
 namespace YimMenu
 {
 	inline auto HashStackTrace(std::vector<uint64_t> stack_trace)
@@ -36,7 +35,7 @@ namespace YimMenu
 		if (exception_code == EXCEPTION_BREAKPOINT || exception_code == DBG_PRINTEXCEPTION_C || exception_code == DBG_PRINTEXCEPTION_WIDE_C)
 			return EXCEPTION_CONTINUE_SEARCH;
 
-		static std::unordered_set<std::size_t> logged_exceptions;
+		static thread_local std::unordered_set<std::size_t> logged_exceptions;
 
 		trace.NewStackTrace(exception_info);
 		const auto trace_hash = HashStackTrace(trace.GetFramePointers());
@@ -89,18 +88,19 @@ namespace YimMenu
 			}
 			else
 			{
-				exception_info->ContextRecord->Rip += opcode.len;
-
 				if (opcode.opcode == 0x8B && opcode.modrm_mod != 3)
 				{
-					uint8_t regIdx = opcode.rex_r << 3 | opcode.modrm_reg;
-					switch (regIdx)
+					uint8_t regId = opcode.modrm_reg | (opcode.rex_r << 3);
+					if (regId == 4)
+						return EXCEPTION_CONTINUE_SEARCH;
+
+					exception_info->ContextRecord->Rip += opcode.len;
+					switch (regId)
 					{
 					case 0: exception_info->ContextRecord->Rax = 0; break;
 					case 1: exception_info->ContextRecord->Rcx = 0; break;
 					case 2: exception_info->ContextRecord->Rdx = 0; break;
 					case 3: exception_info->ContextRecord->Rbx = 0; break;
-					case 4: exception_info->ContextRecord->Rsp = 0; break;
 					case 5: exception_info->ContextRecord->Rbp = 0; break;
 					case 6: exception_info->ContextRecord->Rsi = 0; break;
 					case 7: exception_info->ContextRecord->Rdi = 0; break;
@@ -113,6 +113,10 @@ namespace YimMenu
 					case 14: exception_info->ContextRecord->R14 = 0; break;
 					case 15: exception_info->ContextRecord->R15 = 0; break;
 					}
+				}
+				else
+				{
+					exception_info->ContextRecord->Rip += opcode.len;
 				}
 			}
 		}

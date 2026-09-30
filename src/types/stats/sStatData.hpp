@@ -1,11 +1,11 @@
-﻿#pragma once
+#pragma once
 
 class sStatData
 {
 public:
 	enum class Type
 	{
-		NONE=0,
+		NONE = 0,
 		INT = 1,
 		FLOAT,
 		STRING,
@@ -17,10 +17,10 @@ public:
 		DATE = 20,
 		POS,
 		TEXTLABEL = 22,
-		PACKED = 23,
-		USERID = 24,
-		PROFILE_SETTING = 25,
-		INT64 = 26
+		PACKED,
+		USERID,
+		PROFILE_SETTING,
+		INT64 = 26,
 	};
 
 	// it isn't recommended to call the SetXXX() functions directly, use the natives instead

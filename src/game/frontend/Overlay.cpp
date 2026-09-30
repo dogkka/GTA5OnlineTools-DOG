@@ -1,14 +1,15 @@
 #include "Overlay.hpp"
 #include "Menu.hpp"
 #include "core/commands/BoolCommand.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/pointers/Pointers.hpp"
 #include "game/gta/invoker/Invoker.hpp"
 #include "game/gta/Natives.hpp"
 
 namespace YimMenu::Features
 {
-	BoolCommand _OverlayEnabled("overlay", "Overlay Enabled", "Show an info overlay at the top left corner of the screen");
-	BoolCommand _OverlayShowFPS("overlayfps", "Overlay Show FPS", "Show frame rate in the info overlay");
+	BoolCommand _OverlayEnabled("overlay", "启用叠加层", "在屏幕左上角显示信息叠加层");
+	BoolCommand _OverlayShowFPS("overlayfps", "叠加层显示帧率", "在信息叠加层中显示帧率");
 }
 
 namespace YimMenu
@@ -26,7 +27,7 @@ namespace YimMenu
 		ImGui::Begin("##overlay", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoInputs);
 
 		if (Features::_OverlayShowFPS.GetState())
-			ImGui::Text("FPS: %d", (int)(ImGui::GetIO().Framerate));
+			ImGui::Text("帧率：%d", (int)(ImGui::GetIO().Framerate));
 
 		ImGui::PopFont();
 		ImGui::PopStyleColor();

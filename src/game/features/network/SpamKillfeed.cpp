@@ -55,5 +55,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static SpamKillfeed _SpamKillfeed{"spamkillfeed", "Spam Killfeed", "Spams the killfeed of all players with fake kill entries. Use with caution"};
+	static SpamKillfeed _SpamKillfeed{"spamkillfeed", "刷屏击杀信息", "向所有玩家的击杀信息栏刷入伪造记录。请谨慎使用"};
 }

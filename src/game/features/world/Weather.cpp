@@ -7,23 +7,23 @@
 namespace YimMenu::Features
 {
 	static std::vector<std::pair<int, const char*>> g_WeatherTypes = {
-	    {0, "Clear"},
-	    {1, "Extra Sunny"},
-	    {2, "Clouds"},
-	    {3, "Overcast"},
-	    {4, "Rain"},
-	    {5, "Clearing"},
-	    {6, "Thunder"},
-	    {7, "Smog"},
-	    {8, "Foggy"},
-	    {9, "Xmas"},
-	    {10, "Snow"},
-	    {11, "Snow Light"},
-	    {12, "Blizzard"},
-	    {13, "Halloween"},
-	    {14, "Neutral"},
-	    {15, "Rain Halloween"},
-	    {16, "Snow Halloween"},
+	    {0, "晴朗"},
+	    {1, "万里无云"},
+	    {2, "多云"},
+	    {3, "阴天"},
+	    {4, "下雨"},
+	    {5, "雨过天晴"},
+	    {6, "雷暴"},
+	    {7, "雾霾"},
+	    {8, "浓雾"},
+	    {9, "圣诞"},
+	    {10, "下雪"},
+	    {11, "小雪"},
+	    {12, "暴风雪"},
+	    {13, "万圣节"},
+	    {14, "中性"},
+	    {15, "万圣节雨天"},
+	    {16, "万圣节雪天"},
 	};
 
 	constexpr std::array g_WeatherCodes = {
@@ -46,7 +46,7 @@ namespace YimMenu::Features
 	    "SNOW_HALLOWEEN",
 	};
 
-	static ListCommand _Weather{"weather", "Weather", "Weather to set or force. Note that this is local and cannot be seen by other players", g_WeatherTypes, 0};
+	static ListCommand _Weather{"weather", "天气", "要设置或强制应用的天气。该效果仅在本地生效，其他玩家无法看到", g_WeatherTypes, 0};
 
 	class SetWeather : public Command
 	{
@@ -57,7 +57,7 @@ namespace YimMenu::Features
 			MISC::SET_WEATHER_TYPE_PERSIST(g_WeatherCodes[_Weather.GetState()]);
 		}
 	};
-	static SetWeather _SetWeather{"setweather", "Set Weather", "Sets the specifed weather. Note that this effect is local and cannot be seen by other players"};
+	static SetWeather _SetWeather{"setweather", "设置天气", "设置指定天气。该效果仅在本地生效，其他玩家无法看到"};
 
 	class ForceWeather : public LoopedCommand
 	{
@@ -131,5 +131,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static ForceWeather _ForceWeather{"forceweather", "Force Weather", "Forces the specified weather. Note that this effect is local and cannot be seen by other players"};
+	static ForceWeather _ForceWeather{"forceweather", "强制天气", "强制应用指定天气。该效果仅在本地生效，其他玩家无法看到"};
 }

@@ -19,6 +19,6 @@ namespace YimMenu::Features
 		    }
 	};
 
-	static InfiniteBoundary Infinitebundary{"infiniteboundary", "Infinite Boundary", "You won't die because of border restrictions."};
+	static InfiniteBoundary Infinitebundary{"infiniteboundary", "无限边界", "你不会因地图边界限制而死亡。"};
 
 }

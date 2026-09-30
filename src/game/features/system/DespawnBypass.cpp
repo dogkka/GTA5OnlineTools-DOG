@@ -28,5 +28,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static DespawnBypass _DespawnBypass{"despawnbypass", "Allow MP Vehicles in SP", "Allows MP vehicles to be used in SP", true};
+	static DespawnBypass _DespawnBypass{"despawnbypass", "允许单机使用线上载具", "允许在单人模式中使用线上载具", true};
 }

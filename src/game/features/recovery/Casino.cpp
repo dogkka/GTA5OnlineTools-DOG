@@ -98,5 +98,5 @@ virtual void OnDisable() override
 		}
 	};
 
-	static CasinoManipulateRigSlotMachines _CasinoManipulateRigSlotMachines{"casinomanipulaterigslotmachines", "Manipulate Rig Slot Machines", "Lets you win the Rig Slot Machines every time"};
+	static CasinoManipulateRigSlotMachines _CasinoManipulateRigSlotMachines{"casinomanipulaterigslotmachines", "老虎机必胜", "让老虎机每次都中奖。"};
 }

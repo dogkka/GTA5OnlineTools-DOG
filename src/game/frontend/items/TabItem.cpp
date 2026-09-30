@@ -1,4 +1,5 @@
 #include "Items.hpp"
+#include "core/localization/Localization.hpp"
 
 namespace YimMenu
 {
@@ -9,7 +10,8 @@ namespace YimMenu
 
 	void TabItem::Draw()
 	{
-		if (ImGui::BeginTabItem(m_Name.c_str()))
+		const auto translatedName = Localization::Translate(m_Name);
+		if (ImGui::BeginTabItem(translatedName.c_str()))
 		{
 			for (auto& item : m_Items)
 			{

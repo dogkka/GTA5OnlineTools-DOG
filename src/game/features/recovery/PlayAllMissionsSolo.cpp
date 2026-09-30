@@ -155,10 +155,9 @@ namespace YimMenu::Features
 
 			if (!m_CasinoBoardPatch)
 			{
-				m_CasinoBoardPatch = ScriptPatches::AddPatch("fmmc_launcher"_J, ScriptPointer("casinosolo", "2D 01 03 00 00 5D ? ? ? 2A 06 56 05 00 5D ? ? ? 20 2A 06 56 05 00 5D").Add(5), {0x71, 0x2E, 0x01, 0x01});
+				m_CasinoBoardPatch = ScriptPatches::AddPatch("fmmc_launcher"_J, ScriptPointer("CasinoSoloBoardPatch", "2D 01 03 00 00 5D ? ? ? 2A 06 56 05 00 5D ? ? ? 20 2A 06 56 05 00 5D").Add(5), {0x71, 0x2E, 0x01, 0x01});
 			}
 			m_CasinoBoardPatch->Enable();
-			// By this patch, you can use the finale board of casino heist, and can change outfits or teams in missions like Lowriders
 		}
 
 		virtual void OnTick() override
@@ -267,6 +266,7 @@ namespace YimMenu::Features
 			{
 				m_QuickRestartPatch2->Disable();
 			}
+
 			if (m_CasinoBoardPatch)
 			{
 				m_CasinoBoardPatch->Disable();
@@ -274,5 +274,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static PlayAllMissionsSolo _PlayAllMissionsSolo{"playallmissionssolo", "Play All Missions Solo", "Allows you to play any mission solo. Note that some missions might break if there aren't enough players"};
+	static PlayAllMissionsSolo _PlayAllMissionsSolo{"playallmissionssolo", "允许单人开始任务", "允许单人开始通常有最低人数要求的任务；部分任务可能因人数不足而异常。"};
 }

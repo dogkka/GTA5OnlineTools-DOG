@@ -14,5 +14,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static StandOnVehicles _StandOnVehicles{"standonvehicles", "Stand On Vehicles", "Prevents you from ragdolling when standing on top of vehicles."};
+	static StandOnVehicles _StandOnVehicles{"standonvehicles", "站载具不摔", "站在载具顶部时不会进入布娃娃状态。"};
 };

@@ -43,7 +43,7 @@ namespace YimMenu::Features
 			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(m_ScaleformHandle, "SET_SPEED_UNITS");
 			GRAPHICS::BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(MISC::SHOULD_USE_METRIC_MEASUREMENTS() ? "KPH" : "MPH");
+			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(MISC::SHOULD_USE_METRIC_MEASUREMENTS() ? "公里/时" : "英里/时");
 			GRAPHICS::END_TEXT_COMMAND_SCALEFORM_STRING();
 			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(m_ScaleformHandle, "SET_METER_VALUE");
@@ -76,5 +76,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static Speedometer _Speedometer{"speedometer", "Speedometer", "Shows a speedometer whenever you are in a vehicle"};
+	static Speedometer _Speedometer{"speedometer", "速度表", "当你在载具中时显示速度表"};
 }

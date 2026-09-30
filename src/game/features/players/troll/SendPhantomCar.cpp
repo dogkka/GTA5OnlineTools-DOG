@@ -28,5 +28,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static SendPhantomCar _SendPhantomCar{"sendphantomcar", "Send Phantom Car", "Sends the Phantom Car to the specified player."};
+	static SendPhantomCar _SendPhantomCar{"sendphantomcar", "派遣幻影车", "将幻影车派到指定玩家身边。"};
 }

@@ -12,10 +12,10 @@ namespace YimMenu::Features
 {
 	namespace ApartmentHeist
 	{
-		static IntCommand _ApartmentHeistCut1{"apartmentheistcut1", "Player 1", "Player 1 cut", std::nullopt, std::nullopt, 0};
-		static IntCommand _ApartmentHeistCut2{"apartmentheistcut2", "Player 2", "Player 2 cut", std::nullopt, std::nullopt, 0};
-		static IntCommand _ApartmentHeistCut3{"apartmentheistcut3", "Player 3", "Player 3 cut", std::nullopt, std::nullopt, 0};
-		static IntCommand _ApartmentHeistCut4{"apartmentheistcut4", "Player 4", "Player 4 cut", std::nullopt, std::nullopt, 0};
+		static IntCommand _ApartmentHeistCut1{"apartmentheistcut1", "玩家 1", "玩家 1 分红", std::nullopt, std::nullopt, 0};
+		static IntCommand _ApartmentHeistCut2{"apartmentheistcut2", "玩家 2", "玩家 2 分红", std::nullopt, std::nullopt, 0};
+		static IntCommand _ApartmentHeistCut3{"apartmentheistcut3", "玩家 3", "玩家 3 分红", std::nullopt, std::nullopt, 0};
+		static IntCommand _ApartmentHeistCut4{"apartmentheistcut4", "玩家 4", "玩家 4 分红", std::nullopt, std::nullopt, 0};
 
 		class SetCuts : public Command
 		{
@@ -149,13 +149,13 @@ namespace YimMenu::Features
 			}
 		};
 
-		static SetCuts _ApartmentHeistSetCuts{"apartmentheistsetcuts", "Set Cuts", "Sets heist cut"};
-		static ForceReady _ApartmentHeistForceReady{"apartmentheistforceready", "Force Ready", "Forces all players to be ready"};
-		static Setup _ApartmentHeistSetup{"apartmentheistsetup", "Setup", "Sets up current apartment heist"};
-		static SkipHacking _ApartmentHeistSkipHacking{"apartmentheistskiphacking", "Skip Hacking", "Skips hacking process"};
-		static SkipDrilling _ApartmentHeistSkipDrilling{"apartmentheistskipdrilling", "Skip Drilling", "Skips drilling process"};
-		static SkipSwiping _ApartmentHeistSkipSwiping{"apartmentheistskipswiping", "Skip Swiping", "Skips card swiping process"};
-		static InstantFinish _ApartmentHeistInstantFinish{"apartmentheistinstantfinish", "Instant Finish", "Instantly passes the heist"};
-		static InstantFinishPacific _ApartmentHeistInstantFinishPacific{"apartmentheistinstantfinishpacific", "Instant Finish (Pacific)", "Instantly passes Pacific Standard Job"};
+		static SetCuts _ApartmentHeistSetCuts{"apartmentheistsetcuts", "应用分红", "应用上方设置的抢劫分红比例。"};
+		static ForceReady _ApartmentHeistForceReady{"apartmentheistforceready", "强制全员准备", "将所有玩家设为已准备。"};
+		static Setup _ApartmentHeistSetup{"apartmentheistsetup", "配置任务", "配置当前公寓抢劫。"};
+		static SkipHacking _ApartmentHeistSkipHacking{"apartmentheistskiphacking", "跳过破解", "跳过黑客破解流程。"};
+		static SkipDrilling _ApartmentHeistSkipDrilling{"apartmentheistskipdrilling", "跳过钻孔", "跳过钻孔流程"};
+		static SkipSwiping _ApartmentHeistSkipSwiping{"apartmentheistskipswiping", "跳过刷卡", "跳过刷卡流程"};
+		static InstantFinish _ApartmentHeistInstantFinish{"apartmentheistinstantfinish", "立即完成", "立即完成当前抢劫。"};
+		static InstantFinishPacific _ApartmentHeistInstantFinishPacific{"apartmentheistinstantfinishpacific", "立即完成（太平洋）", "立即完成太平洋标准银行差事。"};
 	}
 }

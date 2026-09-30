@@ -4,11 +4,11 @@ namespace YimMenu::Submenus
 {
 	std::shared_ptr<TabItem> RenderDoomsdayHeistMenu()
 	{
-		auto tab = std::make_shared<TabItem>("Doomsday Heist");
+		auto tab = std::make_shared<TabItem>("末日豪劫");
 
-		auto cuts = std::make_shared<Group>("Heist Cuts", 2);
-		auto setups = std::make_shared<Group>("Heist Setups");
-		auto misc = std::make_shared<Group>("Misc", 1);
+		auto cuts = std::make_shared<Group>("抢劫分红", 2);
+		auto setups = std::make_shared<Group>("抢劫设置");
+		auto misc = std::make_shared<Group>("其他", 1);
 
 		cuts->AddItem(std::make_shared<IntCommandItem>("doomsdayheistcut1"_J));
 		cuts->AddItem(std::make_shared<IntCommandItem>("doomsdayheistcut3"_J));

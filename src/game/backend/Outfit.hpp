@@ -1,62 +1,58 @@
 #pragma once
 #include "core/filemgr/FileMgr.hpp"
-#include <unordered_map>
 
-namespace YimMenu
+#include <map>
+
+namespace YimMenu::Outfit
 {
-	namespace Outfit
+	struct ComponentData
 	{
-		struct ComponentData
-		{
-			std::string label;
-			int drawable_id = 0;
-			int texture_id = 0;
-			int palette_var = -1;
-			int drawable_id_max = 0;
-			int texture_id_max = 0;
-		};
+		std::string label;
+		int drawableId = 0;
+		int textureId = 0;
+		int palette = -1;
+		int maxDrawableId = 0;
+		int maxTextureId = 0;
+		bool present = false;
+	};
 
-		struct OutfitComponents
-		{
-			std::unordered_map<int, ComponentData> items = {
-			    {1, {"Mask"}},
-			    {2, {"Hair"}},
-			    {3, {"Torso"}},
-			    {4, {"Leg"}},
-			    {5, {"Bag"}},
-			    {6, {"Shoe"}},
-			    {7, {"Accessory"}},
-			    {8, {"Undershirt"}},
-			    {9, {"Kevlar/Armor"}},
-			    {10, {"Decals"}},
-			    {11, {"Tops"}}};
-		};
+	struct OutfitComponents
+	{
+		std::map<int, ComponentData> items = {
+		    {1, {"面具"}},
+		    {2, {"发型"}},
+		    {3, {"躯干"}},
+		    {4, {"裤装"}},
+		    {5, {"包袋"}},
+		    {6, {"鞋子"}},
+		    {7, {"配饰"}},
+		    {8, {"内搭"}},
+		    {9, {"护甲"}},
+		    {10, {"贴花"}},
+		    {11, {"上衣"}}};
+	};
 
-		struct OutfitProps
-		{
-			std::unordered_map<int, ComponentData> items = {
-			    {0, {"Hats"}},
-			    {1, {"Glasses"}},
-			    {2, {"Ears"}},
-			    {6, {"Watches"}},
-			    {7, {"Bracelets"}}};
-		};
+	struct OutfitProps
+	{
+		std::map<int, ComponentData> items = {
+		    {0, {"帽子"}},
+		    {1, {"眼镜"}},
+		    {2, {"耳饰"}},
+		    {6, {"手表"}},
+		    {7, {"手链"}}};
+	};
 
-        class OutfitEditor {
-            
-            public: 
+	class OutfitEditor final
+	{
+	public:
+		static void CheckBoundsDrawable(ComponentData& item, int lower);
+		static void CheckBoundsTexture(ComponentData& item, int lower);
+		static void SetSelfOutfit(const OutfitComponents& components, const OutfitProps& props, bool applyHair);
+		static void RandomizeOutfit();
 
-            static void SetSelfOutfit(OutfitComponents components, OutfitProps props, bool applyHair);
-
-            // json
-            static Folder CheckFolder(std::string folderName = "");
-            static void ApplyOutfitFromJson(std::string folderName, std::string fileName, bool applyHair);
-            static void SaveOutfit(std::string fileName, std::string folder);
-			static void RefreshList(std::string folderName, std::vector<std::string>& folders, std::vector<std::string>& files);
-
-            // check & fix bounds
-            static void CheckBoundsDrawable(ComponentData& item, const int lower);
-            static void CheckBoundsTexture(ComponentData& item, const int lower);
-        };
-	}
+		static Folder CheckFolder(const std::string& folderName = {});
+		static bool ApplyOutfitFromJson(const std::string& folderName, const std::string& fileName, bool applyHair);
+		static bool SaveOutfit(std::string fileName, const std::string& folderName);
+		static bool RefreshList(const std::string& folderName, std::vector<std::string>& folders, std::vector<std::string>& files);
+	};
 }

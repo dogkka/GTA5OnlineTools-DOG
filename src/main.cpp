@@ -6,6 +6,7 @@
 #include "core/settings/Settings.hpp"
 #include "core/filemgr/FileMgr.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/hooking/Hooking.hpp"
 #include "core/hooking/CallHook.hpp"
 #include "core/memory/ModuleMgr.hpp"
@@ -26,17 +27,27 @@
 #include "game/features/vehicle/SavePersonalVehicle.hpp"
 #include "game/features/self/OpenGunLocker.hpp"
 #include "game/features/recovery/DailyActivities.hpp"
+#include "Version.hpp"
 
 namespace YimMenu
 {
 	DWORD Main(void*)
 	{
-		const auto documents = std::filesystem::path(std::getenv("appdata")) / "YimMenuV2";
+		const auto appdata = std::getenv("appdata");
+		if (!appdata)
+		{
+			MessageBoxA(nullptr, "Failed to get APPDATA environment variable", "YimMenuV2", MB_ICONERROR);
+			g_Running = false;
+			CloseHandle(g_MainThread);
+			FreeLibraryAndExitThread(g_DllInstance, EXIT_FAILURE);
+			return EXIT_FAILURE;
+		}
+		const auto documents = std::filesystem::path(appdata) / "YimMenuV2";
 		FileMgr::Init(documents);
 
 		LogHelper::Init("YimMenuV2", FileMgr::GetProjectFile("./cout.log"));
 
-		LOGF(INFO, "Welcome to YimMenuV2! Build date: {} at {}", __DATE__, __TIME__);
+		LOGF(INFO, "Welcome to YimMenuV2 {}! Version: {}. Build date: {} at {}", Build::Tag, Build::Version, __DATE__, __TIME__);
 
 		g_HotkeySystem.RegisterCommands();
 		SavedLocations::FetchSavedLocations();
@@ -55,7 +66,11 @@ namespace YimMenu
 
 		Players::Init();
 
-		Hooking::Init();
+		if (!Hooking::Init())
+		{
+			Hooking::Destroy();
+			goto EARLY_UNLOAD;
+		}
 
 		ScriptMgr::Init();
 		LOG(INFO) << "ScriptMgr initialized";
@@ -65,8 +80,16 @@ namespace YimMenu
 		if (!D3D12Hook::Init())
 			goto EARLY_UNLOAD;
 		Renderer::Init();
-		while (!Renderer::IsInitialized())
-			std::this_thread::sleep_for(100ms);
+		{
+			const auto rendererDeadline = std::chrono::steady_clock::now() + 30s;
+			while (!Renderer::IsInitialized() && g_Running && std::chrono::steady_clock::now() < rendererDeadline)
+				std::this_thread::sleep_for(100ms);
+			if (!Renderer::IsInitialized())
+			{
+				LOG(FATAL) << "Renderer initialization timed out.";
+				goto EARLY_UNLOAD;
+			}
+		}
 		GUI::Init();
 
 		ScriptMgr::AddScript(std::make_unique<Script>(&NativeHooks::RunScript)); // runs once
@@ -86,7 +109,7 @@ namespace YimMenu
 		if (!Pointers.LateInit())
 			LOG(WARNING) << "Socialclub patterns failed to load";
 
-		Notifications::Show("YimMenuV2", "Loaded succesfully", NotificationType::Success);
+		Notifications::Show("YimMenuV2", Localization::Translate("Loaded successfully."), NotificationType::Success);
 
 		if (InWine().value_or(false))
 		    LOG(INFO) << "Running in Wine!";

@@ -8,7 +8,6 @@ namespace YimMenu
 	    m_Name(name),
 	    m_Enabled(false)
 	{
-		m_Hooks.emplace_back(this);
 	}
 
 	std::vector<BaseHook*>& BaseHook::Hooks()
@@ -16,19 +15,31 @@ namespace YimMenu
 		return m_Hooks;
 	}
 
-	void BaseHook::EnableAll()
+	bool BaseHook::EnableAll()
 	{
+		bool success = true;
 		for (auto hook : m_Hooks)
-		{
-			hook->Enable();
-		}
+			success = hook->Enable() && success;
+		return success;
 	}
 
-	void BaseHook::DisableAll()
+	bool BaseHook::DisableAll()
+	{
+		bool success = true;
+		for (auto hook : m_Hooks)
+			success = hook->Disable() && success;
+		return success;
+	}
+
+	void BaseHook::CommitQueuedStates(bool success)
 	{
 		for (auto hook : m_Hooks)
-		{
-			hook->Disable();
-		}
+			hook->CommitQueuedState(success);
+	}
+
+	void BaseHook::ReconcileEnabledStates(bool enabled)
+	{
+		for (auto hook : m_Hooks)
+			hook->ReconcileEnabledState(enabled);
 	}
 }

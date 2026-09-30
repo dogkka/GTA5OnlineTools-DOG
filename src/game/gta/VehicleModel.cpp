@@ -1,105 +1,125 @@
 #include "VehicleModel.hpp"
 
+#include "core/localization/Localization.hpp"
 #include "core/util/Joaat.hpp"
 #include "game/gta/Natives.hpp"
 #include "game/gta/data/VehicleValues.hpp"
 
 namespace YimMenu
 {
-	const char* VehicleModel::GetModSlotName(Hash model, int vehicle, int mod_slot)
+	namespace
+	{
+		std::string LocalizeModLabel(const char* label)
+		{
+			if (!label || label[0] == 0)
+				return {};
+
+			return Localization::Translate(label);
+		}
+
+		std::string LocalizeHudLabel(const char* label)
+		{
+			if (!label || label[0] == 0)
+				return {};
+
+			return Localization::Translate(HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(label));
+		}
+	}
+
+	std::string VehicleModel::GetModSlotName(Hash model, int vehicle, int mod_slot)
 	{
 		switch ((VehicleModType)mod_slot)
 		{
-		case VehicleModType::MOD_HOOD: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_HOD");
-		case VehicleModType::MOD_ARMOR: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_ARM");
-		case VehicleModType::MOD_BRAKES: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_BRA");
-		case VehicleModType::MOD_ENGINE: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_ENG");
-		case VehicleModType::MOD_SUSPENSION: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_SUS");
-		case VehicleModType::MOD_TRANSMISSION: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_TRN");
-		case VehicleModType::MOD_HORNS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_HRN");
+		case VehicleModType::MOD_HOOD: return LocalizeHudLabel("CMOD_MOD_HOD");
+		case VehicleModType::MOD_ARMOR: return LocalizeHudLabel("CMOD_MOD_ARM");
+		case VehicleModType::MOD_BRAKES: return LocalizeHudLabel("CMOD_MOD_BRA");
+		case VehicleModType::MOD_ENGINE: return LocalizeHudLabel("CMOD_MOD_ENG");
+		case VehicleModType::MOD_SUSPENSION: return LocalizeHudLabel("CMOD_MOD_SUS");
+		case VehicleModType::MOD_TRANSMISSION: return LocalizeHudLabel("CMOD_MOD_TRN");
+		case VehicleModType::MOD_HORNS: return LocalizeHudLabel("CMOD_MOD_HRN");
 		case VehicleModType::MOD_FRONTWHEEL:
 			if (!VEHICLE::IS_THIS_MODEL_A_BIKE(model) && VEHICLE::IS_THIS_MODEL_A_BICYCLE(model))
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_WHEM");
+				return LocalizeHudLabel("CMOD_MOD_WHEM");
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_WHE0_0");
+				return LocalizeHudLabel("CMOD_WHE0_0");
 		case VehicleModType::MOD_REARWHEEL:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_WHE0_1");
+			return LocalizeHudLabel("CMOD_WHE0_1");
 			//Bennys
-		case VehicleModType::MOD_PLATEHOLDER: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S0");
-		case VehicleModType::MOD_VANITYPLATES: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S1");
+		case VehicleModType::MOD_PLATEHOLDER: return LocalizeHudLabel("CMM_MOD_S0");
+		case VehicleModType::MOD_VANITYPLATES: return LocalizeHudLabel("CMM_MOD_S1");
 		case VehicleModType::MOD_TRIMDESIGN:
 			if (model == "SULTANRS"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S2b");
+				return LocalizeHudLabel("CMM_MOD_S2b");
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S2");
-		case VehicleModType::MOD_ORNAMENTS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S3");
-		case VehicleModType::MOD_DASHBOARD: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S4");
-		case VehicleModType::MOD_DIALDESIGN: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S5");
-		case VehicleModType::MOD_DOORSPEAKERS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S6");
-		case VehicleModType::MOD_SEATS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S7");
-		case VehicleModType::MOD_STEERINGWHEELS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S8");
-		case VehicleModType::MOD_COLUMNSHIFTERLEVERS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S9");
-		case VehicleModType::MOD_PLAQUES: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S10");
-		case VehicleModType::MOD_SPEAKERS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S11");
-		case VehicleModType::MOD_TRUNK: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S12");
-		case VehicleModType::MOD_HYDRO: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S13");
-		case VehicleModType::MOD_ENGINEBLOCK: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S14");
+				return LocalizeHudLabel("CMM_MOD_S2");
+		case VehicleModType::MOD_ORNAMENTS: return LocalizeHudLabel("CMM_MOD_S3");
+		case VehicleModType::MOD_DASHBOARD: return LocalizeHudLabel("CMM_MOD_S4");
+		case VehicleModType::MOD_DIALDESIGN: return LocalizeHudLabel("CMM_MOD_S5");
+		case VehicleModType::MOD_DOORSPEAKERS: return LocalizeHudLabel("CMM_MOD_S6");
+		case VehicleModType::MOD_SEATS: return LocalizeHudLabel("CMM_MOD_S7");
+		case VehicleModType::MOD_STEERINGWHEELS: return LocalizeHudLabel("CMM_MOD_S8");
+		case VehicleModType::MOD_COLUMNSHIFTERLEVERS: return LocalizeHudLabel("CMM_MOD_S9");
+		case VehicleModType::MOD_PLAQUES: return LocalizeHudLabel("CMM_MOD_S10");
+		case VehicleModType::MOD_SPEAKERS: return LocalizeHudLabel("CMM_MOD_S11");
+		case VehicleModType::MOD_TRUNK: return LocalizeHudLabel("CMM_MOD_S12");
+		case VehicleModType::MOD_HYDRO: return LocalizeHudLabel("CMM_MOD_S13");
+		case VehicleModType::MOD_ENGINEBLOCK: return LocalizeHudLabel("CMM_MOD_S14");
 		case VehicleModType::MOD_AIRFILTER:
 			if (model == "SULTANRS"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S15b");
+				return LocalizeHudLabel("CMM_MOD_S15b");
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S15");
+				return LocalizeHudLabel("CMM_MOD_S15");
 		case VehicleModType::MOD_STRUTS:
 			if (model == "SULTANRS"_J || model == "BANSHEE2"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S16b");
+				return LocalizeHudLabel("CMM_MOD_S16b");
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S16");
+				return LocalizeHudLabel("CMM_MOD_S16");
 		case VehicleModType::MOD_ARCHCOVER:
 			if (model == "SULTANRS"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S17b");
+				return LocalizeHudLabel("CMM_MOD_S17b");
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S17");
+				return LocalizeHudLabel("CMM_MOD_S17");
 		case VehicleModType::MOD_AERIALS:
 			if (model == "SULTANRS"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S18b");
+				return LocalizeHudLabel("CMM_MOD_S18b");
 			else if (model == "BTYPE3"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S18c");
+				return LocalizeHudLabel("CMM_MOD_S18c");
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S18");
+				return LocalizeHudLabel("CMM_MOD_S18");
 		case VehicleModType::MOD_TRIM:
 			if (model == "SULTANRS"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S19b");
+				return LocalizeHudLabel("CMM_MOD_S19b");
 			else if (model == "BTYPE3"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S19c");
+				return LocalizeHudLabel("CMM_MOD_S19c");
 			else if (model == "VIRGO2"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S19d");
+				return LocalizeHudLabel("CMM_MOD_S19d");
 			else if ("TOP_IMANI_TECH"_J == MISC::GET_HASH_KEY(VEHICLE::GET_MOD_SLOT_NAME(vehicle, mod_slot)))
-				return "Imani Tech";
+				return Localization::Translate("Imani Tech");
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S19");
+				return LocalizeHudLabel("CMM_MOD_S19");
 		case VehicleModType::MOD_TANK:
 			if (model == "SLAMVAN3"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S27");
+				return LocalizeHudLabel("CMM_MOD_S27");
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S20");
+				return LocalizeHudLabel("CMM_MOD_S20");
 		case VehicleModType::MOD_WINDOWS:
 			if (model == "BTYPE3"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S21b");
+				return LocalizeHudLabel("CMM_MOD_S21b");
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S21");
+				return LocalizeHudLabel("CMM_MOD_S21");
 		case VehicleModType::MOD_DOORS:
 			if (model == "SLAMVAN3"_J)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("SLVAN3_RDOOR");
+				return LocalizeHudLabel("SLVAN3_RDOOR");
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S22");
-		case VehicleModType::MOD_LIVERY: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S23");
+				return LocalizeHudLabel("CMM_MOD_S22");
+		case VehicleModType::MOD_LIVERY: return LocalizeHudLabel("CMM_MOD_S23");
 		default:
 			auto name = VEHICLE::GET_MOD_SLOT_NAME(vehicle, mod_slot);
 			if (name == nullptr)
-				return "";
+				return {};
 			if (strstr(name, "_"))
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(name);
-			return name;
+				return LocalizeHudLabel(name);
+			return LocalizeModLabel(name);
 		}
 	}
 
@@ -158,7 +178,7 @@ namespace YimMenu
 		{
 			if (horn_map.find(mod) != horn_map.end())
 			{
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(horn_map.find(mod)->second);
+				return LocalizeHudLabel(horn_map.find(mod)->second);
 			}
 			return "";
 		}
@@ -168,31 +188,30 @@ namespace YimMenu
 			if (mod == -1)
 			{
 				if (!VEHICLE::IS_THIS_MODEL_A_BIKE(model) && VEHICLE::IS_THIS_MODEL_A_BICYCLE(model))
-					return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_WHE_0");
+					return LocalizeHudLabel("CMOD_WHE_0");
 				else
-					return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_WHE_B_0");
+					return LocalizeHudLabel("CMOD_WHE_B_0");
 			}
 			if (mod >= mod_count / 2)
-				//return std::format("{} {}", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CHROME"), HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str(); //Bug with FMT library? Returns Chrome Chrome...
-				return std::format("Chrome {}", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str();
+				return std::format("{} {}", Localization::Translate("Chrome"), LocalizeHudLabel(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod)));
 			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod));
+				return LocalizeHudLabel(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod));
 		}
 
 		switch (mod_slot)
 		{
 		case (int)VehicleModType::MOD_ARMOR:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_ARM_{}", (mod + 1)).c_str());
+			return LocalizeHudLabel(std::format("CMOD_ARM_{}", (mod + 1)).c_str());
 		case (int)VehicleModType::MOD_BRAKES:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_BRA_{}", (mod + 1)).c_str());
+			return LocalizeHudLabel(std::format("CMOD_BRA_{}", (mod + 1)).c_str());
 		case (int)VehicleModType::MOD_ENGINE:
 			if (mod == -1)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_ARM_0");
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_ENG_{}", (mod + 1)).c_str());
+				return LocalizeHudLabel("CMOD_ARM_0");
+			return LocalizeHudLabel(std::format("CMOD_ENG_{}", (mod + 1)).c_str());
 		case (int)VehicleModType::MOD_SUSPENSION:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_SUS_{}", (mod + 1)).c_str());
+			return LocalizeHudLabel(std::format("CMOD_SUS_{}", (mod + 1)).c_str());
 		case (int)VehicleModType::MOD_TRANSMISSION:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_GBX_{}", (mod + 1)).c_str());
+			return LocalizeHudLabel(std::format("CMOD_GBX_{}", (mod + 1)).c_str());
 		}
 
 
@@ -200,12 +219,12 @@ namespace YimMenu
 		{
 			if (mod_slot == (int)VehicleModType::MOD_SIDESKIRT && VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, (int)VehicleModType::MOD_SIDESKIRT) < 2)
 			{
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_SKI_1");
+				return LocalizeHudLabel("CMOD_SKI_1");
 			}
 			auto label = VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod);
 			if (label == nullptr || strlen(label) == 0)
-				return "MISSING_LABEL";
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(label);
+				return Localization::Translate("MISSING_LABEL");
+			return LocalizeHudLabel(label);
 		}
 		else
 		{
@@ -217,11 +236,11 @@ namespace YimMenu
 				{
 				case "BANSHEE"_J:
 				case "BANSHEE2"_J:
-				case "SULTANRS"_J: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_COL5_41");
+				case "SULTANRS"_J: return LocalizeHudLabel("CMOD_COL5_41");
 				}
 				break;
 			}
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_DEF_0");
+			return LocalizeHudLabel("CMOD_DEF_0");
 		}
 	}
 

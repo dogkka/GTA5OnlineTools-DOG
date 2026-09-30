@@ -1,8 +1,12 @@
-﻿#include "Stats.hpp"
+#include "Stats.hpp"
 #include "game/gta/Natives.hpp"
 
 namespace YimMenu::Stats
 {
+	constexpr int kMaskedChunkBits = 16;
+	constexpr int kMaskedValueBits = 64;
+	constexpr std::uint64_t kMaskedChunkMask = (std::uint64_t{1} << kMaskedChunkBits) - 1;
+
 	static void ConvertMPX(std::string& statName)
 	{
 		std::transform(statName.begin(), statName.end(), statName.begin(), ::tolower);
@@ -15,6 +19,11 @@ namespace YimMenu::Stats
 		int index{};
 		STATS::STAT_GET_INT("MPPLY_LAST_MP_CHAR"_J, &index, -1);
 		return index;
+	}
+
+	bool SaveStats()
+	{
+		return STATS::STAT_SAVE(0, FALSE, 3, FALSE);
 	}
 
 	void SetInt(std::string statName, int value)
@@ -133,59 +142,36 @@ namespace YimMenu::Stats
 		return value;
 	}
 
-
-	void Stats::SetMaskedAll(Hash hash, uint64_t value)
+	void SetMaskedUInt64(Hash hash, std::uint64_t value)
 	{
-		uint64_t uint64_value = value;
-		int part0 = uint64_value & 0xFFFFu;
-		int part1 = (uint64_value >> 16) & 0xFFFFu;
-		int part2 = (uint64_value >> 32) & 0xFFFFu;
-		int part3 = (uint64_value >> 48) & 0xFFFFu;
-		// The second input parameter is of type int. Using -1 will cause the entire data to overflow
-		//so you have to split the 64-bit data into 4 parts to write it.
-		STATS::STAT_SET_MASKED_INT(hash, part0, 0, 16, true);  //bit0-bit15
-		STATS::STAT_SET_MASKED_INT(hash, part1, 16, 16, true); //bit16-bit31
-		STATS::STAT_SET_MASKED_INT(hash, part2, 32, 16, true); //bit32-bit47
-		STATS::STAT_SET_MASKED_INT(hash, part3, 48, 16, true); //bit48-bit63
+		for (int bitIndex = 0; bitIndex < kMaskedValueBits; bitIndex += kMaskedChunkBits)
+		{
+			const auto chunk = static_cast<int>((value >> bitIndex) & kMaskedChunkMask);
+			STATS::STAT_SET_MASKED_INT(hash, chunk, bitIndex, kMaskedChunkBits, true);
+		}
 	}
 
-	void Stats::SetMaskedAll(std::string statName, uint64_t value)
+	void SetMaskedUInt64(std::string statName, std::uint64_t value)
 	{
 		ConvertMPX(statName);
-		uint64_t uint64_value = value;
-		int part0 = uint64_value & 0xFFFFu;
-		int part1 = (uint64_value >> 16) & 0xFFFFu;
-		int part2 = (uint64_value >> 32) & 0xFFFFu;
-		int part3 = (uint64_value >> 48) & 0xFFFFu;
-		
-		auto hash = Joaat(statName);
-		STATS::STAT_SET_MASKED_INT(hash, part0, 0, 16, true);  //bit0-bit15
-		STATS::STAT_SET_MASKED_INT(hash, part1, 16, 16, true); //bit16-bit31
-		STATS::STAT_SET_MASKED_INT(hash, part2, 32, 16, true); //bit32-bit47
-		STATS::STAT_SET_MASKED_INT(hash, part3, 48, 16, true); //bit48-bit63
+		SetMaskedUInt64(Joaat(statName), value);
 	}
 
-	uint64_t GetMaskedAll(Hash hash, int playerindex)
+	std::uint64_t GetMaskedUInt64(Hash hash, int playerIndex)
 	{
-		int part0 = 0, part1 = 0, part2 = 0, part3 = 0;
-		STATS::STAT_GET_MASKED_INT(hash, &part0, 0, 16, playerindex);
-		STATS::STAT_GET_MASKED_INT(hash, &part1, 16, 16, playerindex);
-		STATS::STAT_GET_MASKED_INT(hash, &part2, 32, 16, playerindex);
-		STATS::STAT_GET_MASKED_INT(hash, &part3, 48, 16, playerindex);
-		uint64_t value = (static_cast<uint64_t>(part3) << 48) | (static_cast<uint64_t>(part2) << 32) | (static_cast<uint64_t>(part1) << 16) | part0;
+		std::uint64_t value = 0;
+		for (int bitIndex = 0; bitIndex < kMaskedValueBits; bitIndex += kMaskedChunkBits)
+		{
+			int chunk = 0;
+			STATS::STAT_GET_MASKED_INT(hash, &chunk, bitIndex, kMaskedChunkBits, playerIndex);
+			value |= (static_cast<std::uint64_t>(chunk) & kMaskedChunkMask) << bitIndex;
+		}
 		return value;
 	}
 
-	uint64_t GetMaskedAll(std::string statName, int playerindex)
+	std::uint64_t GetMaskedUInt64(std::string statName, int playerIndex)
 	{
-		Hash hash = Joaat(statName);
-		int part0 = 0, part1 = 0, part2 = 0, part3 = 0;
-		STATS::STAT_GET_MASKED_INT(hash, &part0, 0, 16, playerindex);
-		STATS::STAT_GET_MASKED_INT(hash, &part1, 16, 16, playerindex);
-		STATS::STAT_GET_MASKED_INT(hash, &part2, 32, 16, playerindex);
-		STATS::STAT_GET_MASKED_INT(hash, &part3, 48, 16, playerindex);
-		uint64_t value = (static_cast<uint64_t>(part3) << 48) | (static_cast<uint64_t>(part2) << 32) | (static_cast<uint64_t>(part1) << 16) | part0;
-		return value;
+		ConvertMPX(statName);
+		return GetMaskedUInt64(Joaat(statName), playerIndex);
 	}
-
 }

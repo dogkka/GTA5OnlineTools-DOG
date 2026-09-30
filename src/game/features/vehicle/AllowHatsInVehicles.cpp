@@ -14,5 +14,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static AllowHatsInVehicles _AllowHatsInVehicles{"allowhatsinvehicles", "Allow Hats In Vehicles", "Allows you to keep your hats or head gear inside vehicles."};
+	static AllowHatsInVehicles _AllowHatsInVehicles{"allowhatsinvehicles", "载具内保留帽子", "允许你在载具内保留帽子或头部饰品。"};
 };

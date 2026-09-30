@@ -19,6 +19,6 @@ namespace YimMenu::Features
 		}
 	};
 
-	static DisableCriticalHits _DisableCriticalHits{"disablecriticalhits", "Disable Critical Hits", "Prevent you from getting Critical Hits"};
+	static DisableCriticalHits _DisableCriticalHits{"disablecriticalhits", "免疫暴击", "防止角色受到暴击伤害。"};
 
 }

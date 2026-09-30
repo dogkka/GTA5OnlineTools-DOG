@@ -10,8 +10,8 @@ namespace YimMenu::Features
 {
 	static BoolCommand _NotifyOnPlayerJoin{
 	    "notifyonplayerjoin",
-	    "Notify on Player Join",
-	    "Notifies you when a player joins above the map",
+	    "玩家加入时通知",
+	    "当有玩家加入时在地图上方显示通知",
 	    true};
 }
 
@@ -34,7 +34,7 @@ namespace YimMenu::Hooks
 				FiberPool::Push([name] {
 					HUD::SET_TEXT_OUTLINE();
 					HUD::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
-					HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(std::format("<C>{}</C> joined.", name).data());
+					HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(std::format("<C>{}</C> 已加入。", name).data());
 					HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(false, false);
 				});
 			}

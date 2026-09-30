@@ -3,6 +3,7 @@
 #include "core/backend/ScriptMgr.hpp"
 #include "core/frontend/Notifications.hpp"
 #include "core/frontend/widgets/imgui_colors.h"
+#include "core/localization/Localization.hpp"
 #include "game/backend/AnticheatBypass.hpp"
 #include "game/gta/Natives.hpp"
 #include "game/gta/Scripts.hpp"
@@ -10,103 +11,116 @@
 #include "types/netshop/CNetShopTransaction.hpp"
 #include "types/netshop/netCatalogBaseItem.hpp"
 
+#include <array>
+
 namespace YimMenu::Submenus
 {
+	template <typename... Args>
+	static std::string RuntimeFormat(std::string_view fmt, Args&&... args)
+	{
+		return std::vformat(fmt, std::make_format_args(args...));
+	}
+
+	static std::string TranslateTxnLabel(const char* label)
+	{
+		return label ? Localization::Translate(label) : "未知";
+	}
+
 	constexpr std::array<std::pair<const char*, std::uint32_t>, 28> NET_SHOP_ACTIONS =
 	    {{
-	        {"ACQUIRE", "NET_SHOP_ACTION_ACQUIRE"_J},
-	        {"ADD_CONTRABAND", "NET_SHOP_ACTION_ADD_CONTRABAND"_J},
-	        {"ALLOT", "NET_SHOP_ACTION_ALLOT"_J}, // not used?
+	        {"获取", "NET_SHOP_ACTION_ACQUIRE"_J},
+	        {"添加违禁品", "NET_SHOP_ACTION_ADD_CONTRABAND"_J},
+	        {"分配", "NET_SHOP_ACTION_ALLOT"_J}, // not used?
 	                                              //  {"BONUS", "NET_SHOP_ACTION_BONUS"_J}, I bet someone would use this and get themselves banned
-	        {"BUY_CASINO_CHIPS", "NET_SHOP_ACTION_BUY_CASINO_CHIPS"_J},
-	        {"BUY_CONTRABAND_MISSION", "NET_SHOP_ACTION_BUY_CONTRABAND_MISSION"_J},
-	        {"BUY_ITEM", "NET_SHOP_ACTION_BUY_ITEM"_J},
-	        {"BUY_PROPERTY", "NET_SHOP_ACTION_BUY_PROPERTY"_J},
-	        {"BUY_UNLOCK", "NET_SHOP_ACTION_BUY_UNLOCK"_J},
-	        {"BUY_VEHICLE", "NET_SHOP_ACTION_BUY_VEHICLE"_J},
-	        {"BUY_VEHICLE_MODS", "NET_SHOP_ACTION_BUY_VEHICLE_MODS"_J},
-	        {"BUY_WAREHOUSE", "NET_SHOP_ACTION_BUY_WAREHOUSE"_J},
-	        {"CREATE_PLAYER_APPEARANCE", "NET_SHOP_ACTION_CREATE_PLAYER_APPEARANCE"_J},
-	        {"DELETE_CHAR", "NET_SHOP_ACTION_DELETE_CHAR"_J}, // not used
-	        {"EARN", "NET_SHOP_ACTION_EARN"_J},
-	        {"EARN_LIMITED_SERVICE", "NET_SHOP_ACTION_EARN_LIMITED_SERVICE"_J},
-	        {"GIVE", "NET_SHOP_ACTION_GIVE"_J},
-	        {"PURCH", "NET_SHOP_ACTION_PURCH"_J},
-	        {"RECOUP", "NET_SHOP_ACTION_RECOUP"_J},
-	        {"REMOVE_CONTRABAND", "NET_SHOP_ACTION_REMOVE_CONTRABAND"_J},
-	        {"RESET_BUSINESS_PROGRESS", "NET_SHOP_ACTION_RESET_BUSINESS_PROGRESS"_J},
-	        {"SELL_CASINO_CHIPS", "NET_SHOP_ACTION_SELL_CASINO_CHIPS"_J},
-	        {"SELL_VEHICLE", "NET_SHOP_ACTION_SELL_VEHICLE"_J},
-	        {"SPEND", "NET_SHOP_ACTION_SPEND"_J},
-	        {"SPEND_LIMITED_SERVICE", "NET_SHOP_ACTION_SPEND_LIMITED_SERVICE"_J}, // not used
-	        {"UPDATE_BUSINESS_GOODS", "NET_SHOP_ACTION_UPDATE_BUSINESS_GOODS"_J},
-	        {"UPDATE_STORAGE_DATA", "NET_SHOP_ACTION_UPDATE_STORAGE_DATA"_J},
-	        {"UPDATE_WAREHOUSE_VEHICLE", "NET_SHOP_ACTION_UPDATE_WAREHOUSE_VEHICLE"_J},
-	        {"USE", "NET_SHOP_ACTION_USE"_J},
+	        {"购买赌场筹码", "NET_SHOP_ACTION_BUY_CASINO_CHIPS"_J},
+	        {"购买违禁品任务", "NET_SHOP_ACTION_BUY_CONTRABAND_MISSION"_J},
+	        {"购买物品", "NET_SHOP_ACTION_BUY_ITEM"_J},
+	        {"购买房产", "NET_SHOP_ACTION_BUY_PROPERTY"_J},
+	        {"购买解锁项", "NET_SHOP_ACTION_BUY_UNLOCK"_J},
+	        {"购买载具", "NET_SHOP_ACTION_BUY_VEHICLE"_J},
+	        {"购买载具改装", "NET_SHOP_ACTION_BUY_VEHICLE_MODS"_J},
+	        {"购买仓库", "NET_SHOP_ACTION_BUY_WAREHOUSE"_J},
+	        {"创建角色外观", "NET_SHOP_ACTION_CREATE_PLAYER_APPEARANCE"_J},
+	        {"删除角色", "NET_SHOP_ACTION_DELETE_CHAR"_J}, // not used
+	        {"收入", "NET_SHOP_ACTION_EARN"_J},
+	        {"受限服务收入", "NET_SHOP_ACTION_EARN_LIMITED_SERVICE"_J},
+	        {"给予", "NET_SHOP_ACTION_GIVE"_J},
+	        {"购买", "NET_SHOP_ACTION_PURCH"_J},
+	        {"补偿", "NET_SHOP_ACTION_RECOUP"_J},
+	        {"移除违禁品", "NET_SHOP_ACTION_REMOVE_CONTRABAND"_J},
+	        {"重置产业进度", "NET_SHOP_ACTION_RESET_BUSINESS_PROGRESS"_J},
+	        {"出售赌场筹码", "NET_SHOP_ACTION_SELL_CASINO_CHIPS"_J},
+	        {"出售载具", "NET_SHOP_ACTION_SELL_VEHICLE"_J},
+	        {"支出", "NET_SHOP_ACTION_SPEND"_J},
+	        {"受限服务支出", "NET_SHOP_ACTION_SPEND_LIMITED_SERVICE"_J}, // not used
+	        {"更新产业货物", "NET_SHOP_ACTION_UPDATE_BUSINESS_GOODS"_J},
+	        {"更新存储数据", "NET_SHOP_ACTION_UPDATE_STORAGE_DATA"_J},
+	        {"更新仓库载具", "NET_SHOP_ACTION_UPDATE_WAREHOUSE_VEHICLE"_J},
+	        {"使用", "NET_SHOP_ACTION_USE"_J},
 	    }};
 
 	constexpr std::array<std::pair<const char*, std::uint32_t>, 60> NET_SHOP_CATEGORIES =
 	    {{
-	        {"BEARD", "CATEGORY_BEARD"_J},
-	        {"BLUSHER", "CATEGORY_BLUSHER"_J},
-	        {"CASINO_CHIP_REASON", "CATEGORY_CASINO_CHIP_REASON"_J},
-	        {"CASINO_CHIPS", "CATEGORY_CASINO_CHIPS"_J},
-	        {"CHEST_HAIR", "CATEGORY_CHEST_HAIR"_J},
-	        {"CLOTH", "CATEGORY_CLOTH"_J},
-	        {"CONTACTS", "CATEGORY_CONTACTS"_J},
-	        {"CONTRABAND_FLAGS", "CATEGORY_CONTRABAND_FLAGS"_J},
-	        {"CONTRABAND_MISSION", "CATEGORY_CONTRABAND_MISSION"_J},
-	        {"CONTRABAND_QNTY", "CATEGORY_CONTRABAND_QNTY"_J},
-	        {"CURRENCY_TYPE", "CATEGORY_CURRENCY_TYPE"_J},
-	        {"DATA_STORAGE", "CATEGORY_DATA_STORAGE"_J},
-	        {"DECORATION", "CATEGORY_DECORATION"_J},
-	        {"EARN_CURRENCY", "CATEGORY_EARN_CURRENCY"_J},
-	        {"EYEBROWS", "CATEGORY_EYEBROWS"_J},
-	        {"FACEPAINT", "CATEGORY_FACEPAINT"_J},
-	        {"HAIR", "CATEGORY_HAIR"_J},
-	        {"INVENTORY_BEARD", "CATEGORY_INVENTORY_BEARD"_J},
-	        {"INVENTORY_BLUSHER", "CATEGORY_INVENTORY_BLUSHER"_J},
-	        {"INVENTORY_CHEST_HAIR", "CATEGORY_INVENTORY_CHEST_HAIR"_J},
-	        {"INVENTORY_CONTACTS", "CATEGORY_INVENTORY_CONTACTS"_J},
-	        {"INVENTORY_CONTRABAND_MISSION", "CATEGORY_INVENTORY_CONTRABAND_MISSION"_J},
-	        {"INVENTORY_CURRENCY", "CATEGORY_INVENTORY_CURRENCY"_J},
-	        {"INVENTORY_EYEBROWS", "CATEGORY_INVENTORY_EYEBROWS"_J},
-	        {"INVENTORY_FACEPAINT", "CATEGORY_INVENTORY_FACEPAINT"_J},
-	        {"INVENTORY_HAIR", "CATEGORY_INVENTORY_HAIR"_J},
-	        {"INVENTORY_ITEM", "CATEGORY_INVENTORY_ITEM"_J}, // unused
-	        {"INVENTORY_LIPSTICK", "CATEGORY_INVENTORY_LIPSTICK"_J},
-	        {"INVENTORY_MKUP", "CATEGORY_INVENTORY_MKUP"_J},
-	        {"INVENTORY_PRICE_PAID", "CATEGORY_INVENTORY_PRICE_PAID"_J},
-	        {"INVENTORY_PROPERTY", "CATEGORY_INVENTORY_PROPERTIE"_J},
-	        {"INVENTORY_PROPERTY_INTERIOR", "CATEGORY_INVENTORY_PROPERTY_INTERIOR"_J},
-	        {"INVENTORY_VEHICLE", "CATEGORY_INVENTORY_VEHICLE"_J},
-	        {"INVENTORY_VEHICLE_MOD", "CATEGORY_INVENTORY_VEHICLE_MOD"_J},
-	        {"INVENTORY_WAREHOUSE", "CATEGORY_INVENTORY_WAREHOUSE"_J},
-	        {"INVENTORY_WAREHOUSE_INTERIOR", "CATEGORY_INVENTORY_WAREHOUSE_INTERIOR"_J},
-	        {"LIPSTICK", "CATEGORY_LIPSTICK"_J},
-	        {"MART", "CATEGORY_MART"_J},
-	        {"MKUP", "CATEGORY_MKUP"_J},
-	        {"PRICE_MODIFIER", "CATEGORY_PRICE_MODIFIER"_J},
-	        {"PRICE_OVERRIDE", "CATEGORY_PRICE_OVERRIDE"_J},
-	        {"PROPERTY", "CATEGORY_PROPERTIE"_J}, // seriously how tf did "propertie" get past code reviews?
-	        {"PROPERTY_INTERIOR", "CATEGORY_PROPERTY_INTERIOR"_J},
-	        {"SERVICE", "CATEGORY_SERVICE"_J},
-	        {"SERVICE_UNLOCKED", "CATEGORY_SERVICE_UNLOCKED"_J},
-	        {"SERVICE_WITH_LIMIT", "CATEGORY_SERVICE_WITH_LIMIT"_J},
-	        {"SERVICE_WITH_THRESHOLD", "CATEGORY_SERVICE_WITH_THRESHOLD"_J},
-	        {"SYSTEM", "CATEGORY_SYSTEM"_J},
-	        {"TATTOO", "CATEGORY_TATTOO"_J},
-	        {"UNLOCK", "CATEGORY_UNLOCK"_J},
-	        {"VEHICLE", "CATEGORY_VEHICLE"_J},
-	        {"VEHICLE_MOD", "CATEGORY_VEHICLE_MOD"_J},
-	        {"VEHICLE_UPGRADE", "CATEGORY_VEHICLE_UPGRADE"_J},
-	        {"VENDING_MACHINE", "CATEGORY_VENDING_MACHINE"_J},
-	        {"WAREHOUSE", "CATEGORY_WAREHOUSE"_J},
-	        {"WAREHOUSE_INTERIOR", "CATEGORY_WAREHOUSE_INTERIOR"_J},
-	        {"WAREHOUSE_VEHICLE_INDEX", "CATEGORY_WAREHOUSE_VEHICLE_INDEX"_J},
-	        {"WEAPON", "CATEGORY_WEAPON"_J},
-	        {"WEAPON_AMMO", "CATEGORY_WEAPON_AMMO"_J},
-	        {"WEAPON_MOD", "CATEGORY_WEAPON_MOD"_J},
+	        {"胡须", "CATEGORY_BEARD"_J},
+	        {"腮红", "CATEGORY_BLUSHER"_J},
+	        {"赌场筹码原因", "CATEGORY_CASINO_CHIP_REASON"_J},
+	        {"赌场筹码", "CATEGORY_CASINO_CHIPS"_J},
+	        {"胸毛", "CATEGORY_CHEST_HAIR"_J},
+	        {"服饰", "CATEGORY_CLOTH"_J},
+	        {"隐形眼镜", "CATEGORY_CONTACTS"_J},
+	        {"违禁品标记", "CATEGORY_CONTRABAND_FLAGS"_J},
+	        {"违禁品任务", "CATEGORY_CONTRABAND_MISSION"_J},
+	        {"违禁品数量", "CATEGORY_CONTRABAND_QNTY"_J},
+	        {"货币类型", "CATEGORY_CURRENCY_TYPE"_J},
+	        {"数据存储", "CATEGORY_DATA_STORAGE"_J},
+	        {"装饰", "CATEGORY_DECORATION"_J},
+	        {"收入货币", "CATEGORY_EARN_CURRENCY"_J},
+	        {"眉毛", "CATEGORY_EYEBROWS"_J},
+	        {"脸部彩绘", "CATEGORY_FACEPAINT"_J},
+	        {"发型", "CATEGORY_HAIR"_J},
+	        {"库存胡须", "CATEGORY_INVENTORY_BEARD"_J},
+	        {"库存腮红", "CATEGORY_INVENTORY_BLUSHER"_J},
+	        {"库存胸毛", "CATEGORY_INVENTORY_CHEST_HAIR"_J},
+	        {"库存隐形眼镜", "CATEGORY_INVENTORY_CONTACTS"_J},
+	        {"库存违禁品任务", "CATEGORY_INVENTORY_CONTRABAND_MISSION"_J},
+	        {"库存货币", "CATEGORY_INVENTORY_CURRENCY"_J},
+	        {"库存眉毛", "CATEGORY_INVENTORY_EYEBROWS"_J},
+	        {"库存脸部彩绘", "CATEGORY_INVENTORY_FACEPAINT"_J},
+	        {"库存发型", "CATEGORY_INVENTORY_HAIR"_J},
+	        {"库存物品", "CATEGORY_INVENTORY_ITEM"_J}, // unused
+	        {"库存口红", "CATEGORY_INVENTORY_LIPSTICK"_J},
+	        {"库存妆容", "CATEGORY_INVENTORY_MKUP"_J},
+	        {"库存已付价格", "CATEGORY_INVENTORY_PRICE_PAID"_J},
+	        {"库存房产", "CATEGORY_INVENTORY_PROPERTIE"_J},
+	        {"库存房产内饰", "CATEGORY_INVENTORY_PROPERTY_INTERIOR"_J},
+	        {"库存载具", "CATEGORY_INVENTORY_VEHICLE"_J},
+	        {"库存载具改装", "CATEGORY_INVENTORY_VEHICLE_MOD"_J},
+	        {"库存仓库", "CATEGORY_INVENTORY_WAREHOUSE"_J},
+	        {"库存仓库内饰", "CATEGORY_INVENTORY_WAREHOUSE_INTERIOR"_J},
+	        {"口红", "CATEGORY_LIPSTICK"_J},
+	        {"商店", "CATEGORY_MART"_J},
+	        {"妆容", "CATEGORY_MKUP"_J},
+	        {"价格修正", "CATEGORY_PRICE_MODIFIER"_J},
+	        {"价格覆盖", "CATEGORY_PRICE_OVERRIDE"_J},
+	        {"房产", "CATEGORY_PROPERTIE"_J}, // seriously how tf did "propertie" get past code reviews?
+	        {"房产内饰", "CATEGORY_PROPERTY_INTERIOR"_J},
+	        {"服务", "CATEGORY_SERVICE"_J},
+	        {"已解锁服务", "CATEGORY_SERVICE_UNLOCKED"_J},
+	        {"有限服务", "CATEGORY_SERVICE_WITH_LIMIT"_J},
+	        {"有阈值服务", "CATEGORY_SERVICE_WITH_THRESHOLD"_J},
+	        {"系统", "CATEGORY_SYSTEM"_J},
+	        {"纹身", "CATEGORY_TATTOO"_J},
+	        {"解锁", "CATEGORY_UNLOCK"_J},
+	        {"载具", "CATEGORY_VEHICLE"_J},
+	        {"载具改装", "CATEGORY_VEHICLE_MOD"_J},
+	        {"载具升级", "CATEGORY_VEHICLE_UPGRADE"_J},
+	        {"自动贩卖机", "CATEGORY_VENDING_MACHINE"_J},
+	        {"仓库", "CATEGORY_WAREHOUSE"_J},
+	        {"仓库内饰", "CATEGORY_WAREHOUSE_INTERIOR"_J},
+	        {"仓库载具索引", "CATEGORY_WAREHOUSE_VEHICLE_INDEX"_J},
+	        {"武器", "CATEGORY_WEAPON"_J},
+	        {"武器弹药", "CATEGORY_WEAPON_AMMO"_J},
+	        {"武器配件", "CATEGORY_WEAPON_MOD"_J},
 	    }};
 
 	// more guardrails to prevent some stupid stuff
@@ -123,13 +137,13 @@ namespace YimMenu::Submenus
 	        "SERVICE_EARN_IMPULSE"_J,
 	};
 
-	static const char* CategoryNameFromHash(std::uint32_t hash)
+	static std::string CategoryNameFromHash(std::uint32_t hash)
 	{
 		for (auto& cat : NET_SHOP_CATEGORIES)
 			if (cat.second == hash)
 				return cat.first;
 
-		return "UNKNOWN";
+		return "未知";
 	}
 
 	struct TransactionItemHash
@@ -165,8 +179,8 @@ namespace YimMenu::Submenus
 		};
 
 		Type m_Type = Type::BASKET;
-		TransactionCategoryHash m_Category{"PROPERTY", "CATEGORY_PROPERTIE"_J};
-		TransactionCategoryHash m_Action{"BUY_PROPERTY", "NET_SHOP_ACTION_BUY_PROPERTY"_J};
+		TransactionCategoryHash m_Category{"房产", "CATEGORY_PROPERTIE"_J};
+		TransactionCategoryHash m_Action{"购买房产", "NET_SHOP_ACTION_BUY_PROPERTY"_J};
 		struct
 		{
 			std::vector<BasketItem> m_BasketItems = {BasketItem{}};
@@ -194,7 +208,7 @@ namespace YimMenu::Submenus
 
 					if (!NETSHOPPING::NET_GAMESERVER_BASKET_START(&txn_id, info.m_Category.m_Hash, info.m_Action.m_Hash, 4))
 					{
-						Notifications::Show("Transactions", "Failed to create basket", NotificationType::Error);
+						Notifications::Show("交易", "创建购物篮失败", NotificationType::Error);
 						txn_failed = true;
 						NETSHOPPING::NET_GAMESERVER_BASKET_END();
 						return;
@@ -219,8 +233,8 @@ namespace YimMenu::Submenus
 
 						if (!NETSHOPPING::NET_GAMESERVER_BASKET_ADD_ITEM(&scr_item, item.m_Quantity))
 						{
-							Notifications::Show("Transactions",
-							    std::format("Failed to add {} (x{}) to basket", item.m_PrimaryItem.m_Name, item.m_Quantity),
+							Notifications::Show("交易",
+							    RuntimeFormat("添加 {}（x{}）到购物篮失败", item.m_PrimaryItem.m_Name, item.m_Quantity),
 							    NotificationType::Error);
 							txn_failed = true;
 							NETSHOPPING::NET_GAMESERVER_BASKET_END();
@@ -232,7 +246,7 @@ namespace YimMenu::Submenus
 				{
 					if (!NETSHOPPING::NET_GAMESERVER_BEGIN_SERVICE(&txn_id, info.m_Category.m_Hash, info.m_Service.m_Item.m_Hash, info.m_Action.m_Hash, info.m_Service.m_Price, 4))
 					{
-						Notifications::Show("Transactions", "Failed to create service", NotificationType::Error);
+						Notifications::Show("交易", "创建服务失败", NotificationType::Error);
 						txn_failed = true;
 						return;
 					}
@@ -245,7 +259,7 @@ namespace YimMenu::Submenus
 
 				if (!NETSHOPPING::NET_GAMESERVER_CHECKOUT_START(txn_id))
 				{
-					Notifications::Show("Transactions", "Failed to begin checkout", NotificationType::Error);
+					Notifications::Show("交易", "开始结账失败", NotificationType::Error);
 					txn_failed = true;
 					return;
 				}
@@ -258,11 +272,11 @@ namespace YimMenu::Submenus
 
 				if (txn->m_Status == 3)
 				{
-					Notifications::Show("Transactions", "Transaction complete", NotificationType::Success);
+					Notifications::Show("交易", "交易完成", NotificationType::Success);
 				}
 				else
 				{
-					Notifications::Show("Transactions", "Transaction failed", NotificationType::Error);
+					Notifications::Show("交易", "交易失败", NotificationType::Error);
 				}
 			}
 		});
@@ -346,15 +360,17 @@ namespace YimMenu::Submenus
 		if (info.m_Type == TransactionInfo::Type::SERVICE)
 		{
 			if (!IsCategoryService(info.m_Category.m_Hash))
-				info.m_Category = {"SERVICE", "CATEGORY_SERVICE"_J};
+				info.m_Category = {"服务", "CATEGORY_SERVICE"_J};
 			if (!IsActionService(info.m_Action.m_Hash))
-				info.m_Action = {"EARN", "NET_SHOP_ACTION_EARN"_J};
+				info.m_Action = {"收入", "NET_SHOP_ACTION_EARN"_J};
 			info.m_Basket.m_BasketItems.clear();
 		}
 		else
 		{
 			if (IsCategoryService(info.m_Category.m_Hash))
-				info.m_Category = {"PROPERTY", "NET_SHOP_ACTION_BUY_PROPERTY"_J};
+				info.m_Category = {"房产", "CATEGORY_PROPERTIE"_J};
+			if (IsActionService(info.m_Action.m_Hash))
+				info.m_Action = {"购买房产", "NET_SHOP_ACTION_BUY_PROPERTY"_J};
 			info.m_Basket.m_BasketItems.push_back({}); // ensure we always have one
 		}
 	}
@@ -378,12 +394,13 @@ namespace YimMenu::Submenus
 	static bool EditTransactionItem(std::string_view label, TransactionInfo& info, TransactionItemHash& item, bool& is_valid, bool required = true, bool validate_category = true)
 	{
 		bool modified = false;
+		const auto translatedLabel = Localization::TranslateLabel(label);
 
 		ImGui::SetNextItemWidth(340.0f);
 		if (
 		    required ?
-		        ImGui::InputText(label.data(), item.m_Name, sizeof(item.m_Name)) :
-		        ImGui::InputTextWithHint(label.data(), "Optional", item.m_Name, sizeof(item.m_Name)))
+		        ImGui::InputText(translatedLabel.c_str(), item.m_Name, sizeof(item.m_Name)) :
+		        ImGui::InputTextWithHint(translatedLabel.c_str(), "可选", item.m_Name, sizeof(item.m_Name)))
 		{
 			item.m_Hash = Joaat(item.m_Name);
 			if (auto cat_item = Pointers.GetCatalogItem(Pointers.NetCatalog, &item.m_Hash))
@@ -403,7 +420,7 @@ namespace YimMenu::Submenus
 
 		if (!item.m_IsValid && !empty)
 		{
-			SetTransactionError("Item not found!");
+			SetTransactionError("未找到该物品！");
 			is_valid = false;
 			return false;
 		}
@@ -411,7 +428,7 @@ namespace YimMenu::Submenus
 		// TODO: maybe not check this every tick?
 		if (BANNED_ITEM_HASHES.contains(item.m_Hash))
 		{
-			SetTransactionError("This item has been blocked for your safety");
+			SetTransactionError("出于安全考虑，此物品已被屏蔽");
 			is_valid = false;
 			return false;
 		}
@@ -420,13 +437,13 @@ namespace YimMenu::Submenus
 		{
 			if (info.m_Type == TransactionInfo::Type::SERVICE)
 			{
-				SetTransactionError(std::format("Item category {} does not match txn category {}", CategoryNameFromHash(item.m_IntendedCategory), info.m_Category.m_Name));
+				SetTransactionError(RuntimeFormat("物品分类 {} 与交易分类 {} 不匹配", CategoryNameFromHash(item.m_IntendedCategory), info.m_Category.m_Name));
 				is_valid = false;
 				return false;
 			}
 			else
 			{
-				SetTransactionWarning(std::format("Item category {} does not match txn category {}", CategoryNameFromHash(item.m_IntendedCategory), info.m_Category.m_Name));
+				SetTransactionWarning(RuntimeFormat("物品分类 {} 与交易分类 {} 不匹配", CategoryNameFromHash(item.m_IntendedCategory), info.m_Category.m_Name));
 			}
 		}
 
@@ -443,31 +460,31 @@ namespace YimMenu::Submenus
 			ImGui::PushID(i);
 			if (ShouldSwapItemParams(info.m_Category.m_Hash))
 			{
-				if (EditTransactionItem("Item", info, item.m_SecondaryItem, txn_valid, true, false)) // TODO: validate if this corresponds to the correct non-inventory category
+				if (EditTransactionItem("物品", info, item.m_SecondaryItem, txn_valid, true, false)) // TODO: validate if this corresponds to the correct non-inventory category
 					item.m_Price = item.m_SecondaryItem.m_IntendedPrice;
-				EditTransactionItem("Inventory Slot", info, item.m_PrimaryItem, txn_valid, true, true);
+				EditTransactionItem("库存槽位", info, item.m_PrimaryItem, txn_valid, true, true);
 			}
 			else
 			{
-				if (EditTransactionItem("Item", info, item.m_PrimaryItem, txn_valid, true, true))
+				if (EditTransactionItem("物品", info, item.m_PrimaryItem, txn_valid, true, true))
 					item.m_Price = item.m_PrimaryItem.m_IntendedPrice;
-				EditTransactionItem("Secondary Item", info, item.m_SecondaryItem, txn_valid, false, false); // TODO: is this ever used outside of inventory stuff?
+				EditTransactionItem("次要物品", info, item.m_SecondaryItem, txn_valid, false, false); // TODO: is this ever used outside of inventory stuff?
 			}
 
 			ImGui::SetNextItemWidth(180.0f);
-			if (ImGui::InputScalar("Quantity", ImGuiDataType_U32, &item.m_Quantity))
+			if (ImGui::InputScalar("数量", ImGuiDataType_U32, &item.m_Quantity))
 			{
 				if (item.m_Quantity == 0)
 					item_to_delete = i; // assume the user wants this item gone
 			}
 
 			ImGui::SetNextItemWidth(180.0f);
-			ImGui::InputInt("Price", &item.m_Price);
+			ImGui::InputInt("价格", &item.m_Price);
 
 			ImGui::SetNextItemWidth(180.0f);
-			ImGui::InputInt("Stat Value", &item.m_StatValue); // I'm not actually sure what this does ngl
+			ImGui::InputInt("统计值", &item.m_StatValue); // I'm not actually sure what this does ngl
 
-			if (info.m_Basket.m_BasketItems.size() > 1 && ImGui::Button("Delete"))
+			if (info.m_Basket.m_BasketItems.size() > 1 && ImGui::Button("删除"))
 				item_to_delete = i;
 			ImGui::PopID();
 
@@ -478,7 +495,7 @@ namespace YimMenu::Submenus
 		if (item_to_delete.has_value())
 			info.m_Basket.m_BasketItems.erase(std::next(info.m_Basket.m_BasketItems.begin(), *item_to_delete));
 
-		if (ImGui::Button("Add Item"))
+		if (ImGui::Button("添加物品"))
 		{
 			info.m_Basket.m_BasketItems.push_back({});
 		}
@@ -486,15 +503,15 @@ namespace YimMenu::Submenus
 
 	static void RenderServiceEditor(TransactionInfo& info, bool& txn_valid)
 	{
-		if (EditTransactionItem("Item", info, info.m_Service.m_Item, txn_valid))
+		if (EditTransactionItem("物品", info, info.m_Service.m_Item, txn_valid))
 			info.m_Service.m_Price = info.m_Service.m_Item.m_IntendedPrice;
 		if (info.m_Service.m_Item.m_IntendedPrice != 0 || info.m_Action.m_Hash != "NET_SHOP_ACTION_EARN"_J)
 		{
 			ImGui::SetNextItemWidth(180.0f);
-			ImGui::InputInt("Price", &info.m_Service.m_Price);
+			ImGui::InputInt("价格", &info.m_Service.m_Price);
 			if (info.m_Service.m_Price > info.m_Service.m_Item.m_IntendedPrice && info.m_Action.m_Hash == "NET_SHOP_ACTION_EARN"_J)
 			{
-				SetTransactionError(std::format("Item price exceeds maximum allowed ({})", info.m_Service.m_Item.m_IntendedPrice));
+				SetTransactionError(RuntimeFormat("物品价格超过允许的最大值（{}）", info.m_Service.m_Item.m_IntendedPrice));
 				txn_valid = false;
 			}
 		}
@@ -502,36 +519,53 @@ namespace YimMenu::Submenus
 
 	std::shared_ptr<Category> BuildTransactionsMenu()
 	{
-		auto menu = std::make_shared<Category>("Transactions");
-		auto normal = std::make_shared<Group>("Triggerer");
+		auto menu = std::make_shared<Category>("交易");
+		auto normal = std::make_shared<Group>("执行器");
 
 		normal->AddItem(std::make_unique<ImGuiItem>([] {
 			if (!NativeInvoker::AreHandlersCached())
-				return ImGui::TextDisabled("Natives not cached yet");
+				return ImGui::TextDisabled("%s", "原生函数缓存尚未完成。");
 
 			if (AnticheatBypass::IsFSLProvidingLocalSaves())
-				return ImGui::TextDisabled("Transactions are not supported with FSL local saves enabled");
+				return ImGui::TextDisabled("%s", "启用 FSL 本地存档时，交易功能不可用。");
 
 			if (!NETSHOPPING::NET_GAMESERVER_CATALOG_IS_VALID())
-				return ImGui::TextDisabled("Catalog not loaded yet");
+				return ImGui::TextDisabled("%s", "目录尚未加载。");
 
-			ImGui::Text("Warning: You are solely responsible for what you do with this tool. If you don't know what you're doing, you'll likely get banned");
+			ImGui::TextWrapped("%s", "警告：使用此工具的一切后果由你自行承担。如果你不了解自己在做什么，很可能会被封禁。");
 
 			static TransactionInfo info{};
 			bool txn_valid{true};
 
 			ImGui::SetNextItemWidth(180.0f);
-			if (ImGui::Combo("Type", reinterpret_cast<int*>(&info.m_Type), "Basket\0Service\0"))
-				OnTransactionTypeChanged(info);
+			static const std::array<const char*, 2> transactionTypeKeys = {"购物篮", "服务"};
+			if (ImGui::BeginCombo("类型", Localization::Translate(transactionTypeKeys[static_cast<int>(info.m_Type)]).c_str()))
+			{
+				for (int i = 0; i < static_cast<int>(transactionTypeKeys.size()); ++i)
+				{
+					const bool selected = static_cast<int>(info.m_Type) == i;
+					if (ImGui::Selectable(Localization::Translate(transactionTypeKeys[i]).c_str(), selected))
+					{
+						info.m_Type = static_cast<TransactionInfo::Type>(i);
+						OnTransactionTypeChanged(info);
+					}
+
+					if (selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
 
 			ImGui::SetNextItemWidth(250.0f);
-			if (ImGui::BeginCombo("Category", info.m_Category.m_Name))
+			const auto selectedCategory = TranslateTxnLabel(info.m_Category.m_Name);
+			if (ImGui::BeginCombo("分类", selectedCategory.c_str()))
 			{
 				for (auto& item : NET_SHOP_CATEGORIES)
 				{
 					if ((info.m_Type != TransactionInfo::Type::SERVICE) ^ IsCategoryService(item.second))
 					{
-						if (ImGui::Selectable(item.first, item.second == info.m_Category.m_Hash))
+						const auto translatedCategory = Localization::Translate(item.first);
+						if (ImGui::Selectable(translatedCategory.c_str(), item.second == info.m_Category.m_Hash))
 						{
 							info.m_Category.m_Name = item.first;
 							info.m_Category.m_Hash = item.second;
@@ -545,13 +579,15 @@ namespace YimMenu::Submenus
 			}
 
 			ImGui::SetNextItemWidth(250.0f);
-			if (ImGui::BeginCombo("Action", info.m_Action.m_Name))
+			const auto selectedAction = TranslateTxnLabel(info.m_Action.m_Name);
+			if (ImGui::BeginCombo("操作", selectedAction.c_str()))
 			{
 				for (auto& item : NET_SHOP_ACTIONS)
 				{
 					if (info.m_Type != TransactionInfo::Type::SERVICE || IsActionService(item.second))
 					{
-						if (ImGui::Selectable(item.first, item.second == info.m_Action.m_Hash))
+						const auto translatedAction = Localization::Translate(item.first);
+						if (ImGui::Selectable(translatedAction.c_str(), item.second == info.m_Action.m_Hash))
 						{
 							info.m_Action.m_Name = item.first;
 							info.m_Action.m_Hash = item.second;
@@ -578,12 +614,12 @@ namespace YimMenu::Submenus
 			ImGui::Separator();
 
 			ImGui::BeginDisabled(!txn_valid);
-			if (ImGui::Button("Trigger"))
+			if (ImGui::Button("触发"))
 				FiberPool::Push([] {
 					ProcessTransaction(info);
 				});
 			if (!txn_valid && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-				ImGui::SetTooltip("The transaction isn't valid. Ensure that all fields are filled out correctly");
+				ImGui::SetTooltip("%s", "当前交易无效。请确认所有字段都已正确填写。");
 			ImGui::EndDisabled();
 		}));
 

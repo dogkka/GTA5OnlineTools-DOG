@@ -11,13 +11,13 @@ namespace YimMenu::Features
 	static void IsControlPressedHook(rage::scrNativeCallContext* ctx);
 
 	const std::vector<std::pair<int, const char*>> g_SpecialAbilityTypes = {
-	    {0, "Slipstream"},
-	    {2, "Deadeye"},
-	    {1, "Trevor Rage"},
-	    {3, "Snapshot (Aim at head)"},
-	    {4, "Insult"},
+	    {0, "尾流加速"},
+	    {2, "死亡之眼"},
+	    {1, "崔佛狂怒"},
+	    {3, "快照射击（瞄准头部）"},
+	    {4, "辱骂"},
 	};
-	static ListCommand _SelectedSpecialAbility{"selspecialability", "Special Ability in MP", "The special ability to enable for the MP character", g_SpecialAbilityTypes, 0};
+	static ListCommand _SelectedSpecialAbility{"selspecialability", "多人模式特殊能力", "为多人模式角色启用的特殊能力", g_SpecialAbilityTypes, 0};
 
 	class MpSpecialAbility : public LoopedCommand
 	{
@@ -62,7 +62,7 @@ namespace YimMenu::Features
 		}
 	};
 
-	static MpSpecialAbility _MpSpecialAbility{"mpspecialability", "Enable Special Abilities in MP", "Enables special abilities in multiplayer. This repurposes cut content and may be unstable"};
+	static MpSpecialAbility _MpSpecialAbility{"mpspecialability", "启用多人模式特殊能力", "在多人模式中启用特殊能力。该功能复用了被删减内容，可能不稳定"};
 
 	void IsControlPressedHook(rage::scrNativeCallContext* ctx)
 	{

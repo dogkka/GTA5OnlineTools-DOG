@@ -5,7 +5,7 @@
 
 namespace YimMenu::Features
 {
-	static FloatCommand _DirectionalTpDistance{"directionaltpdistance", "Teleport Distance", "Teleportation distance of directional teleports"};
+	static FloatCommand _DirectionalTpDistance{"directionaltpdistance", "传送距离", "方向传送每次移动的距离。"};
 
 	class TpForward : public Command
 	{
@@ -73,10 +73,10 @@ namespace YimMenu::Features
 		}
 	};
 
-	static TpForward  _DirectionalTpForward {"directionaltpforward",  "Teleport Forward",  "Teleports you forward"     };
-	static TpBackward _DirectionalTpBackward{"directionaltpbackward", "Teleport Backward", "Teleports you backward"    };
-	static TpRight    _DirectionalTpRight   {"directionaltpright",    "Teleport Right",    "Teleports you to the right"};
-	static TpLeft     _DirectionalTpLeft    {"directionaltpleft",     "Teleport Left",     "Teleports you to the left" };
-	static TpUp       _DirectionalTpUp      {"directionaltpup",       "Teleport Up",       "Teleports you up"          };
-	static TpDown     _DirectionalTpDown    {"directionaltpdown",     "Teleport Down",     "Teleports you down"        };
+	static TpForward  _DirectionalTpForward {"directionaltpforward",  "向前传送", "向前移动指定距离。"};
+	static TpBackward _DirectionalTpBackward{"directionaltpbackward", "向后传送", "向后移动指定距离。"};
+	static TpRight    _DirectionalTpRight   {"directionaltpright",    "向右传送", "向右移动指定距离。"};
+	static TpLeft     _DirectionalTpLeft    {"directionaltpleft",     "向左传送", "向左移动指定距离。"};
+	static TpUp       _DirectionalTpUp      {"directionaltpup",       "向上传送", "向上移动指定距离。"};
+	static TpDown     _DirectionalTpDown    {"directionaltpdown",     "向下传送", "向下移动指定距离。"};
 }

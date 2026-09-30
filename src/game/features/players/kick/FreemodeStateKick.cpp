@@ -25,5 +25,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static FreemodeStateKick _FreemodeStateKick{"endkick", "Freemode State Kick", "Kicks the player by forcing them to end the freemode session"};
+	static FreemodeStateKick _FreemodeStateKick{"endkick", "战局状态踢出", "通过强制结束自由模式战局来踢出玩家"};
 }
