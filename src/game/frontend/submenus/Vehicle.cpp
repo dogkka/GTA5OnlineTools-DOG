@@ -150,42 +150,64 @@ namespace YimMenu::Submenus
 			if (!x_cmd || !y_cmd)
 				return;
 
-			const ImVec2 size(280.0f, 158.0f); // 16:9 预览框
+			const ImVec2 size(300.0f, 168.0f); // 屏幕预览卡片
 			const ImVec2 origin = ImGui::GetCursorScreenPos();
 			ImGui::InvisibleButton("##speedodrag", size);
 
 			float x = x_cmd->GetState();
 			float y = y_cmd->GetState();
 
+			// 映射区留边距：保证圆点在四个角也能完整显示
+			const float inset = 14.0f;
+			const ImVec2 inner0(origin.x + inset, origin.y + inset);
+			const ImVec2 inner1(origin.x + size.x - inset, origin.y + size.y - inset);
+			const float inner_w = inner1.x - inner0.x;
+			const float inner_h = inner1.y - inner0.y;
+
 			if (ImGui::IsItemActive())
 			{
 				const ImVec2 mouse = ImGui::GetIO().MousePos;
-				x = std::clamp((mouse.x - origin.x) / size.x, 0.0f, 1.0f);
-				y = std::clamp((mouse.y - origin.y) / size.y, 0.0f, 1.0f);
+				x = std::clamp((mouse.x - inner0.x) / inner_w, 0.0f, 1.0f);
+				y = std::clamp((mouse.y - inner0.y) / inner_h, 0.0f, 1.0f);
 				x_cmd->SetState(x);
 				y_cmd->SetState(y);
 			}
 
 			auto draw = ImGui::GetWindowDrawList();
-			draw->AddRectFilled(origin, ImVec2(origin.x + size.x, origin.y + size.y), IM_COL32(15, 18, 26, 255), 6.0f);
-			draw->AddRect(origin, ImVec2(origin.x + size.x, origin.y + size.y), IM_COL32(90, 100, 120, 255), 6.0f);
+
+			// 卡片 + 阴影
+			draw->AddRectFilled(ImVec2(origin.x + 2.0f, origin.y + 3.0f), ImVec2(origin.x + size.x + 2.0f, origin.y + size.y + 3.0f), IM_COL32(0, 0, 0, 90), 8.0f);
+			draw->AddRectFilled(origin, ImVec2(origin.x + size.x, origin.y + size.y), IM_COL32(26, 30, 40, 255), 8.0f);
+			draw->AddRect(origin, ImVec2(origin.x + size.x, origin.y + size.y), IM_COL32(96, 106, 128, 255), 8.0f);
+
+			// 屏幕映射区
+			draw->AddRectFilled(inner0, inner1, IM_COL32(13, 15, 20, 255), 5.0f);
+			draw->AddRect(inner0, inner1, IM_COL32(66, 74, 92, 255), 5.0f);
 			for (float f = 0.25f; f < 1.0f; f += 0.25f)
 			{
-				draw->AddLine(ImVec2(origin.x + size.x * f, origin.y), ImVec2(origin.x + size.x * f, origin.y + size.y), IM_COL32(38, 44, 56, 255));
-				draw->AddLine(ImVec2(origin.x, origin.y + size.y * f), ImVec2(origin.x + size.x, origin.y + size.y * f), IM_COL32(38, 44, 56, 255));
+				draw->AddLine(ImVec2(inner0.x + inner_w * f, inner0.y), ImVec2(inner0.x + inner_w * f, inner1.y), IM_COL32(46, 52, 66, 255));
+				draw->AddLine(ImVec2(inner0.x, inner0.y + inner_h * f), ImVec2(inner1.x, inner0.y + inner_h * f), IM_COL32(46, 52, 66, 255));
 			}
 
-			const ImVec2 marker(origin.x + size.x * x, origin.y + size.y * y);
-			draw->AddCircleFilled(marker, 6.0f, IM_COL32(80, 160, 255, 255));
-			draw->AddCircle(marker, 10.0f, IM_COL32(130, 190, 255, 160));
+			// 十字参考线
+			const ImVec2 marker(inner0.x + inner_w * x, inner0.y + inner_h * y);
+			draw->AddLine(ImVec2(marker.x, inner0.y), ImVec2(marker.x, inner1.y), IM_COL32(110, 170, 255, 70));
+			draw->AddLine(ImVec2(inner0.x, marker.y), ImVec2(inner1.x, marker.y), IM_COL32(110, 170, 255, 70));
 
-			ImGui::Text("拖动圆点设置速度表位置（X %.2f / Y %.2f）", x, y);
+			// 圆点（发光圈 + 实心点 + 白芯）
+			draw->AddCircleFilled(marker, 13.0f, IM_COL32(80, 160, 255, 60), 32);
+			draw->AddCircleFilled(marker, 7.0f, IM_COL32(96, 178, 255, 255), 32);
+			draw->AddCircleFilled(marker, 3.0f, IM_COL32(232, 242, 255, 255), 16);
+			draw->AddCircle(marker, 9.5f, IM_COL32(170, 210, 255, 210), 32, 2.0f);
+
+			ImGui::Text("位置   X %.2f    Y %.2f", x, y);
 			ImGui::SameLine();
 			if (ImGui::SmallButton("重置位置"))
 			{
 				x_cmd->SetState(1.0f);
 				y_cmd->SetState(0.85f);
 			}
+			ImGui::TextDisabled("%s", "按住圆点拖动 = 屏幕落点（四角可到边）；菜单开着时会显示参考框");
 		})));
 		misc->AddItem(std::make_shared<BoolCommandItem>("allowhatsinvehicles"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("lsccustomsbypass"_J));

@@ -25,5 +25,8 @@ namespace YimMenu::Menu
 
 		inline ImFont* g_AwesomeFont = nullptr;
 		inline float g_AwesomeFontSize = 30.0f;
+
+		inline ImFont* g_HudBigFont = nullptr; // 速度表等 HUD 专用大号数字字体（仅拉丁字形，清晰锐利）
+		inline float g_HudBigFontSize = 56.0f;
 	}
 }

@@ -115,6 +115,7 @@ namespace YimMenu
 		Menu::Font::g_OverlayFont = CreateFontWithCjkSupport(IO, Menu::Font::g_OverlayFontSize);
 		static const ImWchar full_range[] = {0x0020, 0xFFFF, 0};
 		Menu::Font::g_AwesomeFont = IO.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(Fonts::IconFont), sizeof(Fonts::IconFont), Menu::Font::g_AwesomeFontSize, &FontCfg, full_range);
+		Menu::Font::g_HudBigFont = IO.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(Fonts::MainFont), sizeof(Fonts::MainFont), Menu::Font::g_HudBigFontSize, &FontCfg, IO.Fonts->GetGlyphRangesDefault());
 		IO.FontGlobalScale = Menu::Font::g_DefaultFontScale;
 
 		UIManager::SetOptionsFont(Menu::Font::g_OptionsFont);
