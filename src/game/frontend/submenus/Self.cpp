@@ -51,6 +51,11 @@ namespace YimMenu::Submenus
 		tools2Group->AddItem(std::make_shared<BoolCommandItem>("flamethrower"_J));
 		tools2Group->AddItem(std::make_shared<BoolCommandItem>("orbitalstrike"_J));
 
+		auto swapGroup = std::make_shared<Group>("变身", -1);
+		swapGroup->AddItem(std::make_shared<ListCommandItem>("swapmodelselect"_J));
+		swapGroup->AddItem(std::make_shared<CommandItem>("applyswapmodel"_J));
+		swapGroup->AddItem(std::make_shared<CommandItem>("revertswapmodel"_J));
+
 		auto clearWanted = std::make_shared<Group>("", 1);
 		clearWanted->AddItem(std::make_shared<ConditionalItem>("neverwanted"_J, std::make_shared<CommandItem>("clearwanted"_J), true));
 		clearWanted->AddItem(std::make_shared<BoolCommandItem>("neverwanted"_J));
@@ -82,6 +87,7 @@ namespace YimMenu::Submenus
 		main->AddItem(extraGroup);
 		main->AddItem(toolsGroup);
 		main->AddItem(tools2Group);
+		main->AddItem(swapGroup);
 		main->AddItem(specialAbilityGroup);
 		main->AddItem(wantedGroup);
 		main->AddItem(movementGroup);

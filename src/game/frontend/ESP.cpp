@@ -40,6 +40,8 @@ namespace YimMenu::Features
 	BoolCommand _ESPName("espnameplayers", "显示玩家名称", "是否显示玩家名称？");
 	BoolCommand _ESPDistance("espdistanceplayers", "显示玩家距离", "是否显示玩家距离？");
 	BoolCommand _ESPSkeleton("espskeletonplayers", "显示玩家骨骼", "是否显示玩家骨骼？");
+	BoolCommand _ESPHealthPlayers("esphealthplayers", "显示血量条", "在玩家头顶显示血量条？");
+	BoolCommand _ESPBoxPlayers("espboxplayers", "显示方框", "为玩家绘制方框？");
 
 	ColorCommand _NameColorPlayers("namecolorplayers", "玩家名称颜色", "更改玩家名称 ESP 的颜色。", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
 	ColorCommand _DistanceColorPlayers("distancecolorplayers", "玩家距离颜色", "更改玩家距离 ESP 的颜色。", ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
@@ -172,7 +174,43 @@ namespace YimMenu
 				drawList->AddText({headScreen->x, headScreen->y + 20}, colorBasedOnDistance, distanceStr.c_str());
 		}
 
-		//TODO Boxes, Distance colors, Friendlies, Tracers, Health bars
+		// Health bar
+		if (Features::_ESPHealthPlayers.GetState())
+		{
+			if (auto headScreen = worldToScreen(plyr.GetPed().GetBonePosition(headBone)))
+			{
+				const int health     = ENTITY::GET_ENTITY_HEALTH(plyr.GetPed().GetHandle());
+				const int max_health = std::max(ENTITY::GET_ENTITY_MAX_HEALTH(plyr.GetPed().GetHandle()), 1);
+				const float ratio    = std::clamp((float)health / (float)max_health, 0.0f, 1.0f);
+
+				const ImVec2 bar_min{headScreen->x - 25.0f, headScreen->y + 40.0f};
+				const ImVec2 bar_max{bar_min.x + 50.0f, bar_min.y + 5.0f};
+
+				const ImU32 bar_color = ratio > 0.6f ? IM_COL32(90, 200, 90, 255) : ratio > 0.3f ? IM_COL32(230, 180, 60, 255)
+				                                                                              : IM_COL32(220, 70, 70, 255);
+
+				drawList->AddRectFilled(bar_min, bar_max, IM_COL32(0, 0, 0, 160));
+				drawList->AddRectFilled(bar_min, {bar_min.x + 50.0f * ratio, bar_max.y}, bar_color);
+				drawList->AddRect(bar_min, bar_max, IM_COL32(255, 255, 255, 60));
+			}
+		}
+
+		// Box
+		if (Features::_ESPBoxPlayers.GetState())
+		{
+			if (auto torsoScreen = worldToScreen(plyr.GetPed().GetBonePosition(torsoBone)))
+			{
+				const float box_height = 12000.0f / std::max(distanceToPlayer, 1.0f);
+				const float box_width  = box_height * 0.5f;
+
+				drawList->AddRect({torsoScreen->x - box_width / 2.0f, torsoScreen->y - box_height / 2.0f},
+				    {torsoScreen->x + box_width / 2.0f, torsoScreen->y + box_height / 2.0f},
+				    ImGui::ColorConvertFloat4ToU32(colorBasedOnDistance),
+				    0.0f,
+				    0,
+				    1.5f);
+			}
+		}
 
 		if (Features::_ESPSkeleton.GetState() /* && !plyr.GetPed().IsAnimal() */) // yes, this is neccesary.
 		{

@@ -77,6 +77,8 @@ namespace YimMenu::Submenus
 
 		playerEsp->AddItem(std::make_shared<ConditionalItem>("espdrawplayers"_J, std::make_shared<BoolCommandItem>("espskeletonplayers"_J)));
 		playerEsp->AddItem(std::make_shared<ConditionalItem>("espdrawplayers"_J, std::make_shared<ColorCommandItem>("skeletoncolorplayers"_J)));
+		playerEsp->AddItem(std::make_shared<ConditionalItem>("espdrawplayers"_J, std::make_shared<BoolCommandItem>("esphealthplayers"_J)));
+		playerEsp->AddItem(std::make_shared<ConditionalItem>("espdrawplayers"_J, std::make_shared<BoolCommandItem>("espboxplayers"_J)));
 
 		// Peds
 		pedEsp->AddItem(std::make_shared<BoolCommandItem>("espdrawpeds"_J));
@@ -123,11 +125,16 @@ namespace YimMenu::Submenus
 		tunables->AddItem(std::make_shared<IntCommandItem>("tunablevalue"_J, "值", false));
 		tunables->AddItem(std::make_shared<ImGuiItem>([] { Features::RenderTunableEditor(); }));
 
+		auto executor = std::make_shared<Group>("命令执行器", -1);
+		executor->AddItem(std::make_shared<StringCommandItem>("commandinput"_J));
+		executor->AddItem(std::make_shared<CommandItem>("executecommand"_J));
+
 		game->AddItem(playerEsp);
 		game->AddItem(pedEsp);
 		game->AddItem(objectEsp);
 		game->AddItem(protection);
 		game->AddItem(tunables);
+		game->AddItem(executor);
 
 		gui->AddItem(uiStyle);
 		gui->AddItem(overlay);
