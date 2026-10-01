@@ -140,6 +140,8 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<BoolCommandItem>("lowervehiclestance"_J));
 
 		speedo->AddItem(std::make_shared<BoolCommandItem>("speedometer"_J));
+		speedo->AddItem(std::make_shared<ConditionalItem>("speedometer"_J, std::make_shared<ListCommandItem>("speedostyle"_J)));
+		speedo->AddItem(std::make_shared<ConditionalItem>("speedometer"_J, std::make_shared<ListCommandItem>("speedounits"_J)));
 		speedo->AddItem(std::make_shared<ConditionalItem>("speedometer"_J, std::make_shared<FloatCommandItem>("speedox"_J, "横向 X", true)));
 		speedo->AddItem(std::make_shared<ConditionalItem>("speedometer"_J, std::make_shared<FloatCommandItem>("speedoy"_J, "纵向 Y", true)));
 		speedo->AddItem(std::make_shared<ConditionalItem>("speedometer"_J, std::make_shared<ImGuiItem>([] {

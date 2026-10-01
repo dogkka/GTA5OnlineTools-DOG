@@ -2,6 +2,7 @@
 #include "GUI.hpp"
 #include "Menu.hpp"
 #include "ESP.hpp"
+#include "SpeedoHUD.hpp"
 #include "Overlay.hpp"
 #include "core/backend/ScriptMgr.hpp"
 #include "core/renderer/Renderer.hpp"
@@ -42,6 +43,11 @@ namespace YimMenu
 			    Overlay::Draw();
 		    },
 		    -6);
+		Renderer::AddRendererCallback(
+		    [] {
+			    SpeedoHUD::Draw();
+		    },
+		    -8);
 		Renderer::AddRendererCallback(
 		    [] {
 			    LuaManager::ForAllLoadedScripts([](std::shared_ptr<LuaScript>& script) {
