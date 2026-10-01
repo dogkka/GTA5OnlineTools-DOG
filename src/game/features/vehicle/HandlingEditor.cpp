@@ -19,7 +19,6 @@ namespace YimMenu::Features
 	static constexpr uintptr_t OFF_DEFORMATION  = 0xF8;
 	static constexpr uintptr_t OFF_ENGINE_DMG   = 0xFC;
 
-	static BoolCommand _CustomHandling{"handlingedit", "载具调校", "自定义当前载具的操控性能（实时生效）"};
 	static FloatCommand _MassMult{"handlingmass", "重量倍率", "质量倍率，越小越轻快", 0.05f, 5.0f, 0.6f};
 	static FloatCommand _AccelMult{"handlingaccel", "动力倍率", "加速与驱动力倍率", 0.5f, 20.0f, 1.5f};
 	static FloatCommand _TopSpeedMult{"handlingtopspeed", "极速倍率", "最高速度倍率", 0.5f, 20.0f, 1.5f};

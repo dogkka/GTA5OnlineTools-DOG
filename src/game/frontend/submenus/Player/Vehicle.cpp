@@ -13,6 +13,7 @@ namespace YimMenu::Submenus
 		group->AddItem(std::make_shared<PlayerCommandItem>("lockvehicle"_J));
 		group->AddItem(std::make_shared<ConditionalItem>("lockvehicle"_J, std::make_shared<ListCommandItem>("lockvehiclemode"_J)));
 		group->AddItem(std::make_shared<PlayerCommandItem>("rcvehicle"_J));
+		group->AddItem(std::make_shared<BoolCommandItem>("remotecontrol"_J));
 		group->AddItem(std::make_shared<PlayerCommandItem>("smashwindows"_J));
 		group->AddItem(std::make_shared<PlayerCommandItem>("killengine"_J));
 		group->AddItem(std::make_shared<PlayerCommandItem>("flipvehicle"_J));

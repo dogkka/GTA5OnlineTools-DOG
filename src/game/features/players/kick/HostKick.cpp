@@ -13,5 +13,5 @@ namespace YimMenu::Features
 		}
 	};
 
-	static HostKick _HostKick{"HKick", "主机踢出", "仅主机可用，且目标无法阻止"};
+	static HostKick _HostKick{"hkick", "主机踢出", "仅主机可用，且目标无法阻止"};
 }

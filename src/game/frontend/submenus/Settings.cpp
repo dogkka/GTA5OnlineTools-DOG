@@ -2,6 +2,7 @@
 
 #include "core/commands/Commands.hpp"
 #include "core/commands/HotkeySystem.hpp"
+#include "core/commands/IntCommand.hpp"
 #include "core/commands/LoopedCommand.hpp"
 #include "core/localization/Localization.hpp"
 #include "game/backend/Self.hpp"
@@ -64,6 +65,7 @@ namespace YimMenu::Submenus
 		auto protection = std::make_shared<Group>("防护");
 		auto tunables = std::make_shared<Group>("Tunables 编辑器");
 		auto envCheck = std::make_shared<Group>("环境自检");
+		auto webConsole = std::make_shared<Group>("远程控制台");
 
 		hotkeys->AddItem(std::make_shared<ImGuiItem>(Hotkeys));
 
@@ -77,6 +79,7 @@ namespace YimMenu::Submenus
 		playerEsp->AddItem(std::make_shared<ConditionalItem>("espdrawplayers"_J, std::make_shared<ColorCommandItem>("namecolorplayers"_J)));
 
 		playerEsp->AddItem(std::make_shared<ConditionalItem>("espdrawplayers"_J, std::make_shared<BoolCommandItem>("espdistanceplayers"_J)));
+		playerEsp->AddItem(std::make_shared<ConditionalItem>("espdistanceplayers"_J, std::make_shared<ColorCommandItem>("distancecolorplayers"_J)));
 
 		playerEsp->AddItem(std::make_shared<ConditionalItem>("espdrawplayers"_J, std::make_shared<BoolCommandItem>("espskeletonplayers"_J)));
 		playerEsp->AddItem(std::make_shared<ConditionalItem>("espdrawplayers"_J, std::make_shared<ColorCommandItem>("skeletoncolorplayers"_J)));
@@ -111,6 +114,7 @@ namespace YimMenu::Submenus
 
 		chat->AddItem(std::make_shared<CommandItem>("clearchat"_J));
 		protection->AddItem(std::make_shared<BoolCommandItem>("scripteventprotection"_J));
+		protection->AddItem(std::make_shared<BoolCommandItem>("anticage"_J));
 		protection->AddItem(std::make_shared<ImGuiItem>([] {
 			ImGui::Text("累计拦截：%llu", Features::GetProtectionBlockCount());
 
@@ -176,6 +180,22 @@ namespace YimMenu::Submenus
 		executor->AddItem(std::make_shared<StringCommandItem>("commandinput"_J));
 		executor->AddItem(std::make_shared<CommandItem>("executecommand"_J));
 
+		webConsole->AddItem(std::make_shared<BoolCommandItem>("webconsole"_J));
+		webConsole->AddItem(std::make_shared<ConditionalItem>("webconsole"_J, std::make_shared<IntCommandItem>("webconsoleport"_J, "##webconsoleport")));
+		webConsole->AddItem(std::make_shared<ConditionalItem>("webconsole"_J, std::make_shared<BoolCommandItem>("webconsolelan"_J)));
+		webConsole->AddItem(std::make_shared<ConditionalItem>("webconsole"_J, std::make_shared<StringCommandItem>("webconsoletoken"_J)));
+		webConsole->AddItem(std::make_shared<ConditionalItem>("webconsole"_J, std::make_shared<ImGuiItem>([] {
+			if (auto port_cmd = Commands::GetCommand<IntCommand>("webconsoleport"_J))
+			{
+				char url[64];
+				std::snprintf(url, sizeof(url), "http://127.0.0.1:%d", port_cmd->GetState());
+				ImGui::Text("本机访问：%s", url);
+				ImGui::SameLine();
+				if (ImGui::SmallButton("复制链接"))
+					ImGui::SetClipboardText(url);
+			}
+		})));
+
 		game->AddItem(playerEsp);
 		game->AddItem(pedEsp);
 		game->AddItem(objectEsp);
@@ -183,6 +203,7 @@ namespace YimMenu::Submenus
 		game->AddItem(envCheck);
 		game->AddItem(tunables);
 		game->AddItem(executor);
+		game->AddItem(webConsole);
 
 		gui->AddItem(uiStyle);
 		gui->AddItem(overlay);

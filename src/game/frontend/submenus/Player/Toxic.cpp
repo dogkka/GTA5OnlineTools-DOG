@@ -18,6 +18,7 @@ namespace YimMenu::Submenus
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopragdoll"_J));
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopkill"_J));
 		griefing->AddItem(std::make_shared<BoolCommandItem>("loopbounty"_J));
+		griefing->AddItem(std::make_shared<BoolCommandItem>("loopshake"_J));
 		griefing->AddItem(std::make_shared<PlayerCommandItem>("animalattack"_J));
 		griefing->AddItem(std::make_shared<PlayerCommandItem>("zombiehorde"_J));
 		griefing->AddItem(std::make_shared<PlayerCommandItem>("ghostcar"_J));
@@ -38,6 +39,12 @@ namespace YimMenu::Submenus
 		events->AddItem(std::make_shared<PlayerCommandItem>("sendbounty"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("fakeban"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("vehkick"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("fakenotification"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("fakebanner"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("soundspam"_J));
+		events->AddItem(std::make_shared<BoolCommandItem>("loopsoundspam"_J));
+		events->AddItem(std::make_shared<StringCommandItem>("fakenotiftext"_J));
+		events->AddItem(std::make_shared<StringCommandItem>("soundspamsound"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("ceoraid"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("forcemission"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("transerror"_J));

@@ -87,6 +87,7 @@ namespace YimMenu::Submenus
 		toxicGroup->AddItem(std::make_shared<CommandItem>("hkickall"_J));
 
 		miscGroup->AddItem(std::make_shared<BoolCommandItem>("forcethunder"_J));
+		miscGroup->AddItem(std::make_shared<BoolCommandItem>("locklobby"_J));
 
 		enhancements->AddItem(std::make_shared<BoolCommandItem>("notifyonplayerjoin"_J));
 		enhancements->AddItem(std::make_shared<BoolCommandItem>("fastjoin"_J));

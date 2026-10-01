@@ -140,15 +140,15 @@ namespace YimMenu::Submenus
 		misc->AddItem(std::make_shared<BoolCommandItem>("vehnocol"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("bulletprooftyres"_J));
 
-		tuning->AddItem(std::make_shared<BoolCommandItem>("handlingedit"_J));
-		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingmass"_J, "重量", true)));
-		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingaccel"_J, "动力", true)));
-		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtopspeed"_J, "极速", true)));
-		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtopspeedval"_J, "极速直设", true)));
-		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingbrake"_J, "刹车", true)));
-		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<FloatCommandItem>("handlingtraction"_J, "抓地", true)));
-		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<BoolCommandItem>("handlingnodeform"_J)));
-		tuning->AddItem(std::make_shared<ConditionalItem>("handlingedit"_J, std::make_shared<BoolCommandItem>("handlingengineimmune"_J)));
+		tuning->AddItem(std::make_shared<BoolCommandItem>("handlingeditor"_J));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingeditor"_J, std::make_shared<FloatCommandItem>("handlingmass"_J, "重量", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingeditor"_J, std::make_shared<FloatCommandItem>("handlingaccel"_J, "动力", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingeditor"_J, std::make_shared<FloatCommandItem>("handlingtopspeed"_J, "极速", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingeditor"_J, std::make_shared<FloatCommandItem>("handlingtopspeedval"_J, "极速直设", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingeditor"_J, std::make_shared<FloatCommandItem>("handlingbrake"_J, "刹车", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingeditor"_J, std::make_shared<FloatCommandItem>("handlingtraction"_J, "抓地", true)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingeditor"_J, std::make_shared<BoolCommandItem>("handlingnodeform"_J)));
+		tuning->AddItem(std::make_shared<ConditionalItem>("handlingeditor"_J, std::make_shared<BoolCommandItem>("handlingengineimmune"_J)));
 
 		main->AddItem(globals);
 		main->AddItem(tools);

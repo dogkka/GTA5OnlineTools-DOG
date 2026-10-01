@@ -73,6 +73,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     $<IF:$<BOOL:${CROSSCOMPILE}>,d3dcompiler_47,d3dcompiler>
     dwmapi
     gdi32
+    ws2_32
     libluajit
 )
 
