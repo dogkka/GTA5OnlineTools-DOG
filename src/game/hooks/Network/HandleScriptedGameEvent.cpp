@@ -75,7 +75,7 @@ namespace YimMenu::Hooks
 
 		s_LastNotify[key] = now;
 
-		Features::PushProtectionLog(player.GetName(), LocalizeEventName(name));
+		Features::PushProtectionLog(player.GetName(), player.GetId(), LocalizeEventName(name), Joaat(name));
 
 		Notifications::Show("脚本事件防护", "已拦截 '" + std::string(LocalizeEventName(name)) + "' 来自 " + player.GetName(), NotificationType::Warning);
 

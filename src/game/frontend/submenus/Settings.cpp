@@ -117,9 +117,18 @@ namespace YimMenu::Submenus
 			if (ImGui::BeginChild("##protechistory", ImVec2(0, 140), true))
 			{
 				for (auto& entry : Features::GetProtectionLogSnapshot())
-					ImGui::Text("%s  %s  %s", entry.Time.c_str(), entry.Player.c_str(), entry.Event.c_str());
+					ImGui::Text("%s  %s(ID:%d)  %s  #%08X", entry.Time.c_str(), entry.Player.c_str(), entry.PlayerId, entry.Event.c_str(), entry.EventHash);
 			}
 			ImGui::EndChild();
+
+			auto attackers = Features::GetTopAttackers(5);
+			if (!attackers.empty())
+			{
+				ImGui::Separator();
+				ImGui::Text("最近攻击者：");
+				for (auto& atk : attackers)
+					ImGui::Text("  %s (ID:%d) ×%llu", atk.Player.c_str(), atk.PlayerId, atk.Count);
+			}
 
 			if (ImGui::Button("清空记录"))
 				Features::ClearProtectionLog();
