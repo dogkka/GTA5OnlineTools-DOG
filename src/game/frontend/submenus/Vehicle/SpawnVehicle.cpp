@@ -18,9 +18,56 @@ namespace YimMenu::Submenus
 	static BoolCommand spawnVehicleMaxed{"spawnvehmaxed", "满改生成", "生成满改载具。"};
 	static BoolCommand spawnInsidePersonalVehicle{"spawninsidepv", "车内生成", "在个人载具内部生成。"};
 	static BoolCommand spawnClonePersonalVehicle{"spawnclonepv", "生成复制品", "生成个人载具的复制品。"};
-	static BoolCommand spawnPreviewMode{"spawnpreviewmode", "预览模式", "点击列表中的车辆会在你正前方 6 米处展示模型，再次点击自动替换上一辆。", true};
+
+	// ---------------- 载具预览（悬停预览 / 点击生成） ----------------
 	static std::atomic<int> g_PreviewGeneration{0};
-	static int g_LastPreviewVehicle = 0;
+	static int g_LastPreviewVehicle = 0; // 当前预览车（仅在游戏线程访问）
+	static int g_LastPreviewHash    = 0; // 当前预览车的模型
+
+	static void RemovePreviewVehicle()
+	{
+		if (g_LastPreviewVehicle != 0)
+		{
+			if (ENTITY::DOES_ENTITY_EXIST(g_LastPreviewVehicle))
+				Vehicle(g_LastPreviewVehicle).Delete();
+			g_LastPreviewVehicle = 0;
+			g_LastPreviewHash    = 0;
+		}
+	}
+
+	// 预览/生成落点：玩家正前方 6 米；若落点已有车（例如刚"转正"保留的车），往前挪到 11 米避免叠车
+	static rage::fvector3 GetPreviewSpawnCoords(Ped ped)
+	{
+		const auto pos     = ped.GetPosition();
+		const auto heading = ped.GetHeading();
+		const float rad    = heading * 3.14159265f / 180.0f;
+
+		float dist = 6.0f;
+		float x    = pos.x - sinf(rad) * dist;
+		float y    = pos.y + cosf(rad) * dist;
+
+		if (VEHICLE::GET_CLOSEST_VEHICLE(x, y, pos.z, 4.0f, 0, 70))
+		{
+			dist = 11.0f;
+			x    = pos.x - sinf(rad) * dist;
+			y    = pos.y + cosf(rad) * dist;
+		}
+
+		return rage::fvector3{x, y, pos.z + 0.5f};
+	}
+
+	class SpawnPreviewModeCommand : public BoolCommand
+	{
+		using BoolCommand::BoolCommand;
+
+		virtual void OnDisable() override
+		{
+			++g_PreviewGeneration; // 取消未完成的预览任务
+			RemovePreviewVehicle();
+		}
+	};
+
+	static SpawnPreviewModeCommand spawnPreviewMode{"spawnpreviewmode", "预览模式", "悬停预览：鼠标停在车名上约 0.3 秒即在正前方展示模型（自动替换）；点击则直接生成真车。", true};
 
 	std::shared_ptr<TabItem> RenderSpawnNewVehicle()
 	{
@@ -84,6 +131,7 @@ namespace YimMenu::Submenus
 
 			const int visible = std::min(20, static_cast<int>(vehicleNames.size()));
 			const float height = visible * ImGui::GetTextLineHeightWithSpacing();
+			int hovered_hash = 0;
 			if (ImGui::BeginListBox("##vehicles", {300.f, height}))
 			{
 				if (vehicleNames.empty())
@@ -106,12 +154,16 @@ namespace YimMenu::Submenus
 						if (matchesSearch && matchesClass)
 						{
 							ImGui::PushID(hash);
-							if (ImGui::Selectable(name.c_str()))
+							const bool clicked = ImGui::Selectable(name.c_str());
+							if (ImGui::IsItemHovered())
+								hovered_hash = hash;
+
+							if (clicked)
 							{
 								const int generation = ++g_PreviewGeneration;
 								const bool preview   = spawnPreviewMode.GetState();
 								FiberPool::Push([hash, name, generation, preview] {
-									// 连点去抖：有更新的点击排队时，放弃本次
+									// 有更新的操作排队时，放弃本次
 									if (generation != g_PreviewGeneration.load())
 										return;
 
@@ -119,30 +171,37 @@ namespace YimMenu::Submenus
 									if (!ped)
 										return;
 
-									// 移除上一辆预览车（只有最新一次点击动旧车）
-									if (preview && g_LastPreviewVehicle != 0)
+									// 正在预览的就是这辆 → "转正"保留，不再重复生成
+									if (preview && g_LastPreviewVehicle != 0 && g_LastPreviewHash == hash
+									    && ENTITY::DOES_ENTITY_EXIST(g_LastPreviewVehicle))
 									{
-										if (ENTITY::DOES_ENTITY_EXIST(g_LastPreviewVehicle))
-											Vehicle(g_LastPreviewVehicle).Delete();
+										auto promoted = Vehicle(g_LastPreviewVehicle);
 										g_LastPreviewVehicle = 0;
-									}
+										g_LastPreviewHash    = 0;
 
-									// 在玩家正前方 6 米生成（与"预设车辆"同款定位，避免贴脸生成失败/看不见）
-									const auto pos     = ped.GetPosition();
-									const auto heading = ped.GetHeading();
-									const float rad    = heading * 3.14159265f / 180.0f;
-									const float spawn_x = pos.x - sinf(rad) * 6.0f;
-									const float spawn_y = pos.y + cosf(rad) * 6.0f;
+										if (generation != g_PreviewGeneration.load())
+											return;
 
-									auto handle = Vehicle::Create(hash, rage::fvector3{spawn_x, spawn_y, pos.z + 0.5f}, heading);
-									if (!handle)
-									{
-										if (generation == g_PreviewGeneration.load() && preview)
-											Notifications::Show("载具预览", "生成失败：模型无法加载。", NotificationType::Error);
+										if (spawnInsideVehicle.GetState())
+											Self::GetPed().SetInVehicle(promoted);
+
+										Notifications::Show("载具生成", "已生成：" + name, NotificationType::Success);
 										return;
 									}
 
-									// 生成期间又被更新的点击取代：把刚生成的也清掉
+									// 否则清掉旧预览车，重新生成一辆真车
+									if (preview)
+										RemovePreviewVehicle();
+
+									// 在玩家正前方生成（6 米，落点被占则 11 米）
+									auto handle = Vehicle::Create(hash, GetPreviewSpawnCoords(ped), ped.GetHeading());
+									if (!handle)
+									{
+										Notifications::Show("载具生成", "生成失败：模型无法加载。", NotificationType::Error);
+										return;
+									}
+
+									// 生成期间又被更新的操作取代：把刚生成的也清掉
 									if (generation != g_PreviewGeneration.load())
 									{
 										handle.Delete();
@@ -155,11 +214,7 @@ namespace YimMenu::Submenus
 									if (spawnVehicleMaxed.GetState())
 										handle.Upgrade();
 
-									if (preview)
-									{
-										g_LastPreviewVehicle = handle.GetHandle();
-										Notifications::Show("载具预览", "已展示：" + name, NotificationType::Info);
-									}
+									Notifications::Show("载具生成", "已生成：" + name, NotificationType::Success);
 								});
 							}
 							ImGui::PopID();
@@ -168,6 +223,66 @@ namespace YimMenu::Submenus
 				}
 
 				ImGui::EndListBox();
+			}
+
+			// —— 悬停预览：鼠标停在某一项上约 0.3 秒即在车前展示该车（自动替换） ——
+			static int s_HoverAccumHash  = 0;
+			static float s_HoverAccumTime = 0.0f;
+
+			if (spawnPreviewMode.GetState() && hovered_hash != 0)
+			{
+				if (hovered_hash == s_HoverAccumHash)
+					s_HoverAccumTime += ImGui::GetIO().DeltaTime;
+				else
+				{
+					s_HoverAccumHash = hovered_hash;
+					s_HoverAccumTime = 0.0f;
+				}
+
+				if (s_HoverAccumTime >= 0.3f)
+				{
+					s_HoverAccumTime = 0.0f;
+					s_HoverAccumHash = 0; // 触发后重臂（若仍停在同一辆，fiber 端会识别并直接返回）
+
+					const int generation = ++g_PreviewGeneration;
+					FiberPool::Push([hovered_hash, generation] {
+						if (generation != g_PreviewGeneration.load())
+							return;
+
+						// 已经是当前预览车 → 无需重复生成
+						if (g_LastPreviewVehicle != 0 && g_LastPreviewHash == hovered_hash
+						    && ENTITY::DOES_ENTITY_EXIST(g_LastPreviewVehicle))
+							return;
+
+						RemovePreviewVehicle();
+
+						auto ped = Self::GetPed();
+						if (!ped)
+							return;
+
+						auto handle = Vehicle::Create(hovered_hash, GetPreviewSpawnCoords(ped), ped.GetHeading());
+						if (!handle)
+							return;
+
+						if (generation != g_PreviewGeneration.load())
+						{
+							handle.Delete();
+							return;
+						}
+
+						if (spawnVehicleMaxed.GetState())
+							handle.Upgrade();
+
+						g_LastPreviewVehicle = handle.GetHandle();
+						g_LastPreviewHash    = hovered_hash;
+						// 悬停预览不弹通知，避免刷屏
+					});
+				}
+			}
+			else
+			{
+				s_HoverAccumHash = 0;
+				s_HoverAccumTime = 0.0f;
 			}
 		}));
 
