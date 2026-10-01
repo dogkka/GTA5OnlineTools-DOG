@@ -25,6 +25,8 @@ namespace YimMenu::Submenus
 		griefing->AddItem(std::make_shared<BoolCommandItem>("clownarmy"_J));
 		griefing->AddItem(std::make_shared<PlayerCommandItem>("sharkattack"_J));
 		griefing->AddItem(std::make_shared<PlayerCommandItem>("snowmanarmy"_J));
+		griefing->AddItem(std::make_shared<PlayerCommandItem>("spawnbowlingball"_J));
+		griefing->AddItem(std::make_shared<BoolCommandItem>("bowlingballhunt"_J));
 
 		auto events = std::make_shared<Group>("脚本事件", -1);
 		events->AddItem(std::make_shared<PlayerCommandItem>("sendbounty"_J));
