@@ -127,4 +127,7 @@ namespace YimMenu::Features
 	};
 
 	int UfoSighting::g_Ufo = 0;
+
+	static Tornado _Tornado{"tornado", "龙卷风", "螺旋风场把周围的人和车卷上天"};
+	static UfoSighting _UfoSighting{"ufosighting", "UFO 目击", "让一个不明飞行物悬停在你的头顶（再点一次离开）"};
 }
