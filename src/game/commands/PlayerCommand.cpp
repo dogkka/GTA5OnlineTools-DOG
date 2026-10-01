@@ -38,7 +38,16 @@ namespace YimMenu
 
 	void PlayerCommand::OnCall()
 	{
-		LOG(WARNING) << GetName() << " requires a player argument";
+		// 无参数调用（热键 / 命令执行器 / 网页控制台）时回退到"当前选中玩家"
+		auto selected = Players::GetSelected();
+		if (selected.IsValid())
+		{
+			OnCall(selected);
+		}
+		else
+		{
+			LOG(WARNING) << GetName() << " requires a player argument";
+		}
 	}
 
 	void PlayerCommand::Call(Player target)

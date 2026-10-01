@@ -22,6 +22,7 @@
 #include "core/util/Joaat.hpp"
 #include "game/backend/Players.hpp"
 #include "game/backend/Self.hpp"
+#include "game/commands/PlayerCommand.hpp"
 #include "game/features/protections/ScriptEventProtection.hpp"
 #include "game/gta/Natives.hpp"
 #include "types/script/ScriptEvent.hpp"
@@ -229,8 +230,8 @@ namespace YimMenu::Features
 		return out;
 	}
 
-	// 执行命令（支持数值/文本参数），必须在游戏线程上执行
-	static std::string ExecCommandJson(const std::string& name, const std::string& arg)
+	// 执行命令（支持数值/文本参数；target 优先原子性选中玩家），必须在游戏线程上执行
+	static std::string ExecCommandJson(const std::string& name, const std::string& arg, int target_id = -1)
 	{
 		Command* target = Commands::GetCommand(Joaat(name));
 		if (!target)
@@ -248,6 +249,13 @@ namespace YimMenu::Features
 		if (!target)
 			return "{\"ok\":false,\"error\":\"未找到命令\"}";
 
+		if (target_id >= 0)
+		{
+			if (!Players::GetPlayers().count(static_cast<uint8_t>(target_id)))
+				return "{\"ok\":false,\"error\":\"目标玩家不存在\"}";
+			Players::SetSelected(Player(static_cast<uint8_t>(target_id)));
+		}
+
 		if (!arg.empty())
 		{
 			if (auto int_cmd = dynamic_cast<IntCommand*>(target))
@@ -259,6 +267,11 @@ namespace YimMenu::Features
 		}
 
 		const std::string label = target->GetLabel();
+
+		// PlayerCommand 无参调用会回退到"当前选中玩家"；没选人时给明确错误
+		if (dynamic_cast<PlayerCommand*>(target) && !Players::GetSelected().IsValid())
+			return "{\"ok\":false,\"error\":\"该命令需要先选中玩家（可加 &target=N）\"}";
+
 		target->Call();
 		return "{\"ok\":true,\"executed\":\"" + JsonEscape(label) + "\"}";
 	}
@@ -440,7 +453,7 @@ function pick(id){
 }
 function act(name){
   if (SEL < 0) { document.getElementById('out').textContent = '请先选中一名玩家'; return; }
-  fetch(u('/api/select?id=' + SEL)).then(function(){ return api('/api/exec?name=' + name); });
+  api('/api/exec?name=' + name + '&target=' + SEL);
 }
 function execCmd(){
   var n = document.getElementById('cmd').value.trim();
@@ -679,7 +692,10 @@ setInterval(refresh, 5000);
 			{
 				const std::string name = params["name"];
 				const std::string arg  = params["arg"];
-				body = RunOnGameThread([name, arg]() -> std::string { return ExecCommandJson(name, arg); });
+				int target_id = -1;
+				if (auto it = params.find("target"); it != params.end() && !it->second.empty())
+					target_id = std::atoi(it->second.c_str());
+				body = RunOnGameThread([name, arg, target_id]() -> std::string { return ExecCommandJson(name, arg, target_id); });
 			}
 			else if (path == "/api/notify")
 			{

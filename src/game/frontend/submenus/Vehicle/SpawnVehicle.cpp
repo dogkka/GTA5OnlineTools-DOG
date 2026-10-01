@@ -9,13 +9,17 @@
 #include "game/gta/data/Vehicles.hpp"
 #include "game/gta/Natives.hpp"
 
+#include <atomic>
+#include <cmath>
+
 namespace YimMenu::Submenus
 {
 	static BoolCommand spawnInsideVehicle{"spawninsideveh", "车内生成", "在载具内部生成。"};
 	static BoolCommand spawnVehicleMaxed{"spawnvehmaxed", "满改生成", "生成满改载具。"};
 	static BoolCommand spawnInsidePersonalVehicle{"spawninsidepv", "车内生成", "在个人载具内部生成。"};
 	static BoolCommand spawnClonePersonalVehicle{"spawnclonepv", "生成复制品", "生成个人载具的复制品。"};
-	static BoolCommand spawnPreviewMode{"spawnpreviewmode", "预览模式", "点击列表中的车辆会替换上一辆预览车，方便逐一查看车型。", true};
+	static BoolCommand spawnPreviewMode{"spawnpreviewmode", "预览模式", "点击列表中的车辆会在你正前方 6 米处展示模型，再次点击自动替换上一辆。", true};
+	static std::atomic<int> g_PreviewGeneration{0};
 	static int g_LastPreviewVehicle = 0;
 
 	std::shared_ptr<TabItem> RenderSpawnNewVehicle()
@@ -104,14 +108,46 @@ namespace YimMenu::Submenus
 							ImGui::PushID(hash);
 							if (ImGui::Selectable(name.c_str()))
 							{
-								FiberPool::Push([hash] {
-									if (spawnPreviewMode.GetState())
+								const int generation = ++g_PreviewGeneration;
+								const bool preview   = spawnPreviewMode.GetState();
+								FiberPool::Push([hash, name, generation, preview] {
+									// 连点去抖：有更新的点击排队时，放弃本次
+									if (generation != g_PreviewGeneration.load())
+										return;
+
+									auto ped = Self::GetPed();
+									if (!ped)
+										return;
+
+									// 移除上一辆预览车（只有最新一次点击动旧车）
+									if (preview && g_LastPreviewVehicle != 0)
 									{
-										if (g_LastPreviewVehicle != 0 && ENTITY::DOES_ENTITY_EXIST(g_LastPreviewVehicle))
+										if (ENTITY::DOES_ENTITY_EXIST(g_LastPreviewVehicle))
 											Vehicle(g_LastPreviewVehicle).Delete();
+										g_LastPreviewVehicle = 0;
 									}
 
-									auto handle = Vehicle::Create(hash, Vehicle::GetSpawnLocRelToPed(Self::GetPed().GetHandle(), hash), Self::GetPed().GetHeading());
+									// 在玩家正前方 6 米生成（与"预设车辆"同款定位，避免贴脸生成失败/看不见）
+									const auto pos     = ped.GetPosition();
+									const auto heading = ped.GetHeading();
+									const float rad    = heading * 3.14159265f / 180.0f;
+									const float spawn_x = pos.x - sinf(rad) * 6.0f;
+									const float spawn_y = pos.y + cosf(rad) * 6.0f;
+
+									auto handle = Vehicle::Create(hash, rage::fvector3{spawn_x, spawn_y, pos.z + 0.5f}, heading);
+									if (!handle)
+									{
+										if (generation == g_PreviewGeneration.load() && preview)
+											Notifications::Show("载具预览", "生成失败：模型无法加载。", NotificationType::Error);
+										return;
+									}
+
+									// 生成期间又被更新的点击取代：把刚生成的也清掉
+									if (generation != g_PreviewGeneration.load())
+									{
+										handle.Delete();
+										return;
+									}
 
 									if (spawnInsideVehicle.GetState())
 										Self::GetPed().SetInVehicle(handle);
@@ -119,7 +155,11 @@ namespace YimMenu::Submenus
 									if (spawnVehicleMaxed.GetState())
 										handle.Upgrade();
 
-									g_LastPreviewVehicle = handle ? handle.GetHandle() : 0;
+									if (preview)
+									{
+										g_LastPreviewVehicle = handle.GetHandle();
+										Notifications::Show("载具预览", "已展示：" + name, NotificationType::Info);
+									}
 								});
 							}
 							ImGui::PopID();
