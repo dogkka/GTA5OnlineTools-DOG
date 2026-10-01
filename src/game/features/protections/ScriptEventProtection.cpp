@@ -17,9 +17,10 @@ namespace YimMenu::Features
 	static std::deque<BlockedEventEntry> g_Log;
 	static std::unordered_map<int, unsigned long long> g_AttackerCounts;
 	static std::unordered_map<int, std::string> g_AttackerNames;
+	static std::unordered_map<int, std::uint64_t> g_AttackerRids;
 	static unsigned long long g_BlockCount = 0;
 
-	void PushProtectionLog(const std::string& player, int player_id, const std::string& event, std::uint32_t event_hash)
+	void PushProtectionLog(const std::string& player, int player_id, std::uint64_t rid, const std::string& event, std::uint32_t event_hash)
 	{
 		auto now = std::chrono::system_clock::now();
 		const auto t = std::chrono::system_clock::to_time_t(now);
@@ -32,11 +33,13 @@ namespace YimMenu::Features
 		g_AttackerCounts[player_id]++;
 		if (!player.empty())
 			g_AttackerNames[player_id] = player;
+		if (rid)
+			g_AttackerRids[player_id] = rid;
 
 		if (g_Log.size() >= 100)
 			g_Log.pop_front();
 
-		g_Log.push_back({time_str, player, player_id, event, event_hash});
+		g_Log.push_back({time_str, player, player_id, rid, event, event_hash});
 	}
 
 	std::vector<BlockedEventEntry> GetProtectionLogSnapshot()
@@ -55,7 +58,10 @@ namespace YimMenu::Features
 			std::string name = "<未知>";
 			if (auto it = g_AttackerNames.find(id); it != g_AttackerNames.end())
 				name = it->second;
-			out.push_back({name, id, count});
+			std::uint64_t rid = 0;
+			if (auto it = g_AttackerRids.find(id); it != g_AttackerRids.end())
+				rid = it->second;
+			out.push_back({name, id, rid, count});
 		}
 
 		std::sort(out.begin(), out.end(), [](const AttackerEntry& a, const AttackerEntry& b) {
@@ -80,6 +86,7 @@ namespace YimMenu::Features
 		g_Log.clear();
 		g_AttackerCounts.clear();
 		g_AttackerNames.clear();
+		g_AttackerRids.clear();
 		g_BlockCount = 0;
 	}
 }

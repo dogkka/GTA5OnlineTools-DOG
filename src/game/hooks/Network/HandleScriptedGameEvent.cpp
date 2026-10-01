@@ -29,14 +29,18 @@ namespace YimMenu::Hooks
 		static const std::unordered_map<std::string_view, std::string_view> s_Names = {
 		    {"CeoMoney", "CEO 工资"},
 		    {"CeoBan", "CEO 玩法禁用"},
+		    {"CeoKick", "CEO 踢出"},
 		    {"Crash", "崩溃攻击"},
 		    {"NotificationCrash", "通知崩溃"},
 		    {"SoundSpam", "声音轰炸"},
 		    {"NetworkBail", "强制断线"},
 		    {"KickFromInterior", "室内踢出"},
+		    {"InteriorControl", "室内控制攻击"},
 		    {"VehicleKick", "踢出载具"},
 		    {"TSECommand", "TSE 工具命令"},
 		    {"Fake Money Notification", "假金钱通知"},
+		    {"SendTextLabelSMS", "假短信"},
+		    {"Bounty", "赏金骚扰"},
 		    {"Notification", "假通知"},
 		    {"GtaBanner", "假横幅"},
 		    {"PersonalVehicle", "损毁个人载具"},
@@ -51,6 +55,7 @@ namespace YimMenu::Hooks
 		    {"Collectible", "塞收集品"},
 		    {"Remote Teleport", "强制传送"},
 		    {"TriggerCEORaid", "触发 CEO 突袭"},
+		    {"SetSkydiveCompleted", "强制标记挑战"},
 		};
 
 		if (auto it = s_Names.find(name); it != s_Names.end())
@@ -75,7 +80,7 @@ namespace YimMenu::Hooks
 
 		s_LastNotify[key] = now;
 
-		Features::PushProtectionLog(player.GetName(), player.GetId(), LocalizeEventName(name), Joaat(name));
+		Features::PushProtectionLog(player.GetName(), player.GetId(), player.GetRID(), LocalizeEventName(name), Joaat(name));
 
 		Notifications::Show("脚本事件防护", "已拦截 '" + std::string(LocalizeEventName(name)) + "' 来自 " + player.GetName(), NotificationType::Warning);
 
@@ -121,6 +126,7 @@ namespace YimMenu::Hooks
 
 			if (bounty->Target == Self::GetPlayer().GetId())
 			{
+				BlockEvent(player, "Bounty");
 				return false;
 			}
 
@@ -128,13 +134,14 @@ namespace YimMenu::Hooks
 		}
 		case ScriptEventIndex::SendTextLabelSMS:
 		{
-			//player.AddDetection();
+			BlockEvent(player, "SendTextLabelSMS");
 			return false;
 		}
 		case ScriptEventIndex::CeoKick:
 		{
 			if (player.GetId() != GPBD_FM_3::Get()->Entries[Self::GetPlayer().GetId()].BossGoon.Boss)
 			{
+				BlockEvent(player, "CeoKick");
 				return false;
 			}
 
@@ -147,12 +154,14 @@ namespace YimMenu::Hooks
 			if (interior_control->Interior < 0 || interior_control->Interior >= static_cast<int>(eSimpleInteriorIndex::SIMPLE_INTERIOR_MAX)) // the upper bound will change after an update
 			{
 				// null function kick
+				BlockEvent(player, "InteriorControl");
 				return false;
 			}
 
 			if (!interior_control->GoonsOnly)
 			{
 				// send to interior
+				BlockEvent(player, "InteriorControl");
 				return false;
 			}
 
@@ -315,6 +324,12 @@ namespace YimMenu::Hooks
 		case ScriptEventIndex::TriggerCEORaid:
 		{
 			if (BlockEvent(player, "TriggerCEORaid"))
+				return false;
+			break;
+		}
+		case ScriptEventIndex::SetSkydiveCompleted:
+		{
+			if (BlockEvent(player, "SetSkydiveCompleted"))
 				return false;
 			break;
 		}
