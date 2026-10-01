@@ -60,6 +60,9 @@ namespace YimMenu::Submenus
 		otherOpts->AddItem(std::make_shared<ConditionalItem>("objectrain"_J, std::make_shared<ListCommandItem>("rainobject"_J)));
 		otherOpts->AddItem(std::make_shared<CommandItem>("nuke"_J));
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("animalmigration"_J));
+		otherOpts->AddItem(std::make_shared<BoolCommandItem>("bouncyworld"_J));
+		otherOpts->AddItem(std::make_shared<BoolCommandItem>("personaltrampoline"_J));
+		otherOpts->AddItem(std::make_shared<BoolCommandItem>("drainocean"_J));
 
 		main->AddItem(std::move(killPeds));
 		main->AddItem(std::move(deleteOpts));
