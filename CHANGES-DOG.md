@@ -115,7 +115,7 @@
 
 - MSVC 构建需 `/utf-8`（中文源码）；版本注入 `VERSION` = 2.0.0
 - 源码：分支 [`yimmenu-v2`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/yimmenu-v2)（每功能独立 commit）
-- DLL SHA256（b0ed7fee 版）：`c3b5ee3bd7c51b53e8618a66043fb78bacf3f1dbcc08a2ecffcc6ab7b406c548`
+- DLL SHA256（b0ed7fee 版）：`7579af1473480b3bc4ca6c34d2ca2682effa2b629c2f80b28eb76a0333340ac4`
 
 
 ---
@@ -199,3 +199,9 @@
 
 ### 菜单
 - 菜单版本号 2.1.3
+
+
+### v2.1.3 修正（代码审查）
+- 修复：龙卷风 / UFO 目击 两个功能未注册（菜单显示"未知"）——审查发现并修复
+- 玩家"骚扰"分组改为竖排（不再横向撑宽）
+- NewBase.dll 重新编译（含修复）
