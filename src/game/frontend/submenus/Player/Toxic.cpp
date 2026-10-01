@@ -39,6 +39,10 @@ namespace YimMenu::Submenus
 		events->AddItem(std::make_shared<IntCommandItem>("fakemoneyamount"_J, "金额", true));
 		events->AddItem(std::make_shared<PlayerCommandItem>("moneyrain"_J));
 		events->AddItem(std::make_shared<PlayerCommandItem>("supplydrop"_J));
+		events->AddItem(std::make_shared<StringCommandItem>("trollplatetext"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("trollplate"_J));
+		events->AddItem(std::make_shared<PlayerCommandItem>("forcecolor"_J));
+		events->AddItem(std::make_shared<ConditionalItem>("forcecolor"_J, std::make_shared<ListCommandItem>("forcecolorselect"_J)));
 
 		menu->AddItem(damage);
 		menu->AddItem(griefing);

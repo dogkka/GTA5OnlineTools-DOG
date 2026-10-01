@@ -56,6 +56,9 @@ namespace YimMenu::Submenus
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("fireworks"_J));
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("tornado"_J));
 		otherOpts->AddItem(std::make_shared<CommandItem>("ufosighting"_J));
+		otherOpts->AddItem(std::make_shared<BoolCommandItem>("objectrain"_J));
+		otherOpts->AddItem(std::make_shared<ConditionalItem>("objectrain"_J, std::make_shared<ListCommandItem>("rainobject"_J)));
+		otherOpts->AddItem(std::make_shared<CommandItem>("nuke"_J));
 
 		main->AddItem(std::move(killPeds));
 		main->AddItem(std::move(deleteOpts));
