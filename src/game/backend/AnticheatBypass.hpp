@@ -19,8 +19,12 @@ namespace YimMenu
 		int m_FSLVersion = -1;
 		bool m_FSLProvidesLocalSaves = false;
 		bool m_FSLProvidesBEBypass = false;
+		bool m_IsOutdated = false;
 
 	public:
+		// game build this menu's function-restore patches were generated for
+		inline static constexpr const char* PATCH_GAME_VERSION = "1158.16";
+
 		static void RunOnStartup()
 		{
 			GetInstance().RunOnStartupImpl();
@@ -55,6 +59,18 @@ namespace YimMenu
 		static bool IsFSLProvidingBattlEyeBypass()
 		{
 			return GetInstance().m_FSLProvidesBEBypass;
+		}
+
+		// true when the running game build does not match PATCH_GAME_VERSION and
+		// the encrypted/destroyed-function restore was skipped to avoid crashes
+		static bool IsOutdated()
+		{
+			return GetInstance().m_IsOutdated;
+		}
+
+		static const char* GetSupportedGameVersion()
+		{
+			return PATCH_GAME_VERSION;
 		}
 	};
 }

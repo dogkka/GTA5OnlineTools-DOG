@@ -2,6 +2,7 @@
 #include "core/backend/ScriptMgr.hpp"
 #include "core/memory/ModuleMgr.hpp"
 #include "core/util/Joaat.hpp"
+#include "core/frontend/Notifications.hpp"
 #include "game/pointers/Pointers.hpp"
 #include "game/backend/NativeHooks.hpp"
 #include "game/gta/Natives.hpp"
@@ -12,7 +13,6 @@ using FnLocalSaves = bool (*)();
 using FnBattlEyeBypass = bool (*)();
 
 #define RESTORE_DESTROYED_FUNCTIONS true
-#define PATCH_GAME_VERSION "1158.16"
 
 namespace YimMenu
 {
@@ -951,10 +951,13 @@ namespace YimMenu
 				uintptr_t base = ModuleMgr.Get("GTA5_Enhanced.exe"_J)->Base();
 				PatchEncryptedFunctions(base);
 				PatchDestroyedFunctions(base);
+				m_IsOutdated = false;
 			}
 			else
 			{
-				LOGF(FATAL, "Standalone bypass is outdated, game may crash");
+				m_IsOutdated = true;
+				LOGF(WARNING, "Game version {} does not match patch version {}, skipping function restore to avoid crashes", Pointers.GameVersion, PATCH_GAME_VERSION);
+				Notifications::Show("环境自检", std::string("游戏版本 ") + Pointers.GameVersion + " 与补丁版本 " + PATCH_GAME_VERSION + " 不匹配，已跳过函数还原。菜单功能可能异常，请等待适配新版。", NotificationType::Error, 10000);
 			}
 #endif
 		}

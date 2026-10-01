@@ -5,6 +5,9 @@
 #include "core/commands/BoolCommand.hpp"
 #include "core/commands/IntCommand.hpp"
 #include "core/commands/ListCommand.hpp"
+#include "core/commands/Command.hpp"
+#include "core/commands/Commands.hpp"
+#include "core/frontend/Notifications.hpp"
 #include "game/hooks/Hooks.hpp"
 #include "core/hooking/DetourHook.hpp"
 #include "core/backend/FiberPool.hpp"
@@ -83,6 +86,35 @@ namespace YimMenu::Features
 	    2,
 	    7,
 	    5};
+
+	class FullLobbyPreset : public Command
+	{
+		using Command::Command;
+
+		virtual void OnCall() override
+		{
+			bool enabling = !Commands::GetCommand<BoolCommand>("mmmultiplexsession"_J)->GetState();
+
+			Commands::GetCommand<BoolCommand>("mmmultiplexsession"_J)->SetState(enabling);
+			Commands::GetCommand<IntCommand>("mmmultiplexsessioncount"_J)->SetState(5);
+			Commands::GetCommand<BoolCommand>("mmspoofplayercount"_J)->SetState(enabling);
+			Commands::GetCommand<IntCommand>("mmplayercount"_J)->SetState(25);
+			Commands::GetCommand<BoolCommand>("mmspoofregiontype"_J)->SetState(enabling);
+			Commands::GetCommand<ListCommand>("mmregiontype"_J)->SetState(4); // 中国
+			Commands::GetCommand<BoolCommand>("mmspooflanguage"_J)->SetState(enabling);
+			Commands::GetCommand<ListCommand>("mmlanguage"_J)->SetState(12); // 简体中文
+
+			Notifications::Show(
+			    "匹配增强",
+			    enabling ? "满员模式已开启：多路广播×5 + 伪装25人 + 地区中国/简体中文，等同行涌进来。" : "满员模式已关闭，全部伪装与多路广播已还原。",
+			    enabling ? NotificationType::Success : NotificationType::Info);
+		}
+	};
+
+	static FullLobbyPreset _FullLobbyPreset{
+	    "mmfulllobby",
+	    "一键满员模式",
+	    "一键开启/关闭匹配增强：多路广播战局×5、伪装玩家人数25、地区伪装为中国、语言伪装为简体中文，让同行快速涌入你的战局"};
 }
 
 namespace YimMenu

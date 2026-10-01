@@ -116,6 +116,7 @@ namespace YimMenu::Submenus
 		spoofing->AddItem(matchmakingGroup);
 
 		auto matchmakingSrvGroup = std::make_shared<Group>("匹配伪装（服务器）");
+		matchmakingSrvGroup->AddItem(std::make_shared<CommandItem>("mmfulllobby"_J, "一键满员模式"));
 		auto srvSpoofRegion = std::make_shared<Group>("", 1);
 		srvSpoofRegion->AddItem(std::make_shared<BoolCommandItem>("mmspoofregiontype"_J));
 		srvSpoofRegion->AddItem(std::make_shared<ConditionalItem>("mmspoofregiontype"_J, std::make_shared<ListCommandItem>("mmregiontype"_J, "##mmregiontype")));

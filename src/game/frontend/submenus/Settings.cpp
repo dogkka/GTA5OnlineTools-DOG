@@ -5,12 +5,14 @@
 #include "core/commands/LoopedCommand.hpp"
 #include "core/localization/Localization.hpp"
 #include "game/backend/Self.hpp"
+#include "game/backend/AnticheatBypass.hpp"
 #include "game/frontend/items/Items.hpp"
 #include "game/frontend/items/DrawHotkey.hpp"
 #include "game/frontend/submenus/Settings/LuaScripts.hpp"
 #include "game/frontend/submenus/Settings/GUISettings.hpp"
 #include "game/features/protections/ScriptEventProtection.hpp"
 #include "game/features/system/TunablesEditor.hpp"
+#include "game/pointers/Pointers.hpp"
 
 namespace YimMenu::Submenus
 {
@@ -61,6 +63,7 @@ namespace YimMenu::Submenus
 		auto chat = std::make_shared<Group>("聊天");
 		auto protection = std::make_shared<Group>("防护");
 		auto tunables = std::make_shared<Group>("Tunables 编辑器");
+		auto envCheck = std::make_shared<Group>("环境自检");
 
 		hotkeys->AddItem(std::make_shared<ImGuiItem>(Hotkeys));
 
@@ -125,6 +128,28 @@ namespace YimMenu::Submenus
 		tunables->AddItem(std::make_shared<IntCommandItem>("tunablevalue"_J, "值", false));
 		tunables->AddItem(std::make_shared<ImGuiItem>([] { Features::RenderTunableEditor(); }));
 
+		envCheck->AddItem(std::make_shared<ImGuiItem>([] {
+			ImGui::Text("BattlEye：%s", AnticheatBypass::IsBattlEyeRunning() ? "运行中（危险！请立即退出并关闭 BE）" : "已关闭");
+			ImGui::Text("FSL：%s", AnticheatBypass::IsFSLLoaded() ? "已加载" : "未加载");
+			if (AnticheatBypass::IsFSLLoaded())
+			{
+				ImGui::Text("  FSL 版本：%d", AnticheatBypass::GetFSLVersion());
+				ImGui::Text("  本地存档：%s", AnticheatBypass::IsFSLProvidingLocalSaves() ? "已启用" : "未启用");
+				ImGui::Text("  BE 绕过标志：%s", AnticheatBypass::IsFSLProvidingBattlEyeBypass() ? "已提供" : "未提供");
+			}
+			ImGui::Separator();
+			ImGui::Text("游戏版本：%s", Pointers.GameVersion ? Pointers.GameVersion : "未知");
+			ImGui::Text("补丁版本：%s", AnticheatBypass::GetSupportedGameVersion());
+			if (AnticheatBypass::IsOutdated())
+			{
+				ImGui::TextColored(ImVec4(1.0f, 0.35f, 0.35f, 1.0f), "版本不匹配：函数还原已跳过，菜单可能异常，请等待适配新版");
+			}
+			else
+			{
+				ImGui::TextColored(ImVec4(0.35f, 1.0f, 0.35f, 1.0f), "版本匹配：函数还原补丁可用");
+			}
+		}));
+
 		auto executor = std::make_shared<Group>("命令执行器", -1);
 		executor->AddItem(std::make_shared<StringCommandItem>("commandinput"_J));
 		executor->AddItem(std::make_shared<CommandItem>("executecommand"_J));
@@ -133,6 +158,7 @@ namespace YimMenu::Submenus
 		game->AddItem(pedEsp);
 		game->AddItem(objectEsp);
 		game->AddItem(protection);
+		game->AddItem(envCheck);
 		game->AddItem(tunables);
 		game->AddItem(executor);
 
