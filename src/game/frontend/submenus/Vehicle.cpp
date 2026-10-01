@@ -1,5 +1,7 @@
 #include "Vehicle.hpp"
 #include "core/backend/FiberPool.hpp"
+#include "core/commands/Commands.hpp"
+#include "core/commands/FloatCommand.hpp"
 #include "core/frontend/Notifications.hpp"
 #include "game/backend/PersonalVehicles.hpp"
 #include "game/features/vehicle/DeletePersonalVehicle.hpp"
@@ -8,6 +10,8 @@
 #include "game/pointers/Pointers.hpp"
 #include "Vehicle/VehicleEditor.hpp"
 #include "Vehicle/SavedVehicles.hpp"
+
+#include <algorithm>
 
 namespace YimMenu::Submenus
 {
@@ -25,6 +29,7 @@ namespace YimMenu::Submenus
 		auto appearance = std::make_shared<Group>("外观与灯光", -1);
 		auto misc = std::make_shared<Group>("安全与杂项", -1);
 		auto tuning = std::make_shared<Group>("载具调校", -1);
+		auto speedo = std::make_shared<Group>("速度表", 1);
 
 		globals->AddItem(std::make_shared<BoolCommandItem>("vehiclegodmode"_J));
 		globals->AddItem(std::make_shared<BoolCommandItem>("keepfixed"_J));
@@ -131,9 +136,55 @@ namespace YimMenu::Submenus
 		appearance->AddItem(std::make_shared<BoolCommandItem>("vehicleinvis"_J));
 		appearance->AddItem(std::make_shared<BoolCommandItem>("vehiclestrong"_J));
 
-		misc->AddItem(std::make_shared<BoolCommandItem>("speedometer"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("seatbelt"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("lowervehiclestance"_J));
+
+		speedo->AddItem(std::make_shared<BoolCommandItem>("speedometer"_J));
+		speedo->AddItem(std::make_shared<ConditionalItem>("speedometer"_J, std::make_shared<FloatCommandItem>("speedox"_J, "横向 X", true)));
+		speedo->AddItem(std::make_shared<ConditionalItem>("speedometer"_J, std::make_shared<FloatCommandItem>("speedoy"_J, "纵向 Y", true)));
+		speedo->AddItem(std::make_shared<ConditionalItem>("speedometer"_J, std::make_shared<ImGuiItem>([] {
+			auto x_cmd = Commands::GetCommand<FloatCommand>("speedox"_J);
+			auto y_cmd = Commands::GetCommand<FloatCommand>("speedoy"_J);
+			if (!x_cmd || !y_cmd)
+				return;
+
+			const ImVec2 size(280.0f, 158.0f); // 16:9 预览框
+			const ImVec2 origin = ImGui::GetCursorScreenPos();
+			ImGui::InvisibleButton("##speedodrag", size);
+
+			float x = x_cmd->GetState();
+			float y = y_cmd->GetState();
+
+			if (ImGui::IsItemActive())
+			{
+				const ImVec2 mouse = ImGui::GetIO().MousePos;
+				x = std::clamp((mouse.x - origin.x) / size.x, 0.0f, 1.0f);
+				y = std::clamp((mouse.y - origin.y) / size.y, 0.0f, 1.0f);
+				x_cmd->SetState(x);
+				y_cmd->SetState(y);
+			}
+
+			auto draw = ImGui::GetWindowDrawList();
+			draw->AddRectFilled(origin, ImVec2(origin.x + size.x, origin.y + size.y), IM_COL32(15, 18, 26, 255), 6.0f);
+			draw->AddRect(origin, ImVec2(origin.x + size.x, origin.y + size.y), IM_COL32(90, 100, 120, 255), 6.0f);
+			for (float f = 0.25f; f < 1.0f; f += 0.25f)
+			{
+				draw->AddLine(ImVec2(origin.x + size.x * f, origin.y), ImVec2(origin.x + size.x * f, origin.y + size.y), IM_COL32(38, 44, 56, 255));
+				draw->AddLine(ImVec2(origin.x, origin.y + size.y * f), ImVec2(origin.x + size.x, origin.y + size.y * f), IM_COL32(38, 44, 56, 255));
+			}
+
+			const ImVec2 marker(origin.x + size.x * x, origin.y + size.y * y);
+			draw->AddCircleFilled(marker, 6.0f, IM_COL32(80, 160, 255, 255));
+			draw->AddCircle(marker, 10.0f, IM_COL32(130, 190, 255, 160));
+
+			ImGui::Text("拖动圆点设置速度表位置（X %.2f / Y %.2f）", x, y);
+			ImGui::SameLine();
+			if (ImGui::SmallButton("重置位置"))
+			{
+				x_cmd->SetState(1.0f);
+				y_cmd->SetState(0.85f);
+			}
+		})));
 		misc->AddItem(std::make_shared<BoolCommandItem>("allowhatsinvehicles"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("lsccustomsbypass"_J));
 		misc->AddItem(std::make_shared<BoolCommandItem>("dlcvehicles"_J));
@@ -157,6 +208,7 @@ namespace YimMenu::Submenus
 		main->AddItem(driving);
 		main->AddItem(appearance);
 		main->AddItem(misc);
+		main->AddItem(speedo);
 		main->AddItem(tuning);
 
 		AddCategory(std::move(main));

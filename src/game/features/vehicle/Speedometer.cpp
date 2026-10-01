@@ -1,9 +1,13 @@
 #include "core/commands/LoopedCommand.hpp"
+#include "core/commands/FloatCommand.hpp"
 #include "game/backend/Self.hpp"
 #include "game/gta/Natives.hpp"
 
 namespace YimMenu::Features
 {
+	static FloatCommand _SpeedometerX{"speedox", "速度表横向位置", "速度表在屏幕上的横向位置（0=最左，1=最右）；也可在菜单里拖动圆点设置", 0.0f, 1.0f, 1.0f};
+	static FloatCommand _SpeedometerY{"speedoy", "速度表纵向位置", "速度表在屏幕上的纵向位置（0=最顶，1=最底）；也可在菜单里拖动圆点设置", 0.0f, 1.0f, 0.85f};
+
 	class Speedometer : public LoopedCommand
 	{
 		using LoopedCommand::LoopedCommand;
@@ -58,8 +62,8 @@ namespace YimMenu::Features
 			GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(-1.0f);
 			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(m_ScaleformHandle, "SET_SCREEN_POSITION");
-			GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(1.0f);
-			GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(0.85f);
+			GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(_SpeedometerX.GetState());
+			GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT(_SpeedometerY.GetState());
 			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(m_ScaleformHandle, "SET_IS_DRIFT_RACE");
 			GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(false);
