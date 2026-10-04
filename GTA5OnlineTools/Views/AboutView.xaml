@@ -69,6 +69,14 @@
             Text="已内置中文 YimMenuV2 菜单 DLL 与 FSL V6 · 不访问任何第三方服务器" />
 
         <TextBlock
+            Margin="5,6,5,0"
+            HorizontalAlignment="Center"
+            FontSize="14"
+            FontWeight="Bold"
+            Foreground="#C0392B"
+            Text="公益免费软件：遇到收费即是被骗，请务必联系卖家退款" />
+
+        <TextBlock
             x:Name="TextBlock_AboutVersion"
             Margin="5,8,5,0"
             HorizontalAlignment="Center"

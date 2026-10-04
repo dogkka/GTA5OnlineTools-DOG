@@ -24,6 +24,9 @@
                 本版本<Run FontWeight="Bold">已移除原版的公告服务器与云端校验</Run>，不会从任何第三方服务器下载文件；
                 只保留了向本二改仓库的 GitHub 官方接口查询新版本（“选项”页或“关于”页点“检查更新”）。
             </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15" Foreground="#C0392B" FontWeight="Bold">
+                本软件完全免费：遇到收费即是被骗，请务必联系卖家退款。官方发布渠道只有本二改仓库的 GitHub 页面。
+            </Paragraph>
 
             <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="19">
                 精简教程

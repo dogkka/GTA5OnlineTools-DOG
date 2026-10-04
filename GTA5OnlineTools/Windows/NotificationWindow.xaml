@@ -8,7 +8,7 @@
     x:Name="Window_Notification"
     Title="关于 / 使用说明  -  DOG"
     Width="760"
-    Height="520"
+    Height="560"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
     ResizeMode="NoResize"
     Style="{StaticResource SystemWindowStyle}"
@@ -41,11 +41,22 @@
                 <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="19" Foreground="Black">
                     关于本程序（DOG 二次开发版）
                 </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16" Foreground="#C0392B" FontWeight="Bold">
+                    本软件由 DOG 二次开发，目前是公益状态，完全免费：不收任何费用，
+                    也不需要激活码、卡密或赞助。
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16" Foreground="#C0392B">
+                    如果你遇到收费，那就是被骗了——请务必联系卖软件给你的那个人，要求退款。
+                    （本软件的唯一官方发布渠道是本二改仓库的 GitHub 页面，其它地方出现的“收费版”都不是作者发布的。）
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
+                    关于本程序
+                </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
                     本程序基于原作者 CrazyZhang 的《GTA5 线上小助手》二次开发（上游基础仓库：
                     <Hyperlink NavigateUri="https://github.com/sch-lda/GTA5OnlineTools" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/sch-lda/GTA5OnlineTools</Hyperlink>
                     ，MIT 许可）。
-                    已替换为自编译的简体中文 YimMenuV2 菜单 DLL，并把 FSL 安装改为内置 FSL V6，
+                    已替换为自编译的简体中文 YimMenuV2 菜单 DLL，FSL 安装改为内置 FSL V6，
                     同时<Run FontWeight="Bold">移除了原版的公告服务器、云端哈希校验与网络版下载</Run>，不会访问任何第三方服务器；
                     只保留了向本二改仓库的 GitHub 官方接口查询新版本这一项联网功能。
                 </Paragraph>
@@ -59,23 +70,27 @@
                     二次开发：<Run FontWeight="Bold">DOG</Run>
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
-                    三步上手
+                    使用教程
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
-                    1. 打开 Rockstar 启动器 → 设置 → Grand Theft Auto V Enhanced → 取消勾选 BattlEye。
-                    <LineBreak />
-                    2. 本程序 Hacks 页 → FSL管理 → 安装FSL-Steam（使用内置 FSL V6，不再联网下载）。
-                    <LineBreak />
-                    3. 游戏进入主菜单后 → YimMenu V2 卡片 → 点“内嵌版”注入 → 游戏里按 INSERT 呼出中文菜单。
+                    安装、注入与常用工具的使用步骤都放在程序首页的“精简教程”里，按它一步步操作即可；
+                    本窗口只做简要说明。
                 </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15" Foreground="#C0392B">
-                    提示：本版本已禁用“网络版”和在线 Lua 下载按钮，请一律使用“内嵌版”（内置文件，离线可用）。
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
+                    常见问题
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
+                    · 这个软件收费吗？<Run FontWeight="Bold">完全免费</Run>。任何向你收费的人都不是作者，请找他退款。<LineBreak />
+                    · 提示“未发现 GTA5 进程”：先把游戏开到主菜单，再点注入。<LineBreak />
+                    · 注入失败：确认游戏进程是 GTA5_Enhanced.exe（不是 _BE.exe）、BattlEye 已关，可用管理员身份运行本程序。<LineBreak />
+                    · 菜单呼不出来：确认注入提示成功；游戏里按 INSERT 或 Ctrl+\ 都试一下。<LineBreak />
+                    · 怎么更新：下载新的 exe 覆盖旧文件即可，配置和存档都不会丢。
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
                     关于更新
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
-                    程序启动时会自动查一次新版本，也可以随时点“选项”页或“关于”页的
+                    程序启动时会自动查一次新版本（只访问 GitHub 官方接口），也可以随时点“选项”页或“关于”页的
                     <Run FontWeight="Bold">检查更新</Run> 按钮手动查。
                     <LineBreak />
                     发现新版本后，按提示打开发布页面下载新的 exe，<Run FontWeight="Bold">覆盖掉旧的这个 exe 就行</Run>，
