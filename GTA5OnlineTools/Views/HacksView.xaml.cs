@@ -145,6 +145,9 @@ public partial class HacksView : UserControl
                 case "YimMenuV2ScriptsDirectory":
                     YimMenuV2ScriptsDirectoryClick();
                     break;
+                case "YimMenuV2InstallLuaPack":
+                    YimMenuV2InstallLuaPackClick();
+                    break;
                 case "EditYimMenuConfig":
                     EditYimMenuConfigClick();
                     break;
@@ -375,6 +378,16 @@ public partial class HacksView : UserControl
     private void YimMenuV2ScriptsDirectoryClick()
     {
         ProcessHelper.OpenDir(Path.Combine(FileHelper.Dir_AppData_YimMenu_V2, "scripts"));
+    }
+
+    /// <summary>
+    /// [DOG] 一键安装增强版 Lua 脚本包（内嵌 LuaPack.zip → %AppData%\YimMenuV2\scripts）
+    /// </summary>
+    private void YimMenuV2InstallLuaPackClick()
+    {
+        var scriptsDir = Path.Combine(FileHelper.Dir_AppData_YimMenu_V2, "scripts");
+        var (ok, message) = FileHelper.InstallLuaPack(scriptsDir);
+        NotifierHelper.Show(ok ? NotifierType.Success : NotifierType.Error, message);
     }
 
     /// <summary>

@@ -48,6 +48,7 @@
 		<EmbeddedResource Include="Files\Cache\CloudflareSpeedTest.exe" />
 		<EmbeddedResource Include="Files\Cache\stat.txt" />
         <EmbeddedResource Include="Files\FSL\WINMM.dll" />
+        <EmbeddedResource Include="Files\Lua\LuaPack.zip" />
         <EmbeddedResource Include="Files\YimMenu\font.ttf" />
         <EmbeddedResource Include="Files\YimMenu\NewBase.dll" />
 		<EmbeddedResource Include="Files\YimMenu\YimMenu.dll" />

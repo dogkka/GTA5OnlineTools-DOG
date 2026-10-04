@@ -18,6 +18,7 @@ public static class FileHelper
 
     public const string Res_Other_SGTA50000 = $"{ResFiles}.Other.SGTA50000";
     public const string Res_FSL_WINMM = $"{ResFiles}.FSL.WINMM.dll";
+    public const string Res_Lua_LuaPack = $"{ResFiles}.Lua.LuaPack.zip";
 
     //////////////////////////////////////////////////////////////////
 
@@ -193,6 +194,68 @@ public static class FileHelper
         {
             outStream?.Close();
             inStream?.Close();
+        }
+    }
+
+    /// <summary>
+    /// [DOG] 安装增强版 Lua 脚本包（内嵌 LuaPack.zip）到指定脚本目录。
+    /// 已存在的同名文件会先备份到目标目录下的 _备份_时间戳 子目录，再做覆盖。
+    /// </summary>
+    /// <param name="targetDir">目标脚本目录（如 %AppData%\YimMenuV2\scripts）</param>
+    /// <returns>(是否成功, 结果消息)</returns>
+    public static (bool ok, string message) InstallLuaPack(string targetDir)
+    {
+        try
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            using var stream = assembly.GetManifestResourceStream(Res_Lua_LuaPack);
+            if (stream == null)
+                return (false, "脚本包安装失败：内嵌资源缺失（LuaPack.zip）");
+
+            CreateDirectory(targetDir);
+
+            var rootFull = Path.GetFullPath(targetDir).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+            var backupDir = Path.Combine(targetDir, $"_备份_{DateTime.Now:yyyyMMdd_HH-mm-ss}");
+
+            var extracted = 0;
+            var backedUp = 0;
+
+            using (var archive = new ZipArchive(stream, ZipArchiveMode.Read))
+            {
+                foreach (var entry in archive.Entries)
+                {
+                    if (string.IsNullOrEmpty(entry.Name))
+                        continue; // 目录项
+
+                    var destPath = Path.GetFullPath(Path.Combine(targetDir, entry.FullName));
+                    if (!destPath.StartsWith(rootFull, StringComparison.OrdinalIgnoreCase))
+                        continue; // 路径穿越防护
+
+                    var destDir = Path.GetDirectoryName(destPath);
+                    CreateDirectory(destDir);
+
+                    if (File.Exists(destPath))
+                    {
+                        var backupPath = Path.Combine(backupDir, entry.FullName);
+                        CreateDirectory(Path.GetDirectoryName(backupPath));
+                        File.Copy(destPath, backupPath, true);
+                        backedUp++;
+                    }
+
+                    entry.ExtractToFile(destPath, true);
+                    extracted++;
+                }
+            }
+
+            var message = $"脚本包安装完成：{extracted} 个文件 → {targetDir}";
+            if (backedUp > 0)
+                message += $"\n已备份被覆盖的旧文件 {backedUp} 个到：{backupDir}";
+
+            return (true, message);
+        }
+        catch (Exception ex)
+        {
+            return (false, $"脚本包安装失败：{ex.Message}\n如果游戏/菜单正在运行，请关闭后重试。");
         }
     }
 
