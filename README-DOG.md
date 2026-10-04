@@ -1,48 +1,16 @@
-# GTA5 线上小助手 · DOG 二次开发版
-
-> **v2.1.12**（2026-10-04）：内置菜单为 **DOG 增强版 v2.1.12**（100+ 项增强功能 + 脚本事件防护 + 网络恶搞包 + **网页远程控制台** + 全量中文化）。
-> 修复：三款"现代系"界面（现代 / 现代（纵向）/ 模块化）从"多个分离浮动窗口"重做为**单窗口整体**——导航栏与内容在同一窗口内，拖动标题栏整窗移动（历史遗留的"窗口和按钮分离"问题）。
-> v2.1.11：速度表 X/Y 调节区"全黑、无控件"根因修复（分组布局由横向一行改纵向排列，X/Y 滑条 + 拖动面板全部可见可点；拖动面板加亮并新增面板内提示文字）。
-> 修复：速度表 X/Y 调节区"全黑、无控件"根因修复（分组布局由横向一行改纵向排列，X/Y 滑条 + 拖动面板全部可见可点；拖动面板加亮并新增面板内提示文字）。
-> v2.1.10：速度表三款自绘样式全面美化（HUD 专用大字体/发光仪表/档位徽章）、拖动面板"黑块"修复、菜单位置参考框。
-> 新增：速度表三款自绘样式全面美化（HUD 专用大字体/发光仪表/档位徽章）、拖动面板"黑块"修复、菜单位置参考框。
-> 新增：速度表多款式（原版运动表 / 双圆盘 / 环形组合 / 数字极简，均含转速+速度）+ 单位切换（跟随游戏/公里/英里）。
-> 新增：载具预览改为「陈列室」交互（悬停 0.3 秒=展示模型、点击=生成真车、点击预览车=转正保留；落点防叠车 + 连点去抖）。
-> 新增：自动驾驶「横冲直撞」模式（无视交规·疯狂超车·约 126 km/h，驾驶风格经实机基准实测选定）。
-> 新增：载具预览模式修复（正前方 6 米展示 + 连点替换 + 通知）、玩家类命令无参执行修复（网页控制台/命令执行器/热键）、网页控制台 `&target=` 原子参数。
-> 新增：速度表位置自定义（菜单内拖动圆点 / X·Y 滑条 / 一键重置）。
-> 新增：锁战局、防笼子、循环摇晃、假通知/假横幅/声音轰炸、任意脚本事件发送器、遥控开关面板、玩家距离颜色；并修复载具调校整套失效、主机踢出按钮无效等问题。
-> 详见 [CHANGES-DOG.md](CHANGES-DOG.md) 的「菜单增强 v2.1.4」章节。
+# 二次开发说明
 
 本仓库是 [sch-lda/GTA5OnlineTools](https://github.com/sch-lda/GTA5OnlineTools)
-（原作者 **CrazyZhang** 的《GTA5 线上小助手》，MIT 许可）的**二次开发版**。
+（原作者 [CrazyZhang666](https://github.com/CrazyZhang666/GTA5OnlineTools)，MIT 许可）的二次开发版，作者：**DOG**。
 
-- 二次开发：**DOG**
-- 基础上游：https://github.com/sch-lda/GTA5OnlineTools
-- 原作者项目：https://github.com/CrazyZhang666/GTA5OnlineTools
+## 主要改动
 
-## 二改内容一览
+- 完全离线化：移除原项目全部第三方域名请求，只保留本仓库 GitHub 接口的更新检测
+- 内置简体中文 YimMenuV2 增强版菜单（`GTA5Shared/Files/YimMenu/NewBase.dll`，自编译；源码见 `yimmenu-v2` 分支）
+- 内置 FSL V6：FSL 管理改为离线安装；"网络版 / 在线 Lua"入口禁用并给出提示
+- 界面：主页教程化、首次启动《关于 / 使用说明》、顶部"联系"按钮
 
-1. **离线化（只保留 GitHub 更新检测）**
-   - `GTA5Shared/Helper/HttpHelper.cs`：所有 HTTP 请求直接返回空，不再访问任何第三方服务器
-   - 移除启动时的"检查公告 + 检查更新"线程
-   - 禁用"网络版 YimMenu 下载"和"在线 Lua 下载"入口（点击提示"本版本已离线化"）
-   - 移除原项目 2027-04-06 域名过期警告
-   - 新增 **更新检测**：只访问本仓库的 `api.github.com` 接口（失败回退 `releases.atom`），不碰原项目的任何第三方域名
-2. **内置中文菜单 DLL（增强版 2.1.4）**：`GTA5Shared/Files/YimMenu/NewBase.dll` 为自编译的简体中文增强版
-   （YimMenuV2 官方 `39a0f22` + 社区中文维护版全量本地化 + DOG 增强功能包 + 中文字形，
-   SHA256 `3cf3298ac7d06e29d59ab5ac06f599029acb1d7ef25f3c2884d4b924d6d2cacc`）
-  增强内容与源码见分支 [yimmenu-v2](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/yimmenu-v2)
-3. **内置 FSL V6**：`GTA5Shared/Files/FSL/WINMM.dll`（2026-09-19 hotfix，SHA256 `b02d704b821e0ff499fdbb72b2b56d5e29b389dfd65b8fd6a9ab08126d8d5bfe`）
-   FSL 管理窗口改为离线安装（不再下载旧版 v3）
-4. **主页改教程风**：`Views/HomeView.xaml`（软件介绍 / 三步教程 / 名词解释 / 故障排查）
-5. **启动弹窗重做**：`Windows/NotificationWindow.xaml` 改为《关于 / 使用说明》（含原作者署名与 DOG）
-6. **新增"联系"按钮**：`Windows/ContactWindow.xaml`，点击显示微信二维码（`Assets/contact_wechat.jpg`）
-7. **品牌**：主窗口标题改为 `GTA5线上小助手-DOG版 <版本号>`
-8. **更新检测（v1.1.0）**：启动自动查一次新版本，"选项"页 / "关于"页也可手动查；
-   发现新版本弹出提示窗口（版本对比、更新内容、打开发布页面、复制下载链接、跳过此版本）
-
-详细文件级改动见 [CHANGES-DOG.md](CHANGES-DOG.md)。
+具体功能与修复记录见 [CHANGES-DOG.md](CHANGES-DOG.md) 和 Releases 页。
 
 ## 构建
 
@@ -53,7 +21,7 @@ dotnet restore GTA5OnlineTools.sln
 dotnet build GTA5OnlineTools.sln -c Release
 ```
 
-发布单文件（自包含，免装 .NET 运行时）：
+发布免安装单文件（自包含，免装 .NET 运行时）：
 
 ```powershell
 dotnet publish GTA5OnlineTools\GTA5OnlineTools.csproj -c Release -r win-x64 `
@@ -61,14 +29,9 @@ dotnet publish GTA5OnlineTools\GTA5OnlineTools.csproj -c Release -r win-x64 `
   -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -o publish
 ```
 
-## 使用
-
-1. Rockstar 启动器 → 设置 → GTA V Enhanced → 取消勾选 BattlEye
-2. 程序 `YimMenu` 页 → `FSL管理` → 安装FSL-Steam（内置 FSL V6）
-3. 游戏进主菜单 → `YimMenu V2` 卡片 → **内嵌版** → 游戏里按 `INSERT` 呼出中文菜单
+内置菜单 DLL（NewBase.dll）的构建说明见 `yimmenu-v2` 分支的 `README-DOG-FORK.md`。
 
 ## 注意
 
-- 本仓库包含第三方二进制文件（FSL V6、YimMenu 系列 DLL、Notepad2 等）以及作者微信二维码图片，
-  如果需要公开仓库，请自行评估第三方文件的再分发许可，并考虑替换/移除二维码。
-- 原项目为 **MIT** 许可（见 `LICENSE.txt`）；内置的 YimMenuV2 中文版 DLL 基于 GPL-2.0 源码编译。
+- 仓库内含第三方二进制文件（FSL V6、YimMenu 系列 DLL 等）与作者微信二维码图片，再分发请自行评估相关许可。
+- 原项目为 MIT 许可（见 `LICENSE.txt`）；内置的 YimMenuV2 中文版 DLL 基于 GPL-2.0 源码编译。
