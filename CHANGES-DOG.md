@@ -2,6 +2,14 @@
 
 各版本的更新内容，与 Releases 页同步。
 
+## v2.1.15（2026-10-05）
+
+- 修复脚本包内容（v2.1.14 测试版实测发现）：
+  - TinkerScripts 自带命令 `fastrespawn` 与本菜单内置"快速重生"重名导致脚本加载失败 → 已改名 `tinker_fastrespawn`
+  - MNDY 适配版使用 `NETWORK_GET_HOST_PLAYER`（本菜单无此名字）→ 已改为 `NETWORK_GET_HOST_PLAYER_INDEX`
+  - 移除独立版 Biz-teriods.lua（与 TinkerScripts 内置模块重复且互斥）
+- 校验升级：全部脚本对照"菜单真实 native 名单（从菜单 DLL 提取）+ 真实命令注册表"逐项验证通过
+
 ## v2.1.14（2026-10-05）
 
 - 新增"一键安装脚本包"：YimMenu 页 → YimMenu V2 卡片 → "安装脚本包"
