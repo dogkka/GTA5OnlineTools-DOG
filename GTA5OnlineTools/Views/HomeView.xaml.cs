@@ -1,4 +1,5 @@
 ﻿using GTA5Shared.Helper;
+using System.Windows.Input;
 
 namespace GTA5OnlineTools.Views;
 
@@ -13,7 +14,6 @@ public partial class HomeView : UserControl
     {
         InitializeComponent();
         MainWindow.WindowClosingEvent += MainWindow_WindowClosingEvent;
-
     }
 
     private void MainWindow_WindowClosingEvent()
@@ -24,12 +24,17 @@ public partial class HomeView : UserControl
     /// <summary>
     /// 超链接请求导航事件
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
     {
         ProcessHelper.OpenLink(e.Uri.OriginalString);
         e.Handled = true;
     }
 
+    /// <summary>
+    /// [DOG] 打开使用教程（HTML 图文教程）
+    /// </summary>
+    private void Border_OpenTutorial_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        TutorialHelper.OpenTutorial();
+    }
 }

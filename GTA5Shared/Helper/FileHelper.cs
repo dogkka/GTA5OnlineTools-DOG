@@ -19,6 +19,7 @@ public static class FileHelper
     public const string Res_Other_SGTA50000 = $"{ResFiles}.Other.SGTA50000";
     public const string Res_FSL_WINMM = $"{ResFiles}.FSL.WINMM.dll";
     public const string Res_Lua_LuaPack = $"{ResFiles}.Lua.LuaPack.zip";
+    public const string Res_Tutorial = $"{ResFiles}.Tutorial.html";
 
     //////////////////////////////////////////////////////////////////
 

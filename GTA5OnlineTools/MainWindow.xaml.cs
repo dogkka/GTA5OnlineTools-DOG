@@ -104,13 +104,14 @@ public partial class MainWindow
 
         this.Dispatcher.BeginInvoke(new Action(async () =>
         {
-            // 首次运行显示使用说明窗口（关于/教程）
+            // [DOG] 广告弹窗：每天首次启动显示一次（5 秒倒计时结束后才能关闭）
             try
             {
-                var shown = IniHelper.ReadValue("Dog", "AboutShown");
-                if (shown != CoreUtil.ClientVersion.ToString())
+                var today = DateTime.Now.ToString("yyyy-MM-dd");
+                var lastShown = IniHelper.ReadValue("Dog", "AdShownDate");
+                if (lastShown != today)
                 {
-                    IniHelper.WriteValue("Dog", "AboutShown", CoreUtil.ClientVersion.ToString());
+                    IniHelper.WriteValue("Dog", "AdShownDate", today);
                     new NotificationWindow { Owner = this }.ShowDialog();
                 }
             }

@@ -58,6 +58,7 @@
 		<EmbeddedResource Include="Files\YimMenu\index_cn.json" />
 		<EmbeddedResource Include="Files\YimMenu\index_tw.json" />
 		<EmbeddedResource Include="Files\Other\SGTA50000" />
+        <EmbeddedResource Include="Files\Tutorial.html" />
     </ItemGroup>
 
 </Project>

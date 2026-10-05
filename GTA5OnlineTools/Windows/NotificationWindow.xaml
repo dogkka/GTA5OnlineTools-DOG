@@ -1,4 +1,4 @@
-<ui:Window
+﻿<ui:Window
     x:Class="GTA5OnlineTools.Windows.NotificationWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,9 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
     x:Name="Window_Notification"
-    Title="关于 / 使用说明  -  DOG"
-    Width="760"
-    Height="560"
+    Title="关于 / 支持作者  -  DOG"
+    Width="680"
+    Height="600"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
     ResizeMode="NoResize"
     Style="{StaticResource SystemWindowStyle}"
@@ -26,90 +26,156 @@
                 VerticalAlignment="Center"
                 FontSize="14"
                 FontWeight="Bold"
-                Text="关于 / 使用说明  -  DOG" />
+                Text="关于 / 支持作者  -  DOG" />
         </StackPanel>
     </ui:Window.TitleContent>
 
-    <Grid>
+    <Grid Margin="20,12,20,14">
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <RichTextBox Margin="5" Style="{StaticResource RichTextBoxStyle_ReadMe}">
-            <FlowDocument>
-                <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="19" Foreground="Black">
-                    关于本程序（DOG 二次开发版）
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16" Foreground="#C0392B" FontWeight="Bold">
-                    本软件由 DOG 二次开发，目前是公益状态，完全免费：不收任何费用，
-                    也不需要激活码、卡密或赞助。
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16" Foreground="#C0392B">
-                    如果你遇到收费，那就是被骗了——请务必联系卖软件给你的那个人，要求退款。
-                    （本软件的唯一官方发布渠道是本二改仓库的 GitHub 页面，其它地方出现的“收费版”都不是作者发布的。）
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
-                    关于本程序
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
-                    本程序基于原作者 CrazyZhang 的《GTA5 线上小助手》二次开发（上游基础仓库：
-                    <Hyperlink NavigateUri="https://github.com/sch-lda/GTA5OnlineTools" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/sch-lda/GTA5OnlineTools</Hyperlink>
-                    ，MIT 许可）。
-                    已替换为自编译的简体中文 YimMenuV2 菜单 DLL，FSL 安装改为内置 FSL V6，
-                    同时<Run FontWeight="Bold">移除了原版的公告服务器、云端哈希校验与网络版下载</Run>，不会访问任何第三方服务器；
-                    只保留了向本二改仓库的 GitHub 官方接口查询新版本这一项联网功能。
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
-                    原作者项目：
-                    <Hyperlink NavigateUri="https://github.com/CrazyZhang666/GTA5OnlineTools" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/CrazyZhang666/GTA5OnlineTools</Hyperlink>
-                    <LineBreak />
-                    本二改仓库：
-                    <Hyperlink NavigateUri="https://github.com/dogkka/GTA5OnlineTools-DOG" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/dogkka/GTA5OnlineTools-DOG</Hyperlink>
-                    <LineBreak />
-                    二次开发：<Run FontWeight="Bold">DOG</Run>
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
-                    使用教程
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
-                    安装、注入与常用工具的使用步骤都放在程序首页的“精简教程”里，按它一步步操作即可；
-                    本窗口只做简要说明。
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
-                    常见问题
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
-                    · 这个软件收费吗？<Run FontWeight="Bold">完全免费</Run>。任何向你收费的人都不是作者，请找他退款。<LineBreak />
-                    · 提示“未发现 GTA5 进程”：先把游戏开到主菜单，再点注入。<LineBreak />
-                    · 注入失败：确认游戏进程是 GTA5_Enhanced.exe（不是 _BE.exe）、BattlEye 已关，可用管理员身份运行本程序。<LineBreak />
-                    · 菜单呼不出来：确认注入提示成功；游戏里按 INSERT 或 Ctrl+\ 都试一下。<LineBreak />
-                    · 怎么更新：下载新的 exe 覆盖旧文件即可，配置和存档都不会丢。
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="17">
-                    关于更新
-                </Paragraph>
-                <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
-                    程序启动时会自动查一次新版本（只访问 GitHub 官方接口），也可以随时点“选项”页或“关于”页的
-                    <Run FontWeight="Bold">检查更新</Run> 按钮手动查。
-                    <LineBreak />
-                    发现新版本后，按提示打开发布页面下载新的 exe，<Run FontWeight="Bold">覆盖掉旧的这个 exe 就行</Run>，
-                    配置和存档都不会丢，也不用重新安装。
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
-
-        <StackPanel
-            Grid.Row="1"
-            HorizontalAlignment="Right"
-            Orientation="Horizontal">
-            <Button
-                x:Name="Button_Dismiss"
-                Margin="0,5,5,5"
-                Background="#34A853"
-                Click="Button_Dismiss_Click"
-                Content="我知道了" />
+        <StackPanel Grid.Row="0">
+            <TextBlock
+                FontSize="19"
+                FontWeight="Bold"
+                Foreground="#1A1A1A"
+                Text="感谢使用 · 支持作者" />
+            <TextBlock
+                Margin="0,8,0,0"
+                FontSize="13.5"
+                Foreground="#555555"
+                TextWrapping="Wrap"
+                Text="本项目完全免费开发与维护，不收取任何费用。为了让它能持续更新，作者也需要适当为自己的其他项目打一点广告，赚取一点微薄收入——感谢理解与支持！" />
         </StackPanel>
+
+        <Border
+            x:Name="Border_AdDogBot"
+            Grid.Row="1"
+            Margin="0,14,0,0"
+            Padding="16,11"
+            Cursor="Hand"
+            MouseLeftButtonUp="Border_AdDogBot_MouseLeftButtonUp">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="#F7FAF8" />
+                    <Setter Property="BorderBrush" Value="#DCE6E1" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="CornerRadius" Value="8" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#EFF8F3" />
+                            <Setter Property="BorderBrush" Value="#21A366" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="#1A1A1A"
+                        Text="可言AI" />
+                    <TextBlock
+                        Margin="0,3,0,0"
+                        FontSize="12"
+                        Foreground="#66756E"
+                        Text="AI 接入微信 · 虚拟陪伴服务" />
+                </StackPanel>
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Foreground="#21A366"
+                    Text="点击访问 →" />
+            </Grid>
+        </Border>
+
+        <Border
+            x:Name="Border_AdAirport"
+            Grid.Row="2"
+            Margin="0,10,0,0"
+            Padding="16,11"
+            Cursor="Hand"
+            MouseLeftButtonUp="Border_AdAirport_MouseLeftButtonUp">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="#F7FAF8" />
+                    <Setter Property="BorderBrush" Value="#DCE6E1" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="CornerRadius" Value="8" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#EFF8F3" />
+                            <Setter Property="BorderBrush" Value="#21A366" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="#1A1A1A"
+                        Text="自研机场节点" />
+                    <TextBlock
+                        Margin="0,3,0,0"
+                        FontSize="12"
+                        Foreground="#66756E"
+                        Text="专线高速 · 稳定可靠" />
+                </StackPanel>
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Foreground="#21A366"
+                    Text="点击访问 →" />
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="3" Margin="0,16,0,0">
+            <TextBlock
+                FontSize="13"
+                FontWeight="Bold"
+                Foreground="#C0392B"
+                TextWrapping="Wrap"
+                Text="温馨提示：本软件完全免费——遇到收费即是被骗，请务必联系卖软件给你的那个人退款。" />
+            <TextBlock
+                Margin="0,8,0,0"
+                FontSize="12.5"
+                Foreground="#777777"
+                TextWrapping="Wrap"
+                Text="更多内容（完整图文教程、常见问题、版本更新记录）可在主界面首页点击「打开使用教程」查看。" />
+        </StackPanel>
+
+        <Button
+            x:Name="Button_Dismiss"
+            Grid.Row="4"
+            Height="42"
+            Margin="0,14,0,0"
+            Background="#21A366"
+            BorderThickness="0"
+            Click="Button_Dismiss_Click"
+            Content="请稍候…"
+            Cursor="Hand"
+            FontSize="15"
+            FontWeight="Bold"
+            Foreground="White"
+            IsEnabled="False" />
     </Grid>
 
 </ui:Window>
