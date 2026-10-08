@@ -187,7 +187,7 @@ public partial class MainWindow
     [RelayCommand]
     private void Navigate(string viewName)
     {
-        // [DOG] 联系按钮：弹出微信二维码窗口
+        // [DOG] 联系按钮：弹出作者微信 / QQ 交流群二维码窗口
         if (viewName == "Contact")
         {
             new ContactWindow { Owner = MainWindowInstance }.ShowDialog();

@@ -77,6 +77,12 @@
             Text="公益免费软件：遇到收费即是被骗，请务必联系卖家退款" />
 
         <TextBlock
+            Margin="5,6,5,0"
+            HorizontalAlignment="Center"
+            FontSize="14"
+            Text="QQ 交流群：472770575（二维码见顶部「联系」按钮）" />
+
+        <TextBlock
             x:Name="TextBlock_AboutVersion"
             Margin="5,8,5,0"
             HorizontalAlignment="Center"

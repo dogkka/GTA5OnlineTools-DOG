@@ -6,9 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
     x:Name="Window_Contact"
-    Title="联系作者 - DOG"
-    Width="430"
-    Height="580"
+    Title="联系 / 交流群 - DOG"
+    Width="470"
+    Height="650"
     ResizeMode="NoResize"
     Style="{StaticResource SystemWindowStyle}"
     WindowStartupLocation="CenterOwner"
@@ -25,40 +25,85 @@
                 VerticalAlignment="Center"
                 FontSize="14"
                 FontWeight="Bold"
-                Text="联系作者 - DOG" />
+                Text="联系 / 交流群 - DOG" />
         </StackPanel>
     </ui:Window.TitleContent>
 
-    <StackPanel>
-        <TextBlock
-            Margin="10,12,10,4"
-            HorizontalAlignment="Center"
-            FontSize="18"
-            FontWeight="Bold"
-            Text="扫码添加作者微信（DOG）" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <Image
-            Width="360"
-            Height="420"
-            Margin="10"
-            HorizontalAlignment="Center"
-            Source="/Assets/contact_wechat.jpg"
-            Stretch="Uniform" />
-
-        <TextBlock
-            Margin="10,0,10,8"
-            HorizontalAlignment="Center"
-            FontSize="13"
-            Foreground="Gray"
-            Text="使用中遇到问题，扫码备注“小助手”即可" />
+        <TabControl
+            Grid.Row="0"
+            Margin="8,4,8,0"
+            Background="Transparent"
+            BorderThickness="0">
+            <ui:TabItemIcon Header="作者微信" Icon="&#xe6e3;">
+                <StackPanel>
+                    <TextBlock
+                        Margin="10,10,10,2"
+                        HorizontalAlignment="Center"
+                        FontSize="17"
+                        FontWeight="Bold"
+                        Text="扫码添加作者微信（DOG）" />
+                    <Image
+                        Width="360"
+                        Height="390"
+                        Margin="10,6"
+                        HorizontalAlignment="Center"
+                        Source="/Assets/contact_wechat.jpg"
+                        Stretch="Uniform" />
+                    <TextBlock
+                        Margin="10,0,10,6"
+                        HorizontalAlignment="Center"
+                        FontSize="13"
+                        Foreground="Gray"
+                        Text="使用中遇到问题，扫码备注“小助手”即可" />
+                </StackPanel>
+            </ui:TabItemIcon>
+            <ui:TabItemIcon Header="QQ 交流群" Icon="&#xe616;">
+                <StackPanel>
+                    <TextBlock
+                        Margin="10,10,10,2"
+                        HorizontalAlignment="Center"
+                        FontSize="17"
+                        FontWeight="Bold"
+                        Text="QQ 交流群：472770575" />
+                    <Image
+                        Width="340"
+                        Height="360"
+                        Margin="10,4"
+                        HorizontalAlignment="Center"
+                        Source="/Assets/contact_qqgroup.jpg"
+                        Stretch="Uniform" />
+                    <TextBlock
+                        Margin="10,0,10,4"
+                        HorizontalAlignment="Center"
+                        FontSize="13"
+                        Foreground="Gray"
+                        Text="扫码加群 · 使用问题 · 更新通知" />
+                    <Button
+                        Margin="0,2,0,8"
+                        Padding="24,6"
+                        HorizontalAlignment="Center"
+                        Background="#12B7F5"
+                        Foreground="White"
+                        Click="Button_CopyQQGroup_Click"
+                        Content="复制群号 472770575" />
+                </StackPanel>
+            </ui:TabItemIcon>
+        </TabControl>
 
         <Button
-            Margin="0,0,0,12"
+            Grid.Row="1"
+            Margin="0,4,0,10"
             Padding="24,6"
             HorizontalAlignment="Center"
             Background="#34A853"
             Click="Button_Close_Click"
             Content="关闭" />
-    </StackPanel>
+    </Grid>
 
 </ui:Window>
