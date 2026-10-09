@@ -36,13 +36,18 @@
 
 ## 交流反馈
 
-QQ 交流群：**472770575** —— 使用问题、反馈建议、更新通知都在群里。
+使用问题、反馈建议、更新通知都在群里；**1 群满员时请加备用群**：
 
-<img src="qq-group.jpg" alt="QQ 交流群二维码" width="240" />
-
-备用群（1 群满员时加）：**1121769473**
-
-<img src="qq-group-backup.jpg" alt="备用群二维码" width="240" />
+<table>
+  <tr>
+    <th align="center">交流 1 群</th>
+    <th align="center">备用群（1 群满员时加）</th>
+  </tr>
+  <tr>
+    <td align="center"><b>472770575</b><br /><img src="qq-group.jpg" alt="QQ 交流群二维码" width="220" /></td>
+    <td align="center"><b>1121769473</b><br /><img src="qq-group-backup.jpg" alt="备用群二维码" width="220" /></td>
+  </tr>
+</table>
 
 **防诈骗提醒**：本项目完全免费、公益性质。如果你遇到收费，那就是被骗了，请务必联系卖软件给你的那个人退款；官方发布渠道只有本仓库的 Releases 页面。
 
