@@ -37,7 +37,7 @@
             </ui:GroupBoxHack.TitleContent>
             <ui:GroupBoxHack.DescriptionContent>
                 <StackPanel Margin="0,-23,0,0">
-                    <TextBlock Foreground="Red" TextWrapping="Wrap" Text="适用于传承版,没有活跃的贡献者参与开发,部分功能失效,建议游玩GTA V增强版.务必阅读说明.必须先从R星启动器关闭Battleye开关" />
+                    <TextBlock Foreground="Red" TextWrapping="Wrap" Text="适用于传承版（1.73 b3889），已内置社区维护版菜单（Mr-X-GTA，适配当前版本）。务必阅读说明。必须先从R星启动器关闭BattlEye开关，并安装FSL。" />
                     <WrapPanel>
                         <Button
                         Background="#FE780A"

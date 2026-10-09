@@ -7,6 +7,7 @@
 
 - 完全离线化：移除原项目全部第三方域名请求，只保留本仓库 GitHub 接口的更新检测
 - 内置简体中文 YimMenuV2 增强版菜单（`GTA5Shared/Files/YimMenu/NewBase.dll`，自编译；源码见 `yimmenu-v2` 分支）
+- 内置传承版菜单：社区维护版 YimMenu（[Mr-X-GTA/YimMenu](https://github.com/Mr-X-GTA/YimMenu)，GPL-2.0，适配传承版 1.73 b3889；`GTA5Shared/Files/YimMenu/YimMenu.dll`）
 - 内置 FSL V6：FSL 管理改为离线安装；"网络版 / 在线 Lua"入口禁用并给出提示
 - 界面：主页教程化、首次启动《关于 / 使用说明》、顶部"联系"按钮
 
@@ -34,4 +35,4 @@ dotnet publish GTA5OnlineTools\GTA5OnlineTools.csproj -c Release -r win-x64 `
 ## 注意
 
 - 仓库内含第三方二进制文件（FSL V6、YimMenu 系列 DLL 等）与作者微信二维码图片，再分发请自行评估相关许可。
-- 原项目为 MIT 许可（见 `LICENSE.txt`）；内置的 YimMenuV2 中文版 DLL 基于 GPL-2.0 源码编译。
+- 原项目为 MIT 许可（见 `LICENSE.txt`）；内置的 YimMenuV2 中文版 DLL 基于 GPL-2.0 源码编译；内置的传承版 YimMenu DLL 来自 Mr-X-GTA/YimMenu（GPL-2.0，源码公开）。
