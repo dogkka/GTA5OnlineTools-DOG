@@ -80,7 +80,13 @@
             Margin="5,6,5,0"
             HorizontalAlignment="Center"
             FontSize="14"
-            Text="QQ 交流群：1121769473（二维码见顶部「联系」按钮）" />
+            Text="QQ 交流群（仅提供群号）：主群 472770575（已满） · 备用1 1121769473（已满） · 备用2 1129626000（新群推荐）" />
+        <TextBlock
+            Margin="5,3,5,0"
+            HorizontalAlignment="Center"
+            FontSize="12"
+            Foreground="Gray"
+            Text="一键复制群号见顶部「联系」按钮；群进满较快，程序内不再提供二维码" />
         <TextBlock
             Margin="5,6,5,0"
             HorizontalAlignment="Center"

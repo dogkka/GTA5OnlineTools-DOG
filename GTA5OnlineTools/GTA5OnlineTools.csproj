@@ -47,7 +47,6 @@
 		<Resource Include="Assets\Hacks\YimMenu.png" />
 		<Resource Include="Assets\Hacks\NewBase.png" />
 		<Resource Include="Assets\contact_wechat.jpg" />
-		<Resource Include="Assets\contact_qqgroup.jpg" />
 		<Resource Include="Assets\contact_reward_wechat.jpg" />
 		<Resource Include="Assets\contact_reward_alipay.jpg" />
 	</ItemGroup>

@@ -103,7 +103,7 @@ public static class HealthCheckHelper
                 sb.AppendLine("     → " + it.Hint);
         }
         sb.AppendLine("--------------------------------");
-        sb.AppendLine("把以上内容发到 QQ 群 1121769473 即可获得帮助。");
+        sb.AppendLine("把以上内容发到 QQ 群（备用2群：1129626000）即可获得帮助。");
         return sb.ToString();
     }
 

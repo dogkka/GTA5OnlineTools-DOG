@@ -4,7 +4,7 @@ using GTA5Shared.Helper;
 namespace GTA5OnlineTools.Windows;
 
 /// <summary>
-/// [DOG] 联系窗口：作者微信 / QQ 交流群 二维码
+/// [DOG] 联系窗口：作者微信 / QQ 交流群（仅群号，无二维码）/ 打赏
 /// </summary>
 public partial class ContactWindow
 {
@@ -22,12 +22,16 @@ public partial class ContactWindow
     }
 
     /// <summary>
-    /// [DOG] 复制 QQ 群号
+    /// [DOG] 复制 QQ 群号（按钮 Tag 携带群号：主群 / 备用1 / 备用2）
     /// </summary>
-    private async void Button_CopyQQGroup_Click(object sender, RoutedEventArgs e)
+    private async void Button_CopyGroup_Click(object sender, RoutedEventArgs e)
     {
-        if (await ClipboardHelper.TrySetTextAsync("1121769473"))
-            NotifierHelper.Show(NotifierType.Success, "QQ 交流群号 1121769473 已复制到剪贴板");
+        var number = (sender as System.Windows.Controls.Button)?.Tag as string;
+        if (string.IsNullOrEmpty(number))
+            return;
+
+        if (await ClipboardHelper.TrySetTextAsync(number))
+            NotifierHelper.Show(NotifierType.Success, $"QQ 群号 {number} 已复制到剪贴板（手机 QQ 搜索加入）");
         else
             NotifierHelper.Show(NotifierType.Warning, "剪贴板被其他程序占用，复制失败，请稍后再点一次。");
     }

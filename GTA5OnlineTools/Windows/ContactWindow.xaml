@@ -71,28 +71,121 @@
                         HorizontalAlignment="Center"
                         FontSize="17"
                         FontWeight="Bold"
-                        Text="QQ 交流群：1121769473" />
-                    <Image
-                        Width="340"
-                        Height="360"
-                        Margin="10,4"
-                        HorizontalAlignment="Center"
-                        Source="/Assets/contact_qqgroup.jpg"
-                        Stretch="Uniform" />
+                        Text="QQ 交流群（仅提供群号）" />
                     <TextBlock
-                        Margin="10,0,10,4"
+                        Margin="12,6,12,4"
                         HorizontalAlignment="Center"
-                        FontSize="13"
+                        FontSize="12"
                         Foreground="Gray"
-                        Text="扫码加群 · 使用问题 · 更新通知" />
-                    <Button
-                        Margin="0,2,0,8"
-                        Padding="24,6"
-                        HorizontalAlignment="Center"
-                        Background="#12B7F5"
-                        Foreground="White"
-                        Click="Button_CopyQQGroup_Click"
-                        Content="复制群号 1121769473" />
+                        TextAlignment="Center"
+                        TextWrapping="Wrap"
+                        Text="群进满速度很快，为减少爆满，程序内不再提供加群二维码；请用手机 QQ 搜索群号加入。" />
+
+                    <Border
+                        Margin="14,4,14,0"
+                        Padding="12,10"
+                        Background="#F7F8FA"
+                        BorderBrush="#E1E4E8"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock FontSize="15" FontWeight="Bold" Text="主群：472770575" />
+                                <TextBlock
+                                    Margin="0,3,0,0"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Foreground="#C0392B"
+                                    Text="已满" />
+                            </StackPanel>
+                            <Button
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="14,5"
+                                Background="#12B7F5"
+                                Foreground="White"
+                                Tag="472770575"
+                                Click="Button_CopyGroup_Click"
+                                Content="复制" />
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        Margin="14,8,14,0"
+                        Padding="12,10"
+                        Background="#F7F8FA"
+                        BorderBrush="#E1E4E8"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock FontSize="15" FontWeight="Bold" Text="备用1：1121769473" />
+                                <TextBlock
+                                    Margin="0,3,0,0"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Foreground="#C0392B"
+                                    Text="已满" />
+                            </StackPanel>
+                            <Button
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="14,5"
+                                Background="#12B7F5"
+                                Foreground="White"
+                                Tag="1121769473"
+                                Click="Button_CopyGroup_Click"
+                                Content="复制" />
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        Margin="14,8,14,0"
+                        Padding="12,10"
+                        Background="#F0FBF4"
+                        BorderBrush="#BFE8CE"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock FontSize="15" FontWeight="Bold" Text="备用2：1129626000" />
+                                <TextBlock
+                                    Margin="0,3,0,0"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Foreground="#21A366"
+                                    Text="新群 · 推荐加入" />
+                            </StackPanel>
+                            <Button
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="14,5"
+                                Background="#21A366"
+                                Foreground="White"
+                                Tag="1129626000"
+                                Click="Button_CopyGroup_Click"
+                                Content="复制" />
+                        </Grid>
+                    </Border>
+
+                    <TextBlock
+                        Margin="14,10,14,0"
+                        FontSize="12"
+                        Foreground="Gray"
+                        TextWrapping="Wrap"
+                        Text="提示：已满的群无需反复尝试，直接加「备用2」群即可。" />
                 </StackPanel>
             </ui:TabItemIcon>
             <ui:TabItemIcon Header="打赏支持" Icon="&#xe634;">
