@@ -57,12 +57,18 @@
                     按钮
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}">
-                    注入成功后，按键盘上的Insert键(笔记本电脑可能需要配合Fn键)显示/隐藏菜单，使用鼠标操作
+                    注入成功后，按 F7 显示/隐藏菜单（传承版 / 增强版均为 F7；传承版默认键由本工具首次注入时自动写入，可在菜单 设置 → 热键 中自定义）。使用鼠标操作
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}">
                     如果鼠标卡在屏幕中心不动，请在游戏中按ESC->设置->键盘/鼠标->鼠标输入方法，改成原始输入即可
                 </Paragraph>
 
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}">
+                    玩法脚本（前置 / 分红 / 刷钱 / 等级）
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}">
+                    传承版玩法脚本「Ultimate Menu V3」（社区开源）：点 YimMenu 卡片「安装脚本包」一键部署；首次注入时本工具也会自动补齐（已有则不覆盖）。注入后按 F7 打开菜单，侧边栏进入「Ultimate Menu 1.73 By L7NEG」页签：Heists Data Editor（公寓 / 赌场 / 佩里科岛 / 末日 / 科兹…：补前置 / 分红 / 秒过）、Recovery Menu → Set Rank（刷等级）、Ultimate Money Methods（刷钱）与各产业自动化。注意：需在线上战局中使用（故事模式会提示不可用）；游戏大版本更新后需等待维护线跟进。
+                </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Title}">
                     提示
                 </Paragraph>

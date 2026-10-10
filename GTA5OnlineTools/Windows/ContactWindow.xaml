@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
     x:Name="Window_Contact"
-    Title="联系 / 交流群 - DOG"
+    Title="联系 / 交流群 / 打赏 - DOG"
     Width="470"
     Height="650"
     ResizeMode="NoResize"
@@ -25,7 +25,7 @@
                 VerticalAlignment="Center"
                 FontSize="14"
                 FontWeight="Bold"
-                Text="联系 / 交流群 - DOG" />
+                Text="联系 / 交流群 / 打赏 - DOG" />
         </StackPanel>
     </ui:Window.TitleContent>
 
@@ -36,6 +36,7 @@
         </Grid.RowDefinitions>
 
         <TabControl
+            x:Name="TabControl_Contact"
             Grid.Row="0"
             Margin="8,4,8,0"
             Background="Transparent"
@@ -70,7 +71,7 @@
                         HorizontalAlignment="Center"
                         FontSize="17"
                         FontWeight="Bold"
-                        Text="QQ 交流群：472770575" />
+                        Text="QQ 交流群：1121769473" />
                     <Image
                         Width="340"
                         Height="360"
@@ -91,7 +92,59 @@
                         Background="#12B7F5"
                         Foreground="White"
                         Click="Button_CopyQQGroup_Click"
-                        Content="复制群号 472770575" />
+                        Content="复制群号 1121769473" />
+                </StackPanel>
+            </ui:TabItemIcon>
+            <ui:TabItemIcon Header="打赏支持" Icon="&#xe634;">
+                <StackPanel>
+                    <TextBlock
+                        Margin="10,10,10,2"
+                        HorizontalAlignment="Center"
+                        FontSize="17"
+                        FontWeight="Bold"
+                        Text="请作者喝杯水，辛苦了" />
+                    <TextBlock
+                        Margin="10,0,10,2"
+                        HorizontalAlignment="Center"
+                        FontSize="12"
+                        Foreground="Gray"
+                        Text="自由金额 · 微信 / 支付宝均可" />
+                    <UniformGrid Margin="6,6,6,0" Columns="2">
+                        <StackPanel Margin="6,0,6,0">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="微信打赏" />
+                            <Image
+                                Width="200"
+                                Height="290"
+                                Margin="0,6,0,0"
+                                HorizontalAlignment="Center"
+                                Source="/Assets/contact_reward_wechat.jpg"
+                                Stretch="Uniform" />
+                        </StackPanel>
+                        <StackPanel Margin="6,0,6,0">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="支付宝打赏" />
+                            <Image
+                                Width="200"
+                                Height="290"
+                                Margin="0,6,0,0"
+                                HorizontalAlignment="Center"
+                                Source="/Assets/contact_reward_alipay.jpg"
+                                Stretch="Uniform" />
+                        </StackPanel>
+                    </UniformGrid>
+                    <TextBlock
+                        Margin="10,10,10,6"
+                        HorizontalAlignment="Center"
+                        FontSize="12"
+                        Foreground="Gray"
+                        Text="个人开发不易，希望大家多多支持 · 完全自愿" />
                 </StackPanel>
             </ui:TabItemIcon>
         </TabControl>

@@ -129,6 +129,57 @@
             Orientation="Horizontal">
 
         </StackPanel>
+        <!--  /////////// [DOG] 存档模式（本地数据 / 官方数据）  ///////////  -->
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="1"
+            Grid.RowSpan="2"
+            Margin="5,0,8,5">
+            <TextBlock
+                FontSize="15"
+                FontWeight="Bold"
+                Text="存档模式（数据去向）" />
+            <TextBlock
+                Margin="0,4,0,0"
+                FontSize="11.5"
+                Foreground="Gray"
+                TextWrapping="Wrap"
+                Text="两种模式任选其一（传承版 / 增强版通用）；切换后需重启游戏生效。适合自己玩法的才是好模式。" />
+            <Button
+                x:Name="Button_SaveMode_Local"
+                Margin="0,10,0,0"
+                Background="#21A366"
+                Click="Button_SaveMode_Local_Click"
+                Content="切换为：本地数据模式"
+                Foreground="White" />
+            <TextBlock
+                Margin="0,4,0,0"
+                FontSize="11"
+                Foreground="#555555"
+                TextWrapping="Wrap"
+                Text="存档存本地（%appdata%\FSL），不上传官方服务器；可放心刷钱 / 解锁，娱乐向首选。换机或重装前务必备份。" />
+            <Button
+                x:Name="Button_SaveMode_Cloud"
+                Margin="0,10,0,0"
+                Background="#FE780A"
+                Click="Button_SaveMode_Cloud_Click"
+                Content="切换为：云端数据模式"
+                Foreground="White" />
+            <TextBlock
+                Margin="0,4,0,0"
+                FontSize="11"
+                Foreground="#555555"
+                TextWrapping="Wrap"
+                Text="存档照常上传官方服务器（云同步）；无 BE 进线上。建议轻度辅助、任务为主、慢慢积累——数据可见于服务器，请自行把握节奏。" />
+            <TextBlock
+                x:Name="TextBlock_CurrentSaveMode"
+                Margin="0,12,0,0"
+                FontSize="12"
+                FontWeight="Bold"
+                Foreground="#21A366"
+                TextWrapping="Wrap"
+                Text="当前模式：检测中…" />
+        </StackPanel>
         <!--  //////////////////////  -->
         <DockPanel Grid.Row="2" Grid.Column="0">
             <Grid DockPanel.Dock="Bottom">

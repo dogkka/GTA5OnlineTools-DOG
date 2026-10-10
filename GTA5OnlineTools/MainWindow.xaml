@@ -116,6 +116,13 @@
                     GroupName="NavMenu"
                     Icon="&#xe6e3;"
                     Style="{StaticResource NavMenuStyle_Main}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="Reward"
+                    Content="打赏"
+                    GroupName="NavMenu"
+                    Icon="&#xe634;"
+                    Style="{StaticResource NavMenuStyle_Main}" />
             </StackPanel>
         </DockPanel>
     </ui:Window.TitleContent>

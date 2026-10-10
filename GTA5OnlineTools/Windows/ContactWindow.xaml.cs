@@ -7,9 +7,12 @@ namespace GTA5OnlineTools.Windows;
 /// </summary>
 public partial class ContactWindow
 {
-    public ContactWindow()
+    public ContactWindow(int initialTab = 0)
     {
         InitializeComponent();
+
+        if (initialTab >= 0 && initialTab < TabControl_Contact.Items.Count)
+            TabControl_Contact.SelectedIndex = initialTab;
     }
 
     private void Button_Close_Click(object sender, RoutedEventArgs e)
@@ -24,8 +27,8 @@ public partial class ContactWindow
     {
         try
         {
-            Clipboard.SetText("472770575");
-            NotifierHelper.Show(NotifierType.Success, "QQ 交流群号 472770575 已复制到剪贴板");
+            Clipboard.SetText("1121769473");
+            NotifierHelper.Show(NotifierType.Success, "QQ 交流群号 1121769473 已复制到剪贴板");
         }
         catch (Exception ex)
         {

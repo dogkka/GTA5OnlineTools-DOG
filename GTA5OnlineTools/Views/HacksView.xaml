@@ -15,7 +15,7 @@
     <WrapPanel>
         <!--  YimMenu 注入式菜单  -->
         <ui:GroupBoxHack
-            Title="YimMenu"
+            Title="YimMenu 一代 (可用)"
             Image="pack://application:,,,/GTA5OnlineTools;component/Assets/Hacks/YimMenu.png" Width="541" Height="186" Background="White">
             <ui:GroupBoxHack.TitleContent>
                 <StackPanel Orientation="Horizontal">
@@ -37,7 +37,7 @@
             </ui:GroupBoxHack.TitleContent>
             <ui:GroupBoxHack.DescriptionContent>
                 <StackPanel Margin="0,-23,0,0">
-                    <TextBlock Foreground="Red" TextWrapping="Wrap" Text="适用于传承版（1.73 b3889），已内置社区维护版菜单（Mr-X-GTA，适配当前版本）。务必阅读说明。必须先从R星启动器关闭BattlEye开关，并安装FSL。" />
+                    <TextBlock Foreground="Red" TextWrapping="Wrap" Text="适用于传承版（1.73 b3889），已内置社区维护版菜单（Mr-X-GTA）；必须关闭 BattlEye 并安装 FSL。「安装脚本包」一键部署玩法脚本（前置/分红/刷钱/等级），首次注入自动补齐。" />
                     <WrapPanel>
                         <Button
                         Background="#FE780A"
@@ -49,6 +49,11 @@
                         Command="{Binding ExtraClickCommand}"
                         CommandParameter="YimMenuScriptsDirectory"
                         Content="脚本目录" />
+                        <Button
+                        Background="#34A853"
+                        Command="{Binding ExtraClickCommand}"
+                        CommandParameter="YimMenuInstallLuaPack"
+                        Content="安装脚本包" />
                         <Button
                         Background="#34A853"
                         Command="{Binding ExtraClickCommand}"
@@ -84,7 +89,7 @@
             Icon="&#xE72E;"
             Style="{StaticResource ButtonStyle_HacksFunc}" />
         <ui:GroupBoxHack
-            Title="YimMenu V2 (仍在开发)"
+            Title="YimMenu V2 (可用)"
             Image="pack://application:,,,/GTA5OnlineTools;component/Assets/Hacks/NewBase.png" Width="541" Height="186" Background="White">
             <ui:GroupBoxHack.TitleContent>
                 <StackPanel Orientation="Horizontal">
@@ -101,7 +106,7 @@
             </ui:GroupBoxHack.TitleContent>
             <ui:GroupBoxHack.DescriptionContent>
                 <StackPanel Margin="0,-23,0,0">
-                    <TextBlock Foreground="Red" TextWrapping="Wrap" Text="适用于增强版，支持 Lua 脚本（可点下方“安装脚本包”一键部署推荐脚本包）。必须先从R星启动器关闭Battleye开关。" />
+                    <TextBlock Foreground="Red" TextWrapping="Wrap" Text="适用于增强版，支持 Lua 脚本（可点下方“安装脚本包”一键部署推荐脚本包）。必须先从R星启动器关闭Battleye开关。注入成功后自动播放「注入成功」启动动画。" />
                     <WrapPanel>
                         <Button
                             Background="#FE780A"

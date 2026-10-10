@@ -2,6 +2,7 @@
 using GTA5Core.Native;
 using GTA5Inject;
 using GTA5OnlineTools.Models;
+using GTA5OnlineTools.Utils;
 using GTA5OnlineTools.Views.ReadMe;
 using GTA5OnlineTools.Windows;
 using GTA5Shared.Helper;
@@ -45,30 +46,33 @@ public partial class HacksView : UserControl
     [RelayCommand]
     private void HacksClick(string hackName)
     {
-
-        if (ProcessHelper.IsGTA5Run())
+        // [DOG] 仅「内嵌版」注入按钮需要游戏进程；网络版按钮只弹离线提示
+        if (hackName is "YimMenu_Local" or "YimMenu_v2")
         {
-            switch (hackName)
+            if (!GameProcessResolver.AnyGameRunning())
             {
-                case "YimMenu_Local":
-                    YimMenuClick_Local();
-                    break;
-                case "YimMenu_Online":
-                    // [DOG 离线版] 网络版已禁用
-                    NotifierHelper.Show(NotifierType.Warning, "本版本已完全离线化：网络版下载已禁用，请使用【内嵌版】。");
-                    break;
-                case "YimMenu_v2":
-                    YimMenu_V2_Local_Click();
-                    break;
-                case "YimMenu_v2_Online":
-                    // [DOG 离线版] 网络版已禁用
-                    NotifierHelper.Show(NotifierType.Warning, "本版本已完全离线化：网络版下载已禁用，请使用【内嵌版】。");
-                    break;
+                var (_, _, msg) = GameProcessResolver.Resolve(hackName == "YimMenu_v2");
+                NotifierHelper.Show(NotifierType.Warning, msg);
+                return;
             }
         }
-        else
+
+        switch (hackName)
         {
-            NotifierHelper.Show(NotifierType.Warning, "未发现《GTA5》进程，请先运行《GTA5》游戏");
+            case "YimMenu_Local":
+                YimMenuClick_Local();
+                break;
+            case "YimMenu_Online":
+                // [DOG 离线版] 网络版已禁用
+                NotifierHelper.Show(NotifierType.Warning, "本版本已完全离线化：网络版下载已禁用，请使用【内嵌版】。");
+                break;
+            case "YimMenu_v2":
+                YimMenu_V2_Local_Click();
+                break;
+            case "YimMenu_v2_Online":
+                // [DOG 离线版] 网络版已禁用
+                NotifierHelper.Show(NotifierType.Warning, "本版本已完全离线化：网络版下载已禁用，请使用【内嵌版】。");
+                break;
         }
     }
 
@@ -141,6 +145,9 @@ public partial class HacksView : UserControl
 
                 case "YimMenuScriptsDirectory":
                     YimMenuScriptsDirectoryClick();
+                    break;
+                case "YimMenuInstallLuaPack":
+                    YimMenuInstallLuaPackClick();
                     break;
                 case "YimMenuV2ScriptsDirectory":
                     YimMenuV2ScriptsDirectoryClick();
@@ -219,12 +226,32 @@ public partial class HacksView : UserControl
 
         await Task.Delay(100);
 
+        // [DOG] 自愈补齐：首次注入自动部署玩法脚本（UM V3 / 注入动画），并预写默认呼出键 F7
+        try
+        {
+            var (ensured, ensureMessage) = FileHelper.EnsureLegacyLuaPack();
+            if (ensured)
+            {
+                LoggerHelper.Info("传承版自动补齐：" + ensureMessage);
+                NotifierHelper.Show(NotifierType.Success, ensureMessage + "\n玩法入口：菜单侧边栏「Ultimate Menu 1.73」页签");
+            }
+        }
+        catch (Exception ex)
+        {
+            LoggerHelper.Warn("传承版自动补齐失败：" + ex.Message);
+        }
+
         // 由于玩家可能只使用YimMenu，GTA5Core模块不会初始化，这里要单独处理
         Process gta5Process;
         if (Memory.GTA5ProId == 0)
         {
-            var pArray = Process.GetProcessesByName("GTA5");
-            gta5Process = pArray.First();
+            var (found, proc, msg) = GameProcessResolver.Resolve(wantEnhanced: false);
+            if (!found)
+            {
+                NotifierHelper.Show(NotifierType.Warning, msg);
+                return;
+            }
+            gta5Process = proc;
         }
         else
         {
@@ -273,8 +300,13 @@ public partial class HacksView : UserControl
         Process gta5Process;
         if (Memory.GTA5ProId == 0)
         {
-            var pArray = Process.GetProcessesByName("GTA5");
-            gta5Process = pArray.First();
+            var (found, proc, msg) = GameProcessResolver.Resolve(wantEnhanced: false);
+            if (!found)
+            {
+                NotifierHelper.Show(NotifierType.Warning, msg);
+                return;
+            }
+            gta5Process = proc;
         }
         else
         {
@@ -299,8 +331,13 @@ public partial class HacksView : UserControl
         Process gta5Process;
         if (Memory.GTA5ProId == 0)
         {
-            var pArray = Process.GetProcessesByName("GTA5_Enhanced");
-            gta5Process = pArray.First();
+            var (found, proc, msg) = GameProcessResolver.Resolve(wantEnhanced: true);
+            if (!found)
+            {
+                NotifierHelper.Show(NotifierType.Warning, msg);
+                return;
+            }
+            gta5Process = proc;
         }
         else
         {
@@ -330,8 +367,13 @@ public partial class HacksView : UserControl
         Process gta5Process;
         if (Memory.GTA5ProId == 0)
         {
-            var pArray = Process.GetProcessesByName("GTA5_Enhanced");
-            gta5Process = pArray.First();
+            var (found, proc, msg) = GameProcessResolver.Resolve(wantEnhanced: true);
+            if (!found)
+            {
+                NotifierHelper.Show(NotifierType.Warning, msg);
+                return;
+            }
+            gta5Process = proc;
         }
         else
         {
@@ -387,6 +429,19 @@ public partial class HacksView : UserControl
     {
         var scriptsDir = Path.Combine(FileHelper.Dir_AppData_YimMenu_V2, "scripts");
         var (ok, message) = FileHelper.InstallLuaPack(scriptsDir);
+        NotifierHelper.Show(ok ? NotifierType.Success : NotifierType.Error, message);
+    }
+
+    /// <summary>
+    /// [DOG] 一键安装传承版 Lua 脚本包（内嵌 UltimateMenu V3 → %AppData%\YimMenu\scripts）
+    /// </summary>
+    private void YimMenuInstallLuaPackClick()
+    {
+        var (ok, message) = FileHelper.InstallLegacyLuaPack();
+        // [DOG] 同步补齐默认呼出键 F7 等缺失项（已有则跳过）
+        var (ensured, ensureMessage) = FileHelper.EnsureLegacyLuaPack();
+        if (ensured)
+            message += "\n" + ensureMessage;
         NotifierHelper.Show(ok ? NotifierType.Success : NotifierType.Error, message);
     }
 

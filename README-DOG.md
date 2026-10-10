@@ -8,6 +8,9 @@
 - 完全离线化：移除原项目全部第三方域名请求，只保留本仓库 GitHub 接口的更新检测
 - 内置简体中文 YimMenuV2 增强版菜单（`GTA5Shared/Files/YimMenu/NewBase.dll`，自编译；源码见 `yimmenu-v2` 分支）
 - 内置传承版菜单：社区维护版 YimMenu（[Mr-X-GTA/YimMenu](https://github.com/Mr-X-GTA/YimMenu)，GPL-2.0，适配传承版 1.73 b3889；`GTA5Shared/Files/YimMenu/YimMenu.dll`）
+- 内置传承版注入动画：`GTA5Shared/Files/Lua/DOG_InjectFx.lua`（随「安装脚本包」部署到 `%appdata%\YimMenu\scripts`，注入后自动播放「注入成功 · DOG」动画；增强版同款动画内置于菜单 DLL）
+- 传承版体验补强：首次注入自动补齐「玩法脚本 + 注入动画」（已有则不覆盖）；默认呼出键 F7（首次自动写入 `%appdata%\YimMenu\settings.json`，菜单内可改）
+- 内置「环境自检」+「反馈包」：主页一键体检（游戏 / FSL / 脚本 / 模式 / 呼出键），支持一键修复（补脚本 / 装 FSL / 释放菜单文件），一键打包日志配置到桌面；首启「三步上手」引导；切换数据模式前自动打包存档备份（`HealthCheckHelper.cs`、`SupportBundleHelper.cs`、`FslInstallHelper.cs`、`FslModeHelper.cs`）
 - 内置 FSL V6：FSL 管理改为离线安装；"网络版 / 在线 Lua"入口禁用并给出提示
 - 界面：主页教程化、首次启动《关于 / 使用说明》、顶部"联系"按钮
 

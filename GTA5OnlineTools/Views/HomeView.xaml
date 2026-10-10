@@ -15,6 +15,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <RichTextBox Grid.Row="0" Margin="5,5,2.5,5" Style="{StaticResource RichTextBoxStyle_ReadMe}">
@@ -25,7 +28,7 @@
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
                     本程序是《GTA5 线上小助手》的离线二次开发版（作者：<Run FontWeight="Bold">DOG</Run>）。
-                    内置自编译的简体中文 YimMenuV2 菜单 DLL 与 FSL V6：可以一键安装 FSL、一键注入中文菜单，
+                    内置自编译的简体中文 YimMenuV2 菜单、传承版社区维护版菜单与 FSL V6：可以一键安装 FSL、一键注入中文菜单，
                     并提供配置目录、日志查看、脚本目录等常用工具。
                     本版本<Run FontWeight="Bold">已移除原版的公告服务器与云端校验</Run>，不会从任何第三方服务器下载文件。
                 </Paragraph>
@@ -37,9 +40,9 @@
                     版本说明
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="15">
-                    本程序目前<Run FontWeight="Bold" Foreground="#C0392B">只维护 GTA5 增强版（Enhanced）</Run>；
-                    传统版（Legacy）已失去维护，原作者也已明确说明停止对传统版的更新——
-                    请使用<Run FontWeight="Bold">增强版</Run>游戏配合本程序。
+                    本程序同时支持两条线：<Run FontWeight="Bold">增强版（Enhanced）</Run>内置自编译中文 YimMenuV2；
+                    <Run FontWeight="Bold">传承版（Legacy）</Run>内置社区维护版 YimMenu（适配传承版 1.73 b3889）。
+                    游戏大版本更新后菜单可能暂时失效，需等待维护线跟进适配。
                 </Paragraph>
 
                 <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="19">
@@ -53,9 +56,132 @@
             </FlowDocument>
         </RichTextBox>
 
+        <!--  [DOG] 数据模式（本地数据 / 云端数据）  -->
+        <Border
+            Grid.Row="1"
+            Margin="10,0,12.5,10"
+            Padding="12,10,12,12"
+            Background="#F7F8FA"
+            BorderBrush="#E1E4E8"
+            BorderThickness="1"
+            CornerRadius="8">
+            <StackPanel>
+                <Grid>
+                    <TextBlock
+                        FontSize="15"
+                        FontWeight="Bold"
+                        Text="数据模式（存档去向）" />
+                    <TextBlock
+                        x:Name="TextBlock_ModeStatus"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="Bold"
+                        Foreground="#808A93"
+                        Text="当前：检测中…" />
+                </Grid>
+                <TextBlock
+                    x:Name="TextBlock_ModeDesc"
+                    Margin="0,4,0,0"
+                    FontSize="11.5"
+                    Foreground="#6B7680"
+                    TextWrapping="Wrap"
+                    Text="「本地数据 / 云端数据」对传承版与增强版均适用：两种模式都在「关闭 BattlEye + FSL」下进入线上，区别只有存档去向；切换后需重启游戏生效。" />
+                <Grid Margin="0,9,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Border
+                        x:Name="Card_ModeLocal"
+                        Grid.Column="0"
+                        Padding="12,10"
+                        Cursor="Hand"
+                        MouseLeftButtonUp="Card_ModeLocal_MouseLeftButtonUp">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="BorderBrush" Value="#D5DAE0" />
+                                <Setter Property="BorderThickness" Value="1.5" />
+                                <Setter Property="CornerRadius" Value="8" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Opacity" Value="0.85" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel>
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Foreground="#21A366"
+                                Text="① 本地数据模式" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                FontSize="11.5"
+                                Foreground="#4A555F"
+                                TextWrapping="Wrap"
+                                Text="存档只存本机（%appdata%\FSL），不上传服务器；可放开刷钱 / 解锁，娱乐向首选。换机或重装前务必备份。" />
+                            <TextBlock
+                                x:Name="Badge_ModeLocal"
+                                Margin="0,7,0,0"
+                                FontSize="11"
+                                FontWeight="Bold"
+                                Foreground="#21A366"
+                                Text="" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border
+                        x:Name="Card_ModeCloud"
+                        Grid.Column="2"
+                        Padding="12,10"
+                        Cursor="Hand"
+                        MouseLeftButtonUp="Card_ModeCloud_MouseLeftButtonUp">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="BorderBrush" Value="#D5DAE0" />
+                                <Setter Property="BorderThickness" Value="1.5" />
+                                <Setter Property="CornerRadius" Value="8" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Opacity" Value="0.85" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel>
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Foreground="#FE780A"
+                                Text="② 云端数据模式" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                FontSize="11.5"
+                                Foreground="#4A555F"
+                                TextWrapping="Wrap"
+                                Text="存档照常上传官方服务器（云同步）；适合轻度辅助、任务省力、慢慢积累。开启前需阅读使用须知。" />
+                            <TextBlock
+                                x:Name="Badge_ModeCloud"
+                                Margin="0,7,0,0"
+                                FontSize="11"
+                                FontWeight="Bold"
+                                Foreground="#FE780A"
+                                Text="" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Border>
+
         <Border
             x:Name="Border_OpenTutorial"
-            Grid.Row="1"
+            Grid.Row="2"
             Height="58"
             Margin="10,0,12.5,10"
             Cursor="Hand"
@@ -84,6 +210,74 @@
                     FontSize="11"
                     Foreground="#EAFFF4"
                     Text="图文教程 · 全功能说明 · 常见问题 · 支持浅色 / 深色模式" />
+            </StackPanel>
+        </Border>
+
+        <Border
+            x:Name="Border_HealthCheck"
+            Grid.Row="3"
+            Height="58"
+            Margin="10,0,12.5,10"
+            Cursor="Hand"
+            MouseLeftButtonUp="Border_HealthCheck_MouseLeftButtonUp">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="#3E7BFA" />
+                    <Setter Property="CornerRadius" Value="8" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#5C90FF" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="17"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Text="环境自检 · 一键体检" />
+                <TextBlock
+                    Margin="0,2,0,0"
+                    HorizontalAlignment="Center"
+                    FontSize="11"
+                    Foreground="#EAF2FF"
+                    Text="游戏 / FSL / 脚本 / 数据模式 / 呼出键 全检查 · 结果可复制发群" />
+            </StackPanel>
+        </Border>
+
+        <Border
+            x:Name="Border_Reward"
+            Grid.Row="4"
+            Height="58"
+            Margin="10,0,12.5,10"
+            Cursor="Hand"
+            MouseLeftButtonUp="Border_Reward_MouseLeftButtonUp">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="#F0761C" />
+                    <Setter Property="CornerRadius" Value="8" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FD8A36" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="17"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Text="打赏支持 · 请作者喝杯水" />
+                <TextBlock
+                    Margin="0,2,0,0"
+                    HorizontalAlignment="Center"
+                    FontSize="11"
+                    Foreground="#FFF3E8"
+                    Text="个人开发不易 · 完全自愿，不影响免费使用" />
             </StackPanel>
         </Border>
     </Grid>

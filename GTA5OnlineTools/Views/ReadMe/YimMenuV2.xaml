@@ -20,8 +20,8 @@
                 </Paragraph>
 
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}">
-                    由于增强版更换了编译器，适用于传承版的Yimmenu所有功能全部失效.
-                    Yimmenu V2是maybegreat48以Yimmenu菜单为基础，为GTA V增强版重写的菜单，目前仍处于未完成阶段，与yim v1相比功能较少且不支持Lua脚本。
+                    由于增强版更换了编译器，适用于传承版的 Yimmenu 在增强版上全部失效。
+                    Yimmenu V2是maybegreat48以Yimmenu菜单为基础，为GTA V增强版重写的菜单，目前已支持 Lua 脚本，功能仍在持续完善中。
                     Yimmenu V2官方GitHub仓库
                     <Hyperlink NavigateUri="https://github.com/YimMenu/YimMenuV2/tree/enhanced" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/YimMenu/YimMenuV2/tree/enhanced</Hyperlink>
                 </Paragraph>
@@ -46,10 +46,10 @@
                     按钮
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}">
-                    注入成功后，按键盘上的Insert键(笔记本电脑可能需要配合Fn键)显示/隐藏菜单，使用鼠标操作
+                    注入成功后，按键盘上的 F7 键显示/隐藏菜单（小键盘也能按；可在 设置 → 热键 →「呼出菜单」自定义；固定备用 Ctrl+\），使用鼠标操作
                 </Paragraph>
                 <Paragraph Style="{StaticResource ParagraphStyle_Content}">
-                    如果鼠标卡在屏幕中心不动，请在游戏中按ESC->设置->键盘/鼠标->鼠标输入方法，改成原始输入即可
+                    若菜单打开后鼠标锁在屏幕中心：2.1.37 起已内置修复（打开菜单时自动解除光标钳制）；如个别环境仍偶现，请在游戏中按 ESC → 设置 → 键盘/鼠标 → 鼠标输入方法，改为「原始输入」即可
                 </Paragraph>
 
                 <Paragraph Style="{StaticResource ParagraphStyle_Title}">

@@ -117,6 +117,17 @@ public partial class MainWindow
             }
             catch { }
 
+            // [DOG] 新手引导：首次启动且未检测到 FSL 配置（未装 FSL / 未进过游戏）时提示一次
+            try
+            {
+                if (IniHelper.ReadValue("Dog", "FslGuideShown") != "1" && FslModeHelper.GetCurrentMode() is null)
+                {
+                    IniHelper.WriteValue("Dog", "FslGuideShown", "1");
+                    new FirstRunGuideWindow { Owner = this }.ShowDialog();
+                }
+            }
+            catch { }
+
             // [DOG] 启动时自动检测一次新版本（只访问本二改仓库的 GitHub 接口）
             // 检测失败、没网都静默忽略，不会打扰用户
             try
@@ -191,6 +202,13 @@ public partial class MainWindow
         if (viewName == "Contact")
         {
             new ContactWindow { Owner = MainWindowInstance }.ShowDialog();
+            return;
+        }
+
+        // [DOG] 打赏按钮：直接打开联系窗口的「打赏支持」页
+        if (viewName == "Reward")
+        {
+            new ContactWindow(2) { Owner = MainWindowInstance }.ShowDialog();
             return;
         }
 

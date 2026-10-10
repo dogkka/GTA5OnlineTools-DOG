@@ -66,7 +66,7 @@
             HorizontalAlignment="Center"
             FontSize="14"
             Foreground="Gray"
-            Text="已内置中文 YimMenuV2 菜单 DLL 与 FSL V6 · 不访问任何第三方服务器" />
+            Text="已内置中文 YimMenuV2、传承版维护版菜单 DLL 与 FSL V6 · 不访问任何第三方服务器" />
 
         <TextBlock
             Margin="5,6,5,0"
@@ -80,7 +80,12 @@
             Margin="5,6,5,0"
             HorizontalAlignment="Center"
             FontSize="14"
-            Text="QQ 交流群：472770575（二维码见顶部「联系」按钮）" />
+            Text="QQ 交流群：1121769473（二维码见顶部「联系」按钮）" />
+        <TextBlock
+            Margin="5,6,5,0"
+            HorizontalAlignment="Center"
+            FontSize="14"
+            Text="打赏支持：完全自愿，不影响免费使用（见顶部「打赏」按钮）" />
 
         <TextBlock
             x:Name="TextBlock_AboutVersion"
@@ -105,6 +110,14 @@
                 Padding="18,6"
                 Click="Button_CheckUpdate_Click"
                 Content="检查更新" />
+            <Button
+                x:Name="Button_Uninstall"
+                Margin="10,0,0,0"
+                Padding="18,6"
+                Background="#C0392B"
+                Foreground="White"
+                Click="Button_Uninstall_Click"
+                Content="一键卸载（清理配置与缓存）" />
         </StackPanel>
     </StackPanel>
 

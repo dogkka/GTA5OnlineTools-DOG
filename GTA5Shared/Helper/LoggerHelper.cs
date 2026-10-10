@@ -99,4 +99,21 @@ public static class LoggerHelper
         Logger.Fatal(err, msg);
     }
     #endregion
+
+    /// <summary>
+    /// [DOG] 一键卸载：关闭日志文件句柄并停用日志，避免日志目录被占用无法删除、
+    /// 也防止清理完成后日志再次写回。清理类操作执行前调用。
+    /// </summary>
+    public static void ShutdownForUninstall()
+    {
+        try
+        {
+            LogManager.Shutdown();
+            LogManager.SuspendLogging();
+        }
+        catch
+        {
+            // 已设置 ThrowExceptions = false，此处仅作兜底
+        }
+    }
 }

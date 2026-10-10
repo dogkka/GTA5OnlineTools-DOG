@@ -1,0 +1,108 @@
+<ui:Window
+    x:Class="GTA5OnlineTools.Windows.FirstRunGuideWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    x:Name="Window_FirstRunGuide"
+    Title="新手引导 - DOG"
+    Width="580"
+    Height="470"
+    ResizeMode="NoResize"
+    Style="{StaticResource SystemWindowStyle}"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+
+    <ui:Window.TitleContent>
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+            <Image
+                Height="20"
+                Margin="5"
+                Source="/Assets/Favicon.ico"
+                Style="{StaticResource ImageStyle_HighQuality}" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="14"
+                FontWeight="Bold"
+                Text="新手引导 - DOG" />
+        </StackPanel>
+    </ui:Window.TitleContent>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="20,16,20,0">
+            <TextBlock
+                FontSize="16"
+                FontWeight="Bold"
+                Text="三步开始使用（传承版 / 增强版通用）" />
+
+            <TextBlock
+                Margin="0,14,0,0"
+                FontSize="13.5"
+                FontWeight="Bold"
+                Foreground="#21A366"
+                Text="① 关闭 BattlEye" />
+            <TextBlock
+                Margin="0,4,0,0"
+                FontSize="13"
+                Foreground="#333333"
+                TextWrapping="Wrap"
+                Text="Rockstar 启动器 → 设置 → 我的已安装游戏 → 取消勾选 BattlEye（Steam 可在启动项加 -nobattleye）" />
+
+            <TextBlock
+                Margin="0,14,0,0"
+                FontSize="13.5"
+                FontWeight="Bold"
+                Foreground="#21A366"
+                Text="② 安装 FSL" />
+            <TextBlock
+                Margin="0,4,0,0"
+                FontSize="13"
+                Foreground="#333333"
+                TextWrapping="Wrap"
+                Text="YimMenu 页 → FSL 管理 →「一键安装FSL（自动检测）」（内置 FSL V6，离线安装）" />
+
+            <TextBlock
+                Margin="0,14,0,0"
+                FontSize="13.5"
+                FontWeight="Bold"
+                Foreground="#21A366"
+                Text="③ 选择数据模式" />
+            <TextBlock
+                Margin="0,4,0,0"
+                FontSize="13"
+                Foreground="#333333"
+                TextWrapping="Wrap"
+                Text="进一次游戏后回到主页「数据模式」卡片：本地数据（存档只存本机）/ 云端数据（照常上传官方服务器）二选一，随时可切换。" />
+
+            <TextBlock
+                Margin="0,16,0,0"
+                FontSize="12.5"
+                Foreground="#6B7680"
+                TextWrapping="Wrap"
+                Text="完成后点击主页「环境自检」可一键核对全部状态；遇到问题把自检结果复制发群（QQ 1121769473）即可。" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="1"
+            Margin="20,10,20,16"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                x:Name="Button_Later"
+                Padding="22,7"
+                Click="Button_Later_Click"
+                Content="稍后再说" />
+            <Button
+                x:Name="Button_OpenFSL"
+                Padding="22,7"
+                Click="Button_OpenFSL_Click"
+                Content="打开 FSL 管理" />
+        </StackPanel>
+    </Grid>
+</ui:Window>

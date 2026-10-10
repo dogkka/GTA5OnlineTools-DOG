@@ -19,6 +19,8 @@ public static class FileHelper
     public const string Res_Other_SGTA50000 = $"{ResFiles}.Other.SGTA50000";
     public const string Res_FSL_WINMM = $"{ResFiles}.FSL.WINMM.dll";
     public const string Res_Lua_LuaPack = $"{ResFiles}.Lua.LuaPack.zip";
+    public const string Res_Lua_UltimateMenuLegacy = $"{ResFiles}.Lua.UltimateMenu_V3_1.73_Legacy.lua";
+    public const string Res_Lua_DogInjectFx = $"{ResFiles}.Lua.DOG_InjectFx.lua";
     public const string Res_Tutorial = $"{ResFiles}.Tutorial.html";
 
     //////////////////////////////////////////////////////////////////
@@ -258,6 +260,145 @@ public static class FileHelper
         {
             return (false, $"脚本包安装失败：{ex.Message}\n如果游戏/菜单正在运行，请关闭后重试。");
         }
+    }
+
+    /// <summary>
+    /// [DOG] 一键安装传承版 Lua 脚本包（内嵌 Ultimate Menu V3 + DOG 注入动效 → %AppData%\YimMenu\scripts）。
+    /// 已存在的同名文件会先备份到 _备份_时间戳 子目录，再做覆盖。
+    /// </summary>
+    /// <returns>(是否成功, 结果消息)</returns>
+    public static (bool ok, string message) InstallLegacyLuaPack()
+    {
+        try
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            var items = new (string res, string fileName)[]
+            {
+                (Res_Lua_UltimateMenuLegacy, "Ultimate_Menu_V3_1.73_Legacy.lua"),
+                (Res_Lua_DogInjectFx, "DOG_InjectFx.lua"),
+            };
+
+            var targetDir = Dir_AppData_YimMenu_Scripts;
+            CreateDirectory(targetDir);
+
+            var backupDir = Path.Combine(targetDir, $"_备份_{DateTime.Now:yyyyMMdd_HH-mm-ss}");
+            var installed = new List<string>();
+            var backedUp = 0;
+
+            foreach (var (res, fileName) in items)
+            {
+                using var stream = assembly.GetManifestResourceStream(res);
+                if (stream == null)
+                    return (false, $"传承版脚本包安装失败：内嵌资源缺失（{fileName}）");
+
+                var dest = Path.Combine(targetDir, fileName);
+
+                if (File.Exists(dest))
+                {
+                    CreateDirectory(backupDir);
+                    File.Copy(dest, Path.Combine(backupDir, fileName), true);
+                    backedUp++;
+                }
+
+                using var fs = new FileStream(dest, FileMode.Create, FileAccess.Write);
+                stream.CopyTo(fs);
+                installed.Add(fileName);
+            }
+
+            var message = $"传承版脚本包安装完成：{string.Join("、", installed)} → {targetDir}\n其中 DOG_InjectFx.lua 为「注入成功」启动动画（每次注入自动播放）";
+            if (backedUp > 0)
+                message += $"\n已备份被覆盖的旧文件 {backedUp} 个到：{backupDir}";
+            message += "\n如游戏/菜单正在运行：菜单内 Scripts → Reload All；否则下次注入自动加载";
+
+            return (true, message);
+        }
+        catch (Exception ex)
+        {
+            return (false, $"传承版脚本包安装失败：{ex.Message}\n如果游戏/菜单正在运行，请关闭后重试。");
+        }
+    }
+
+    /// <summary>
+    /// [DOG] 传承版「自愈补齐」：注入前自动检查，缺什么补什么（已有文件一律不动，不覆盖用户版本/配置）：
+    ///  - 脚本目录没有任何 Ultimate_Menu*.lua → 部署内嵌 UM V3（玩法脚本：前置 / 分红 / 刷钱 / 等级）；
+    ///  - DOG_InjectFx.lua 缺失 → 部署注入动画；
+    ///  - %AppData%\YimMenu\settings.json 不存在 → 预写默认呼出键 F7（VK 118，菜单 设置 → 热键 内可改；
+    ///    Mr-X 版本读取 settings.json 为「缺键合并默认」的容错逻辑，写入片段不会破坏其它设置）。
+    /// </summary>
+    /// <returns>(是否有新写入, 结果消息)</returns>
+    public static (bool changed, string message) EnsureLegacyLuaPack()
+    {
+        try
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var targetDir = Dir_AppData_YimMenu_Scripts;
+            CreateDirectory(targetDir);
+
+            var installed = new List<string>();
+
+            // 1) 玩法脚本（Ultimate Menu V3）：已有任意 UM 版本则不覆盖
+            var hasUltimateMenu = Directory.GetFiles(targetDir, "Ultimate_Menu*.lua").Length > 0;
+            if (!hasUltimateMenu)
+            {
+                var dest = Path.Combine(targetDir, "Ultimate_Menu_V3_1.73_Legacy.lua");
+                if (ExtractNamedResFile(assembly, Res_Lua_UltimateMenuLegacy, dest))
+                    installed.Add("Ultimate_Menu_V3_1.73_Legacy.lua");
+            }
+
+            // 2) 注入动画
+            var animDest = Path.Combine(targetDir, "DOG_InjectFx.lua");
+            if (!File.Exists(animDest))
+            {
+                if (ExtractNamedResFile(assembly, Res_Lua_DogInjectFx, animDest))
+                    installed.Add("DOG_InjectFx.lua");
+            }
+
+            // 3) 默认呼出键 F7（仅当配置文件不存在时写入）
+            var settingsWritten = false;
+            if (!File.Exists(File_AppData_YimMenu_Settings))
+            {
+                CreateDirectory(Dir_AppData_YimMenu);
+                File.WriteAllText(File_AppData_YimMenu_Settings,
+                    "{\r\n" +
+                    "  \"settings\": {\r\n" +
+                    "    \"hotkeys\": {\r\n" +
+                    "      \"menu_toggle\": 118\r\n" +
+                    "    }\r\n" +
+                    "  }\r\n" +
+                    "}");
+                settingsWritten = true;
+            }
+
+            if (installed.Count == 0 && !settingsWritten)
+                return (false, string.Empty);
+
+            var parts = new List<string>();
+            if (installed.Count > 0)
+                parts.Add("脚本：" + string.Join("、", installed));
+            if (settingsWritten)
+                parts.Add("默认呼出键 F7（菜单 设置 → 热键 可改）");
+
+            return (true, "已自动补齐传承版配置 → " + string.Join("；", parts));
+        }
+        catch (Exception ex)
+        {
+            return (false, $"传承版自动补齐失败：{ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// [DOG] 从内嵌资源释放单个文件（目标已存在与否由调用方判断）
+    /// </summary>
+    private static bool ExtractNamedResFile(Assembly assembly, string resName, string outputFile)
+    {
+        using var stream = assembly.GetManifestResourceStream(resName);
+        if (stream == null)
+            return false;
+
+        using var fs = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
+        stream.CopyTo(fs);
+        return true;
     }
 
     /// <summary>

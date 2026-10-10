@@ -84,4 +84,12 @@ public partial class NotificationWindow
     {
         ProcessHelper.OpenLink("https://1825428229.share.123pan.cn/123pan/ZpBWjv-4r8Jd?notoken=1&pwd=BVUf");
     }
+
+    /// <summary>
+    /// [DOG] 打赏支持：打开联系窗口的打赏页
+    /// </summary>
+    private void Border_Reward_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        new ContactWindow(2) { Owner = this }.ShowDialog();
+    }
 }
