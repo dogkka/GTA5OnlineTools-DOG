@@ -37,7 +37,7 @@
             </ui:GroupBoxHack.TitleContent>
             <ui:GroupBoxHack.DescriptionContent>
                 <StackPanel Margin="0,-23,0,0">
-                    <TextBlock Foreground="Red" TextWrapping="Wrap" Text="适用于传承版（1.73 b3889），已内置社区维护版菜单（Mr-X-GTA）；必须关闭 BattlEye 并安装 FSL。「安装脚本包」一键部署玩法脚本（前置/分红/刷钱/等级），首次注入自动补齐。" />
+                    <TextBlock Foreground="Red" TextWrapping="Wrap" Text="适用于传承版（1.73 b3889），已内置社区维护版菜单（Mr-X-GTA）；必须关闭 BattlEye 并安装 FSL。「安装脚本包」一键部署汉化版玩法脚本（前置/分红/刷钱/等级），首次注入自动补齐。" />
                     <WrapPanel>
                         <Button
                         Background="#FE780A"

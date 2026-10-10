@@ -306,7 +306,7 @@ public static class FileHelper
                 installed.Add(fileName);
             }
 
-            var message = $"传承版脚本包安装完成：{string.Join("、", installed)} → {targetDir}\n其中 DOG_InjectFx.lua 为「注入成功」启动动画（每次注入自动播放）";
+            var message = $"传承版脚本包安装完成：{string.Join("、", installed)} → {targetDir}\n其中 Ultimate_Menu_V3 为汉化版（适配 1.73 b3889）；DOG_InjectFx.lua 为「注入成功」启动动画（每次注入自动播放）";
             if (backedUp > 0)
                 message += $"\n已备份被覆盖的旧文件 {backedUp} 个到：{backupDir}";
             message += "\n如游戏/菜单正在运行：菜单内 Scripts → Reload All；否则下次注入自动加载";
@@ -336,6 +336,18 @@ public static class FileHelper
             CreateDirectory(targetDir);
 
             var installed = new List<string>();
+
+            // 0) 旧英文版玩法脚本自动升级为汉化版（按上游原版哈希精确识别，先备份再覆盖）
+            var standardPath = Path.Combine(targetDir, "Ultimate_Menu_V3_1.73_Legacy.lua");
+            if (File.Exists(standardPath) && IsFileSha256(standardPath, LegacyUmEnglishSha256))
+            {
+                var upgradeBackupDir = Path.Combine(targetDir, $"_备份_{DateTime.Now:yyyyMMdd_HH-mm-ss}");
+                CreateDirectory(upgradeBackupDir);
+                File.Copy(standardPath, Path.Combine(upgradeBackupDir, "Ultimate_Menu_V3_1.73_Legacy_英文原版.lua"), true);
+
+                if (ExtractNamedResFile(assembly, Res_Lua_UltimateMenuLegacy, standardPath))
+                    installed.Add("Ultimate_Menu_V3_1.73_Legacy.lua（英文版已自动升级为汉化版）");
+            }
 
             // 1) 玩法脚本（Ultimate Menu V3）：已有任意 UM 版本则不覆盖
             var hasUltimateMenu = Directory.GetFiles(targetDir, "Ultimate_Menu*.lua").Length > 0;
@@ -384,6 +396,25 @@ public static class FileHelper
         catch (Exception ex)
         {
             return (false, $"传承版自动补齐失败：{ex.Message}");
+        }
+    }
+
+    /// <summary>上游英文原版 UltimateMenu V3 1.73 的 SHA256（用于识别并升级为汉化版）</summary>
+    private const string LegacyUmEnglishSha256 = "1A8A9EA7A7272F797A8CAEFF2BB45C25E7977BF87D368AFF4E48D101EDE3A9F7";
+
+    /// <summary>文件 SHA256 是否等于指定值（读取失败返回 false）</summary>
+    private static bool IsFileSha256(string path, string expectedHex)
+    {
+        try
+        {
+            using var sha = System.Security.Cryptography.SHA256.Create();
+            using var fs = File.OpenRead(path);
+            var hash = Convert.ToHexString(sha.ComputeHash(fs));
+            return hash.Equals(expectedHex, StringComparison.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            return false;
         }
     }
 

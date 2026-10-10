@@ -207,11 +207,11 @@ function checkOnline()
 		SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("maintransition")) > 0
 		or not ENTITY.DOES_ENTITY_EXIST(PLAYER.PLAYER_PED_ID())
 	then
-		ImGui.Text("Waiting for game...")
+		ImGui.Text("等待游戏加载…")
 		return true
 	end
 	if not network.is_session_started() then
-		ImGui.Text("\nUnavailable in Single Player.\n\n")
+		ImGui.Text("\n单人战局不可用。\n\n")
 		return true
 	end
 	return false
@@ -222,11 +222,11 @@ function checkStoryMode()
 		SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("maintransition")) > 0
 		or not ENTITY.DOES_ENTITY_EXIST(PLAYER.PLAYER_PED_ID())
 	then
-		ImGui.Text("Waiting for game...")
+		ImGui.Text("等待游戏加载…")
 		return true
 	end
 	if network.is_session_started() then
-		ImGui.Text("\nUnavailable in MultiPlayer.\n\n")
+		ImGui.Text("\n多人战局不可用。\n\n")
 		return true
 	end
 	return false
@@ -673,15 +673,15 @@ L7NEG = gui.get_tab("Ultimate Menu 1.73 By L7NEG")
 
 L7NEG:add_text("       Ultimate Menu 1.73 Legacy ")
 L7NEG:add_text("                       v3")
-bypassOnlineCheckbox = L7NEG:add_checkbox("Bypass Online Check")
+bypassOnlineCheckbox = L7NEG:add_checkbox("绕过线上检查")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Self = makeOnlineTab(L7NEG:add_tab("Self Menu"))
+Self = makeOnlineTab(L7NEG:add_tab("自我功能"))
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-AGCT = Self:add_checkbox("Unlock Gender Change")
+AGCT = Self:add_checkbox("解锁性别更改")
 script.register_looped("UnlockGenderChange", function(script)
 	script:yield()
 	if
@@ -699,7 +699,7 @@ script.register_looped("UnlockGenderChange", function(script)
 	script:sleep(500)
 end)
 
-RTPT = Self:add_checkbox("Remove Transaction Error")
+RTPT = Self:add_checkbox("移除交易错误")
 script.register_looped("RemoveTransactionError", function(script)
 	script:yield()
 	if
@@ -717,7 +717,7 @@ script.register_looped("RemoveTransactionError", function(script)
 	script:sleep(500)
 end)
 
-Self:add_button("Remove Published And Players Job Liked To You", function()
+Self:add_button("清除差事发布状态与他人的点赞", function()
 	stats.set_int("MPPLY_AWD_FM_CR_DM_MADE", 0)
 	stats.set_int("MPPLY_AWD_FM_CR_RACES_MADE", 0)
 	stats.set_int("MPPLY_NUM_CAPTURES_CREATED", 0)
@@ -727,17 +727,17 @@ Self:add_button("Remove Published And Players Job Liked To You", function()
 	stats.set_int("MPPLY_FM_MISSION_LIKES", 0)
 end)
 
-Self:add_button("Remove Orbital Cannon Cooldown", function()
+Self:add_button("移除轨道炮冷却", function()
 	stats.set_int(MPX() .. "ORBITAL_CANNON_COOLDOWN", 0)
 end)
 
-Self:add_button("Refill Nightclub Popularity", function()
+Self:add_button("补满夜总会人气", function()
 	stats.set_int(MPX() .. "CLUB_POPULARITY", 1000)
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Self:add_button("Refill Inventory/Armour", function()
+Self:add_button("补满武器/护甲", function()
 	stats.set_int(MPX() .. "NO_BOUGHT_YUM_SNACKS", 30)
 	stats.set_int(MPX() .. "NO_BOUGHT_HEALTH_SNACKS", 15)
 	stats.set_int(MPX() .. "NO_BOUGHT_EPIC_SNACKS", 5)
@@ -754,7 +754,7 @@ Self:add_button("Refill Inventory/Armour", function()
 	stats.set_int(MPX() .. "BREATHING_APPAR_BOUGHT", 20)
 end)
 
-Self:add_button("Refill Inv/Armour x1000", function()
+Self:add_button("补满武器/护甲 ×1000", function()
 	stats.set_int(MPX() .. "NO_BOUGHT_YUM_SNACKS", 1000)
 	stats.set_int(MPX() .. "NO_BOUGHT_HEALTH_SNACKS", 1000)
 	stats.set_int(MPX() .. "NO_BOUGHT_EPIC_SNACKS", 1000)
@@ -773,7 +773,7 @@ end)
 
 Self:add_separator()
 
-Self:add_text("Bad Sport!")
+Self:add_text("恶意玩家！")
 
 BadSportCombo = 0
 Self:add_imgui(function()
@@ -783,7 +783,7 @@ end)
 
 function BadSport(State, Overall, Bool)
 	script.run_in_fiber(function(script)
-		gui.show_message("Bad Sport!", "Awaiting Session Change")
+		gui.show_message("恶意玩家！", "Awaiting Session Change")
 		script:sleep(1000)
 		stats.set_int("MPPLY_BADSPORT_MESSAGE", State)
 		stats.set_float("MPPLY_OVERALL_BADSPORT", Overall)
@@ -797,7 +797,7 @@ end
 
 Self:add_sameline()
 
-Self:add_button("Execute", function()
+Self:add_button("执行", function()
 	if BadSportCombo == 0 then
 		BadSport(0, 0, false)
 	else
@@ -805,12 +805,12 @@ Self:add_button("Execute", function()
 	end
 end)
 
-StoryCharacters = makeStoryTab(L7NEG:add_tab("Story Mode"))
+StoryCharacters = makeStoryTab(L7NEG:add_tab("故事模式"))
 
 StoryCharacters:add_imgui(function()
 	local CurrentSPMoneyValue = stats.get_int(SPX() .. "TOTAL_CASH")
 	local used
-	CurrentSPMoneyValue, used = ImGui.SliderInt("Current Character Cash", CurrentSPMoneyValue, 1, 2147483646)
+	CurrentSPMoneyValue, used = ImGui.SliderInt("当前角色现金", CurrentSPMoneyValue, 1, 2147483646)
 	if used then
 		stats.set_int(SPX() .. "TOTAL_CASH", CurrentSPMoneyValue)
 	end
@@ -818,25 +818,25 @@ end)
 
 StoryCharacters:add_separator()
 
-StoryCharacters:add_button("Add 1 Mil Cash $", function()
+StoryCharacters:add_button("加 100 万现金 $", function()
 	stats.set_int(SPX() .. "TOTAL_CASH", stats.get_int(SPX() .. "TOTAL_CASH") + 1000000)
 end)
 
-StoryCharacters:add_button("Add 10 Mil Cash $", function()
+StoryCharacters:add_button("加 1000 万现金 $", function()
 	stats.set_int(SPX() .. "TOTAL_CASH", stats.get_int(SPX() .. "TOTAL_CASH") + 10000000)
 end)
 
-StoryCharacters:add_button("Add 100 Mil Cash $", function()
+StoryCharacters:add_button("加 1 亿现金 $", function()
 	stats.set_int(SPX() .. "TOTAL_CASH", stats.get_int(SPX() .. "TOTAL_CASH") + 100000000)
 end)
 
-StoryCharacters:add_button("Add 1 Bil Cash $", function()
+StoryCharacters:add_button("加 10 亿现金 $", function()
 	stats.set_int(SPX() .. "TOTAL_CASH", stats.get_int(SPX() .. "TOTAL_CASH") + 1000000000)
 end)
 
 StoryCharacters:add_separator()
 
-StoryCharacters:add_button("Max Current Character Skills", function()
+StoryCharacters:add_button("拉满当前角色技能", function()
 	stats.set_int(SPX() .. "SPECIAL_ABILITY_UNLOCKED", 100)
 	stats.set_float(SPX() .. "DIST_RUNNING", 175 * 100)
 	stats.set_int(SPX() .. "TIME_UNDERWATER", 30 * 60 * 1000 * 100)
@@ -850,7 +850,7 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-RecoveryMenu = makeOnlineTab(L7NEG:add_tab("Recovery Menu"))
+RecoveryMenu = makeOnlineTab(L7NEG:add_tab("恢复功能"))
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -963,7 +963,7 @@ function getRP(level)
 	end
 end
 
-RankSetter = RecoveryMenu:add_tab("Set Rank menu")
+RankSetter = RecoveryMenu:add_tab("设置等级")
 
 local rpLevelValue = 1
 RankSetter:add_imgui(function()
@@ -971,16 +971,16 @@ RankSetter:add_imgui(function()
 		return
 	end
 
-	ImGui.Text("Your current Rank is " .. stats.get_int(MPX() .. "CHAR_RANK_FM"))
+	ImGui.Text("你当前的等级是 " .. stats.get_int(MPX() .. "CHAR_RANK_FM"))
 	ImGui.Separator()
 
-	rpLevelValue, _ = ImGui.InputInt("Rank", rpLevelValue)
+	rpLevelValue, _ = ImGui.InputInt("等级", rpLevelValue)
 
-	if ImGui.Button("Set Rank") then
+	if ImGui.Button("设置等级") then
 		local rankValue = rpLevelValue
 		if rankValue <= 0 or rankValue > 8000 then
 			gui.show_message(
-				"ERROR",
+				"错误",
 				"Your RP level " .. rankValue .. " cannot be set because it is outside the valid range (1-8000)."
 			)
 		else
@@ -990,7 +990,7 @@ RankSetter:add_imgui(function()
 			globals.set_int(CSg2, 1)
 			globals.set_int(CSg2, 0)
 			gui.show_message(
-				"Rank Correction",
+				"等级修正",
 				"Your Rank was set to " .. rankValue .. ", Click change session For Your New Rank."
 			)
 		end
@@ -999,7 +999,7 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-CrewRankSetter = RecoveryMenu:add_tab("Set Crew Rank menu")
+CrewRankSetter = RecoveryMenu:add_tab("设置帮会等级")
 
 local crewRpLevelValue = 1
 CrewRankSetter:add_imgui(function()
@@ -1007,82 +1007,82 @@ CrewRankSetter:add_imgui(function()
 		return
 	end
 
-	ImGui.Text("Your Current Crew Rank is " .. stats.get_int("MPPLY_CURRENT_CREW_RANK"))
+	ImGui.Text("你当前的帮会等级是 " .. stats.get_int("MPPLY_CURRENT_CREW_RANK"))
 	ImGui.Separator()
 
-	crewRpLevelValue, _ = ImGui.InputInt("Rank##Crew", crewRpLevelValue)
+	crewRpLevelValue, _ = ImGui.InputInt("等级##Crew", crewRpLevelValue)
 
-	if ImGui.Button("Set Slot 1 Crew Rank") then
+	if ImGui.Button("设置栏位 1 帮会等级") then
 		local rankValue = crewRpLevelValue
 		if rankValue <= 0 or rankValue > 8000 then
 			gui.show_message(
-				"ERROR",
+				"错误",
 				"Your Crew level " .. rankValue .. " cannot be set because it is outside the valid range (1-8000)."
 			)
 		else
 			stats.set_int("MPPLY_CREW_LOCAL_XP_0", getRP(rankValue))
-			gui.show_message("Crew Rank Setter", "Your Crew Slot 1 Rank was set to " .. rankValue .. ", .")
+			gui.show_message("帮会等级设置器", "Your Crew Slot 1 Rank was set to " .. rankValue .. ", .")
 		end
 	end
 
-	if ImGui.Button("Set Slot 2 Crew Rank") then
+	if ImGui.Button("设置栏位 2 帮会等级") then
 		local rankValue = crewRpLevelValue
 		if rankValue <= 0 or rankValue > 8000 then
 			gui.show_message(
-				"ERROR",
+				"错误",
 				"Your Crew level " .. rankValue .. " cannot be set because it is outside the valid range (1-8000)."
 			)
 		else
 			stats.set_int("MPPLY_CREW_LOCAL_XP_1", getRP(rankValue))
-			gui.show_message("Crew Rank Setter", "Your Crew Slot 2 Rank was set to " .. rankValue .. ", .")
+			gui.show_message("帮会等级设置器", "Your Crew Slot 2 Rank was set to " .. rankValue .. ", .")
 		end
 	end
 
-	if ImGui.Button("Set Slot 3 Crew Rank") then
+	if ImGui.Button("设置栏位 3 帮会等级") then
 		local rankValue = crewRpLevelValue
 		if rankValue <= 0 or rankValue > 8000 then
 			gui.show_message(
-				"ERROR",
+				"错误",
 				"Your Crew level " .. rankValue .. " cannot be set because it is outside the valid range (1-8000)."
 			)
 		else
 			stats.set_int("MPPLY_CREW_LOCAL_XP_2", getRP(rankValue))
-			gui.show_message("Crew Rank Setter", "Your Crew Slot 3 Rank was set to " .. rankValue .. ", .")
+			gui.show_message("帮会等级设置器", "Your Crew Slot 3 Rank was set to " .. rankValue .. ", .")
 		end
 	end
 
-	if ImGui.Button("Set Slot 4 Crew Rank") then
+	if ImGui.Button("设置栏位 4 帮会等级") then
 		local rankValue = crewRpLevelValue
 		if rankValue <= 0 or rankValue > 8000 then
 			gui.show_message(
-				"ERROR",
+				"错误",
 				"Your Crew level " .. rankValue .. " cannot be set because it is outside the valid range (1-8000)."
 			)
 		else
 			stats.set_int("MPPLY_CREW_LOCAL_XP_3", getRP(rankValue))
-			gui.show_message("Crew Rank Setter", "Your Crew Slot 4 Rank was set to " .. rankValue .. ", .")
+			gui.show_message("帮会等级设置器", "Your Crew Slot 4 Rank was set to " .. rankValue .. ", .")
 		end
 	end
 
-	if ImGui.Button("Set Slot 5 Crew Rank") then
+	if ImGui.Button("设置栏位 5 帮会等级") then
 		local rankValue = crewRpLevelValue
 		if rankValue <= 0 or rankValue > 8000 then
 			gui.show_message(
-				"ERROR",
+				"错误",
 				"Your Crew level " .. rankValue .. " cannot be set because it is outside the valid range (1-8000)."
 			)
 		else
 			stats.set_int("MPPLY_CREW_LOCAL_XP_4", getRP(rankValue))
-			gui.show_message("Crew Rank Setter", "Your Crew Slot 5 Rank was set to " .. rankValue .. ", .")
+			gui.show_message("帮会等级设置器", "Your Crew Slot 5 Rank was set to " .. rankValue .. ", .")
 		end
 	end
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-SkillsMenu = RecoveryMenu:add_tab("Skills Menu")
+SkillsMenu = RecoveryMenu:add_tab("技能菜单")
 
-SkillsMenu:add_button("Max Current Skills", function()
+SkillsMenu:add_button("拉满当前技能", function()
 	stats.set_int(MPX() .. "SCRIPT_INCREASE_STAM", 100)
 	stats.set_int(MPX() .. "SCRIPT_INCREASE_STRN", 100)
 	stats.set_int(MPX() .. "SCRIPT_INCREASE_LUNG", 100)
@@ -1090,10 +1090,10 @@ SkillsMenu:add_button("Max Current Skills", function()
 	stats.set_int(MPX() .. "SCRIPT_INCREASE_FLY", 100)
 	stats.set_int(MPX() .. "SCRIPT_INCREASE_SHO", 100)
 	stats.set_int(MPX() .. "SCRIPT_INCREASE_STL", 100)
-	gui.show_message("Skills", "Skills should've been maximized")
+	gui.show_message("技能", "Skills should've been maximized")
 end)
 
-SkillsMenu:add_button("Reset Skills", function()
+SkillsMenu:add_button("重置技能", function()
 	stats.set_int(MPX() .. "SCRIPT_INCREASE_STAM", 0)
 	stats.set_int(MPX() .. "SCRIPT_INCREASE_STRN", 0)
 	stats.set_int(MPX() .. "SCRIPT_INCREASE_LUNG", 0)
@@ -1105,11 +1105,11 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-OnlineServicesMenu = L7NEG:add_tab("Online Services Menu")
+OnlineServicesMenu = L7NEG:add_tab("线上服务菜单")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-CasinoServicesMenu = makeOnlineTab(OnlineServicesMenu:add_tab("Casino Services Menu"))
+CasinoServicesMenu = makeOnlineTab(OnlineServicesMenu:add_tab("赌场服务菜单"))
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1119,20 +1119,20 @@ prize_wheel_win_state = 309
 prize_wheel_prize = 14
 prize_wheel_prize_state = 45
 
-CasinoServicesMenu:add_text("Casino Chips")
+CasinoServicesMenu:add_text("赌场筹码")
 chipsVal = 1800
 CasinoServicesMenu:add_imgui(function()
 	if isOffline() then
 		return
 	end
-	chipsVal, used = ImGui.SliderInt("Casino Chips Buy Limit", chipsVal, 1800, 2147483647)
+	chipsVal, used = ImGui.SliderInt("筹码购买上限", chipsVal, 1800, 2147483647)
 	if used then
 		tunables.set_int("VC_CASINO_CHIP_MAX_BUY", chipsVal)
 		tunables.set_int("VC_CASINO_CHIP_MAX_BUY_PENTHOUSE", chipsVal)
 	end
 end)
 
-CasinoServicesMenu:add_button("Bypass Casino Cooldown", function()
+CasinoServicesMenu:add_button("绕过赌场冷却", function()
 	stats.set_int("MPPLY_CASINO_CHIPS_WON_GD", 0)
 	stats.set_int("MPPLY_CASINO_CHIPS_WONTIM", 0)
 	stats.set_int("MPPLY_CASINO_GMBLNG_GD", 0)
@@ -1142,13 +1142,13 @@ CasinoServicesMenu:add_button("Bypass Casino Cooldown", function()
 	stats.set_int("MPPLY_CASINO_CHIPS_SOLD", 0)
 	stats.set_int("MPPLY_CASINO_CHIPS_SELTIM", 0)
 end)
-CasinoServicesMenu:add_text("Winning too much too quickly might get you banned, enable this at your own risk.")
+CasinoServicesMenu:add_text("赢得太快太多可能被封号，风险自负。")
 
 CasinoServicesMenu:add_separator()
 
-CasinoServicesMenu:add_text("Slots")
+CasinoServicesMenu:add_text("老虎机")
 
-CasinoServicesMenu:add_button("Rig Slot Machines", function()
+CasinoServicesMenu:add_button("操控老虎机（必中）", function()
 	for i = 3, 196 do
 		if i ~= 67 and i ~= 132 then
 			locals.set_int(cslots, slots_random_results_table + i, 6)
@@ -1156,7 +1156,7 @@ CasinoServicesMenu:add_button("Rig Slot Machines", function()
 	end
 end)
 
-CasinoServicesMenu:add_button("Lose Slot Machines", function()
+CasinoServicesMenu:add_button("操控老虎机（必输）", function()
 	for i = 3, 196 do
 		if i ~= 67 and i ~= 132 then
 			locals.set_int(cslots, slots_random_results_table + i, 0)
@@ -1165,9 +1165,9 @@ CasinoServicesMenu:add_button("Lose Slot Machines", function()
 end)
 
 CasinoServicesMenu:add_separator()
-CasinoServicesMenu:add_text("Lucky Wheel")
+CasinoServicesMenu:add_text("幸运转盘")
 
-CasinoServicesMenu:add_button("Give Podium Vehicle", function()
+CasinoServicesMenu:add_button("给展台载具", function()
 	script.run_in_fiber(function(script)
 		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
 			locals.set_int("casino_lucky_wheel", prize_wheel_win_state + prize_wheel_prize, 18)
@@ -1176,7 +1176,7 @@ CasinoServicesMenu:add_button("Give Podium Vehicle", function()
 	end)
 end)
 CasinoServicesMenu:add_sameline()
-CasinoServicesMenu:add_button("Give Mystery Prize", function()
+CasinoServicesMenu:add_button("给神秘奖品", function()
 	script.run_in_fiber(function(script)
 		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
 			locals.set_int("casino_lucky_wheel", prize_wheel_win_state + prize_wheel_prize, 11)
@@ -1185,7 +1185,7 @@ CasinoServicesMenu:add_button("Give Mystery Prize", function()
 	end)
 end)
 CasinoServicesMenu:add_sameline()
-CasinoServicesMenu:add_button("Give $50,000", function()
+CasinoServicesMenu:add_button("给 $50,000", function()
 	script.run_in_fiber(function(script)
 		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
 			locals.set_int("casino_lucky_wheel", prize_wheel_win_state + prize_wheel_prize, 19)
@@ -1194,7 +1194,7 @@ CasinoServicesMenu:add_button("Give $50,000", function()
 	end)
 end)
 CasinoServicesMenu:add_sameline()
-CasinoServicesMenu:add_button("Give 25,000 Chips", function()
+CasinoServicesMenu:add_button("给 25,000 筹码", function()
 	script.run_in_fiber(function(script)
 		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
 			locals.set_int("casino_lucky_wheel", prize_wheel_win_state + prize_wheel_prize, 15)
@@ -1202,7 +1202,7 @@ CasinoServicesMenu:add_button("Give 25,000 Chips", function()
 		end
 	end)
 end)
-CasinoServicesMenu:add_button("Give 15,000RP", function()
+CasinoServicesMenu:add_button("给 15,000 RP", function()
 	script.run_in_fiber(function(script)
 		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
 			locals.set_int("casino_lucky_wheel", prize_wheel_win_state + prize_wheel_prize, 17)
@@ -1211,7 +1211,7 @@ CasinoServicesMenu:add_button("Give 15,000RP", function()
 	end)
 end)
 CasinoServicesMenu:add_sameline()
-CasinoServicesMenu:add_button("Give Discount", function()
+CasinoServicesMenu:add_button("给折扣券", function()
 	script.run_in_fiber(function(script)
 		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
 			locals.set_int("casino_lucky_wheel", prize_wheel_win_state + prize_wheel_prize, 4)
@@ -1220,7 +1220,7 @@ CasinoServicesMenu:add_button("Give Discount", function()
 	end)
 end)
 CasinoServicesMenu:add_sameline()
-CasinoServicesMenu:add_button("Give Clothing", function()
+CasinoServicesMenu:add_button("给服装", function()
 	script.run_in_fiber(function(script)
 		if SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(joaat("casino_lucky_wheel")) ~= 0 then
 			locals.set_int("casino_lucky_wheel", prize_wheel_win_state + prize_wheel_prize, 8)
@@ -1231,40 +1231,40 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-CollectiblesMenu = makeOnlineTab(L7NEG:add_tab("Collectibles"))
-CollectiblesMenu:add_text("Los Santos Collectibles")
+CollectiblesMenu = makeOnlineTab(L7NEG:add_tab("收集品"))
+CollectiblesMenu:add_text("洛圣都收集品")
 CollectiblesMenu:add_separator()
-CollectiblesMenu:add_button("Collect All Action Figures", function()
+CollectiblesMenu:add_button("收集全部动作人偶", function()
 	for i = 0, 99 do
 		stats.set_bool(MPX() .. "PROP_FIGURE_" .. i, true)
 	end
 end)
-CollectiblesMenu:add_button("Collect All Signal Jammers", function()
+CollectiblesMenu:add_button("收集全部信号干扰器", function()
 	for i = 0, 49 do
 		stats.set_bool(MPX() .. "JAMMER_IDENTIFIED_" .. i, true)
 	end
 end)
-CollectiblesMenu:add_button("Collect All Playing Cards", function()
+CollectiblesMenu:add_button("收集全部扑克牌", function()
 	for i = 0, 53 do
 		stats.set_bool(MPX() .. "CH_CARD_ID_" .. i, true)
 	end
 end)
-CollectiblesMenu:add_button("Collect All Props", function()
+CollectiblesMenu:add_button("收集全部道具", function()
 	for i = 0, 9 do
 		stats.set_bool(MPX() .. "PROP_HIDDEN_SOL_ID_" .. i, true)
 	end
 end)
-CollectiblesMenu:add_button("Collect All Movie Props", function()
+CollectiblesMenu:add_button("收集全部电影道具", function()
 	for i = 1, 10 do
 		stats.set_int(MPX() .. "MOVIE_PROP_COLLECTED_" .. i, -1)
 	end
 end)
-CollectiblesMenu:add_button("Collect All LD Organics", function()
+CollectiblesMenu:add_button("收集全部 LD Organics", function()
 	for i = 0, 99 do
 		stats.set_bool(MPX() .. "LD_ORGANIC_COLLECTED_" .. i, true)
 	end
 end)
-CollectiblesMenu:add_button("Collect Ghost Exposed", function()
+CollectiblesMenu:add_button("收集幽灵曝光", function()
 	for i = 0, 9 do
 		stats.set_bool(MPX() .. "GHOST_EXPOSED_" .. i, true)
 	end
@@ -1273,15 +1273,15 @@ CollectiblesMenu:add_separator()
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EventsMenu = makeOnlineTab(L7NEG:add_tab("Events Menu"))
+EventsMenu = makeOnlineTab(L7NEG:add_tab("活动菜单"))
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-SnowToggleMenu = EventsMenu:add_tab("Snow Toggle Menu")
+SnowToggleMenu = EventsMenu:add_tab("雪天开关菜单")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-SNOWCB = SnowToggleMenu:add_checkbox("Snow")
+SNOWCB = SnowToggleMenu:add_checkbox("雪天")
 local snowPrev = nil
 script.register_looped("snow", function(script)
 	script:yield()
@@ -1295,7 +1295,7 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-halloweenWeatherMenu = EventsMenu:add_tab("Halloween Weather Toggle Menu")
+halloweenWeatherMenu = EventsMenu:add_tab("万圣节天气开关菜单")
 
 -- Animated rainbow
 function rainbow_color(offset)
@@ -1323,13 +1323,13 @@ end
 
 -- Info text
 halloweenWeatherMenu:add_text("")
-halloweenWeatherMenu:add_text("Halloween Weather Information")
+halloweenWeatherMenu:add_text("万圣节天气说明")
 halloweenWeatherMenu:add_text("")
-halloweenWeatherMenu:add_text("In GTA Online, Halloween weather only works")
-halloweenWeatherMenu:add_text("between 7:00 PM and 7:30 AM in-game time.")
+halloweenWeatherMenu:add_text("在 GTA 在线中，万圣节天气仅在")
+halloweenWeatherMenu:add_text("游戏时间 19:00 至次日 7:30 之间生效。")
 halloweenWeatherMenu:add_text("")
-halloweenWeatherMenu:add_text("Toggle below to force it on during that window.")
-halloweenWeatherMenu:add_text("It will stay active as long as the toggle is ON.")
+halloweenWeatherMenu:add_text("在此时段内打开下方开关即可强制生效。")
+halloweenWeatherMenu:add_text("只要开关保持开启就会持续生效。")
 halloweenWeatherMenu:add_text("")
 
 -- Current time display
@@ -1363,7 +1363,7 @@ halloweenWeatherMenu:add_imgui(function()
 	ImGui.Separator()
 end)
 
-HALLOWEATHERC = halloweenWeatherMenu:add_checkbox("Enable")
+HALLOWEATHERC = halloweenWeatherMenu:add_checkbox("启用")
 
 local halloweatherPrev = nil
 script.register_looped("halloweather_force", function(script)
@@ -1379,15 +1379,15 @@ end)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- Create the Trick or Treat Menu tab
-trickOrTreatMenu = EventsMenu:add_tab("Trick or Treat Menu")
+trickOrTreatMenu = EventsMenu:add_tab("不给糖就捣蛋菜单")
 
 -- Add Trick or Treat checkbox with help marker
-TRICKORTREATCB = trickOrTreatMenu:add_checkbox("Trick or Treat")
+TRICKORTREATCB = trickOrTreatMenu:add_checkbox("不给糖就捣蛋")
 
 -- Add help marker for the checkbox
 trickOrTreatMenu:add_imgui(function()
 	help_marker(
-		"Enables the Trick or Treat event. This allows you to collect Halloween pumpkins from the Halloween event."
+		"启用「不给糖就捣蛋」活动：收集万圣节活动中的南瓜。"
 	)
 end)
 
@@ -1617,14 +1617,14 @@ jackolantern_selected_loc = 0
 -- Add ImGui for Jack o'Lantern teleports
 trickOrTreatMenu:add_imgui(function()
 	ImGui.Separator()
-	ImGui.Text("Jack o'Lantern Teleports")
+	ImGui.Text("南瓜灯传送")
 	help_marker(
-		"Teleport to any of the 200 Jack o'Lantern collectible locations. These are Halloween pumpkins that spawn during the event."
+		"传送到 200 个南瓜灯收集点中的任意一个（万圣节活动期间刷新）。"
 	)
 	ImGui.Separator()
 
-	ImGui.Text("Select Jack o'Lantern Location:")
-	help_marker("Choose a location from the dropdown list to teleport to.")
+	ImGui.Text("选择南瓜灯地点：")
+	help_marker("从下拉列表选择要传送的地点。")
 
 	ImGui.SetNextItemWidth(265)
 	jackolantern_selected_loc =
@@ -1632,17 +1632,17 @@ trickOrTreatMenu:add_imgui(function()
 
 	ImGui.SameLine()
 
-	if ImGui.Button("Teleport to Location") then
+	if ImGui.Button("传送到所选地点") then
 		script.run_in_fiber(function()
 			local coords = jackolantern_locations[jackolantern_selected_loc + 1]
 			PED.SET_PED_COORDS_KEEP_VEHICLE(self.get_ped(), coords.x, coords.y, coords.z)
 		end)
 	end
-	help_marker("Teleports you to the selected Jack o'Lantern location.")
+	help_marker("传送到所选南瓜灯地点。")
 
 	ImGui.Separator()
-	ImGui.Text("Quick Teleport Buttons (1-20):")
-	help_marker("Quickly teleport to any of the first 20 Jack o'Lantern locations.")
+	ImGui.Text("快捷传送按钮 (1-20)：")
+	help_marker("快速传送到前 20 个南瓜灯地点。")
 
 	-- Quick teleport buttons in rows of 5 (first 20 locations)
 	for i = 0, 19 do
@@ -1663,8 +1663,8 @@ trickOrTreatMenu:add_imgui(function()
 	end
 
 	ImGui.Separator()
-	ImGui.Text("Quick Teleport Buttons (21-40):")
-	help_marker("Quickly teleport to any of the next 20 Jack o'Lantern locations.")
+	ImGui.Text("快捷传送按钮 (21-40)：")
+	help_marker("快速传送到第 21-40 个南瓜灯地点。")
 
 	-- Quick teleport buttons in rows of 5 (next 20 locations)
 	for i = 20, 39 do
@@ -1685,20 +1685,20 @@ trickOrTreatMenu:add_imgui(function()
 	end
 
 	ImGui.Separator()
-	ImGui.Text("Total Jack o'Lantern Locations: 200")
+	ImGui.Text("南瓜灯地点总数：200")
 
-	if ImGui.Button("Teleport to Random Jack o'Lantern") then
+	if ImGui.Button("传送到随机南瓜灯") then
 		script.run_in_fiber(function()
 			local random_index = math.random(1, 200)
 			local coords = jackolantern_locations[random_index]
 			PED.SET_PED_COORDS_KEEP_VEHICLE(self.get_ped(), coords.x, coords.y, coords.z)
-			gui.show_message("Jack o'Lantern", "Teleported to " .. jackolantern_names[random_index])
+			gui.show_message("南瓜灯", "Teleported to " .. jackolantern_names[random_index])
 		end)
 	end
 end)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-snowmenMenu = EventsMenu:add_tab("Snowmen Collectibles")
+snowmenMenu = EventsMenu:add_tab("雪人收集品")
 
 -- Snowman locations array
 snowmen_locations = {
@@ -1739,12 +1739,12 @@ end
 snowmen_selected_loc = 0
 
 -- Add the checkbox for enabling snowmen collectibles
-SNOWMENCB = snowmenMenu:add_checkbox("Enable Snowmen Collectibles")
+SNOWMENCB = snowmenMenu:add_checkbox("启用雪人收集品")
 
 -- Add help marker for the checkbox
 snowmenMenu:add_imgui(function()
 	help_marker(
-		"Enables the Snowmen Collectibles event. This allows you to collect snowmen by blowing them up or driving your car through them during the winter event."
+		"启用雪人收集品活动：在冬季活动期间炸掉或用载具撞过雪人即可收集。"
 	)
 end)
 
@@ -1761,32 +1761,32 @@ end)
 -- Add ImGui for the snowman teleports
 snowmenMenu:add_imgui(function()
 	ImGui.Separator()
-	ImGui.Text("Snowman Teleports")
+	ImGui.Text("雪人传送")
 	help_marker(
-		"Teleport to any of the 25 Snowman collectible locations. These are snowmen that spawn during the winter event. You can destroy them by blowing them up or driving through them with your vehicle."
+		"传送到 25 个雪人收集点中的任意一个（冬季活动期间刷新）。炸掉或用载具撞过即可摧毁。"
 	)
 	ImGui.Separator()
 
-	ImGui.Text("Select Snowman Location:")
-	help_marker("Choose a location from the dropdown list to teleport to.")
+	ImGui.Text("选择雪人地点：")
+	help_marker("从下拉列表选择要传送的地点。")
 
 	ImGui.SetNextItemWidth(265)
 	snowmen_selected_loc = ImGui.Combo("##snowmen_selected_loc", snowmen_selected_loc, snowmen_names, 25)
 
 	ImGui.SameLine()
 
-	if ImGui.Button("Teleport to Location") then
+	if ImGui.Button("传送到所选地点") then
 		script.run_in_fiber(function()
 			local coords = snowmen_locations[snowmen_selected_loc + 1]
 			PED.SET_PED_COORDS_KEEP_VEHICLE(self.get_ped(), coords.x, coords.y, coords.z)
 		end)
 	end
-	help_marker("Teleports you to the selected Snowman location.")
+	help_marker("传送到所选雪人地点。")
 
 	ImGui.Separator()
-	ImGui.Text("Quick Teleport Buttons:")
+	ImGui.Text("快捷传送按钮：")
 	help_marker(
-		"Quickly teleport to any Snowman location to destroy them by blowing them up or driving through them."
+		"传送到任意雪人地点，炸掉或开车撞过即可收集。"
 	)
 
 	-- Add quick teleport buttons in rows of 5
@@ -1808,24 +1808,24 @@ snowmenMenu:add_imgui(function()
 	end
 
 	ImGui.Separator()
-	ImGui.Text("Total Snowman Locations: 25")
+	ImGui.Text("雪人地点总数：25")
 
-	if ImGui.Button("Teleport to Random Snowman") then
+	if ImGui.Button("传送到随机雪人") then
 		script.run_in_fiber(function()
 			local random_index = math.random(1, 25)
 			local coords = snowmen_locations[random_index]
 			PED.SET_PED_COORDS_KEEP_VEHICLE(self.get_ped(), coords.x, coords.y, coords.z)
-			gui.show_message("Snowman", "Teleported to " .. snowmen_names[random_index])
+			gui.show_message("雪人", "Teleported to " .. snowmen_names[random_index])
 		end)
 	end
 	help_marker(
-		"Teleports you to a random Snowman location. Blow them up or drive through them to collect them all!"
+		"传送到随机雪人地点。炸掉或开车撞过它们，全部收集！"
 	)
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-YetiHuntMenu = EventsMenu:add_tab("Yeti Hunt Menu")
+YetiHuntMenu = EventsMenu:add_tab("雪怪狩猎菜单")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1855,12 +1855,12 @@ yeti_names = {
 yeti_selected_loc = 0
 
 -- Add Yeti Hunt checkbox with help marker
-YETIHUNTCB = YetiHuntMenu:add_checkbox("Enable Yeti Hunt Event")
+YETIHUNTCB = YetiHuntMenu:add_checkbox("启用雪怪狩猎活动")
 
 -- Add help marker for the checkbox
 YetiHuntMenu:add_imgui(function()
 	help_marker(
-		"Enables the Yeti Hunt event. This allows you to hunt the Yeti and collect clues during the event."
+		"启用雪怪狩猎活动：在活动期间追踪雪怪并收集线索。"
 	)
 end)
 
@@ -1877,29 +1877,29 @@ end)
 -- Add ImGui for Yeti Hunt teleports
 YetiHuntMenu:add_imgui(function()
 	ImGui.Separator()
-	ImGui.Text("Yeti Hunt Teleports")
-	help_marker("Teleport to any of the Yeti Hunt clue locations or the final Yeti fight locations.")
+	ImGui.Text("雪怪传送")
+	help_marker("传送到雪怪线索地点或最终决战地点。")
 	ImGui.Separator()
 
-	ImGui.Text("Select Yeti Location:")
-	help_marker("Choose a location from the dropdown list to teleport to.")
+	ImGui.Text("选择雪怪地点：")
+	help_marker("从下拉列表选择要传送的地点。")
 
 	ImGui.SetNextItemWidth(265)
 	yeti_selected_loc = ImGui.Combo("##yeti_selected_loc", yeti_selected_loc, yeti_names, 7)
 
 	ImGui.SameLine()
 
-	if ImGui.Button("Teleport to Location") then
+	if ImGui.Button("传送到所选地点") then
 		script.run_in_fiber(function()
 			local coords = yeti_locations[yeti_selected_loc + 1]
 			PED.SET_PED_COORDS_KEEP_VEHICLE(self.get_ped(), coords.x, coords.y, coords.z)
 		end)
 	end
-	help_marker("Teleports you to the selected Yeti location.")
+	help_marker("传送到所选雪怪地点。")
 
 	ImGui.Separator()
-	ImGui.Text("Quick Teleport Buttons:")
-	help_marker("Quickly teleport to any Yeti clue location or the fight locations.")
+	ImGui.Text("快捷传送按钮：")
+	help_marker("快速传送到雪怪线索或决战地点。")
 
 	-- Add quick teleport buttons in rows of 3 (all 7 locations)
 	for i = 0, 6 do
@@ -1920,24 +1920,24 @@ YetiHuntMenu:add_imgui(function()
 	end
 
 	ImGui.Separator()
-	ImGui.Text("Total Yeti Locations: 7 (5 Clues + 2 Fight)")
+	ImGui.Text("雪怪地点总数：7（5 线索 + 2 决战）")
 
-	if ImGui.Button("Teleport to Random Yeti Location") then
+	if ImGui.Button("传送到随机雪怪地点") then
 		script.run_in_fiber(function()
 			local random_index = math.random(1, 7)
 			local coords = yeti_locations[random_index]
 			PED.SET_PED_COORDS_KEEP_VEHICLE(self.get_ped(), coords.x, coords.y, coords.z)
-			gui.show_message("Yeti Hunt", "Teleported to " .. yeti_names[random_index])
+			gui.show_message("雪怪狩猎", "Teleported to " .. yeti_names[random_index])
 		end)
 	end
-	help_marker("Teleports you to a random Yeti location. Find all the clues to hunt the Yeti!")
+	help_marker("传送到随机雪怪地点。找齐所有线索来狩猎雪怪！")
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-AUM = RecoveryMenu:add_tab("Awards Unlocker Menu")
+AUM = RecoveryMenu:add_tab("成就解锁菜单")
 
-AUM:add_button("Victory", function()
+AUM:add_button("胜利", function()
 	stats.set_int(MPX() .. "AWD_FM_DM_WINS", 50)
 	stats.set_int(MPX() .. "AWD_FM_TDM_WINS", 50)
 	stats.set_int(MPX() .. "AWD_FM_TDM_MVP", 50)
@@ -2005,7 +2005,7 @@ AUM:add_button("Victory", function()
 	stats.set_int(MPX() .. "FM_MISSION_LIKES", 1500)
 end)
 
-AUM:add_button("General", function()
+AUM:add_button("常规", function()
 	stats.set_bool(MPX() .. "AWD_FM25DIFFERENTDM", true)
 	stats.set_int(MPX() .. "CR_DIFFERENT_DM", 25)
 	stats.set_bool(MPX() .. "AWD_FM25DIFFERENTRACES", true)
@@ -2091,7 +2091,7 @@ AUM:add_button("General", function()
 	stats.set_int(MPX() .. "NO_TIMES_CINEMA", 500)
 end)
 
-AUM:add_button("Weapons", function()
+AUM:add_button("武器", function()
 	stats.set_int(MPX() .. "CHAR_WEAP_UNLOCKED", -1)
 	stats.set_int(MPX() .. "CHAR_WEAP_UNLOCKED2", -1)
 	stats.set_int(MPX() .. "CHAR_WEAP_UNLOCKED3", -1)
@@ -2161,7 +2161,7 @@ AUM:add_button("Weapons", function()
 	end
 end)
 
-AUM:add_button("Crimes", function()
+AUM:add_button("犯罪", function()
 	stats.set_int(MPX() .. "AWD_FMTIME5STARWANTED", 120)
 	stats.set_int(MPX() .. "AWD_5STAR_WANTED_AVOIDANCE", 50)
 	stats.set_int(MPX() .. "AWD_FMSHOOTDOWNCOPHELI", 25)
@@ -2261,7 +2261,7 @@ AUM:add_button("Crimes", function()
 	stats.set_int(MPX() .. "HVYSNIPER_ENEMY_KILLS", 500)
 end)
 
-AUM:add_button("Vehicles", function()
+AUM:add_button("载具", function()
 	stats.set_int(MPX() .. "AWD_50_VEHICLES_BLOWNUP", 500)
 	stats.set_int(MPX() .. "CARS_EXPLODED", 500)
 	stats.set_int(MPX() .. "AWD_CAR_EXPORT", 100)
@@ -2291,7 +2291,7 @@ AUM:add_button("Vehicles", function()
 	stats.set_bool(MPX() .. "AWD_FMFULLYMODDEDCAR", true)
 end)
 
-AUM:add_button("Combat", function()
+AUM:add_button("战斗", function()
 	stats.set_int(MPX() .. "AWD_100_HEADSHOTS", 500)
 	stats.set_int(MPX() .. "AWD_FMOVERALLKILLS", 1000)
 	stats.set_int(MPX() .. "AWD_FMKILLBOUNTY", 25)
@@ -2325,11 +2325,11 @@ AUM:add_button("Combat", function()
 	stats.set_int(MPX() .. "NUMBER_NEAR_MISS", 1000)
 end)
 
-HAUM = AUM:add_tab("Heists Awards Unlocker Menu")
+HAUM = AUM:add_tab("豪劫成就解锁菜单")
 
-APARTMENTAUM = HAUM:add_tab("Apartment Heist Menu")
+APARTMENTAUM = HAUM:add_tab("公寓豪劫菜单")
 
-APARTMENTAUM:add_button("Unlock All Apartment Heists Awards", function()
+APARTMENTAUM:add_button("解锁全部公寓豪劫成就", function()
 	stats.set_int(MPX() .. "AWD_FINISH_HEISTS", 50)
 	stats.set_int(MPX() .. "AWD_FINISH_HEIST_SETUP_JOB", 50)
 	stats.set_int(MPX() .. "AWD_COMPLETE_HEIST_NOT_DIE", -1)
@@ -2404,9 +2404,9 @@ APARTMENTAUM:add_button("Unlock All Apartment Heists Awards", function()
 	stats.set_int(MPX() .. "HEIST_PLANNING_STAGE", -1)
 end)
 
-DIAMONHDAUM = HAUM:add_tab("Diamond Casino Heist")
+DIAMONHDAUM = HAUM:add_tab("名钻赌场豪劫")
 
-DIAMONHDAUM:add_button("Unlock All Diamond Casino Heist Awards", function()
+DIAMONHDAUM:add_button("解锁全部名钻赌场豪劫成就", function()
 	stats.set_int(MPX() .. "CAS_HEIST_NOTS", -1)
 	stats.set_int(MPX() .. "CAS_HEIST_FLOW", -1)
 	stats.set_int(MPX() .. "SIGNAL_JAMMERS_COLLECTED", 50)
@@ -2499,9 +2499,9 @@ DIAMONHDAUM:add_button("Unlock All Diamond Casino Heist Awards", function()
 	end
 end)
 
-CAYOAUM = HAUM:add_tab("Cayo Heist Menu")
+CAYOAUM = HAUM:add_tab("佩里科岛豪劫菜单")
 
-CAYOAUM:add_button("Unlock All Cayo Heist Awards", function()
+CAYOAUM:add_button("解锁全部佩里科岛豪劫成就", function()
 	stats.set_bool(MPX() .. "AWD_INTELGATHER", true)
 	stats.set_bool(MPX() .. "AWD_COMPOUNDINFILT", true)
 	stats.set_bool(MPX() .. "AWD_LOOT_FINDER", true)
@@ -2548,9 +2548,9 @@ CAYOAUM:add_button("Unlock All Cayo Heist Awards", function()
 	end
 end)
 
-DOOMSDAYAUM = HAUM:add_tab("Doomsday Heist Awards Menu")
+DOOMSDAYAUM = HAUM:add_tab("末日豪劫成就菜单")
 
-DOOMSDAYAUM:add_button("Unlock All Doomsday Heist Awards", function()
+DOOMSDAYAUM:add_button("解锁全部末日豪劫成就", function()
 	stats.set_int(MPX() .. "GANGOPS_HEIST_STATUS", -1)
 	stats.set_int(MPX() .. "GANGOPS_HEIST_STATUS", -229384)
 	stats.set_int(MPX() .. "GANGOPS_FM_MISSION_PROG", -1)
@@ -2601,9 +2601,9 @@ DOOMSDAYAUM:add_button("Unlock All Doomsday Heist Awards", function()
 	stats.set_masked_int(MPX() .. "BUSINESSBATPSTAT_INT260", 3, 48, 8)
 end)
 
-DLCAUM = AUM:add_tab("DLC Awards Menu")
+DLCAUM = AUM:add_tab("DLC 成就菜单")
 
-DLCAUM:add_button("The Kortz Center Heist", function()
+DLCAUM:add_button("科兹中心豪劫", function()
 	stats.set_bool(MPX() .. "AWD_SCOPING", true)
 	stats.set_int(MPX() .. "AWD_PREPPER", 20)
 	stats.set_bool(MPX() .. "AWD_ADAPTABLE", true)
@@ -2625,7 +2625,7 @@ DLCAUM:add_button("The Kortz Center Heist", function()
 	stats.set_bool(MPX() .. "AWD_METEORITICS", true)
 end)
 
-DLCAUM:add_button("A Safehouse In The Hills", function()
+DLCAUM:add_button("山间的安全屋", function()
 	stats.set_bool(MPX() .. "AWD_NEGATIVEPRESS", true)
 	stats.set_bool(MPX() .. "AWD_USESELFDRIVINGVEH", true)
 	stats.set_bool(MPX() .. "AWD_LIONSDEN", true)
@@ -2652,7 +2652,7 @@ DLCAUM:add_button("A Safehouse In The Hills", function()
 	stats.set_int(MPX() .. "AWD_LOSSANTOSMETEOR", 20)
 end)
 
-DLCAUM:add_button("Agents of Sabotage", function()
+DLCAUM:add_button("破坏行动特工", function()
 	for i = 9542, 9546 do
 		stats.set_packed_stat_bool(i, true)
 	end
@@ -2669,7 +2669,7 @@ DLCAUM:add_button("Agents of Sabotage", function()
 	stats.set_int(MPX() .. "AWD_GET_READY", 50)
 end)
 
-DLCAUM:add_button("After Hours", function()
+DLCAUM:add_button("夜生活", function()
 	stats.set_int(MPX() .. "AWD_DANCE_TO_SOLOMUN", 120)
 	stats.set_int(MPX() .. "AWD_DANCE_TO_TALEOFUS", 120)
 	stats.set_int(MPX() .. "AWD_DANCE_TO_DIXON", 120)
@@ -2711,7 +2711,7 @@ DLCAUM:add_button("After Hours", function()
 	stats.set_masked_int(MPX() .. "BUSINESSBATPSTAT_INT379", 10, 56, 8)
 end)
 
-DLCAUM:add_button("Arena War", function()
+DLCAUM:add_button("竞技场之战", function()
 	stats.set_int(MPX() .. "ARN_BS_TRINKET_TICKERS", -1)
 	stats.set_int(MPX() .. "ARN_BS_TRINKET_SAVED", -1)
 	stats.set_int(MPX() .. "AWD_WATCH_YOUR_STEP", 50)
@@ -2839,7 +2839,7 @@ DLCAUM:add_button("Arena War", function()
 	end
 end)
 
-DLCAUM:add_button("Diamond Casino n Resort", function()
+DLCAUM:add_button("名钻赌场度假村", function()
 	stats.set_int(MPX() .. "AWD_ODD_JOBS", 50)
 	stats.set_int(MPX() .. "VCM_FLOW_PROGRESS", -1)
 	stats.set_int(MPX() .. "VCM_STORY_PROGRESS", 5)
@@ -2866,7 +2866,7 @@ DLCAUM:add_button("Diamond Casino n Resort", function()
 	end
 end)
 
-DLCAUM:add_button("Arcade", function()
+DLCAUM:add_button("游戏厅", function()
 	stats.set_int(MPX() .. "AWD_PREPARATION", 50)
 	stats.set_int(MPX() .. "AWD_ASLEEPONJOB", 20)
 	stats.set_int(MPX() .. "AWD_DAICASHCRAB", 100000)
@@ -2975,7 +2975,7 @@ DLCAUM:add_button("Arcade", function()
 	end
 end)
 
-DLCAUM:add_button("LS Summer Special", function()
+DLCAUM:add_button("洛圣都夏日特辑", function()
 	stats.set_bool(MPX() .. "AWD_KINGOFQUB3D", true)
 	stats.set_bool(MPX() .. "AWD_QUBISM", true)
 	stats.set_bool(MPX() .. "AWD_QUIBITS", true)
@@ -2991,7 +2991,7 @@ DLCAUM:add_button("LS Summer Special", function()
 	end
 end)
 
-DLCAUM:add_button("LS Tuners", function()
+DLCAUM:add_button("洛圣都改装车", function()
 	stats.set_int(MPX() .. "AWD_CAR_CLUB_MEM", 100)
 	stats.set_int(MPX() .. "AWD_SPRINTRACER", 50)
 	stats.set_int(MPX() .. "AWD_STREETRACER", 50)
@@ -3023,7 +3023,7 @@ DLCAUM:add_button("LS Tuners", function()
 	end
 end)
 
-DLCAUM:add_button("Contract", function()
+DLCAUM:add_button("合约", function()
 	stats.set_int(MPX() .. "AWD_CONTRACTOR", 50)
 	stats.set_int(MPX() .. "AWD_COLD_CALLER", 50)
 	stats.set_int(MPX() .. "AWD_PRODUCER", 60)
@@ -3082,14 +3082,14 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-FAUT = RecoveryMenu:add_tab("Full Account Unlock Menu")
+FAUT = RecoveryMenu:add_tab("全账号解锁菜单")
 
 FAUT:add_imgui(function()
 	if isOffline() then
 		return
 	end
 
-	if ImGui.Button("Unlock WM 29 Pistol") then
+	if ImGui.Button("解锁 WM29 手枪") then
 		script.run_in_fiber(function(WM29)
 			script.execute_as_script("shop_controller", function()
 				if NETSHOPPING.NET_GAMESERVER_BASKET_IS_ACTIVE() then
@@ -3111,7 +3111,7 @@ FAUT:add_imgui(function()
 		end)
 	end
 
-	if ImGui.Button("Unlock The Shocker") then
+	if ImGui.Button("解锁「震撼者」") then
 		script.run_in_fiber(function(THESHOCKER)
 			script.execute_as_script("shop_controller", function()
 				if NETSHOPPING.NET_GAMESERVER_BASKET_IS_ACTIVE() then
@@ -3127,13 +3127,13 @@ FAUT:add_imgui(function()
 				)
 				if state then
 					NETSHOPPING.NET_GAMESERVER_CHECKOUT_START(id)
-					gui.show_message("The Shocker", "The Shocker is now Unlocked Change Session To Apply Changes.")
+					gui.show_message("震撼者", "The Shocker is now Unlocked Change Session To Apply Changes.")
 				end
 			end)
 		end)
 	end
 
-	if ImGui.Button("Unlock The Snowball Launcher") then
+	if ImGui.Button("解锁雪球发射器") then
 		script.run_in_fiber(function(SNOWBALLLAUNCHER)
 			script.execute_as_script("shop_controller", function()
 				if NETSHOPPING.NET_GAMESERVER_BASKET_IS_ACTIVE() then
@@ -3150,7 +3150,7 @@ FAUT:add_imgui(function()
 				if state then
 					NETSHOPPING.NET_GAMESERVER_CHECKOUT_START(id)
 					gui.show_message(
-						"Snowball Launcher",
+						"雪球发射器",
 						"Snowball Launcher is now Unlocked Change Session To Apply Changes."
 					)
 				end
@@ -3161,14 +3161,14 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-CSU = FAUT:add_tab("Character's Stats")
+CSU = FAUT:add_tab("角色属性")
 
 CSU:add_imgui(function()
 	if isOffline() then
 		return
 	end
 
-	if ImGui.Button("Max Character Skills") then
+	if ImGui.Button("拉满角色技能") then
 		stats.set_int(MPX() .. "SCRIPT_INCREASE_DRIV", 100)
 		stats.set_int(MPX() .. "SCRIPT_INCREASE_FLY", 100)
 		stats.set_int(MPX() .. "SCRIPT_INCREASE_LUNG", 100)
@@ -3176,11 +3176,11 @@ CSU:add_imgui(function()
 		stats.set_int(MPX() .. "SCRIPT_INCREASE_STAM", 100)
 		stats.set_int(MPX() .. "SCRIPT_INCREASE_STL", 100)
 		stats.set_int(MPX() .. "SCRIPT_INCREASE_STRN", 100)
-		gui.show_message("Character Skills", "Your Character Skills Is Maxxed Out.")
+		gui.show_message("角色技能", "Your Character Skills Is Maxxed Out.")
 	end
 end)
 
-AcMenu = CSU:add_tab("Achievements")
+AcMenu = CSU:add_tab("成就")
 
 Acv0 = false
 AG = 4525223 + 1 --("CHEAT_ACHIEVE")
@@ -3189,250 +3189,250 @@ AcMenu:add_imgui(function()
 	if isOffline() then
 		return
 	end
-	if ImGui.Button("Unlock All Achievements") then
+	if ImGui.Button("解锁全部成就") then
 		script.run_in_fiber(function(script)
 			for i = 0, 77 do
 				script:sleep(200)
 				globals.set_int(AG, i)
 				if i == 77 then
-					gui.show_message("Achievements", "Unlocked 77 Achievements")
+					gui.show_message("成就", "Unlocked 77 Achievements")
 				end
 			end
 		end)
 	end
 end)
 
-AcMMenu = AcMenu:add_tab("One By One Menu")
+AcMMenu = AcMenu:add_tab("逐个解锁")
 
-AcMMenu:add_button("Welcome to Los Santos", function()
+AcMMenu:add_button("欢迎来到洛圣都", function()
 	globals.set_int(AG, 1)
 end)
-AcMMenu:add_button("A Friendship Resurrected", function()
+AcMMenu:add_button("友谊重现", function()
 	globals.set_int(AG, 2)
 end)
-AcMMenu:add_button("A Fair Day's Pay", function()
+AcMMenu:add_button("应得的报酬", function()
 	globals.set_int(AG, 3)
 end)
-AcMMenu:add_button("The Moment of Truth", function()
+AcMMenu:add_button("关键时刻", function()
 	globals.set_int(AG, 4)
 end)
-AcMMenu:add_button("To Live or Die in Los Santos", function()
+AcMMenu:add_button("在洛圣都生死由天", function()
 	globals.set_int(AG, 5)
 end)
-AcMMenu:add_button("Diamond Hard", function()
+AcMMenu:add_button("钻石硬汉", function()
 	globals.set_int(AG, 6)
 end)
-AcMMenu:add_button("Subversive", function()
+AcMMenu:add_button("颠覆分子", function()
 	globals.set_int(AG, 7)
 end)
-AcMMenu:add_button("Blitzed", function()
+AcMMenu:add_button("嗨翻天", function()
 	globals.set_int(AG, 8)
 end)
-AcMMenu:add_button("Small Town, Big Job", function()
+AcMMenu:add_button("小城大事", function()
 	globals.set_int(AG, 9)
 end)
-AcMMenu:add_button("The Government Gimps", function()
+AcMMenu:add_button("政府废物", function()
 	globals.set_int(AG, 10)
 end)
-AcMMenu:add_button("The Big One!", function()
+AcMMenu:add_button("大手笔！", function()
 	globals.set_int(AG, 11)
 end)
-AcMMenu:add_button("Solid Gold, Baby!", function()
+AcMMenu:add_button("纯金打造！", function()
 	globals.set_int(AG, 12)
 end)
-AcMMenu:add_button("Career Criminal", function()
+AcMMenu:add_button("职业罪犯", function()
 	globals.set_int(AG, 13)
 end)
-AcMMenu:add_button("San Andreas Sightseer", function()
+AcMMenu:add_button("圣安地列斯观光客", function()
 	globals.set_int(AG, 14)
 end)
-AcMMenu:add_button("All's Fare in Love and War", function()
+AcMMenu:add_button("情场战场皆公平", function()
 	globals.set_int(AG, 15)
 end)
-AcMMenu:add_button("TP Industries Arms Race", function()
+AcMMenu:add_button("TP工业军备竞赛", function()
 	globals.set_int(AG, 16)
 end)
-AcMMenu:add_button("Multi-Disciplined", function()
+AcMMenu:add_button("多面手", function()
 	globals.set_int(AG, 17)
 end)
-AcMMenu:add_button("From Beyond the Stars", function()
+AcMMenu:add_button("来自星辰之外", function()
 	globals.set_int(AG, 18)
 end)
-AcMMenu:add_button("A Mystery, Solved", function()
+AcMMenu:add_button("谜团解开", function()
 	globals.set_int(AG, 19)
 end)
-AcMMenu:add_button("Waste Management", function()
+AcMMenu:add_button("垃圾管理", function()
 	globals.set_int(AG, 20)
 end)
-AcMMenu:add_button("Red Mist", function()
+AcMMenu:add_button("红雾", function()
 	globals.set_int(AG, 21)
 end)
-AcMMenu:add_button("Show Off", function()
+AcMMenu:add_button("炫耀", function()
 	globals.set_int(AG, 22)
 end)
 AcMMenu:add_button("Kifflom!", function()
 	globals.set_int(AG, 23)
 end)
-AcMMenu:add_button("Three Man Army", function()
+AcMMenu:add_button("三人成军", function()
 	globals.set_int(AG, 24)
 end)
-AcMMenu:add_button("Out of Your Depth", function()
+AcMMenu:add_button("力不从心", function()
 	globals.set_int(AG, 25)
 end)
-AcMMenu:add_button("Altruist Acolyte", function()
+AcMMenu:add_button("利他主义信徒", function()
 	globals.set_int(AG, 26)
 end)
-AcMMenu:add_button("A Lot of Cheddar", function()
+AcMMenu:add_button("大把钞票", function()
 	globals.set_int(AG, 27)
 end)
-AcMMenu:add_button("Trading Pure Alpha", function()
+AcMMenu:add_button("交易纯阿尔法", function()
 	globals.set_int(AG, 28)
 end)
-AcMMenu:add_button("Pimp My Sidearm", function()
+AcMMenu:add_button("改装随身武器", function()
 	globals.set_int(AG, 29)
 end)
-AcMMenu:add_button("Wanted:Alive Or Alive", function()
+AcMMenu:add_button("通缉：死活不论", function()
 	globals.set_int(AG, 30)
 end)
-AcMMenu:add_button("Los Santos Customs", function()
+AcMMenu:add_button("洛圣都改车王", function()
 	globals.set_int(AG, 31)
 end)
-AcMMenu:add_button("Close Shave", function()
+AcMMenu:add_button("死里逃生", function()
 	globals.set_int(AG, 32)
 end)
-AcMMenu:add_button("Off the Plane", function()
+AcMMenu:add_button("走下飞机", function()
 	globals.set_int(AG, 33)
 end)
-AcMMenu:add_button("Three-Bit Gangster", function()
+AcMMenu:add_button("三流混混", function()
 	globals.set_int(AG, 34)
 end)
-AcMMenu:add_button("Making Moves", function()
+AcMMenu:add_button("有所作为", function()
 	globals.set_int(AG, 35)
 end)
-AcMMenu:add_button("Above the Law", function()
+AcMMenu:add_button("凌驾法律", function()
 	globals.set_int(AG, 36)
 end)
-AcMMenu:add_button("Numero Uno", function()
+AcMMenu:add_button("天下第一", function()
 	globals.set_int(AG, 37)
 end)
-AcMMenu:add_button("The Midnight Club", function()
+AcMMenu:add_button("午夜俱乐部", function()
 	globals.set_int(AG, 38)
 end)
-AcMMenu:add_button("Unnatural Selection", function()
+AcMMenu:add_button("非自然选择", function()
 	globals.set_int(AG, 39)
 end)
-AcMMenu:add_button("Backseat Driver", function()
+AcMMenu:add_button("后座车手", function()
 	globals.set_int(AG, 40)
 end)
-AcMMenu:add_button("Run Like The Wind", function()
+AcMMenu:add_button("迎风奔跑", function()
 	globals.set_int(AG, 41)
 end)
-AcMMenu:add_button("Clean Sweep", function()
+AcMMenu:add_button("横扫千军", function()
 	globals.set_int(AG, 42)
 end)
-AcMMenu:add_button("Decorated", function()
+AcMMenu:add_button("战功卓著", function()
 	globals.set_int(AG, 43)
 end)
-AcMMenu:add_button("Stick Up Kid", function()
+AcMMenu:add_button("持枪抢劫少年", function()
 	globals.set_int(AG, 44)
 end)
-AcMMenu:add_button("Enjoy Your Stay", function()
+AcMMenu:add_button("祝您入住愉快", function()
 	globals.set_int(AG, 45)
 end)
-AcMMenu:add_button("Crew Cut", function()
+AcMMenu:add_button("平头", function()
 	globals.set_int(AG, 46)
 end)
-AcMMenu:add_button("Full Refund", function()
+AcMMenu:add_button("全额退款", function()
 	globals.set_int(AG, 47)
 end)
-AcMMenu:add_button("Dialling Digits", function()
+AcMMenu:add_button("拨打电话", function()
 	globals.set_int(AG, 48)
 end)
-AcMMenu:add_button("American Dream", function()
+AcMMenu:add_button("美国梦", function()
 	globals.set_int(AG, 49)
 end)
-AcMMenu:add_button("A New Perspective", function()
+AcMMenu:add_button("新视角", function()
 	globals.set_int(AG, 50)
 end)
-AcMMenu:add_button("Be Prepared", function()
+AcMMenu:add_button("有备无患", function()
 	globals.set_int(AG, 51)
 end)
-AcMMenu:add_button("In the Name of Science", function()
+AcMMenu:add_button("以科学之名", function()
 	globals.set_int(AG, 52)
 end)
-AcMMenu:add_button("Dead Presidents", function()
+AcMMenu:add_button("已故总统", function()
 	globals.set_int(AG, 53)
 end)
-AcMMenu:add_button("Parole Day", function()
+AcMMenu:add_button("假释日", function()
 	globals.set_int(AG, 54)
 end)
-AcMMenu:add_button("Shot Caller", function()
+AcMMenu:add_button("发号施令", function()
 	globals.set_int(AG, 55)
 end)
-AcMMenu:add_button("Four Way", function()
+AcMMenu:add_button("四人混战", function()
 	globals.set_int(AG, 56)
 end)
-AcMMenu:add_button("Live a Little", function()
+AcMMenu:add_button("及时行乐", function()
 	globals.set_int(AG, 57)
 end)
-AcMMenu:add_button("Can't Touch This", function()
+AcMMenu:add_button("碰不到我", function()
 	globals.set_int(AG, 58)
 end)
-AcMMenu:add_button("Mastermind", function()
+AcMMenu:add_button("幕后黑手", function()
 	globals.set_int(AG, 59)
 end)
-AcMMenu:add_button("Vinewood Visionary", function()
+AcMMenu:add_button("好莱坞梦想家", function()
 	globals.set_int(AG, 60)
 end)
-AcMMenu:add_button("Majestic", function()
+AcMMenu:add_button("雄伟壮观", function()
 	globals.set_int(AG, 61)
 end)
-AcMMenu:add_button("Humans of Los Santos", function()
+AcMMenu:add_button("洛圣都众生相", function()
 	globals.set_int(AG, 62)
 end)
-AcMMenu:add_button("First Time Director", function()
+AcMMenu:add_button("新手导演", function()
 	globals.set_int(AG, 63)
 end)
-AcMMenu:add_button("Animal Lover", function()
+AcMMenu:add_button("动物爱好者", function()
 	globals.set_int(AG, 64)
 end)
-AcMMenu:add_button("Ensemble Piece", function()
+AcMMenu:add_button("群戏", function()
 	globals.set_int(AG, 65)
 end)
-AcMMenu:add_button("Cult Movie", function()
+AcMMenu:add_button("邪典电影", function()
 	globals.set_int(AG, 66)
 end)
-AcMMenu:add_button("Location Scout", function()
+AcMMenu:add_button("选景师", function()
 	globals.set_int(AG, 67)
 end)
-AcMMenu:add_button("Method Actor", function()
+AcMMenu:add_button("方法派演员", function()
 	globals.set_int(AG, 68)
 end)
-AcMMenu:add_button("Cryptozoologist", function()
+AcMMenu:add_button("神秘动物学家", function()
 	globals.set_int(AG, 69)
 end)
-AcMMenu:add_button("Getting Started", function()
+AcMMenu:add_button("开始入手", function()
 	globals.set_int(AG, 70)
 end)
-AcMMenu:add_button("The Data Breaches", function()
+AcMMenu:add_button("数据泄露", function()
 	globals.set_int(AG, 71)
 end)
-AcMMenu:add_button("The Bogdan Problem", function()
+AcMMenu:add_button("波格丹危机", function()
 	globals.set_int(AG, 72)
 end)
-AcMMenu:add_button("The Doomsday Scenario", function()
+AcMMenu:add_button("末日危机", function()
 	globals.set_int(AG, 73)
 end)
-AcMMenu:add_button("A World Worth Saving", function()
+AcMMenu:add_button("值得拯救的世界", function()
 	globals.set_int(AG, 74)
 end)
-AcMMenu:add_button("Orbital Obliteration", function()
+AcMMenu:add_button("轨道打击", function()
 	globals.set_int(AG, 75)
 end)
-AcMMenu:add_button("Elitist", function()
+AcMMenu:add_button("精英主义", function()
 	globals.set_int(AG, 76)
 end)
-AcMMenu:add_button("Masterminds", function()
+AcMMenu:add_button("幕后主脑", function()
 	globals.set_int(AG, 77)
 end)
 
@@ -3446,7 +3446,7 @@ FAUT:add_imgui(function()
 	if isOffline() then
 		return
 	end
-	if ImGui.Button("Complete All Daily & Weekly Challenges") then
+	if ImGui.Button("完成全部每日与每周挑战") then
 		script.run_in_fiber(function(script)
 			for i = 0, 2 do --Unlock all daily rewards.
 				local objective =
@@ -3458,68 +3458,68 @@ FAUT:add_imgui(function()
 				weekly_objectives_global + (1 + (0 * 6)) + 1,
 				globals.get_int(weekly_objectives_global + (1 + (0 * 6)) + 2)
 			) --Unlock Weekly Objective
-			gui.show_message("Challenges", "All Daily And Weekly Challenges Are Now Completed.")
+			gui.show_message("挑战", "All Daily And Weekly Challenges Are Now Completed.")
 		end)
 	end
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-LSCMUnlockeRecoveryMenu = RecoveryMenu:add_tab("LSCM Unlocker Menu")
+LSCMUnlockeRecoveryMenu = RecoveryMenu:add_tab("车友会解锁菜单")
 
-LSCMUnlockeRecoveryMenu:add_button("Unlock All Rep Lvl 1000", function()
+LSCMUnlockeRecoveryMenu:add_button("解锁全声望等级 1000", function()
 	for i = FMg + 31047, FMg + 31076 do
 		globals.set_float(i, 100000)
 	end
 	gui.show_message(
-		"LSCM",
+		"车友会",
 		"LVL 1000 Activated Just Sit In The Test Drive Vehicle And Enter LSCM Track To See The Changes."
 	)
 end)
 
-LSCMUnlockeRecoveryMenu:add_button("LSCM Prize Ride Unlock", function()
+LSCMUnlockeRecoveryMenu:add_button("解锁车友会奖励载具", function()
 	stats.set_bool(MPX() .. "CARMEET_PV_CHLLGE_CMPLT", true)
 	stats.set_bool(MPX() .. "CARMEET_PV_CLMED", false)
-	gui.show_message("LSCM", "Your Prize Car Is Now Unlocked.")
+	gui.show_message("车友会", "Your Prize Car Is Now Unlocked.")
 end)
 
-LSCMUnlockeRecoveryMenu:add_button("Unlock Trade Prices for Headlights", function()
+LSCMUnlockeRecoveryMenu:add_button("解锁车灯批发价", function()
 	stats_set_packed_bools(24980, 24991, true)
-	gui.show_message("LSCM", "Trade Prices For Headlights Are Now Unlocked.")
+	gui.show_message("车友会", "Trade Prices For Headlights Are Now Unlocked.")
 end)
 
-LSCMNote = LSCMUnlockeRecoveryMenu:add_tab("Read Me Tutorial")
+LSCMNote = LSCMUnlockeRecoveryMenu:add_tab("使用说明")
 
-LSCMNote:add_text("Buy a membership, activate, sit in")
-LSCMNote:add_text("a test car and go to the track")
-LSCMNote:add_text("If your level is not 1, then activate")
-LSCMNote:add_text("and buy something in the LSCM store")
-LSCMNote:add_text("If you've used LS Tuner awards unlock")
-LSCMNote:add_text("before, all unlocks will be temporary only")
-LSCMNote:add_text("--- Manual Online Override ---")
-LSCMNote:add_text("To manually set/bypass the online state,")
-LSCMNote:add_text("toggle 'Bypass Online Check' in the main tab.")
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-L7NEG7 = makeOnlineTab(L7NEG:add_tab("Ultimate Money Methods Menu"))
+LSCMNote:add_text("购买会员、激活，坐进")
+LSCMNote:add_text("测试车并前往赛道")
+LSCMNote:add_text("如果你的等级不是 1，请先激活")
+LSCMNote:add_text("并在车友会商店购买物品")
+LSCMNote:add_text("如果你之前用过车友会成就解锁")
+LSCMNote:add_text("此前的解锁都只是临时的")
+LSCMNote:add_text("--- 手动线上状态覆盖 ---")
+LSCMNote:add_text("要手动设置/绕过线上状态，")
+LSCMNote:add_text("请在主菜单切换「绕过线上检查」。")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-BusinessesMenu = L7NEG7:add_tab("Businesses Menu")
+L7NEG7 = makeOnlineTab(L7NEG:add_tab("终极刷钱方案"))
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-AirCargoMenu = BusinessesMenu:add_tab("Air Cargo Menu")
+BusinessesMenu = L7NEG7:add_tab("产业菜单")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local hanvalue = AirCargoMenu:add_input_int("Crate Value")
+AirCargoMenu = BusinessesMenu:add_tab("空运货物菜单")
 
-AirCargoMenu:add_button("Set Value", function()
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local hanvalue = AirCargoMenu:add_input_int("货物价值")
+
+AirCargoMenu:add_button("设置数值", function()
 	local HangarCrateVlaue = hanvalue:get_value()
 	if HangarCrateVlaue < 0 or HangarCrateVlaue > 6000000 then
-		gui.show_error("Crate Value Setter", "Value must be 0-6000000.")
+		gui.show_error("货物价值设置器", "Value must be 0-6000000.")
 		return
 	end
 	tunables.set_int("SMUG_SELL_PRICE_PER_CRATE_MIXED", HangarCrateVlaue)
@@ -3531,12 +3531,12 @@ AirCargoMenu:add_button("Set Value", function()
 	tunables.set_int("SMUG_SELL_PRICE_PER_CRATE_MEDICAL_SUPPLIES", HangarCrateVlaue)
 	tunables.set_int("SMUG_SELL_PRICE_PER_CRATE_NARCOTICS", HangarCrateVlaue)
 	tunables.set_int("SMUG_SELL_PRICE_PER_CRATE_TOBACCO_AND_ALCOHOL", HangarCrateVlaue)
-	gui.show_message("Crate Value Setter", "Your Crates Values was set to " .. HangarCrateVlaue .. ".")
+	gui.show_message("货物价值设置器", "Your Crates Values was set to " .. HangarCrateVlaue .. ".")
 end)
 
 AirCargoMenu:add_separator()
 
-RCRT = AirCargoMenu:add_checkbox("Remove Ron's Cut")
+RCRT = AirCargoMenu:add_checkbox("移除罗恩抽成")
 script.register_looped("RonCutRemover", function(script)
 	script:yield()
 	if
@@ -3556,7 +3556,7 @@ end)
 
 AirCargoMenu:add_separator()
 
-PRPGD = AirCargoMenu:add_checkbox("Disable Player RP Gain")
+PRPGD = AirCargoMenu:add_checkbox("禁用玩家 RP 增益")
 script.register_looped("PlayerRPGainDisabler", function(script)
 	script:yield()
 	if
@@ -3576,18 +3576,18 @@ end)
 
 AirCargoMenu:add_separator()
 
-AirCargoMenu:add_button("Open Hangar Screen", function()
+AirCargoMenu:add_button("打开机库界面", function()
 	SCRIPT.REQUEST_SCRIPT("apparcadebusinesshub")
 	SYSTEM.START_NEW_SCRIPT("apparcadebusinesshub", 8344)
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-AirCargoEditorMenu = AirCargoMenu:add_tab("Air Cargo Data Editor")
+AirCargoEditorMenu = AirCargoMenu:add_tab("空运货物数据编辑器")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-AirCargoEditorMenu:add_button("Reset Crate Sell Stats-0/0 Sales", function()
+AirCargoEditorMenu:add_button("重置货箱销售统计（0/0 次）", function()
 	stats.set_int(MPX() .. "LFETIME_HANGAR_BUY_COMPLET", 0)
 	stats.set_int(MPX() .. "LFETIME_HANGAR_BUY_UNDERTAK", 0)
 	stats.set_int(MPX() .. "LFETIME_HANGAR_SEL_COMPLET", 0)
@@ -3603,11 +3603,11 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-UseAtYourOwnRiskMenu = L7NEG7:add_tab("Use At Your Own Risk Menu")
+UseAtYourOwnRiskMenu = L7NEG7:add_tab("风险自负菜单")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-CeoManagerMenu = UseAtYourOwnRiskMenu:add_tab("Ceo Manager Menu")
+CeoManagerMenu = UseAtYourOwnRiskMenu:add_tab("CEO 管理菜单")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -3639,15 +3639,15 @@ CeoManagerMenu:add_imgui(function()
 	if isOffline() then
 		return
 	end
-	cratevalue, used = ImGui.DragInt("Crate Value", cratevalue, 10000, 0, 6000000)
+	cratevalue, used = ImGui.DragInt("货物价值", cratevalue, 10000, 0, 6000000)
 	if used then
 		tunables.set_int("EXEC_CONTRABAND_SALE_VALUE_THRESHOLD1", cratevalue)
 	end
 end)
 
-checkbox = CeoManagerMenu:add_checkbox("Start Ceo Manager")
+checkbox = CeoManagerMenu:add_checkbox("启动 CEO 管理器")
 
-PRPGD2 = CeoManagerMenu:add_checkbox("Disable Player RP Gain")
+PRPGD2 = CeoManagerMenu:add_checkbox("禁用玩家 RP 增益")
 script.register_looped("PlayerRPGainDisabler2", function(script)
 	script:yield()
 	if
@@ -3665,7 +3665,7 @@ script.register_looped("PlayerRPGainDisabler2", function(script)
 	script:sleep(500)
 end)
 
-CeoManagerMenu:add_button("Open Warehouse Screen", function()
+CeoManagerMenu:add_button("打开仓库界面", function()
 	SCRIPT.REQUEST_SCRIPT("apparcadebusinesshub")
 	SYSTEM.START_NEW_SCRIPT("apparcadebusinesshub", 8344)
 end)
@@ -3705,7 +3705,7 @@ script.register_looped("yimceoloop", function(script)
 			locals.set_int(cb, SMC10, 111)
 			locals.set_int(cb, SMC11, 6)
 			locals.set_int(cb, SMC12, 4)
-			gui.show_message("Your Warehouse is now full! 111/111 Crates")
+			gui.show_message("你的仓库已满！111/111 货箱")
 		end
 		if locals.get_int(ci, 2) ~= 1 then
 			script:sleep(500)
@@ -3721,14 +3721,14 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-NightClubSafeMenu = UseAtYourOwnRiskMenu:add_tab("NightClub Safe Loop Menu")
+NightClubSafeMenu = UseAtYourOwnRiskMenu:add_tab("夜总会保险箱循环")
 
 SafeAmount = 300000
 SafeCapacity = 23769 --NIGHTCLUBMAXSAFEVALUE
 IncomeStart = 23746 --NIGHTCLUBINCOMEUPTOPOP5
 IncomeEnd = 23765 --NIGHTCLUBINCOMEUPTOPOP100
 
-NCRSCB = NightClubSafeMenu:add_checkbox("Enable Nitghtclub $300k/5s (Safe Remote AFK)")
+NCRSCB = NightClubSafeMenu:add_checkbox("开启夜总会 $30万/5秒（保险箱远程挂机）")
 script.register_looped("nightclubremotelooptest", function(script)
 	script:yield()
 	if
@@ -3760,13 +3760,13 @@ end)
 
 NightClubSafeMenu:add_separator()
 
-NightClubSafeMenu:add_button("Open Nightclub Screen", function()
+NightClubSafeMenu:add_button("打开夜总会界面", function()
 	SYSTEM.START_NEW_SCRIPT("appBusinessHub", 1424)
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local GVMENU = makeOnlineTab(L7NEG:add_tab("Gun Van Menu"))
+local GVMENU = makeOnlineTab(L7NEG:add_tab("军火厢车菜单"))
 
 local gunvan_locations = {
 	vec3:new(-29.532, 6435.136, 31.162),
@@ -3939,7 +3939,7 @@ gun_van_loc = 0
 
 function render_weapon_editor()
 	ImGui.SetNextWindowSize(700, 420)
-	ImGui.OpenPopup("Weapon Editor")
+	ImGui.OpenPopup("武器编辑器")
 
 	if
 		ImGui.BeginPopupModal(
@@ -3949,9 +3949,9 @@ function render_weapon_editor()
 		)
 	then
 		selected_slot =
-			ImGui.Combo("Select Slot", selected_slot, { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, 10)
+			ImGui.Combo("选择栏位", selected_slot, { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, 10)
 
-		filter_text = ImGui.InputText("Weapon Name", filter_text, 100)
+		filter_text = ImGui.InputText("武器名称", filter_text, 100)
 		if ImGui.IsItemActive() then
 			is_typing = true
 		else
@@ -3971,23 +3971,23 @@ function render_weapon_editor()
 			ImGui.EndListBox()
 		end
 
-		if ImGui.Button("Set Weapon") then
+		if ImGui.Button("设置武器") then
 			local is_weapon_valid = weapons.get_weapon_display_name(weapon_name) ~= ""
 
 			if is_weapon_valid then
 				tunables.set_int("XM22_GUN_VAN_SLOT_WEAPON_TYPE_" .. selected_slot, joaat(weapon_name))
 			else
-				gui.show_error("Gun Van", "Invalid weapon.")
+				gui.show_error("军火厢车", "Invalid weapon.")
 			end
 		end
 
 		ImGui.SameLine()
 
-		if ImGui.Button("Remove Weapon") then
+		if ImGui.Button("移除武器") then
 			tunables.set_int("XM22_GUN_VAN_SLOT_WEAPON_TYPE_" .. selected_slot, 0)
 		end
 
-		if ImGui.Button("Close") then
+		if ImGui.Button("关闭") then
 			selected_slot = 0
 			filter_text = ""
 			weapon_name = ""
@@ -4044,28 +4044,28 @@ GVMENU:add_imgui(function()
 		render_weapon_editor()
 	end
 
-	ImGui.Text("Current Location: " .. (gun_van_loc ~= -1 and gun_van_loc + 1 or "N/A"))
+	ImGui.Text("当前位置: " .. (gun_van_loc ~= -1 and gun_van_loc + 1 or "N/A"))
 
 	ImGui.SetNextItemWidth(265)
 	selected_loc = ImGui.Combo("##selected_loc", selected_loc, van_locations, 30)
 
 	ImGui.SameLine()
 
-	if ImGui.Button("Set New Gun Van Location") then
+	if ImGui.Button("设置新的军火厢车位置") then
 		globals.set_int(2652581 + 2706, selected_loc)
 	end
 
 	ImGui.SameLine()
 
-	if ImGui.Button("Teleport") then
+	if ImGui.Button("传送") then
 		script.run_in_fiber(function()
 			local coords = gunvan_locations[selected_loc + 1]
 			PED.SET_PED_COORDS_KEEP_VEHICLE(self.get_ped(), coords.x, coords.y, coords.z)
 		end)
 	end
 
-	weapon_skins, on_tick = ImGui.Checkbox("Weapon Skins", weapon_skins)
-	help_marker("Enables the special liveries for Knife and Baseball Bat.")
+	weapon_skins, on_tick = ImGui.Checkbox("武器皮肤", weapon_skins)
+	help_marker("启用匕首与棒球棍的特殊涂装。")
 
 	if on_tick then
 		if not weapon_skins then
@@ -4073,9 +4073,9 @@ GVMENU:add_imgui(function()
 		end
 	end
 
-	livery_lock, on_tick = ImGui.Checkbox("Remove Livery Lock", livery_lock)
+	livery_lock, on_tick = ImGui.Checkbox("移除涂装锁定", livery_lock)
 	help_marker(
-		"Removes the hard-coded lock on special weapon liveries, such as Season's Greetings, Employee of the Month etc."
+		"移除特殊武器涂装的硬编码锁定（如「节日问候」「月度最佳员工」等）。"
 	)
 
 	if on_tick then
@@ -4088,8 +4088,8 @@ GVMENU:add_imgui(function()
 		end
 	end
 
-	gta_plus_blip, on_tick = ImGui.Checkbox("Blip Always Visible", gta_plus_blip)
-	help_marker("The Gun Van will always be blipped on the map, just like in GTA+.")
+	gta_plus_blip, on_tick = ImGui.Checkbox("图标始终可见", gta_plus_blip)
+	help_marker("军火厢车将始终显示在地图上。")
 
 	if on_tick then
 		if not gta_plus_blip then
@@ -4097,8 +4097,8 @@ GVMENU:add_imgui(function()
 		end
 	end
 
-	discount, on_tick = ImGui.Checkbox("Jewish Trade Skills (-10%)", discount)
-	help_marker("Allows 10% off off any weapon in gun van")
+	discount, on_tick = ImGui.Checkbox("交易砍价 (-10%)", discount)
+	help_marker("军火厢车内所有武器便宜 10%")
 
 	_discountBackup = _discountBackup or { armour = {}, throwable = {}, weapon = {} }
 	if on_tick then
@@ -4129,7 +4129,7 @@ GVMENU:add_imgui(function()
 	end
 	ImGui.Separator()
 
-	if ImGui.TreeNode("Weapons") then
+	if ImGui.TreeNode("武器") then
 		for i = 0, 9 do
 			local weapon_hash = tunables.get_int("XM22_GUN_VAN_SLOT_WEAPON_TYPE_" .. i)
 
@@ -4142,7 +4142,7 @@ GVMENU:add_imgui(function()
 			end
 		end
 
-		if ImGui.Button("Edit Weapons") then
+		if ImGui.Button("编辑武器") then
 			weapon_editor_popup = true
 		end
 
@@ -4150,7 +4150,7 @@ GVMENU:add_imgui(function()
 		ImGui.TreePop()
 	end
 
-	if ImGui.TreeNode("Throwables") then
+	if ImGui.TreeNode("投掷物") then
 		for i = 0, 2 do
 			local throwable_hash = tunables.get_int("XM22_GUN_VAN_SLOT_THROWABLE_TYPE_" .. i)
 
@@ -4167,18 +4167,18 @@ GVMENU:add_imgui(function()
 		ImGui.TreePop()
 	end
 
-	if ImGui.TreeNode("Body Armor") then
+	if ImGui.TreeNode("防弹衣") then
 		local armour_discounts = {}
 
 		for i = 0, 4 do
 			armour_discounts[i + 1] = math.floor(tunables.get_float("XM22_GUN_VAN_SLOT_ARMOUR_DISCOUNT_" .. i) * 100.0)
 		end
 
-		ImGui.Text("Super Light Armor (" .. armour_discounts[1] .. "%)")
-		ImGui.Text("Light Armor (" .. armour_discounts[2] .. "%)")
-		ImGui.Text("Standard Armor (" .. armour_discounts[3] .. "%)")
-		ImGui.Text("Heavy Armor (" .. armour_discounts[4] .. "%)")
-		ImGui.Text("Super Heavy Armor (" .. armour_discounts[5] .. "%)")
+		ImGui.Text("超轻型防弹衣 (" .. armour_discounts[1] .. "%)")
+		ImGui.Text("轻型防弹衣 (" .. armour_discounts[2] .. "%)")
+		ImGui.Text("标准防弹衣 (" .. armour_discounts[3] .. "%)")
+		ImGui.Text("重型防弹衣 (" .. armour_discounts[4] .. "%)")
+		ImGui.Text("超重型防弹衣 (" .. armour_discounts[5] .. "%)")
 
 		ImGui.TreePop()
 	end
@@ -4542,8 +4542,8 @@ function YimConfig(DEFAULT_CONFIG)
 	local writeToFile = function(data)
 		local file, _ = io.open(script_json, "w")
 		if file == nil then
-			log.warning("Failed to write to " .. script_json)
-			gui.show_error("YimConfig", "Failed to write to " .. script_json)
+			log.warning("写入失败: " .. script_json)
+			gui.show_error("YimConfig", "写入失败: " .. script_json)
 			return false
 		end
 		file:write(json.encode(data))
@@ -4601,7 +4601,7 @@ function YimConfig(DEFAULT_CONFIG)
 		if t then
 			t[item_tag] = value
 			if not writeToFile(t) then
-				log.warning("Failed to save config to " .. script_json)
+				log.warning("保存配置失败: " .. script_json)
 			end
 		end
 	end
@@ -4611,7 +4611,7 @@ function YimConfig(DEFAULT_CONFIG)
 		if t then
 			return t[item_tag]
 		else
-			log.warning("Failed to read config from " .. script_json)
+			log.warning("读取配置失败: " .. script_json)
 		end
 	end
 
@@ -4805,7 +4805,7 @@ yim_resupplier:add_imgui(function()
 		bunkerOwned = stats.get_int(MPX() .. "PROP_FAC_SLOT5") ~= 0
 		acidOwned = stats.get_int(MPX() .. "PROP_FAC_SLOT6") ~= 0
 		ImGui.BeginTabBar("YimResupplier", ImGuiTabBarFlags.None)
-		if ImGui.BeginTabItem("Manage Supplies") then
+		if ImGui.BeginTabItem("管理补给") then
 			local wh1Supplies = stats.get_int(MPX() .. "CONTOTALFORWHOUSE0") or 0
 			local wh2Supplies = stats.get_int(MPX() .. "CONTOTALFORWHOUSE1") or 0
 			local wh3Supplies = stats.get_int(MPX() .. "CONTOTALFORWHOUSE2") or 0
@@ -4821,22 +4821,22 @@ yim_resupplier:add_imgui(function()
 			local acidSupply = stats.get_int(MPX() .. "MATTOTALFORFACTORY6") or 0
 			local ceoSupply = (wh1Supplies + wh2Supplies + wh3Supplies + wh4Supplies + wh5Supplies)
 			ImGui.Spacing()
-			ImGui.Text("Hangar Cargo")
+			ImGui.Text("机库货物")
 			ImGui.Separator()
 			if hangarOwned then
-				ImGui.Text("Current Supplies:")
+				ImGui.Text("当前库存: ")
 				ImGui.SameLine()
 				ImGui.Dummy(10, 1)
 				ImGui.SameLine()
 				ImGui.ProgressBar((hangarSupply / 50), 140, 30)
 				if hangarSupply < 50 then
-					if ImGui.Button("Source Random Crate(s)") then
+					if ImGui.Button("获取随机货箱") then
 						script.run_in_fiber(function()
 							stats.set_bool_masked(MPX() .. "DLC22022PSTAT_BOOL3", true, 9)
 						end)
 					end
 					ImGui.SameLine()
-					hangarLoop, used = ImGui.Checkbox("Auto-Fill", hangarLoop)
+					hangarLoop, used = ImGui.Checkbox("自动补满", hangarLoop)
 					if hangarLoop then
 						script.run_in_fiber(function(hangarSupp)
 							repeat
@@ -4851,7 +4851,7 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
-					if ImGui.Button("Teleport##hangar") then
+					if ImGui.Button("传送##hangar") then
 						script.run_in_fiber(function()
 							local hangarBlip = HUD.GET_FIRST_BLIP_INFO_ID(569)
 							local hangarLoc
@@ -4863,18 +4863,18 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 			else
-				ImGui.Text("You don't own a Hangar.")
+				ImGui.Text("你没有机库。")
 			end
 			ImGui.Spacing()
-			ImGui.Text("CEO Warehouses")
+			ImGui.Text("CEO 仓库")
 			ImGui.Separator()
-			ImGui.Text("Current Supplies:")
+			ImGui.Text("当前库存: ")
 			ImGui.SameLine()
 			ImGui.Dummy(10, 1)
 			ImGui.SameLine()
 			ImGui.ProgressBar((ceoSupply / 555), 140, 30)
 			if ceoSupply < 555 then
-				if ImGui.Button("Source Random Crate(s)##ceo") then
+				if ImGui.Button("获取随机货箱##ceo") then
 					script.run_in_fiber(function(fillceo)
 						for i = 12, 16 do
 							stats.set_bool_masked(MPX() .. "FIXERPSTAT_BOOL1", true, i)
@@ -4883,7 +4883,7 @@ yim_resupplier:add_imgui(function()
 					end)
 				end
 				ImGui.SameLine()
-				ceoLoop, used = ImGui.Checkbox("Auto-Fill##ceo", ceoLoop)
+				ceoLoop, used = ImGui.Checkbox("自动补满##ceo", ceoLoop)
 				if ceoLoop then
 					script.run_in_fiber(function(ceoloop)
 						repeat
@@ -4901,7 +4901,7 @@ yim_resupplier:add_imgui(function()
 				end
 			end
 			if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
-				if ImGui.Button("Teleport To Office") then
+				if ImGui.Button("传送到办公室") then
 					script.run_in_fiber(function()
 						local ceoBlip = HUD.GET_FIRST_BLIP_INFO_ID(475)
 						local ceoLoc
@@ -4913,17 +4913,17 @@ yim_resupplier:add_imgui(function()
 				end
 			end
 			ImGui.Spacing()
-			ImGui.Text("MC Supplies")
+			ImGui.Text("摩托帮补给")
 			ImGui.Separator()
 			if fCashOwned then
-				ImGui.Text("Fake Cash:")
+				ImGui.Text("假钞: ")
 				ImGui.SameLine()
 				ImGui.Dummy(55, 1)
 				ImGui.SameLine()
 				ImGui.ProgressBar((cashSupply / 100), 140, 30)
 				if math.ceil(cashSupply) < 100 then
 					ImGui.SameLine()
-					if ImGui.Button(" Fill ##FakeCash") then
+					if ImGui.Button(" 补满 ##FakeCash") then
 						globals.set_int(main_global + 0 + 1, 1)
 					end
 					ImGui.SameLine()
@@ -4931,7 +4931,7 @@ yim_resupplier:add_imgui(function()
 				end
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##fc") then
+					if ImGui.Button("传送##fc") then
 						script.run_in_fiber(function()
 							local fcBlip = HUD.GET_FIRST_BLIP_INFO_ID(500)
 							local fcLoc
@@ -4943,17 +4943,17 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 			else
-				ImGui.Text("You don't own a Fake Cash business.")
+				ImGui.Text("你没有假钞厂。")
 			end
 			if cokeOwned then
-				ImGui.Text("Cocaine:")
+				ImGui.Text("可卡因: ")
 				ImGui.SameLine()
 				ImGui.Dummy(73, 1)
 				ImGui.SameLine()
 				ImGui.ProgressBar((cokeSupply / 100), 140, 30)
 				if math.ceil(cokeSupply) < 100 then
 					ImGui.SameLine()
-					if ImGui.Button(" Fill ##Cocaine") then
+					if ImGui.Button(" 补满 ##Cocaine") then
 						globals.set_int(main_global + 4 + 1, 1)
 					end
 					ImGui.SameLine()
@@ -4961,7 +4961,7 @@ yim_resupplier:add_imgui(function()
 				end
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##coke") then
+					if ImGui.Button("传送##coke") then
 						script.run_in_fiber(function()
 							local cokeBlip = HUD.GET_FIRST_BLIP_INFO_ID(497)
 							local cokeLoc
@@ -4973,17 +4973,17 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 			else
-				ImGui.Text("You don't own a Cocaine business.")
+				ImGui.Text("你没有可卡因工厂。")
 			end
 			if methOwned then
-				ImGui.Text("Meth:")
+				ImGui.Text("甲基安非他命: ")
 				ImGui.SameLine()
 				ImGui.Dummy(95, 1)
 				ImGui.SameLine()
 				ImGui.ProgressBar((methSupply / 100), 140, 30)
 				if math.ceil(methSupply) < 100 then
 					ImGui.SameLine()
-					if ImGui.Button(" Fill ##Meth") then
+					if ImGui.Button(" 补满 ##Meth") then
 						globals.set_int(main_global + 2 + 1, 1)
 					end
 					ImGui.SameLine()
@@ -4991,7 +4991,7 @@ yim_resupplier:add_imgui(function()
 				end
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##meth") then
+					if ImGui.Button("传送##meth") then
 						script.run_in_fiber(function()
 							local methBlip = HUD.GET_FIRST_BLIP_INFO_ID(499)
 							local methLoc
@@ -5003,17 +5003,17 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 			else
-				ImGui.Text("You don't own a Meth business.")
+				ImGui.Text("你没有甲基安非他命实验室。")
 			end
 			if weedOwned then
-				ImGui.Text("Weed:")
+				ImGui.Text("大麻: ")
 				ImGui.SameLine()
 				ImGui.Dummy(90, 1)
 				ImGui.SameLine()
 				ImGui.ProgressBar((weedSupply / 100), 140, 30)
 				if math.ceil(weedSupply) < 100 then
 					ImGui.SameLine()
-					if ImGui.Button(" Fill ##Weed") then
+					if ImGui.Button(" 补满 ##Weed") then
 						globals.set_int(main_global + 3 + 1, 1)
 					end
 					ImGui.SameLine()
@@ -5021,7 +5021,7 @@ yim_resupplier:add_imgui(function()
 				end
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##weed") then
+					if ImGui.Button("传送##weed") then
 						script.run_in_fiber(function()
 							local weedBlip = HUD.GET_FIRST_BLIP_INFO_ID(496)
 							local weedLoc
@@ -5033,15 +5033,15 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 			else
-				ImGui.Text("You don't own a Weed business.")
+				ImGui.Text("你没有大麻种植场。")
 			end
 			if fdOwned then
-				ImGui.Text("Document Forgery: ")
+				ImGui.Text("伪造文件: ")
 				ImGui.SameLine()
 				ImGui.ProgressBar((dfSupply / 100), 140, 30)
 				if math.ceil(dfSupply) < 100 then
 					ImGui.SameLine()
-					if ImGui.Button(" Fill ##DocumentForgery") then
+					if ImGui.Button(" 补满 ##DocumentForgery") then
 						globals.set_int(main_global + 1 + 1, 1)
 					end
 					ImGui.SameLine()
@@ -5049,7 +5049,7 @@ yim_resupplier:add_imgui(function()
 				end
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##fd") then
+					if ImGui.Button("传送##fd") then
 						script.run_in_fiber(function()
 							local fdBlip = HUD.GET_FIRST_BLIP_INFO_ID(498)
 							local fdLoc
@@ -5061,17 +5061,17 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 			else
-				ImGui.Text("You don't own a Document Forgery office.")
+				ImGui.Text("你没有伪造文件办公室。")
 			end
 			if bunkerOwned then
-				ImGui.Text("Bunker:")
+				ImGui.Text("地堡: ")
 				ImGui.SameLine()
 				ImGui.Dummy(80, 1)
 				ImGui.SameLine()
 				ImGui.ProgressBar((bunkerSupply / 100), 140, 30)
 				if math.ceil(bunkerSupply) < 100 then
 					ImGui.SameLine()
-					if ImGui.Button(" Fill ##Bunker") then
+					if ImGui.Button(" 补满 ##Bunker") then
 						globals.set_int(main_global + 5 + 1, 1)
 					end
 					ImGui.SameLine()
@@ -5079,7 +5079,7 @@ yim_resupplier:add_imgui(function()
 				end
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##bunker") then
+					if ImGui.Button("传送##bunker") then
 						script.run_in_fiber(function()
 							local bunkerBlip = HUD.GET_FIRST_BLIP_INFO_ID(557)
 							local bunkerLoc
@@ -5091,17 +5091,17 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 			else
-				ImGui.Text("You don't own a Bunker.")
+				ImGui.Text("你没有地堡。")
 			end
 			if acidOwned then
-				ImGui.Text("Acid Lab:")
+				ImGui.Text("致幻剂实验室: ")
 				ImGui.SameLine()
 				ImGui.Dummy(70, 1)
 				ImGui.SameLine()
 				ImGui.ProgressBar((acidSupply / 100), 140, 30)
 				if math.ceil(acidSupply) < 100 then
 					ImGui.SameLine()
-					if ImGui.Button(" Fill ##AcidLab") then
+					if ImGui.Button(" 补满 ##AcidLab") then
 						globals.set_int(main_global + 6 + 1, 1)
 					end
 					ImGui.SameLine()
@@ -5109,7 +5109,7 @@ yim_resupplier:add_imgui(function()
 				end
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##acid") then
+					if ImGui.Button("传送##acid") then
 						script.run_in_fiber(function()
 							local acidBlip = HUD.GET_FIRST_BLIP_INFO_ID(848)
 							local acidLoc
@@ -5123,23 +5123,23 @@ yim_resupplier:add_imgui(function()
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.Dummy(1, 10)
 					coloredText(
-						"WARNING!\10Teleport buttons might be broken in public sessions.",
+						"警告！\10传送按钮在公开战局可能不可用。",
 						40,
 						{ 255, 204, 0, 0.8 }
 					)
 				end
 			else
-				ImGui.Text("You don't own an Acid Lab.")
+				ImGui.Text("你没有致幻剂实验室。")
 			end
 			ImGui.EndTabItem()
 		end
-		if ImGui.BeginTabItem("Production Overview") then
+		if ImGui.BeginTabItem("生产总览") then
 			--------------------------------------- Hangar ----------------------------------------------------------------------
 			if hangarOwned then
-				ImGui.Text("Hangar:")
+				ImGui.Text("机库: ")
 				local hangarCargo = stats.get_int(MPX() .. "HANGAR_CONTRABAND_TOTAL") or 0
 				hangarTotal = hangarCargo * 30000
-				ImGui.Text("Product:")
+				ImGui.Text("产品：")
 				ImGui.SameLine()
 				ImGui.Dummy(5, 1)
 				ImGui.SameLine()
@@ -5152,13 +5152,13 @@ yim_resupplier:add_imgui(function()
 				ImGui.SameLine()
 				ImGui.Dummy(10, 1)
 				ImGui.SameLine()
-				ImGui.Text("Value:")
+				ImGui.Text("价值：")
 				ImGui.SameLine()
 				ImGui.Text(formatMoney(hangarTotal))
 			end
 			--------------------------------------- CEO ----------------------------------------------------------------------
 			ImGui.Separator()
-			ImGui.Text("CEO:")
+			ImGui.Text("CEO: ")
 			local wh1Supplies = stats.get_int(MPX() .. "CONTOTALFORWHOUSE0") or 0
 			local wh2Supplies = stats.get_int(MPX() .. "CONTOTALFORWHOUSE1") or 0
 			local wh3Supplies = stats.get_int(MPX() .. "CONTOTALFORWHOUSE2") or 0
@@ -5197,7 +5197,7 @@ yim_resupplier:add_imgui(function()
 				+ (wh4Value * wh4Supplies)
 				+ (wh5Value * wh5Supplies)
 			)
-			ImGui.Text("Product:")
+			ImGui.Text("产品：")
 			ImGui.SameLine()
 			ImGui.Dummy(5, 1)
 			ImGui.SameLine()
@@ -5210,20 +5210,20 @@ yim_resupplier:add_imgui(function()
 			ImGui.SameLine()
 			ImGui.Dummy(10, 1)
 			ImGui.SameLine()
-			ImGui.Text("Value:")
+			ImGui.Text("价值：")
 			ImGui.SameLine()
 			ImGui.Text(formatMoney(ceoTotal))
 			--------------------------------------- Fake Cash -------------------------------------------------------------------
 			if fCashOwned then
 				ImGui.Separator()
-				ImGui.Text("Fake Cash:")
+				ImGui.Text("假钞: ")
 				ImGui.SameLine()
-				cashUpdgrade1, used = ImGui.Checkbox("Equipment Upgrade##cash", cashUpdgrade1)
+				cashUpdgrade1, used = ImGui.Checkbox("装备升级##cash", cashUpdgrade1)
 				ImGui.SameLine()
 				if used then
 					CFG.save("cashUpdgrade1", cashUpdgrade1)
 				end
-				cashUpdgrade2, used = ImGui.Checkbox("Staff Upgrade##cash", cashUpdgrade2)
+				cashUpdgrade2, used = ImGui.Checkbox("员工升级##cash", cashUpdgrade2)
 				if used then
 					CFG.save("cashUpdgrade2", cashUpdgrade2)
 				end
@@ -5239,7 +5239,7 @@ yim_resupplier:add_imgui(function()
 				end
 				local cashProduct = stats.get_int(MPX() .. "PRODTOTALFORFACTORY0") or 0
 				cashTotal = ((globals.get_int(262145 + 17409) + cashOffset1 + cashOffset2) * cashProduct)
-				ImGui.Text("Product:")
+				ImGui.Text("产品：")
 				ImGui.SameLine()
 				ImGui.Dummy(5, 1)
 				ImGui.SameLine()
@@ -5252,21 +5252,21 @@ yim_resupplier:add_imgui(function()
 				ImGui.SameLine()
 				ImGui.Dummy(10, 1)
 				ImGui.SameLine()
-				ImGui.Text("Value:")
+				ImGui.Text("价值：")
 				ImGui.SameLine()
 				ImGui.Text(formatMoney(cashTotal))
 			end
 			---------------------------------------Coke----------------------------------------------------------------------
 			if cokeOwned then
 				ImGui.Separator()
-				ImGui.Text("Cocaine:    ")
+				ImGui.Text("可卡因: ")
 				ImGui.SameLine()
-				cokeUpdgrade1, used = ImGui.Checkbox("Equipment Upgrade##coke", cokeUpdgrade1)
+				cokeUpdgrade1, used = ImGui.Checkbox("装备升级##coke", cokeUpdgrade1)
 				ImGui.SameLine()
 				if used then
 					CFG.save("cokeUpdgrade1", cokeUpdgrade1)
 				end
-				cokeUpdgrade2, used = ImGui.Checkbox("Staff Upgrade##coke", cokeUpdgrade2)
+				cokeUpdgrade2, used = ImGui.Checkbox("员工升级##coke", cokeUpdgrade2)
 				if used then
 					CFG.save("cokeUpdgrade2", cokeUpdgrade2)
 				end
@@ -5282,7 +5282,7 @@ yim_resupplier:add_imgui(function()
 				end
 				local cokeProduct = stats.get_int(MPX() .. "PRODTOTALFORFACTORY1") or 0
 				cokeTotal = ((globals.get_int(262145 + 17410) + cokeOffset1 + cokeOffset2) * cokeProduct)
-				ImGui.Text("Product:")
+				ImGui.Text("产品：")
 				ImGui.SameLine()
 				ImGui.Dummy(5, 1)
 				ImGui.SameLine()
@@ -5295,21 +5295,21 @@ yim_resupplier:add_imgui(function()
 				ImGui.SameLine()
 				ImGui.Dummy(10, 1)
 				ImGui.SameLine()
-				ImGui.Text("Value:")
+				ImGui.Text("价值：")
 				ImGui.SameLine()
 				ImGui.Text(formatMoney(cokeTotal))
 			end
 			---------------------------------------Meth-----------------------------------------------------------------------
 			if methOwned then
 				ImGui.Separator()
-				ImGui.Text("Meth:        ")
+				ImGui.Text("甲基安非他命: ")
 				ImGui.SameLine()
-				methUpdgrade1, used = ImGui.Checkbox("Equipment Upgrade##meth", methUpdgrade1)
+				methUpdgrade1, used = ImGui.Checkbox("装备升级##meth", methUpdgrade1)
 				ImGui.SameLine()
 				if used then
 					CFG.save("methUpdgrade1", methUpdgrade1)
 				end
-				methUpdgrade2, used = ImGui.Checkbox("Staff Upgrade##meth", methUpdgrade2)
+				methUpdgrade2, used = ImGui.Checkbox("员工升级##meth", methUpdgrade2)
 				if used then
 					CFG.save("methUpdgrade2", methUpdgrade2)
 				end
@@ -5325,7 +5325,7 @@ yim_resupplier:add_imgui(function()
 				end
 				local methProduct = stats.get_int(MPX() .. "PRODTOTALFORFACTORY2") or 0
 				methTotal = ((globals.get_int(262145 + 17411) + methOffset1 + methOffset2) * methProduct)
-				ImGui.Text("Product:")
+				ImGui.Text("产品：")
 				ImGui.SameLine()
 				ImGui.Dummy(5, 1)
 				ImGui.SameLine()
@@ -5338,21 +5338,21 @@ yim_resupplier:add_imgui(function()
 				ImGui.SameLine()
 				ImGui.Dummy(10, 1)
 				ImGui.SameLine()
-				ImGui.Text("Value:")
+				ImGui.Text("价值：")
 				ImGui.SameLine()
 				ImGui.Text(formatMoney(methTotal))
 			end
 			---------------------------------------Weed------------------------------------------------------------------------
 			if weedOwned then
 				ImGui.Separator()
-				ImGui.Text("Weed:       ")
+				ImGui.Text("大麻: ")
 				ImGui.SameLine()
-				weedUpdgrade1, used = ImGui.Checkbox("Equipment Upgrade##weed", weedUpdgrade1)
+				weedUpdgrade1, used = ImGui.Checkbox("装备升级##weed", weedUpdgrade1)
 				ImGui.SameLine()
 				if used then
 					CFG.save("weedUpdgrade1", weedUpdgrade1)
 				end
-				weedUpdgrade2, used = ImGui.Checkbox("Staff Upgrade##weed", weedUpdgrade2)
+				weedUpdgrade2, used = ImGui.Checkbox("员工升级##weed", weedUpdgrade2)
 				if used then
 					CFG.save("weedUpdgrade2", weedUpdgrade2)
 				end
@@ -5368,7 +5368,7 @@ yim_resupplier:add_imgui(function()
 				end
 				local weedProduct = stats.get_int("MPX_PRODTOTALFORFACTORY3")
 				weedTotal = ((globals.get_int(262145 + 17412) + weedOffset1 + weedOffset2) * weedProduct)
-				ImGui.Text("Product:")
+				ImGui.Text("产品：")
 				ImGui.SameLine()
 				ImGui.Dummy(5, 1)
 				ImGui.SameLine()
@@ -5381,21 +5381,21 @@ yim_resupplier:add_imgui(function()
 				ImGui.SameLine()
 				ImGui.Dummy(10, 1)
 				ImGui.SameLine()
-				ImGui.Text("Value:")
+				ImGui.Text("价值：")
 				ImGui.SameLine()
 				ImGui.Text(formatMoney(weedTotal))
 			end
 			---------------------------------------Document Forgery------------------------------------------------------------
 			if fdOwned then
 				ImGui.Separator()
-				ImGui.Text("Fake ID:    ")
+				ImGui.Text("假证件: ")
 				ImGui.SameLine()
-				fdUpdgrade1, used = ImGui.Checkbox("Equipment Upgrade##fd", fdUpdgrade1)
+				fdUpdgrade1, used = ImGui.Checkbox("装备升级##fd", fdUpdgrade1)
 				ImGui.SameLine()
 				if used then
 					CFG.save("fdUpdgrade1", fdUpdgrade1)
 				end
-				fdUpdgrade2, used = ImGui.Checkbox("Staff Upgrade##fd", fdUpdgrade2)
+				fdUpdgrade2, used = ImGui.Checkbox("员工升级##fd", fdUpdgrade2)
 				if used then
 					CFG.save("fdUpdgrade2", fdUpdgrade2)
 				end
@@ -5411,7 +5411,7 @@ yim_resupplier:add_imgui(function()
 				end
 				local fdProduct = stats.get_int("MPX_PRODTOTALFORFACTORY4")
 				fdTotal = ((globals.get_int(262145 + 17408) + fdOffset1 + fdOffset2) * fdProduct)
-				ImGui.Text("Product:")
+				ImGui.Text("产品：")
 				ImGui.SameLine()
 				ImGui.Dummy(5, 1)
 				ImGui.SameLine()
@@ -5424,21 +5424,21 @@ yim_resupplier:add_imgui(function()
 				ImGui.SameLine()
 				ImGui.Dummy(10, 1)
 				ImGui.SameLine()
-				ImGui.Text("Value:")
+				ImGui.Text("价值：")
 				ImGui.SameLine()
 				ImGui.Text(formatMoney(fdTotal))
 			end
 			---------------------------------------Bunker-----------------------------------------------------------------------
 			if bunkerOwned then
 				ImGui.Separator()
-				ImGui.Text("Bunker:     ")
+				ImGui.Text("地堡: ")
 				ImGui.SameLine()
-				bunkerUpdgrade1, used = ImGui.Checkbox("Equipment Upgrade##bunker", bunkerUpdgrade1)
+				bunkerUpdgrade1, used = ImGui.Checkbox("装备升级##bunker", bunkerUpdgrade1)
 				ImGui.SameLine()
 				if used then
 					CFG.save("bunkerUpdgrade1", bunkerUpdgrade1)
 				end
-				bunkerUpdgrade2, used = ImGui.Checkbox("Staff Upgrade##bunker", bunkerUpdgrade2)
+				bunkerUpdgrade2, used = ImGui.Checkbox("员工升级##bunker", bunkerUpdgrade2)
 				if used then
 					CFG.save("bunkerUpdgrade2", bunkerUpdgrade2)
 				end
@@ -5454,7 +5454,7 @@ yim_resupplier:add_imgui(function()
 				end
 				local bunkerProduct = stats.get_int("MPX_PRODTOTALFORFACTORY5")
 				bunkerTotal = ((globals.get_int(262145 + 21343) + bunkerOffset1 + bunkerOffset2) * bunkerProduct)
-				ImGui.Text("Product:")
+				ImGui.Text("产品：")
 				ImGui.SameLine()
 				ImGui.Dummy(5, 1)
 				ImGui.SameLine()
@@ -5467,16 +5467,16 @@ yim_resupplier:add_imgui(function()
 				ImGui.SameLine()
 				ImGui.Dummy(10, 1)
 				ImGui.SameLine()
-				ImGui.Text("Value:")
+				ImGui.Text("价值：")
 				ImGui.SameLine()
-				ImGui.Text("BC: " .. formatMoney(bunkerTotal) .. "\nLS: " .. formatMoney(math.floor(bunkerTotal * 1.5)))
+				ImGui.Text("假钞: " .. formatMoney(bunkerTotal) .. "\nLS: " .. formatMoney(math.floor(bunkerTotal * 1.5)))
 			end
 			---------------------------------------Acid Lab-------------------------------------------------------------------
 			if acidOwned then
 				ImGui.Separator()
-				ImGui.Text("Acid Lab:   ")
+				ImGui.Text("致幻剂实验室: ")
 				ImGui.SameLine()
-				acidUpdgrade, used = ImGui.Checkbox("Equipment Upgrade##acid", acidUpdgrade)
+				acidUpdgrade, used = ImGui.Checkbox("装备升级##acid", acidUpdgrade)
 				if used then
 					CFG.save("acidUpdgrade", acidUpdgrade)
 				end
@@ -5487,7 +5487,7 @@ yim_resupplier:add_imgui(function()
 				end
 				local acidProduct = stats.get_int("MPX_PRODTOTALFORFACTORY6")
 				acidTotal = ((globals.get_int(262145 + 17413) + acidOffset) * acidProduct)
-				ImGui.Text("Product:")
+				ImGui.Text("产品：")
 				ImGui.SameLine()
 				ImGui.Dummy(5, 1)
 				ImGui.SameLine()
@@ -5500,34 +5500,34 @@ yim_resupplier:add_imgui(function()
 				ImGui.SameLine()
 				ImGui.Dummy(10, 1)
 				ImGui.SameLine()
-				ImGui.Text("Value:")
+				ImGui.Text("价值：")
 				ImGui.SameLine()
 				ImGui.Text(formatMoney(acidTotal))
 			end
 			ImGui.Spacing()
 			ImGui.Separator()
-			ImGui.Text("Nightclub Hubs (read-only):")
+			ImGui.Text("夜总会据点（只读）：")
 			local hubNames = {"Cargo", "Weapons", "Coke", "Meth", "Weed", "Forged Docs", "Cash"}
 			for i = 0, 6 do
 				local prod = stats.get_int(MPX() .. "HUB_PROD_TOTAL_" .. i) or 0
 				ImGui.Text(hubNames[i + 1] .. ": " .. tostring(prod))
 			end
 			ImGui.Separator()
-			ImGui.Text("CEO Warehouses (breakdown):")
+			ImGui.Text("CEO 仓库明细：")
 			local ceoNames = {"WH1", "WH2", "WH3", "WH4", "WH5"}
 			local ceoVals = {wh1Supplies, wh2Supplies, wh3Supplies, wh4Supplies, wh5Supplies}
 			for i = 1, 5 do
 				ImGui.Text(ceoNames[i] .. ": " .. tostring(ceoVals[i] or 0) .. " crates")
 			end
 			ImGui.Separator()
-			ImGui.Text("Vehicle Warehouse (read-only):")
+			ImGui.Text("载具仓库（只读）：")
 			local vehCount = 0
 			for i = 0, 39 do
 				if stats.get_int(MPX() .. "IE_WH_OWNED_VEHICLE_" .. i) ~= 0 then
 					vehCount = vehCount + 1
 				end
 			end
-			ImGui.Text("Stored vehicles: " .. tostring(vehCount) .. " / 40")
+			ImGui.Text("已存放载具: " .. tostring(vehCount) .. " / 40")
 			ImGui.Separator()
 			local finalAmt = (
 				hangarTotal
@@ -5541,19 +5541,19 @@ yim_resupplier:add_imgui(function()
 				+ acidTotal
 			)
 			ImGui.Spacing()
-			ImGui.Text("Total Profit = " .. formatMoney(finalAmt))
+			ImGui.Text("总利润 = " .. formatMoney(finalAmt))
 			ImGui.EndTabItem()
 		end
-		if ImGui.BeginTabItem("Business Safes") then
+		if ImGui.BeginTabItem("产业保险箱") then
 			if stats.get_int("MPX_PROP_NIGHTCLUB") ~= 0 then
 				ImGui.Spacing()
 				ImGui.Spacing()
-				ImGui.Text("¤ Nightclub ¤")
+				ImGui.Text("¤ 夜总会 ¤")
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
 					ImGui.Dummy(50, 1)
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##nc") then
+					if ImGui.Button("传送##nc") then
 						script.run_in_fiber(function()
 							local ncBlip = HUD.GET_FIRST_BLIP_INFO_ID(614)
 							local ncLoc
@@ -5567,19 +5567,19 @@ yim_resupplier:add_imgui(function()
 				local currentNcPop = stats.get_int("MPX_CLUB_POPULARITY")
 				local popDiff = 1000 - currentNcPop
 				local currNcSafeMoney = stats.get_int("MPX_CLUB_SAFE_CASH_VALUE")
-				ImGui.Text("Popularity: ")
+				ImGui.Text("人气: ")
 				ImGui.SameLine()
 				ImGui.Dummy(35, 1)
 				ImGui.SameLine()
 				ImGui.ProgressBar(currentNcPop / 1000, 160, 25, tostring(currentNcPop))
 				if currentNcPop < 1000 then
 					ImGui.SameLine()
-					if ImGui.Button("Max Popularity") then
+					if ImGui.Button("拉满人气") then
 						stats.set_int("MPX_CLUB_POPULARITY", currentNcPop + popDiff)
 						gui.show_success("YimResupplier", "Nightclub popularity increased.")
 					end
 				end
-				ImGui.Text("Safe: ")
+				ImGui.Text("保险箱: ")
 				ImGui.SameLine()
 				ImGui.Dummy(75, 1)
 				ImGui.SameLine()
@@ -5589,12 +5589,12 @@ yim_resupplier:add_imgui(function()
 			if stats.get_int("MPX_PROP_ARCADE") ~= 0 then
 				ImGui.Spacing()
 				ImGui.Spacing()
-				ImGui.Text("¤ Arcade ¤")
+				ImGui.Text("¤ 游戏厅 ¤")
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
 					ImGui.Dummy(60, 1)
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##arcade") then
+					if ImGui.Button("传送##arcade") then
 						script.run_in_fiber(function()
 							local arBlip = HUD.GET_FIRST_BLIP_INFO_ID(740)
 							local arLoc
@@ -5606,7 +5606,7 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 				local currArSafeMoney = stats.get_int("MPX_ARCADE_SAFE_CASH_VALUE")
-				ImGui.Text("Safe: ")
+				ImGui.Text("保险箱: ")
 				ImGui.SameLine()
 				ImGui.Dummy(75, 1)
 				ImGui.SameLine()
@@ -5616,12 +5616,12 @@ yim_resupplier:add_imgui(function()
 			if stats.get_int("MPX_PROP_SECURITY_OFFICE") ~= 0 then
 				ImGui.Spacing()
 				ImGui.Spacing()
-				ImGui.Text("¤ Agency ¤")
+				ImGui.Text("¤ 事务所 ¤")
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
 					ImGui.Dummy(60, 1)
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##agnc") then
+					if ImGui.Button("传送##agnc") then
 						script.run_in_fiber(function()
 							local agncBlip = HUD.GET_FIRST_BLIP_INFO_ID(826)
 							local agncLoc
@@ -5633,7 +5633,7 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 				local currAgSafeMoney = stats.get_int("MPX_FIXER_SAFE_CASH_VALUE")
-				ImGui.Text("Safe: ")
+				ImGui.Text("保险箱: ")
 				ImGui.SameLine()
 				ImGui.Dummy(75, 1)
 				ImGui.SameLine()
@@ -5643,12 +5643,12 @@ yim_resupplier:add_imgui(function()
 			if stats.get_int(MPX() .. "HACKER_DEN_OWNED") ~= 0 then
 				ImGui.Spacing()
 				ImGui.Spacing()
-				ImGui.Text("¤ Hacker Den ¤")
+				ImGui.Text("¤ 黑客窝点 ¤")
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
 					ImGui.Dummy(45, 1)
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##hackerden") then
+					if ImGui.Button("传送##hackerden") then
 						script.run_in_fiber(function()
 							selfTP(false, false, vec3:new(719.3386, -983.1850, 24.1402))
 						end)
@@ -5657,7 +5657,7 @@ yim_resupplier:add_imgui(function()
 				local currHdSafeMoney = stats.get_int(MPX() .. "HDEN24_SAFE_CASH_VALUE")
 				local hdMax = tunables.get_int(-792265290)
 				if hdMax == 0 then hdMax = 250000 end
-				ImGui.Text("Safe: ")
+				ImGui.Text("保险箱: ")
 				ImGui.SameLine()
 				ImGui.Dummy(75, 1)
 				ImGui.SameLine()
@@ -5667,12 +5667,12 @@ yim_resupplier:add_imgui(function()
 			if stats.get_int("MPX_PROP_CLUBHOUSE") ~= 0 then
 				ImGui.Spacing()
 				ImGui.Spacing()
-				ImGui.Text("¤ MC Clubhouse ¤")
+				ImGui.Text("¤ 摩托帮会所 ¤")
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
 					ImGui.Dummy(10, 1)
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##mc") then
+					if ImGui.Button("传送##mc") then
 						script.run_in_fiber(function()
 							local mcBlip = HUD.GET_FIRST_BLIP_INFO_ID(492)
 							local mcLoc
@@ -5684,7 +5684,7 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 				local currClubHouseBarProfit = stats.get_int("MPX_BIKER_BAR_RESUPPLY_CASH")
-				ImGui.Text("Bar Earnings: ")
+				ImGui.Text("酒吧收益: ")
 				ImGui.SameLine()
 				ImGui.Dummy(15, 1)
 				ImGui.SameLine()
@@ -5694,12 +5694,12 @@ yim_resupplier:add_imgui(function()
 			if stats.get_int("MPX_PROP_BAIL_OFFICE") ~= 0 then
 				ImGui.Spacing()
 				ImGui.Spacing()
-				ImGui.Text("¤ Bail Office ¤")
+				ImGui.Text("¤ 保释办公室 ¤")
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
 					ImGui.Dummy(40, 1)
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##bail") then
+					if ImGui.Button("传送##bail") then
 						script.run_in_fiber(function()
 							local bailBlip = HUD.GET_FIRST_BLIP_INFO_ID(893)
 							local bailLoc
@@ -5712,7 +5712,7 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 				local currBailSafe = stats.get_int("MPX_BAIL_SAFE_CASH_VALUE")
-				ImGui.Text("Safe: ")
+				ImGui.Text("保险箱: ")
 				ImGui.SameLine()
 				ImGui.Dummy(75, 1)
 				ImGui.SameLine()
@@ -5722,12 +5722,12 @@ yim_resupplier:add_imgui(function()
 			if stats.get_int("MPX_SALVAGE_YARD_OWNED") ~= 0 then
 				ImGui.Spacing()
 				ImGui.Spacing()
-				ImGui.Text("¤ Salvage Yard ¤")
+				ImGui.Text("¤ 赃车店 ¤")
 				if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 					ImGui.SameLine()
 					ImGui.Dummy(20, 1)
 					ImGui.SameLine()
-					if ImGui.Button("Teleport##salvage") then
+					if ImGui.Button("传送##salvage") then
 						script.run_in_fiber(function()
 							local slvgBlip = HUD.GET_FIRST_BLIP_INFO_ID(867)
 							local slvgLoc
@@ -5739,74 +5739,74 @@ yim_resupplier:add_imgui(function()
 					end
 				end
 				local currSalvSafe = stats.get_int("MPX_SALVAGE_SAFE_CASH_VALUE")
-				ImGui.Text("Safe: ")
+				ImGui.Text("保险箱: ")
 				ImGui.SameLine()
 				ImGui.Dummy(75, 1)
 				ImGui.SameLine()
 				ImGui.ProgressBar(currSalvSafe / 250000, 160, 25, formatMoney(currSalvSafe))
 			end
 			ImGui.Separator()
-			ImGui.Text("Quick Actions (stats only):")
-			if ImGui.Button("Clear CarWash / Weed / Heli Heat") then
+			ImGui.Text("快捷操作（仅统计数据）：")
+			if ImGui.Button("清除洗车行 / 大麻 / 直升机热度") then
 				stats.set_packed_stat_int(24924, 0)
 				stats.set_packed_stat_int(24925, 0)
 				stats.set_int(MPX() .. "SALV23_VEH_ROBBERY_WEEK_ID", stats.get_int(MPX() .. "SALV23_WEEK_SYNC"))
 				gui.show_message("YimResupplier", "Heat cleared.")
 			end
-			if ImGui.Button("Max Salvage Income") then
+			if ImGui.Button("拉满赃车店收入") then
 				stats.set_packed_stat_int(51051, 100)
 				gui.show_message("YimResupplier", "Salvage income set.")
 			end
-			ImGui.Text("Live upgrades (auto-read, manual boxes kept):")
+			ImGui.Text("实时升级（自动读取，保留手动框）：")
 			for i = 0, 4 do
 				local setup = stats.get_int(MPX() .. "FACTORYSETUP" .. i)
 				local upg = stats.get_int(MPX() .. "FACTORYUPGRADES" .. i)
-				ImGui.Text("Factory " .. i .. " setup=" .. tostring(setup) .. " upgrades=" .. tostring(upg))
+				ImGui.Text("工厂 " .. i .. " setup=" .. tostring(setup) .. " upgrades=" .. tostring(upg))
 			end
 			if INTERIOR.GET_INTERIOR_FROM_ENTITY(self.get_ped()) == 0 then
 				ImGui.Dummy(1, 10)
-				coloredText("WARNING!\10Teleport buttons might be broken in public sessions.", 40, { 255, 204, 0, 0.8 })
+				coloredText("警告！\10传送按钮在公开战局可能不可用。", 40, { 255, 204, 0, 0.8 })
 			end
 			ImGui.EndTabItem()
 		end
 	else
-		ImGui.Text("\nUnavailable in Single Player.\n\n")
+		ImGui.Text("\n单人战局不可用。\n\n")
 	end
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ReportsMenu = makeOnlineTab(L7NEG:add_tab("Reports Menu"))
+ReportsMenu = makeOnlineTab(L7NEG:add_tab("举报菜单"))
 ReportsMenu:add_imgui(function()
 	if isOffline() then
 		return
 	end
-	ImGui.Text("Griefing: " .. stats.get_int("MPPLY_GRIEFING"))
-	ImGui.Text("Exploiting: " .. stats.get_int("MPPLY_EXPLOITS"))
-	ImGui.Text("Abusing Bugs: " .. stats.get_int("MPPLY_GAME_EXPLOITS"))
-	ImGui.Text("Annoying People In Text: " .. stats.get_int("MPPLY_TC_ANNOYINGME"))
-	ImGui.Text("Hate Speech In Voice: " .. stats.get_int("MPPLY_VC_HATE"))
-	ImGui.Text("Offensive Language: " .. stats.get_int("MPPLY_OFFENSIVE_LANGUAGE"))
-	ImGui.Text("Offensive Tagplate: " .. stats.get_int("MPPLY_OFFENSIVE_TAGPLATE"))
-	ImGui.Text("Offensive Content: " .. stats.get_int("MPPLY_OFFENSIVE_UGC"))
-	ImGui.Text("Bad Crew Name: " .. stats.get_int("MPPLY_BAD_CREW_NAME"))
-	ImGui.Text("Bad Crew Motto: " .. stats.get_int("MPPLY_BAD_CREW_MOTTO"))
-	ImGui.Text("Bad Crew Status: " .. stats.get_int("MPPLY_BAD_CREW_STATUS"))
-	ImGui.Text("Bad Crew Emblem: " .. stats.get_int("MPPLY_BAD_CREW_EMBLEM"))
+	ImGui.Text("恶意骚扰: " .. stats.get_int("MPPLY_GRIEFING"))
+	ImGui.Text("利用漏洞: " .. stats.get_int("MPPLY_EXPLOITS"))
+	ImGui.Text("滥用 Bug: " .. stats.get_int("MPPLY_GAME_EXPLOITS"))
+	ImGui.Text("文字骚扰他人: " .. stats.get_int("MPPLY_TC_ANNOYINGME"))
+	ImGui.Text("语音仇恨言论: " .. stats.get_int("MPPLY_VC_HATE"))
+	ImGui.Text("冒犯性语言: " .. stats.get_int("MPPLY_OFFENSIVE_LANGUAGE"))
+	ImGui.Text("冒犯性车贴: " .. stats.get_int("MPPLY_OFFENSIVE_TAGPLATE"))
+	ImGui.Text("冒犯性内容: " .. stats.get_int("MPPLY_OFFENSIVE_UGC"))
+	ImGui.Text("违规帮会名称: " .. stats.get_int("MPPLY_BAD_CREW_NAME"))
+	ImGui.Text("违规帮会格言: " .. stats.get_int("MPPLY_BAD_CREW_MOTTO"))
+	ImGui.Text("违规帮会状态: " .. stats.get_int("MPPLY_BAD_CREW_STATUS"))
+	ImGui.Text("违规帮会徽章: " .. stats.get_int("MPPLY_BAD_CREW_EMBLEM"))
 	ImGui.Separator()
-	ImGui.Text("Now onto your commends:")
+	ImGui.Text("你的点赞记录：")
 	ImGui.Separator()
-	ImGui.Text("Friendly: " .. stats.get_int("MPPLY_FRIENDLY"))
-	ImGui.Text("Helpful: " .. stats.get_int("MPPLY_HELPFUL"))
+	ImGui.Text("友善: " .. stats.get_int("MPPLY_FRIENDLY"))
+	ImGui.Text("乐于助人: " .. stats.get_int("MPPLY_HELPFUL"))
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-WareHouseDataEditorMenu = L7NEG7:add_tab("WareHouse Data Editor")
+WareHouseDataEditorMenu = L7NEG7:add_tab("仓库数据编辑器")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-WareHouseDataEditorMenu:add_button("Auto-Reset stats-0/0Sales", function()
+WareHouseDataEditorMenu:add_button("自动重置统计（0/0 次销售）", function()
 	stats.set_int(MPX() .. "LIFETIME_BUY_COMPLETE", 0)
 	stats.set_int(MPX() .. "LIFETIME_BUY_UNDERTAKEN", 0)
 	stats.set_int(MPX() .. "LIFETIME_SELL_COMPLETE", 0)
@@ -5820,66 +5820,66 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-L7NEG7N = L7NEG7:add_tab("Tutorial ReadMe")
+L7NEG7N = L7NEG7:add_tab("教程说明")
 
-L7NEG7N:add_text("     Ceo Crates Method       ")
-L7NEG7N:add_text("   First Enter Your Warehouse   ")
-L7NEG7N:add_text("   Then Stand In Front Of Your Warehouse Computer And Then Active The Enable Ceo Manager    ")
+L7NEG7N:add_text("        CEO 货箱方案        ")
+L7NEG7N:add_text("   先进入你的仓库   ")
+L7NEG7N:add_text("   站到仓库电脑前，然后启动「CEO 管理器」   ")
 L7NEG7N:add_text("https://l7neg.is-a.dev/discord")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-HeistsDataEditorMenu = makeOnlineTab(L7NEG:add_tab("Heists Data Editor Menu"))
+HeistsDataEditorMenu = makeOnlineTab(L7NEG:add_tab("豪劫数据编辑器"))
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local ApartmentDataEditorMenu = HeistsDataEditorMenu:add_tab("Apartment Heist")
+local ApartmentDataEditorMenu = HeistsDataEditorMenu:add_tab("公寓豪劫")
 
-ApartmentDataEditorMenu:add_text("Preps")
-ApartmentDataEditorMenu:add_button("Complete Preps", function()
+ApartmentDataEditorMenu:add_text("前置")
+ApartmentDataEditorMenu:add_button("完成全部前置", function()
 	stats.set_int(MPX() .. "HEIST_PLANNING_STAGE", -1)
-	gui.show_message("Apartment Heist", "Preps should've been completed")
+	gui.show_message("公寓豪劫", "Preps should've been completed")
 end)
 ApartmentDataEditorMenu:add_sameline()
 ApartmentDataEditorMenu:add_text("")
-ApartmentDataEditorMenu:add_text("For Fleeca:")
+ApartmentDataEditorMenu:add_text("全福银行流程：")
 ApartmentDataEditorMenu:add_text(
-	'Pay for the preparation, start the first mission and as soon as you are sent to scout\nchange the session, come back to planning room, press "Complete Preps" near white board and press "E"'
+	'先付费开始准备任务，一旦被派去踩点\n立即切换战局，回到规划室，在白色规划板旁点「完成全部前置」再按 E'
 )
-ApartmentDataEditorMenu:add_text("For Other Heist:")
+ApartmentDataEditorMenu:add_text("其他豪劫流程：")
 ApartmentDataEditorMenu:add_text(
-	'Start the mission and leave after the 1st cutscene ends, press "Complete Preps" near white board and press "E"'
+	'开始任务，第一段过场结束后离开战局，在白色规划板旁点「完成全部前置」再按 E'
 )
 ApartmentDataEditorMenu:add_separator()
-ApartmentDataEditorMenu:add_button("Kill Cooldown", function()
+ApartmentDataEditorMenu:add_button("清除击杀冷却", function()
 	globals.set_int(ACDg + 1 + (PLAYER.PLAYER_ID() * 77) + 76, -1)
-	gui.show_message("Apartment Heist", "Cooldown should've been killed")
+	gui.show_message("公寓豪劫", "Cooldown should've been killed")
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Change Session", function()
+ApartmentDataEditorMenu:add_button("切换战局", function()
 	changeSession(8)
 end)
 
 ApartmentDataEditorMenu:add_separator()
-ApartmentDataEditorMenu:add_text("Team Lives:")
-local livesValueApartment = ApartmentDataEditorMenu:add_input_int("Lives")
+ApartmentDataEditorMenu:add_text("团队生命: ")
+local livesValueApartment = ApartmentDataEditorMenu:add_input_int("生命数")
 livesValueApartment:set_value(3)
-ApartmentDataEditorMenu:add_button("Set Lives", function()
+ApartmentDataEditorMenu:add_button("设置生命数", function()
 	local v = livesValueApartment:get_value()
 	if v < 1 then
-		gui.show_message("Apartment Heist", "Lives must be at least 1!")
+		gui.show_message("公寓豪劫", "Lives must be at least 1!")
 	else
 		locals.set_int(FMC, AHLIVESL, v)
-		gui.show_message("Apartment Heist", "Team lives set to " .. v)
+		gui.show_message("公寓豪劫", "Team lives set to " .. v)
 	end
 end)
 
 ApartmentDataEditorMenu:add_separator()
 ApartmentDataEditorMenu:add_text(
-	"Works only for you. Allows you to get 12 millions bonus for The Pacific Standard Job on hard difficulty.\nEnable before starting the heist. Has a cooldown."
+	"仅对自己生效：太平洋标准银行硬核难度可获 1200 万奖金。\n开始豪劫前启用。有冷却时间。"
 )
 
-local apartmentBonus = ApartmentDataEditorMenu:add_checkbox("12mil Bonus")
+local apartmentBonus = ApartmentDataEditorMenu:add_checkbox("1200 万奖金")
 local previousState = false
 
 script.register_looped("SN_Apartment_Bonus", function(script)
@@ -5899,7 +5899,7 @@ script.register_looped("SN_Apartment_Bonus", function(script)
 		stats.set_int(joaat("MPPLY_HEISTNODEATHPROGREITSET"), currentState and 268435455 or 134217727)
 		stats.set_bool(joaat("MPPLY_AWD_HST_ULT_CHAL"), not currentState)
 		gui.show_message(
-			"12mil Bonus",
+			"1200 万奖金",
 			currentState and "Bonus should've been applied. Don't forget about difficulty"
 				or "Bonus should've been unapplied"
 		)
@@ -5909,52 +5909,52 @@ script.register_looped("SN_Apartment_Bonus", function(script)
 end)
 
 ApartmentDataEditorMenu:add_separator()
-ApartmentDataEditorMenu:add_button("3mil Payout", function()
+ApartmentDataEditorMenu:add_button("300 万收益", function()
 	local perPlayer, key = SN_ApartmentMaxCutCherax(false)
 	if perPlayer then
 		local isFleeca = (key == 1328892776)
 		SN_ApplyApartmentCutsCherax(perPlayer, perPlayer, perPlayer, perPlayer, isFleeca)
-		gui.show_message("Apartment Heist", "Cuts should've been applied")
+		gui.show_message("公寓豪劫", "Cuts should've been applied")
 	else
-		gui.show_message("Apartment Heist", "Unknown heist/difficulty")
+		gui.show_message("公寓豪劫", "Unknown heist/difficulty")
 	end
 end)
 ApartmentDataEditorMenu:add_separator()
-ApartmentDataEditorMenu:add_text("Cuts:")
-local apartCut1 = ApartmentDataEditorMenu:add_input_int("Player 1")
-local apartCut2 = ApartmentDataEditorMenu:add_input_int("Player 2")
-local apartCut3 = ApartmentDataEditorMenu:add_input_int("Player 3")
-local apartCut4 = ApartmentDataEditorMenu:add_input_int("Player 4")
+ApartmentDataEditorMenu:add_text("分红：")
+local apartCut1 = ApartmentDataEditorMenu:add_input_int("玩家 1")
+local apartCut2 = ApartmentDataEditorMenu:add_input_int("玩家 2")
+local apartCut3 = ApartmentDataEditorMenu:add_input_int("玩家 3")
+local apartCut4 = ApartmentDataEditorMenu:add_input_int("玩家 4")
 ApartmentDataEditorMenu:add_separator()
-ApartmentDataEditorMenu:add_text("Board Limits:")
-ApartmentDataEditorMenu:add_text("Raise before Apply Cuts for over-100% cuts. Reset after the heist.")
-local boardCeiling = ApartmentDataEditorMenu:add_input_int("Ceiling")
+ApartmentDataEditorMenu:add_text("规划板上限：")
+ApartmentDataEditorMenu:add_text("先提高上限再应用分红可超过 100%，豪劫结束后重置。")
+local boardCeiling = ApartmentDataEditorMenu:add_input_int("上限")
 boardCeiling:set_value(3000000)
-local boardCap = ApartmentDataEditorMenu:add_input_int("Max Cut %")
+local boardCap = ApartmentDataEditorMenu:add_input_int("最大分红 %")
 boardCap:set_value(70)
-ApartmentDataEditorMenu:add_button("Apply Custom Limits", function()
+ApartmentDataEditorMenu:add_button("应用自定义上限", function()
 	tunables.set_int("HEIST_PLANNING_SANITY_CEILING", boardCeiling:get_value())
 	tunables.set_int("MAX_HEIST_CUT_AMOUNT", boardCap:get_value())
-	gui.show_message("Apartment Heist", "Ceiling: " .. boardCeiling:get_value() .. " Cap: " .. boardCap:get_value())
+	gui.show_message("公寓豪劫", "Ceiling: " .. boardCeiling:get_value() .. " Cap: " .. boardCap:get_value())
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Raise Board Limits", function()
+ApartmentDataEditorMenu:add_button("提高规划板上限", function()
 	tunables.set_int("HEIST_PLANNING_SANITY_CEILING", 10000000)
 	tunables.set_int("MAX_HEIST_CUT_AMOUNT", 100)
-	gui.show_message("Apartment Heist", "Board limits should've been raised")
+	gui.show_message("公寓豪劫", "Board limits should've been raised")
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Reset Board Limits", function()
+ApartmentDataEditorMenu:add_button("重置规划板上限", function()
 	tunables.set_int("HEIST_PLANNING_SANITY_CEILING", 3000000)
 	tunables.set_int("MAX_HEIST_CUT_AMOUNT", 70)
-	gui.show_message("Apartment Heist", "Board limits should've been reset")
+	gui.show_message("公寓豪劫", "Board limits should've been reset")
 end)
-ApartmentDataEditorMenu:add_button("Read Board Limits", function()
+ApartmentDataEditorMenu:add_button("读取规划板上限", function()
 	local ceiling = tunables.get_int("HEIST_PLANNING_SANITY_CEILING")
 	local cap = tunables.get_int("MAX_HEIST_CUT_AMOUNT")
-	gui.show_message("Apartment Heist", "Ceiling: " .. ceiling .. " Cap: " .. cap)
+	gui.show_message("公寓豪劫", "Ceiling: " .. ceiling .. " Cap: " .. cap)
 end)
-ApartmentDataEditorMenu:add_button("Apply Cuts", function()
+ApartmentDataEditorMenu:add_button("应用分红", function()
 	local heistType = 0
 	if script.is_active(FMMCL) then
 		heistType = locals.get_int(FMMCL, HGGs1)
@@ -5962,10 +5962,10 @@ ApartmentDataEditorMenu:add_button("Apply Cuts", function()
 	local key = globals.get_int(ACDg + (PLAYER.PLAYER_ID() * 77) + 24 + 2)
 	local isFleeca = (heistType == 1328892776) or (key == 1328892776)
 	SN_ApplyApartmentCutsCherax(apartCut1:get_value(), apartCut2:get_value(), apartCut3:get_value(), apartCut4:get_value(), isFleeca)
-	gui.show_message("Apartment Heist", "Cuts should've been applied")
+	gui.show_message("公寓豪劫", "Cuts should've been applied")
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Read Cuts", function()
+ApartmentDataEditorMenu:add_button("读取分红", function()
 	local b1 = globals.get_int(ACg1)
 	local b2 = globals.get_int(ACg2)
 	local b3 = globals.get_int(ACg3)
@@ -5974,59 +5974,59 @@ ApartmentDataEditorMenu:add_button("Read Cuts", function()
 	local a2 = globals.get_int(ACg6)
 	local a3 = globals.get_int(ACg7)
 	local a4 = globals.get_int(ACg8)
-	gui.show_message("Apartment Heist", "Board: " .. b1 .. "/" .. b2 .. "/" .. b3 .. "/" .. b4 .. " Actual: " .. a1 .. "/" .. a2 .. "/" .. a3 .. "/" .. a4)
+	gui.show_message("公寓豪劫", "Board: " .. b1 .. "/" .. b2 .. "/" .. b3 .. "/" .. b4 .. " Actual: " .. a1 .. "/" .. a2 .. "/" .. a3 .. "/" .. a4)
 end)
 ApartmentDataEditorMenu:add_separator()
-ApartmentDataEditorMenu:add_text("Presets:")
-ApartmentDataEditorMenu:add_button("All - 0%", function()
+ApartmentDataEditorMenu:add_text("预设：")
+ApartmentDataEditorMenu:add_button("全员 - 0%", function()
 	apartCut1:set_value(0)
 	apartCut2:set_value(0)
 	apartCut3:set_value(0)
 	apartCut4:set_value(0)
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("All - 25%", function()
+ApartmentDataEditorMenu:add_button("全员 - 25%", function()
 	apartCut1:set_value(25)
 	apartCut2:set_value(25)
 	apartCut3:set_value(25)
 	apartCut4:set_value(25)
 end)
-ApartmentDataEditorMenu:add_button("All - 85%", function()
+ApartmentDataEditorMenu:add_button("全员 - 85%", function()
 	apartCut1:set_value(85)
 	apartCut2:set_value(85)
 	apartCut3:set_value(85)
 	apartCut4:set_value(85)
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("All - 100%", function()
+ApartmentDataEditorMenu:add_button("全员 - 100%", function()
 	apartCut1:set_value(100)
 	apartCut2:set_value(100)
 	apartCut3:set_value(100)
 	apartCut4:set_value(100)
 end)
 ApartmentDataEditorMenu:add_separator()
-ApartmentDataEditorMenu:add_text("Extras")
-ApartmentDataEditorMenu:add_button("Bypass Fleeca Hack", function()
+ApartmentDataEditorMenu:add_text("额外功能")
+ApartmentDataEditorMenu:add_button("绕过全福银行黑客", function()
 	locals.set_int(FMC, AFHl, 7)
-	gui.show_message("Apartment Heist", "Hacking process should've been skipped")
+	gui.show_message("公寓豪劫", "Hacking process should've been skipped")
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Bypass Fleeca Drill", function()
+ApartmentDataEditorMenu:add_button("绕过全福银行钻孔", function()
 	locals.set_float(FMC, AFDl, 100)
-	gui.show_message("Apartment Heist", "Drilling process should've been skipped")
+	gui.show_message("公寓豪劫", "Drilling process should've been skipped")
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Bypass Pacific Hack", function()
+ApartmentDataEditorMenu:add_button("绕过太平洋黑客", function()
 	locals.set_int(FMC, AFPl, 9)
-	gui.show_message("Apartment Heist", "Hacking process should've been skipped")
+	gui.show_message("公寓豪劫", "Hacking process should've been skipped")
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Skip Checkpoint", function()
+ApartmentDataEditorMenu:add_button("跳过检查点", function()
 	locals.set_int(FMC, AHSo, locals.get_int(FMC, AHSo) | (1 << 17))
-	gui.show_message("Apartment Heist", "Checkpoint should've been skipped")
+	gui.show_message("公寓豪劫", "Checkpoint should've been skipped")
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Unlock All Jobs", function()
+ApartmentDataEditorMenu:add_button("解锁全部差事", function()
 	stats.set_int(MPX() .. "HEIST_SAVED_STRAND_0", tunables.get_int("ROOT_ID_HASH_THE_FLECCA_JOB"))
 	stats.set_int(MPX() .. "HEIST_SAVED_STRAND_0_L", 5)
 	stats.set_int(MPX() .. "HEIST_SAVED_STRAND_1", tunables.get_int("ROOT_ID_HASH_THE_PRISON_BREAK"))
@@ -6037,9 +6037,9 @@ ApartmentDataEditorMenu:add_button("Unlock All Jobs", function()
 	stats.set_int(MPX() .. "HEIST_SAVED_STRAND_3_L", 5)
 	stats.set_int(MPX() .. "HEIST_SAVED_STRAND_4", tunables.get_int("ROOT_ID_HASH_THE_PACIFIC_STANDARD_JOB"))
 	stats.set_int(MPX() .. "HEIST_SAVED_STRAND_4_L", 5)
-	gui.show_message("Apartment Heist", "All jobs should've been unlocked. Don't forget to restart the game")
+	gui.show_message("公寓豪劫", "All jobs should've been unlocked. Don't forget to restart the game")
 end)
-local soloLaunchToggle = ApartmentDataEditorMenu:add_checkbox("Solo Launch")
+local soloLaunchToggle = ApartmentDataEditorMenu:add_checkbox("单人不等待直接开战")
 script.register_looped("SN_Apartment_SoloLaunch", function(s)
 	s:yield()
 	if not soloLaunchToggle:is_enabled() then
@@ -6065,23 +6065,23 @@ script.register_looped("SN_Apartment_SoloLaunch", function(s)
 	s:sleep(500)
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Skip Cutscene", SkipCutscene)
+ApartmentDataEditorMenu:add_button("跳过过场动画", SkipCutscene)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Force Ready", function()
+ApartmentDataEditorMenu:add_button("强制就绪", function()
 	script.run_in_fiber(function(script)
 		network.force_script_host(FMC)
 		script:sleep(1000)
 		for i = 0, 3 do
 			globals.set_int(AFRg + 1 + (i * 468) + 270, 6)
 		end
-		gui.show_message("Apartment Heist", "Everyone should've been forced ready")
+		gui.show_message("公寓豪劫", "Everyone should've been forced ready")
 	end)
 end)
 ApartmentDataEditorMenu:add_sameline()
-ApartmentDataEditorMenu:add_button("Instant Finish", function()
+ApartmentDataEditorMenu:add_button("立即完成", function()
 	script.run_in_fiber(function(s)
 		if not script.is_active(FMC) then
-			gui.show_message("Apartment Heist", "Start the finale first!")
+			gui.show_message("公寓豪劫", "Start the finale first!")
 			return
 		end
 		network.force_script_host(FMC)
@@ -6094,11 +6094,11 @@ ApartmentDataEditorMenu:add_button("Instant Finish", function()
 		local bits = locals.get_int(FMC, 19808 + 1)
 		bits = bits | (1 << 9) | (1 << 16)
 		locals.set_int(FMC, 19808 + 1, bits)
-		gui.show_message("Apartment Heist", "Heist finished. Wait for load!")
+		gui.show_message("公寓豪劫", "Heist finished. Wait for load!")
 	end)
 end)
 ApartmentDataEditorMenu:add_text("")
-ApartmentDataEditorMenu:add_text("Note: After Clicking Unlock All Heists, restart the game")
+ApartmentDataEditorMenu:add_text("注意：点击解锁全部豪劫后请重启游戏")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Agency tab
@@ -6122,9 +6122,9 @@ for i, contract in ipairs(AgencyContracts) do
 	table.insert(contractNames, contract.name)
 end
 local sContract = 0
-local SN_Agency = HeistsDataEditorMenu:add_tab("Agency")
-SN_Agency:add_text("Money")
-local agencySafe = SN_Agency:add_checkbox("Agency Safe Loop")
+local SN_Agency = HeistsDataEditorMenu:add_tab("事务所")
+SN_Agency:add_text("金钱")
+local agencySafe = SN_Agency:add_checkbox("事务所保险箱循环")
 script.register_looped("agencyloop", function(script)
 	script:yield()
 	if agencySafe:is_enabled() == true then
@@ -6137,7 +6137,7 @@ script.register_looped("agencyloop", function(script)
 end)
 SN_Agency:add_separator()
 SN_Agency:add_imgui(function()
-	ImGui.Text("Contract:")
+	ImGui.Text("合约: ")
 	ImGui.SetNextItemWidth(200)
 	local nSelected, clicked = ImGui.Combo("##AgencyContract", sContract, contractNames, #contractNames)
 	if clicked then
@@ -6158,46 +6158,46 @@ SN_Agency:add_imgui(function()
 	end
 end)
 
-SN_Agency:add_button("Complete Preps", function()
+SN_Agency:add_button("完成全部前置", function()
 	stats.set_int(MPX() .. "FIXER_GENERAL_BS", -1)
 	stats.set_int(MPX() .. "FIXER_COMPLETED_BS", -1)
 	stats.set_int(MPX() .. "FIXER_STORY_COOLDOWN", -1)
-	gui.show_message("Agency", "Preps should've been completed")
+	gui.show_message("事务所", "Preps should've been completed")
 end)
 SN_Agency:add_separator()
-SN_Agency:add_text("Payouts:")
+SN_Agency:add_text("收益：")
 local agencyPayoutValue = 0
 SN_Agency:add_imgui(function()
 	agencyPayoutValue, _ = ImGui.InputInt("##AgencyPayout", agencyPayoutValue)
 end)
-SN_Agency:add_button("Max", function()
+SN_Agency:add_button("拉满", function()
 	agencyPayoutValue = 2500000
-	gui.show_message("Agency", "Payout should've been maximized. Don't forget to apply")
+	gui.show_message("事务所", "Payout should've been maximized. Don't forget to apply")
 end)
-SN_Agency:add_button("Apply Payout", function()
+SN_Agency:add_button("应用收益", function()
 	local payout = agencyPayoutValue
 	tunables.set_int("FIXER_FINALE_LEADER_CASH_REWARD", payout)
-	gui.show_message("Agency", "Payout should've been applied")
+	gui.show_message("事务所", "Payout should've been applied")
 end)
-SN_Agency:add_text("Use 'Apply Payout' after you can see the minimap.")
+SN_Agency:add_text("等小地图出现后再点「应用收益」。")
 SN_Agency:add_separator()
-SN_Agency:add_button("Instant Finish", function()
+SN_Agency:add_button("立即完成", function()
 	locals.set_int(FMC2020, AGFl1, 51338752)
 	locals.set_int(FMC2020, AGFl2, 50)
-	gui.show_message("Agency", "Heist should've been finished")
+	gui.show_message("事务所", "Heist should've been finished")
 end)
 SN_Agency:add_sameline()
-SN_Agency:add_button("Skip Cutscene", SkipCutscene)
+SN_Agency:add_button("跳过过场动画", SkipCutscene)
 SN_Agency:add_sameline()
-SN_Agency:add_button("Kill Cooldowns", function()
+SN_Agency:add_button("清除击杀冷却", function()
 	tunables.set_int("FIXER_STORY_COOLDOWN_POSIX", 0)
 	tunables.set_int("FIXER_SECURITY_CONTRACT_COOLDOWN_TIME", 0)
 	tunables.set_int("REQUEST_FRANKLIN_PAYPHONE_HIT_COOLDOWN", 0)
 	stats.set_int(MPX() .. "FIXER_STORY_COOLDOWN", -1)
-	gui.show_message("Agency", "Cooldowns should've been killed")
+	gui.show_message("事务所", "Cooldowns should've been killed")
 end)
 SN_Agency:add_separator()
-SN_Agency:add_text("After All choices and pressing Complete Preps wait for sometime")
+SN_Agency:add_text("选好所有选项并点击「完成全部前置」后稍等片刻")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Autoshop tab
@@ -6214,9 +6214,9 @@ local AutoShopContracts = {
 }
 
 local autoSelectedIndex = 0
-local SN_Autoshop = HeistsDataEditorMenu:add_tab("Autoshop")
+local SN_Autoshop = HeistsDataEditorMenu:add_tab("改装铺")
 SN_Autoshop:add_imgui(function()
-	ImGui.Text("Contract:")
+	ImGui.Text("合约: ")
 	autoSelectedIndex = ImGui.Combo(
 		"##AutoContract",
 		autoSelectedIndex,
@@ -6234,33 +6234,33 @@ SN_Autoshop:add_imgui(function()
 		9
 	)
 end)
-SN_Autoshop:add_button("Apply & Complete Preps", function()
+SN_Autoshop:add_button("应用并完成全部前置", function()
 	local contract = AutoShopContracts[autoSelectedIndex + 1].index
 	stats.set_int(MPX() .. "TUNER_CURRENT", contract)
 	stats.set_int(MPX() .. "TUNER_GEN_BS", (contract == 1 and 4351 or 12543))
 	locals.set_int(TUNERPL, ASRBl, 2)
-	gui.show_message("Autoshop", "Preps should've been completed")
+	gui.show_message("改装铺", "Preps should've been completed")
 end)
-SN_Autoshop:add_button("Reset Preps", function()
+SN_Autoshop:add_button("重置前置", function()
 	stats.set_int(MPX() .. "TUNER_GEN_BS", 12467)
 	locals.set_int(TUNERPL, ASRBl, 2)
-	gui.show_message("Autoshop", "Preps should've been reset")
+	gui.show_message("改装铺", "Preps should've been reset")
 end)
-SN_Autoshop:add_button("Redraw Board", function()
+SN_Autoshop:add_button("重绘规划板", function()
 	locals.set_int(TUNERPL, ASRBl, 2)
-	gui.show_message("Autoshop", "Board should've been redrawn")
+	gui.show_message("改装铺", "Board should've been redrawn")
 end)
 SN_Autoshop:add_separator()
-SN_Autoshop:add_text("Payouts:")
+SN_Autoshop:add_text("收益：")
 local autoPayoutValue = 0
 SN_Autoshop:add_imgui(function()
 	autoPayoutValue, _ = ImGui.InputInt("##AutoPayout", autoPayoutValue)
 end)
-SN_Autoshop:add_button("Max", function()
+SN_Autoshop:add_button("拉满", function()
 	autoPayoutValue = 2000000
-	gui.show_message("Autoshop", "Payout should've been maximized. Don't forget to apply")
+	gui.show_message("改装铺", "Payout should've been maximized. Don't forget to apply")
 end)
-SN_Autoshop:add_button("Apply Payout", function()
+SN_Autoshop:add_button("应用收益", function()
 	local payout = autoPayoutValue
 	tunables.set_int("TUNER_ROBBERY_LEADER_CASH_REWARD0", payout)
 	tunables.set_int("TUNER_ROBBERY_LEADER_CASH_REWARD1", payout)
@@ -6271,18 +6271,18 @@ SN_Autoshop:add_button("Apply Payout", function()
 	tunables.set_int("TUNER_ROBBERY_LEADER_CASH_REWARD6", payout)
 	tunables.set_int("TUNER_ROBBERY_LEADER_CASH_REWARD7", payout)
 	tunables.set_float("TUNER_ROBBERY_CONTACT_FEE", 0.0)
-	gui.show_message("Autoshop", "Payout should've been applied")
+	gui.show_message("改装铺", "Payout should've been applied")
 end)
-SN_Autoshop:add_text("Use 'Apply Payout' after you can see the minimap.")
+SN_Autoshop:add_text("等小地图出现后再点「应用收益」。")
 SN_Autoshop:add_separator()
-SN_Autoshop:add_text("Extras")
-SN_Autoshop:add_button("Instant Finish", function()
+SN_Autoshop:add_text("额外功能")
+SN_Autoshop:add_button("立即完成", function()
 	locals.set_int(FMC2020, ASIFl1, 51338977)
 	locals.set_int(FMC2020, ASIFl2, 101)
-	gui.show_message("Autoshop", "Heist should've been finished")
+	gui.show_message("改装铺", "Heist should've been finished")
 end)
 SN_Autoshop:add_sameline()
-SN_Autoshop:add_button("Skip Cutscene", SkipCutscene)
+SN_Autoshop:add_button("跳过过场动画", SkipCutscene)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Salvage Yard --
@@ -6471,7 +6471,7 @@ for _, keep in ipairs(SalvageYard.keeps) do
 	table.insert(keep_names, keep.name)
 end
 local ssIndex = 0
-local SN_Salvage = HeistsDataEditorMenu:add_tab("Salvage Yard")
+local SN_Salvage = HeistsDataEditorMenu:add_tab("赃车店")
 SN_Salvage:add_imgui(function()
 	local nIndex, changed = ImGui.Combo("##Slot", ssIndex, slot_names, #slot_names)
 	if changed then
@@ -6481,43 +6481,43 @@ SN_Salvage:add_imgui(function()
 	local slots = { slot1, slot2, slot3 }
 	local slot = slots[currSlot]
 
-	local nIndex, changed = ImGui.Combo("Robbery", slot.robbery_index, robbery_names, #robbery_names)
+	local nIndex, changed = ImGui.Combo("抢劫", slot.robbery_index, robbery_names, #robbery_names)
 	if changed then
 		slot.robbery_index = nIndex
 		gui.show_message(
-			"Salvage Yard",
+			"赃车店",
 			"Selected " .. slot_names[ssIndex + 1] .. " robbery: " .. robbery_names[slot.robbery_index + 1]
 		)
 	end
 
-	nIndex, changed = ImGui.Combo("Vehicle", slot.vehicle_index, vehicle_names, #vehicle_names)
+	nIndex, changed = ImGui.Combo("载具", slot.vehicle_index, vehicle_names, #vehicle_names)
 	if changed then
 		slot.vehicle_index = nIndex
 		gui.show_message(
-			"Salvage Yard",
+			"赃车店",
 			"Selected " .. slot_names[ssIndex + 1] .. " vehicle: " .. vehicle_names[slot.vehicle_index + 1]
 		)
 	end
 
-	nIndex, changed = ImGui.Combo("Modification", slot.mod_index, mod_names, #mod_names)
+	nIndex, changed = ImGui.Combo("改装", slot.mod_index, mod_names, #mod_names)
 	if changed then
 		slot.mod_index = nIndex
 		gui.show_message(
-			"Salvage Yard",
+			"赃车店",
 			"Selected " .. slot_names[ssIndex + 1] .. " modification: " .. mod_names[slot.mod_index + 1]
 		)
 	end
 
-	nIndex, changed = ImGui.Combo("Status", slot.keep_index, keep_names, #keep_names)
+	nIndex, changed = ImGui.Combo("状态", slot.keep_index, keep_names, #keep_names)
 	if changed then
 		slot.keep_index = nIndex
 		gui.show_message(
-			"Salvage Yard",
+			"赃车店",
 			"Selected " .. slot_names[ssIndex + 1] .. " status: " .. keep_names[slot.keep_index + 1]
 		)
 	end
 
-	if ImGui.Button("Apply Changes") then
+	if ImGui.Button("应用更改") then
 		local robbery = SalvageYard.robberies[slot.robbery_index + 1].index
 		local vehicle = SalvageYard.vehicles[slot.vehicle_index + 1].index
 		local mod = SalvageYard.modifications[slot.mod_index + 1].index
@@ -6526,81 +6526,81 @@ SN_Salvage:add_imgui(function()
 		tunables.set_int(SalvageYard.tunables["vehicle_slot" .. currSlot .. "_type"], vehicle + mod * 100)
 		tunables.set_int(SalvageYard.tunables["vehicle_slot" .. currSlot .. "_cankeep"], keep)
 		locals.set_int("vehrob_planning", SYRl1, 2)
-		gui.show_message("Salvage Yard", slot_names[ssIndex + 1] .. " changes should've been applied")
+		gui.show_message("赃车店", slot_names[ssIndex + 1] .. " changes should've been applied")
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Make Available") then
+	if ImGui.Button("设为可用") then
 		stats.set_int(MPX() .. "SALV23_VEHROB_STATUS" .. (currSlot - 1), 0)
 		locals.set_int("vehrob_planning", SYRl1, 2)
-		gui.show_message("Salvage Yard", slot_names[ssIndex + 1] .. " should've been made Available")
+		gui.show_message("赃车店", slot_names[ssIndex + 1] .. " should've been made Available")
 	end
 end)
 
 SN_Salvage:add_text("")
-SN_Salvage:add_text("Preps")
+SN_Salvage:add_text("前置")
 SN_Salvage:add_separator()
-SN_Salvage:add_button("Complete Preps", function()
+SN_Salvage:add_button("完成全部前置", function()
 	stats.set_int(MPX() .. "SALV23_GEN_BS", -1)
 	stats.set_int(MPX() .. "SALV23_SCOPE_BS", -1)
 	stats.set_int(MPX() .. "SALV23_FM_PROG", -1)
 	stats.set_int(MPX() .. "SALV23_INST_PROG", -1)
 	locals.set_int("vehrob_planning", SYRl1, 2)
-	gui.show_message("Salvage Yard", "Preps should've been completed")
+	gui.show_message("赃车店", "Preps should've been completed")
 end)
 SN_Salvage:add_sameline()
-SN_Salvage:add_button("Reset Preps", function()
+SN_Salvage:add_button("重置前置", function()
 	stats.set_int(MPX() .. "SALV23_GEN_BS", 0)
 	stats.set_int(MPX() .. "SALV23_SCOPE_BS", 0)
 	stats.set_int(MPX() .. "SALV23_FM_PROG", 0)
 	stats.set_int(MPX() .. "SALV23_INST_PROG", 0)
 	locals.set_int("vehrob_planning", SYRl1, 2)
-	gui.show_message("Salvage Yard", "Preps should've been reset")
+	gui.show_message("赃车店", "Preps should've been reset")
 end)
-SN_Salvage:add_button("Reload Screen", function()
+SN_Salvage:add_button("重载界面", function()
 	locals.set_int("vehrob_planning", SYRl1, 2)
-	gui.show_message("Salvage Yard", "Screen should've been reloaded")
+	gui.show_message("赃车店", "Screen should've been reloaded")
 end)
-SN_Salvage:add_button("Skip Weekly Cooldown", function()
+SN_Salvage:add_button("跳过每周冷却", function()
 	tunables.set_int(SalvageYard.tunables.cooldown_weekly, stats.get_int(MPX() .. "SALV23_WEEK_SYNC") + 1)
 	locals.set_int("vehrob_planning", SYRl1, 2)
-	gui.show_message("Salvage Yard", "Cooldown should've been skipped")
+	gui.show_message("赃车店", "Cooldown should've been skipped")
 end)
 
 SN_Salvage:add_separator()
-SN_Salvage:add_text("Payout")
-local sell_value_slot1 = SN_Salvage:add_input_int("Sell Value Slot 1")
+SN_Salvage:add_text("收益")
+local sell_value_slot1 = SN_Salvage:add_input_int("出售价值 栏位 1")
 sell_value_slot1:set_value(0)
-local sell_value_slot2 = SN_Salvage:add_input_int("Sell Value Slot 2")
+local sell_value_slot2 = SN_Salvage:add_input_int("出售价值 栏位 2")
 sell_value_slot2:set_value(0)
-local sell_value_slot3 = SN_Salvage:add_input_int("Sell Value Slot 3")
+local sell_value_slot3 = SN_Salvage:add_input_int("出售价值 栏位 3")
 sell_value_slot3:set_value(0)
-SN_Salvage:add_button("Apply Sell Values", function()
+SN_Salvage:add_button("应用出售价值", function()
 	tunables.set_int(SalvageYard.tunables.vehicle_slot1_value, sell_value_slot1:get_value())
 	tunables.set_int(SalvageYard.tunables.vehicle_slot2_value, sell_value_slot2:get_value())
 	tunables.set_int(SalvageYard.tunables.vehicle_slot3_value, sell_value_slot3:get_value())
 	locals.set_int("vehrob_planning", SYRl1, 2)
-	gui.show_message("Salvage Yard", "Sell values should've been applied")
+	gui.show_message("赃车店", "Sell values should've been applied")
 end)
 
 SN_Salvage:add_text("")
-SN_Salvage:add_text("Misc")
+SN_Salvage:add_text("杂项")
 SN_Salvage:add_separator()
-SN_Salvage:add_button("Instant Finish", function()
+SN_Salvage:add_button("立即完成", function()
 	for _, mission in ipairs(SalvageYard.salvage_missions) do
 		local value = locals.get_int(mission.script, mission.step1)
 		locals.set_int(mission.script, mission.step1, value | (1 << 11))
 		locals.set_int(mission.script, mission.step2, 2)
 	end
-	gui.show_message("Salvage Yard", "Heist should've been finished")
+	gui.show_message("赃车店", "Heist should've been finished")
 end)
 SN_Salvage:add_sameline()
-SN_Salvage:add_button("Instant Sell", function()
+SN_Salvage:add_button("瞬间出售", function()
 	local player_ped = PLAYER.PLAYER_PED_ID()
 	PED.SET_PED_COORDS_KEEP_VEHICLE(player_ped, 1169.0, -2976.0, 6.0)
-	gui.show_message("Salvage Yard", "Sell mission should've been finished")
+	gui.show_message("赃车店", "Sell mission should've been finished")
 end)
 SN_Salvage:add_sameline()
-SN_Salvage:add_button("Skip Cutscene", SkipCutscene)
+SN_Salvage:add_button("跳过过场动画", SkipCutscene)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Cluckin Bell --
@@ -6613,9 +6613,9 @@ local cluckperps = {
 	{ id = 31, name = "Scene of Crime" },
 }
 
-local SN_Cluck = HeistsDataEditorMenu:add_tab("Cluckin Bell Heist")
+local SN_Cluck = HeistsDataEditorMenu:add_tab("克劳金钟豪劫")
 
-SN_Cluck:add_text("Complete Preps")
+SN_Cluck:add_text("完成全部前置")
 
 for _, cluckprep in ipairs(cluckperps) do
 	SN_Cluck:add_button(cluckprep.name, function()
@@ -6624,8 +6624,8 @@ for _, cluckprep in ipairs(cluckperps) do
 	SN_Cluck:add_sameline()
 end
 SN_Cluck:add_separator()
-SN_Cluck:add_text("Reset preps")
-SN_Cluck:add_button("Reset Preps", function()
+SN_Cluck:add_text("重置前置")
+SN_Cluck:add_button("重置前置", function()
 	stats.set_int(MPX() .. "SALV23_INST_PROG", 0)
 end)
 
@@ -6638,17 +6638,17 @@ function DoomsdayActSetter(progress, status)
 	stats.set_int(MPX() .. "GANGOPS_FLOW_NOTIFICATIONS", 1557)
 end
 
-local SN_Doomsday = HeistsDataEditorMenu:add_tab("Doomsday Heist")
-SN_Doomsday:add_text("Doomsday Acts")
-SN_Doomsday:add_button("Data Breaches", function()
+local SN_Doomsday = HeistsDataEditorMenu:add_tab("末日豪劫")
+SN_Doomsday:add_text("末日章节")
+SN_Doomsday:add_button("数据泄露", function()
 	DoomsdayActSetter(503, 229383)
 end)
 SN_Doomsday:add_sameline()
-SN_Doomsday:add_button("Bogdan Problem", function()
+SN_Doomsday:add_button("波格丹危机", function()
 	DoomsdayActSetter(240, 229378)
 end)
 SN_Doomsday:add_sameline()
-SN_Doomsday:add_button("Doomsday Scenario", function()
+SN_Doomsday:add_button("末日危机", function()
 	DoomsdayActSetter(16368, 229380)
 end)
 
@@ -6678,11 +6678,11 @@ function SetDoomsdayMaxPayout()
 end
 
 SN_Doomsday:add_separator()
-SN_Doomsday:add_text("Custom Cuts:")
-local dmsdyCut1 = SN_Doomsday:add_input_int("Cut 1")
-local dmsdyCut2 = SN_Doomsday:add_input_int("Cut 2")
-local dmsdyCut3 = SN_Doomsday:add_input_int("Cut 3")
-local dmsdyCut4 = SN_Doomsday:add_input_int("Cut 4")
+SN_Doomsday:add_text("自定义分红：")
+local dmsdyCut1 = SN_Doomsday:add_input_int("分红 1")
+local dmsdyCut2 = SN_Doomsday:add_input_int("分红 2")
+local dmsdyCut3 = SN_Doomsday:add_input_int("分红 3")
+local dmsdyCut4 = SN_Doomsday:add_input_int("分红 4")
 
 local Presets = {
 	{ name = "All - 0%", index = 0 },
@@ -6698,7 +6698,7 @@ end
 local sPresetIndex = 0
 
 SN_Doomsday:add_imgui(function()
-	ImGui.Text("Presets:")
+	ImGui.Text("预设：")
 	ImGui.SetNextItemWidth(170)
 	local nIndex, changed = ImGui.Combo("##DoomsdayPreset", sPresetIndex, presetNames, #presetNames)
 	if changed then
@@ -6723,55 +6723,55 @@ SN_Doomsday:add_imgui(function()
 	end
 end)
 
-SN_Doomsday:add_button("Apply Cuts", function()
+SN_Doomsday:add_button("应用分红", function()
 	globals.set_int(DCg1, dmsdyCut1:get_value())
 	globals.set_int(DCg2, dmsdyCut2:get_value())
 	globals.set_int(DCg3, dmsdyCut3:get_value())
 	globals.set_int(DCg4, dmsdyCut4:get_value())
-	gui.show_message("Doomsday Heist", "Cuts should've been applied")
+	gui.show_message("末日豪劫", "Cuts should've been applied")
 end)
 
 -- Lives Editor for Doomsday Heist
 SN_Doomsday:add_separator()
-SN_Doomsday:add_text("Team Lives:")
+SN_Doomsday:add_text("团队生命: ")
 local livesValueDoomsday = 3
 SN_Doomsday:add_imgui(function()
 	if isOffline() then
 		return
 	end
 
-	ImGui.Text("Team Lives:")
+	ImGui.Text("团队生命: ")
 	livesValueDoomsday, _ = ImGui.InputInt("##DoomsdayLives", livesValueDoomsday)
-	if ImGui.Button("Set Lives##Doomsday") then
+	if ImGui.Button("设置生命数##Doomsday") then
 		if livesValueDoomsday < 1 then
-			gui.show_message("Doomsday Heist", "Lives must be at least 1!")
+			gui.show_message("末日豪劫", "Lives must be at least 1!")
 		else
 			locals.set_int(FMC, DDLIVESL, livesValueDoomsday)
-			gui.show_message("Doomsday Heist", "Team lives set to " .. livesValueDoomsday)
+			gui.show_message("末日豪劫", "Team lives set to " .. livesValueDoomsday)
 		end
 	end
 	if ImGui.IsItemHovered() then
-		ImGui.SetTooltip("Default is 3. Infinite team lives for the heist (set to 999999 for unlimited)")
+		ImGui.SetTooltip("默认 3。为本次豪劫设置无限生命（设为 999999 即无限）")
 	end
 end)
 
 SN_Doomsday:add_separator()
-SN_Doomsday:add_text("Preps")
-SN_Doomsday:add_button("Reset Preps", function()
+SN_Doomsday:add_text("前置")
+SN_Doomsday:add_button("重置前置", function()
 	DoomsdayActSetter(240, 0)
-	gui.show_message("Doomsday Heist", "Preps should've been reset")
+	gui.show_message("末日豪劫", "Preps should've been reset")
 end)
 SN_Doomsday:add_sameline()
-SN_Doomsday:add_button("Complete Preps", function()
+SN_Doomsday:add_button("完成全部前置", function()
 	stats.set_int(MPX() .. "GANGOPS_FM_MISSION_PROG", -1)
 end)
 SN_Doomsday:add_separator()
-SN_Doomsday:add_text("Extras")
-SN_Doomsday:add_button("By Act III Pass hack", function()
+SN_Doomsday:add_text("额外功能")
+SN_Doomsday:add_button("按第三章通过破解", function()
 	locals.set_int(FMC, DDSHl, 3)
 end)
 SN_Doomsday:add_sameline()
-SN_Doomsday:add_button("Solo Launch", function()
+SN_Doomsday:add_button("单人不等待直接开战", function()
 	if locals.get_int(FMMCL, HGGs1) ~= nil then
 		if locals.get_int(FMMCL, HGGs1) ~= 0 then
 			if locals.get_int(FMMCL, HGGs1) > 1 then
@@ -6785,14 +6785,14 @@ SN_Doomsday:add_button("Solo Launch", function()
 		end
 	end
 end)
-SN_Doomsday:add_text("Instant Finish: use Act I/II for Data Breaches/Bogdan, Act III for Doomsday Scenario. HOST only. Wait for area to load or you will fail/crash.")
-SN_Doomsday:add_button("Instant Finish (Act I/II)", function()
+SN_Doomsday:add_text("立即完成：数据泄露/波格丹用第 I/II 章，末日危机用第 III 章。仅限主机。务必等区域加载完再点，否则会失败/崩溃。")
+SN_Doomsday:add_button("立即完成（第 I/II 章）", function()
 	-- FIX Bug#1: old single button mixed Act I/II (80) + Act III (150) values and never
 	-- took script host -> teleport to unloaded interior -> crash/fail.
 	-- Act I/II needs 12 + 80 + 99999 + 99999 (no 150, no passed-flag).
 	script.run_in_fiber(function(dd)
 		if not script.is_active(FMC) then
-			gui.show_message("Doomsday Heist", "Start the finale first!")
+			gui.show_message("末日豪劫", "Start the finale first!")
 			return
 		end
 		network.force_script_host(FMC)
@@ -6801,16 +6801,16 @@ SN_Doomsday:add_button("Instant Finish (Act I/II)", function()
 		locals.set_int(FMC, DDIF5, 80)
 		locals.set_int(FMC, DDIF3, 99999)
 		locals.set_int(FMC, DDIF4, 99999)
-		gui.show_message("Doomsday Heist", "Act I/II should be finished. Wait for load, do NOT skip too fast.")
+		gui.show_message("末日豪劫", "Act I/II should be finished. Wait for load, do NOT skip too fast.")
 	end)
 end)
 SN_Doomsday:add_sameline()
-SN_Doomsday:add_button("Instant Finish (Act III Scenario)", function()
+SN_Doomsday:add_button("立即完成（第三章·末日危机）", function()
 	-- FIX Bug#1 Act III: needs 12 + 150 + 5 (passed flag DDIF6) + 99999 + 99999 (no 80).
 	-- Missing DDIF6=5 was the main cause of End-of-World teleport/fail.
 	script.run_in_fiber(function(dd3)
 		if not script.is_active(FMC) then
-			gui.show_message("Doomsday Heist", "Start the Doomsday Scenario finale first!")
+			gui.show_message("末日豪劫", "Start the Doomsday Scenario finale first!")
 			return
 		end
 		network.force_script_host(FMC)
@@ -6820,33 +6820,33 @@ SN_Doomsday:add_button("Instant Finish (Act III Scenario)", function()
 		locals.set_int(FMC, DDIF6, 5)
 		locals.set_int(FMC, DDIF3, 99999)
 		locals.set_int(FMC, DDIF4, 99999)
-		gui.show_message("Doomsday Heist", "Act III should be finished. Wait 10-20s for Mount Chiliad bunker to stream!")
+		gui.show_message("末日豪劫", "Act III should be finished. Wait 10-20s for Mount Chiliad bunker to stream!")
 	end)
 end)
-SN_Doomsday:add_text("If teleport fails/loads forever: use Skip Checkpoint instead, or walk to yellow marker before pressing.")
+SN_Doomsday:add_text("若传送失败或一直加载：改用「跳过检查点」，或先走到黄色标记再按。")
 SN_Doomsday:add_sameline()
-SN_Doomsday:add_button("Force Ready", function()
+SN_Doomsday:add_button("强制就绪", function()
 	script.run_in_fiber(function(script)
 		network.force_script_host(FMC)
 		script:sleep(1000)
 		for i = 0, 3 do
 			globals.set_int(DDFRg + 1 + (i * 321) + 43 + 11 + 1 + i, 1)
 		end
-		gui.show_message("Doomsday Heist", "Everyone should've been forced ready")
+		gui.show_message("末日豪劫", "Everyone should've been forced ready")
 	end)
 end)
 SN_Doomsday:add_sameline()
-SN_Doomsday:add_button("Skip Cutscene", SkipCutscene)
+SN_Doomsday:add_button("跳过过场动画", SkipCutscene)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Casino Heist --
 
-local CasinoHeistEditorMenu = HeistsDataEditorMenu:add_tab("Casino Heist")
+local CasinoHeistEditorMenu = HeistsDataEditorMenu:add_tab("赌场豪劫")
 
-CasinoHeistEditorMenu:add_text("One Click Setups:")
-CasinoHeistEditorMenu:add_button("Casino Silent&Sneaky (Diamonds)", function()
+CasinoHeistEditorMenu:add_text("一键配置：")
+CasinoHeistEditorMenu:add_button("赌场·隐迹潜踪（钻石）", function()
 	stats.set_int(MPX() .. "H3OPT_APPROACH", 1)
 	stats.set_int(MPX() .. "H3_LAST_APPROACH", 3)
 	stats.set_int(MPX() .. "H3OPT_TARGET", 3)
@@ -6862,7 +6862,7 @@ CasinoHeistEditorMenu:add_button("Casino Silent&Sneaky (Diamonds)", function()
 	stats.set_int(MPX() .. "H3OPT_BITSET0", 262399)
 	stats.set_int(MPX() .. "H3OPT_MASKS", 2)
 end)
-CasinoHeistEditorMenu:add_button("Casino The Big Con (Diamonds)", function()
+CasinoHeistEditorMenu:add_button("赌场·兵不厌诈（钻石）", function()
 	stats.set_int(MPX() .. "H3OPT_APPROACH", 2)
 	stats.set_int(MPX() .. "H3_LAST_APPROACH", 3)
 	stats.set_int(MPX() .. "H3OPT_TARGET", 3)
@@ -6878,7 +6878,7 @@ CasinoHeistEditorMenu:add_button("Casino The Big Con (Diamonds)", function()
 	stats.set_int(MPX() .. "H3OPT_BITSET0", 913623)
 	stats.set_int(MPX() .. "H3OPT_MASKS", 2)
 end)
-CasinoHeistEditorMenu:add_button("Casino Aggressive (Diamonds)", function()
+CasinoHeistEditorMenu:add_button("赌场·强势出击（钻石）", function()
 	stats.set_int(MPX() .. "H3OPT_APPROACH", 3)
 	stats.set_int(MPX() .. "H3_LAST_APPROACH", 1)
 	stats.set_int(MPX() .. "H3OPT_TARGET", 3)
@@ -6898,25 +6898,25 @@ end)
 CasinoHeistEditorMenu:add_separator()
 
 -- Lives Editor for Casino Heist
-CasinoHeistEditorMenu:add_text("Team Lives:")
+CasinoHeistEditorMenu:add_text("团队生命: ")
 local livesValueCasino = 3
 CasinoHeistEditorMenu:add_imgui(function()
 	if isOffline() then
 		return
 	end
 
-	ImGui.Text("Team Lives:")
+	ImGui.Text("团队生命: ")
 	livesValueCasino, _ = ImGui.InputInt("##CasinoLives", livesValueCasino)
-	if ImGui.Button("Set Lives##Casino") then
+	if ImGui.Button("设置生命数##Casino") then
 		if livesValueCasino < 1 then
-			gui.show_message("Casino Heist", "Lives must be at least 1!")
+			gui.show_message("赌场豪劫", "Lives must be at least 1!")
 		else
 			locals.set_int(FMC, DCLIVESL, livesValueCasino)
-			gui.show_message("Casino Heist", "Team lives set to " .. livesValueCasino)
+			gui.show_message("赌场豪劫", "Team lives set to " .. livesValueCasino)
 		end
 	end
 	if ImGui.IsItemHovered() then
-		ImGui.SetTooltip("Default is 3. Infinite team lives for the heist (set to 999999 for unlimited)")
+		ImGui.SetTooltip("默认 3。为本次豪劫设置无限生命（设为 999999 即无限）")
 	end
 end)
 
@@ -7133,24 +7133,24 @@ CasinoHeistEditorMenu:add_imgui(function()
 		return
 	end
 
-	ImGui.Text("Preps:")
+	ImGui.Text("前置：")
 	ImGui.Separator()
 
 	-- Difficulty
 	local nIndex, changed =
-		ImGui.Combo("Difficulty", diamondDifficultyIndex, diamondDifficultyNames, #diamondDifficultyNames)
+		ImGui.Combo("难度", diamondDifficultyIndex, diamondDifficultyNames, #diamondDifficultyNames)
 	if changed then
 		diamondDifficultyIndex = nIndex
 	end
 
 	-- Approach
-	nIndex, changed = ImGui.Combo("Approach", diamondApproachIndex, diamondApproachNames, #diamondApproachNames)
+	nIndex, changed = ImGui.Combo("路线", diamondApproachIndex, diamondApproachNames, #diamondApproachNames)
 	if changed then
 		diamondApproachIndex = nIndex
 	end
 
 	-- Gunman
-	nIndex, changed = ImGui.Combo("Gunman", diamondGunmanIndex, diamondGunmanNames, #diamondGunmanNames)
+	nIndex, changed = ImGui.Combo("枪手", diamondGunmanIndex, diamondGunmanNames, #diamondGunmanNames)
 	if changed then
 		diamondGunmanIndex = nIndex
 		diamondLoadoutIndex = 0
@@ -7165,14 +7165,14 @@ CasinoHeistEditorMenu:add_imgui(function()
 				table.insert(filnames, item.name)
 			end
 		end
-		nIndex, changed = ImGui.Combo("Loadout", diamondLoadoutIndex, filnames, #filnames)
+		nIndex, changed = ImGui.Combo("装备", diamondLoadoutIndex, filnames, #filnames)
 		if changed then
 			diamondLoadoutIndex = nIndex
 		end
 	end
 
 	-- Driver
-	nIndex, changed = ImGui.Combo("Driver", diamondDriverIndex, diamondDriverNames, #diamondDriverNames)
+	nIndex, changed = ImGui.Combo("车手", diamondDriverIndex, diamondDriverNames, #diamondDriverNames)
 	if changed then
 		diamondDriverIndex = nIndex
 		diamondVehiclesIndex = 0
@@ -7187,38 +7187,38 @@ CasinoHeistEditorMenu:add_imgui(function()
 				table.insert(filnames, item.name)
 			end
 		end
-		nIndex, changed = ImGui.Combo("Vehicles", diamondVehiclesIndex, filnames, #filnames)
+		nIndex, changed = ImGui.Combo("载具", diamondVehiclesIndex, filnames, #filnames)
 		if changed then
 			diamondVehiclesIndex = nIndex
 		end
 	end
 
 	-- Hacker
-	nIndex, changed = ImGui.Combo("Hacker", diamondHackerIndex, diamondHackerNames, #diamondHackerNames)
+	nIndex, changed = ImGui.Combo("黑客", diamondHackerIndex, diamondHackerNames, #diamondHackerNames)
 	if changed then
 		diamondHackerIndex = nIndex
 	end
 
 	-- Masks
-	nIndex, changed = ImGui.Combo("Masks", diamondMasksIndex, diamondMasksNames, #diamondMasksNames)
+	nIndex, changed = ImGui.Combo("面具", diamondMasksIndex, diamondMasksNames, #diamondMasksNames)
 	if changed then
 		diamondMasksIndex = nIndex
 	end
 
 	-- Guards
-	nIndex, changed = ImGui.Combo("Guards", diamondGuardsIndex, diamondGuardsNames, #diamondGuardsNames)
+	nIndex, changed = ImGui.Combo("守卫", diamondGuardsIndex, diamondGuardsNames, #diamondGuardsNames)
 	if changed then
 		diamondGuardsIndex = nIndex
 	end
 
 	-- Keycards
-	nIndex, changed = ImGui.Combo("Keycards", diamondKeycardsIndex, diamondKeycardsNames, #diamondKeycardsNames)
+	nIndex, changed = ImGui.Combo("门禁卡", diamondKeycardsIndex, diamondKeycardsNames, #diamondKeycardsNames)
 	if changed then
 		diamondKeycardsIndex = nIndex
 	end
 
 	-- Target
-	nIndex, changed = ImGui.Combo("Target", diamondTargetIndex, diamondTargetNames, #diamondTargetNames)
+	nIndex, changed = ImGui.Combo("目标", diamondTargetIndex, diamondTargetNames, #diamondTargetNames)
 	if changed then
 		diamondTargetIndex = nIndex
 	end
@@ -7226,7 +7226,7 @@ CasinoHeistEditorMenu:add_imgui(function()
 	ImGui.Separator()
 
 	-- Apply & Complete Preps button (inline so it appears right after the dropdowns)
-	if ImGui.Button("Apply & Complete Preps") then
+	if ImGui.Button("应用并完成全部前置") then
 		local approach = diamondApproachList[diamondApproachIndex + 1].index
 		local gunman = diamondGunmanList[diamondGunmanIndex + 1].index
 		local loadout = diamondLoadoutIndex
@@ -7259,12 +7259,12 @@ CasinoHeistEditorMenu:add_imgui(function()
 		stats.set_int(MPX() .. "H3OPT_BITSET1", -1)
 		stats.set_int(MPX() .. "H3OPT_COMPLETEDPOSIX", -1)
 		locals.set_int(CASPL, DCRBl, 2)
-		gui.show_message("Diamond Casino Heist", "Preps should've been completed")
+		gui.show_message("名钻赌场豪劫", "Preps should've been completed")
 	end
 
 	ImGui.SameLine()
 
-	if ImGui.Button("Reset Preps##diamond") then
+	if ImGui.Button("重置前置##diamond") then
 		stats.set_int(MPX() .. "H3_LAST_APPROACH", 0)
 		stats.set_int(MPX() .. "H3_HARD_APPROACH", 0)
 		stats.set_int(MPX() .. "H3_APPROACH", 0)
@@ -7287,7 +7287,7 @@ CasinoHeistEditorMenu:add_imgui(function()
 		stats.set_int("MPPLY_H3_COOLDOWN", 0)
 		stats.set_int(MPX() .. "H3OPT_COMPLETEDPOSIX", 0)
 		locals.set_int(CASPL, DCRBl, 2)
-		gui.show_message("Diamond Casino Heist", "Preps should've been reset")
+		gui.show_message("名钻赌场豪劫", "Preps should've been reset")
 	end
 end)
 
@@ -7350,19 +7350,19 @@ CasinoHeistEditorMenu:add_imgui(function()
 	end
 
 	ImGui.Separator()
-	ImGui.Text("Cuts:")
+	ImGui.Text("分红：")
 
 	-- Remove Crew Cuts checkbox
-	casinoCrewCuts_enabled, _ = ImGui.Checkbox("Remove Crew Cuts", casinoCrewCuts_enabled)
+	casinoCrewCuts_enabled, _ = ImGui.Checkbox("移除队员分红", casinoCrewCuts_enabled)
 
 	-- Player cut inputs
-	casinoPc1_val, _ = ImGui.InputInt("Player Cut 1", casinoPc1_val)
-	casinoPc2_val, _ = ImGui.InputInt("Player Cut 2", casinoPc2_val)
-	casinoPc3_val, _ = ImGui.InputInt("Player Cut 3", casinoPc3_val)
-	casinoPc4_val, _ = ImGui.InputInt("Player Cut 4", casinoPc4_val)
+	casinoPc1_val, _ = ImGui.InputInt("玩家分红 1", casinoPc1_val)
+	casinoPc2_val, _ = ImGui.InputInt("玩家分红 2", casinoPc2_val)
+	casinoPc3_val, _ = ImGui.InputInt("玩家分红 3", casinoPc3_val)
+	casinoPc4_val, _ = ImGui.InputInt("玩家分红 4", casinoPc4_val)
 
 	-- Presets
-	ImGui.Text("Presets:")
+	ImGui.Text("预设：")
 	ImGui.SetNextItemWidth(170)
 	local nIndex, changed = ImGui.Combo("##DiamondPreset", sPresetIndex, casinoCutPresetNames, #casinoCutPresetNames)
 	if changed then
@@ -7382,7 +7382,7 @@ CasinoHeistEditorMenu:add_imgui(function()
 		casinoPc4_val = otherCut
 	end
 
-	if ImGui.Button("Apply Cuts") then
+	if ImGui.Button("应用分红") then
 		local cutsValid = true
 		for _, v in ipairs({casinoPc1_val, casinoPc2_val, casinoPc3_val, casinoPc4_val}) do
 			if v < 0 or v > 100 then
@@ -7391,13 +7391,13 @@ CasinoHeistEditorMenu:add_imgui(function()
 			end
 		end
 		if not cutsValid then
-			gui.show_error("Casino Heist", "Cuts must be 0-100.")
+			gui.show_error("赌场豪劫", "Cuts must be 0-100.")
 		else
 			globals.set_int(DCCg1, casinoPc1_val)
 			globals.set_int(DCCg2, casinoPc2_val)
 			globals.set_int(DCCg3, casinoPc3_val)
 			globals.set_int(DCCg4, casinoPc4_val)
-			gui.show_message("Casino Heist", "Cuts should've been applied")
+			gui.show_message("赌场豪劫", "Cuts should've been applied")
 		end
 	end
 end)
@@ -7426,11 +7426,11 @@ CasinoHeistEditorMenu:add_imgui(function()
 		return
 	end
 	ImGui.Separator()
-	if ImGui.Button("Reload boards") then
+	if ImGui.Button("重载规划板") then
 		locals.set_int(CASPL, DCRBl, 2)
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Solo Launch") then
+	if ImGui.Button("单人不等待直接开战") then
 		if locals.get_int(FMMCL, HGGs1) ~= nil and locals.get_int(FMMCL, HGGs1) ~= 0 then
 			if locals.get_int(FMMCL, HGGs1) > 1 then
 				locals.set_int(FMMCL, HGGs2, 1)
@@ -7443,16 +7443,16 @@ CasinoHeistEditorMenu:add_imgui(function()
 		end
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Kill Cooldown") then
+	if ImGui.Button("清除击杀冷却") then
 		stats.set_int(MPX() .. "H3_COMPLETEDPOSIX", -1)
 		stats.set_int("MPPLY_H3_COOLDOWN", -1)
-		gui.show_message("Diamond Casino Heist", "Cooldown should've been killed")
+		gui.show_message("名钻赌场豪劫", "Cooldown should've been killed")
 	end
 end)
 
-local CasinoHeistExtra = CasinoHeistEditorMenu:add_tab("Extras")
-CasinoHeistExtra:add_text("Hacks")
-local casinoAutograbber = CasinoHeistExtra:add_checkbox("Autograbber")
+local CasinoHeistExtra = CasinoHeistEditorMenu:add_tab("额外功能")
+CasinoHeistExtra:add_text("破解")
+local casinoAutograbber = CasinoHeistExtra:add_checkbox("自动抓取")
 script.register_looped("casinoAg", function(script)
 	script:yield()
 	if
@@ -7478,38 +7478,38 @@ script.register_looped("casinoAg", function(script)
 		script:sleep(500)
 	end
 end)
-CasinoHeistExtra:add_button("Bypass Fingerprint Hack", function()
+CasinoHeistExtra:add_button("绕过指纹破解", function()
 	if not script.is_active(FMC) then
-		gui.show_error("Casino Heist", "Mission script not active.")
+		gui.show_error("赌场豪劫", "Mission script not active.")
 		return
 	end
 	if locals.get_int(FMC, DCFHl) == 4 then
 		locals.set_int(FMC, DCFHl, 5)
 	else
-		gui.show_error("Casino Heist", "Fingerprint hack not ready.")
+		gui.show_error("赌场豪劫", "Fingerprint hack not ready.")
 	end
 end)
 CasinoHeistExtra:add_sameline()
-CasinoHeistExtra:add_button("Bypass Keypad Hack", function()
+CasinoHeistExtra:add_button("绕过键盘锁破解", function()
 	if not script.is_active(FMC) then
-		gui.show_error("Casino Heist", "Mission script not active.")
+		gui.show_error("赌场豪劫", "Mission script not active.")
 		return
 	end
 	if locals.get_int(FMC, DCKHl) ~= 4 then
 		locals.set_int(FMC, DCKHl, 5)
 	else
-		gui.show_error("Casino Heist", "Keypad hack not ready.")
+		gui.show_error("赌场豪劫", "Keypad hack not ready.")
 	end
 end)
 CasinoHeistExtra:add_sameline()
-CasinoHeistExtra:add_button("Bypass Drill Vault Door", function()
+CasinoHeistExtra:add_button("绕过钻开金库门", function()
 	locals.set_int(FMC, DCDVDl1, locals.get_int(FMC, DCDVDl2))
 end)
-CasinoHeistExtra:add_button("Instant Finish", function()
+CasinoHeistExtra:add_button("立即完成", function()
 	-- FIX: old code never took script host and only set half the locals per approach -> desync/fail.
 	script.run_in_fiber(function(casFin)
 		if not script.is_active(FMC) then
-			gui.show_message("Instant Heist Passed", "Start the finale first!")
+			gui.show_message("跳过豪劫（直接通过）", "Start the finale first!")
 			return
 		end
 		network.force_script_host(FMC)
@@ -7520,11 +7520,11 @@ CasinoHeistExtra:add_button("Instant Finish", function()
 		locals.set_int(FMC, DCXf4, 10000000)
 		locals.set_int(FMC, DCXf5, 99999)
 		locals.set_int(FMC, DCXf6, 99999)
-		gui.show_message("Instant Heist Passed", "Activated (HOST). Wait for vault to stream!")
+		gui.show_message("跳过豪劫（直接通过）", "Activated (HOST). Wait for vault to stream!")
 	end)
 end)
 CasinoHeistExtra:add_sameline()
-CasinoHeistExtra:add_button("Force Ready", function()
+CasinoHeistExtra:add_button("强制就绪", function()
 	script.run_in_fiber(function(script)
 		network.force_script_host(FMC)
 		script:sleep(1000)
@@ -7534,7 +7534,7 @@ CasinoHeistExtra:add_button("Force Ready", function()
 	end)
 end)
 CasinoHeistExtra:add_sameline()
-CasinoHeistExtra:add_button("Skip Cutscene", SkipCutscene)
+CasinoHeistExtra:add_button("跳过过场动画", SkipCutscene)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Cayo Heist --
@@ -7688,7 +7688,7 @@ function CayoSoloMantrap()
 		s:sleep(500)
 		locals.set_int(FMC2020, CPMantrap1, 7)
 		locals.set_int(FMC2020, CPMantrap2, 1)
-		gui.show_message("Cayo Perico Heist", "Solo mantrap enabled")
+		gui.show_message("佩里科岛豪劫", "Solo mantrap enabled")
 	end)
 end
 
@@ -7700,13 +7700,13 @@ function CayoTakeSecondary()
 		if cur ~= nil then
 			locals.set_int(FMC2020, CPSecondary, cur - 1)
 		end
-		gui.show_message("Cayo Perico Heist", "Secondary target taken")
+		gui.show_message("佩里科岛豪劫", "Secondary target taken")
 	end)
 end
 
 function CayoSetLootTake(value)
 	locals.set_int(FMC2020, CPLootTake, value)
-	gui.show_message("Cayo Perico Heist", "Loot take set to " .. value)
+	gui.show_message("佩里科岛豪劫", "Loot take set to " .. value)
 end
 
 function GetCayoTakeText()
@@ -7718,17 +7718,17 @@ end
 
 function CayoDrawMisc()
 	ImGui.Separator()
-	ImGui.Text("Misc")
-	if ImGui.Button("Solo Mantrap (Dual Keycard)") then
+	ImGui.Text("杂项")
+	if ImGui.Button("单人陷阱门（双门禁卡）") then
 		CayoSoloMantrap()
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Take Secondary Target") then
+	if ImGui.Button("拿取次要目标") then
 		CayoTakeSecondary()
 	end
 	ImGui.Text(GetCayoTakeText())
-	cayoLootTakeValue, _ = ImGui.InputInt("Loot Take", cayoLootTakeValue)
-	if ImGui.Button("Set Loot Take") then
+	cayoLootTakeValue, _ = ImGui.InputInt("可拿取战利品", cayoLootTakeValue)
+	if ImGui.Button("设置可拿取战利品") then
 		CayoSetLootTake(cayoLootTakeValue)
 	end
 	ImGui.Separator()
@@ -7750,7 +7750,7 @@ function CayoRefreshLootValues()
 	stats.set_int(MPX() .. "H4LOOT_GOLD_V", vals.GOLD)
 end
 
-local CayoHeistEditorMenu = HeistsDataEditorMenu:add_tab("Cayo Perico Heist")
+local CayoHeistEditorMenu = HeistsDataEditorMenu:add_tab("佩里科岛豪劫")
 
 -- Put EVERYTHING inside add_imgui
 CayoHeistEditorMenu:add_imgui(function()
@@ -7759,21 +7759,21 @@ CayoHeistEditorMenu:add_imgui(function()
 	end
 
 	-- Cayo Bag Size Editor
-	ImGui.Text("Cayo Bag Size Editor")
-	bagValue, _ = ImGui.InputInt("Bag Size", bagValue)
-	if ImGui.Button("Set Bag Size") then
+	ImGui.Text("佩里科岛背包编辑器")
+	bagValue, _ = ImGui.InputInt("背包容量", bagValue)
+	if ImGui.Button("设置背包容量") then
 		if bagValue < 0 or bagValue > 10000 then
-			gui.show_error("Cayo Perico", "Bag size must be 0-10000.")
+			gui.show_error("佩里科岛", "Bag size must be 0-10000.")
 		else
 			tunables.set_int("HEIST_BAG_MAX_CAPACITY", bagValue)
-			gui.show_message("Cayo Perico", "Bag size set to " .. bagValue)
+			gui.show_message("佩里科岛", "Bag size set to " .. bagValue)
 		end
 	end
 
 	ImGui.Separator()
 
 	-- Primary Target
-	ImGui.Text("Primary Target:")
+	ImGui.Text("主要目标: ")
 	local primaryNames = {}
 	for _, target in ipairs(cayoPrimaryTargets) do
 		table.insert(primaryNames, target.name)
@@ -7783,11 +7783,11 @@ CayoHeistEditorMenu:add_imgui(function()
 		sPrimary = nIndex
 		local selected = cayoPrimaryTargets[sPrimary + 1]
 		stats.set_int(MPX() .. "H4CNF_TARGET", selected.id)
-		gui.show_message("Cayo Perico", "Primary target set to: " .. selected.name)
+		gui.show_message("佩里科岛", "Primary target set to: " .. selected.name)
 	end
 
 	ImGui.Separator()
-	ImGui.Text("Primary Payouts (direct tunables):")
+	ImGui.Text("主要收益（直接调数值）：")
 	local cayoPrimaryPayouts = {
 		{ name = "Panther Statue", tunable = "IH_PRIMARY_TARGET_VALUE_SAPPHIRE_PANTHER_STATUE" },
 		{ name = "Madrazo Files", tunable = "IH_PRIMARY_TARGET_VALUE_MADRAZO_FILES" },
@@ -7801,10 +7801,10 @@ CayoHeistEditorMenu:add_imgui(function()
 		local val, used = ImGui.InputInt(p.name, cur)
 		if used then
 			if val < 0 or val > 10000000 then
-				gui.show_error("Cayo Perico", p.name .. " must be 0-10M.")
+				gui.show_error("佩里科岛", p.name .. " must be 0-10M.")
 			else
 				tunables.set_int(p.tunable, val)
-				gui.show_message("Cayo Perico", p.name .. " payout set to " .. val)
+				gui.show_message("佩里科岛", p.name .. " payout set to " .. val)
 			end
 		end
 	end
@@ -7817,7 +7817,7 @@ CayoHeistEditorMenu:add_imgui(function()
 		table.insert(targetNames, target.name)
 	end
 
-	ImGui.Text("Compound Target:")
+	ImGui.Text("庄园目标: ")
 	local nCompoundI, clickedCompound = ImGui.Combo("##Compound", compoundI, targetNames, #targetNames)
 	if clickedCompound then
 		compoundI = nCompoundI
@@ -7830,10 +7830,10 @@ CayoHeistEditorMenu:add_imgui(function()
 			"C"
 		)
 		CayoRefreshLootValues()
-		gui.show_message("Cayo Perico", "Compound target set to: " .. selected.name)
+		gui.show_message("佩里科岛", "Compound target set to: " .. selected.name)
 	end
 
-	ImGui.Text("Island Target:")
+	ImGui.Text("岛屿目标: ")
 	local nIslandI, clickedIsland = ImGui.Combo("##Island", islandI, targetNames, #targetNames)
 	if clickedIsland then
 		islandI = nIslandI
@@ -7846,21 +7846,21 @@ CayoHeistEditorMenu:add_imgui(function()
 			"I"
 		)
 		CayoRefreshLootValues()
-		gui.show_message("Cayo Perico", "Island target set to: " .. selected.name)
+		gui.show_message("佩里科岛", "Island target set to: " .. selected.name)
 	end
 
 	ImGui.Text("")
-	addPaintings, _ = ImGui.Checkbox("Paintings", addPaintings)
+	addPaintings, _ = ImGui.Checkbox("画作", addPaintings)
 
 	ImGui.Separator()
 
 	-- Difficulty
-	ImGui.Text("Difficulty:")
-	if ImGui.Button("Hard") then
+	ImGui.Text("难度: ")
+	if ImGui.Button("困难") then
 		stats.set_int(MPX() .. "H4_PROGRESS", 131055)
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Normal") then
+	if ImGui.Button("普通") then
 		stats.set_int(MPX() .. "H4_PROGRESS", 126823)
 	end
 
@@ -7871,13 +7871,13 @@ CayoHeistEditorMenu:add_imgui(function()
 	for _, veh in ipairs(cayoApproachVehicles) do
 		table.insert(approachNames, veh.name)
 	end
-	ImGui.Text("Approach:")
+	ImGui.Text("路线: ")
 	local nIndex2, changed2 = ImGui.Combo("##CayoApproach", sApproach, approachNames, #approachNames)
 	if changed2 then
 		sApproach = nIndex2
 		local selected = cayoApproachVehicles[sApproach + 1]
 		stats.set_int(MPX() .. "H4_MISSIONS", selected.id)
-		gui.show_message("Cayo Perico", "Approach set to: " .. selected.name)
+		gui.show_message("佩里科岛", "Approach set to: " .. selected.name)
 	end
 
 	ImGui.Separator()
@@ -7887,27 +7887,27 @@ CayoHeistEditorMenu:add_imgui(function()
 	for _, wep in ipairs(cayoWeapons) do
 		table.insert(weaponNames, wep.name)
 	end
-	ImGui.Text("Weapons:")
+	ImGui.Text("武器: ")
 	local nIndex3, changed3 = ImGui.Combo("##CayoWeapon", sWeapon, weaponNames, #weaponNames)
 	if changed3 then
 		sWeapon = nIndex3
 		local selected = cayoWeapons[sWeapon + 1]
 		stats.set_int(MPX() .. "H4CNF_WEAPONS", selected.id)
-		gui.show_message("Cayo Perico", "Weapon loadout set to: " .. selected.name)
+		gui.show_message("佩里科岛", "Weapon loadout set to: " .. selected.name)
 	end
 
 	ImGui.Separator()
 
 	-- Preps
-	ImGui.Text("Preps:")
-	if ImGui.Button("Complete Preps") then
+	ImGui.Text("前置：")
+	if ImGui.Button("完成全部前置") then
 		CayoPaintingsToggler(addPaintings)
 		CayoCompletePreps()
 		locals.set_int(HIP, CPRSl, 2)
-		gui.show_message("Cayo Perico Heist", "Preps should've been completed")
+		gui.show_message("佩里科岛豪劫", "Preps should've been completed")
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Reset Preps") then
+	if ImGui.Button("重置前置") then
 		stats.set_int(MPX() .. "H4_PROGRESS", 0)
 		stats.set_int(MPX() .. "H4_MISSIONS", 0)
 		stats.set_int(MPX() .. "H4CNF_APPROACH", 0)
@@ -7917,25 +7917,25 @@ CayoHeistEditorMenu:add_imgui(function()
 		stats.set_int(MPX() .. "H4CNF_BS_ABIL", 0)
 		stats.set_int(MPX() .. "H4_PLAYTHROUGH_STATUS", 0)
 		locals.set_int(HIP, CPRSl, 2)
-		gui.show_message("Cayo Perico Heist", "Preps should've been reset")
+		gui.show_message("佩里科岛豪劫", "Preps should've been reset")
 	end
 
 	ImGui.Separator()
 
 	-- Crew Cuts
-	ImGui.Text("Removes fencing fee and Pavel's cut")
-	cayoCrewCuts, _ = ImGui.Checkbox("Remove Crew Cuts", cayoCrewCuts)
+	ImGui.Text("移除销赃费与帕维尔抽成")
+	cayoCrewCuts, _ = ImGui.Checkbox("移除队员分红", cayoCrewCuts)
 	-- Note: script.register_looped for this should be handled separately
 
 	ImGui.Separator()
 
-	ImGui.Text("Cuts:")
-	ImGui.Text("Transaction limit is 2.55mil.")
-	cayocut1, _ = ImGui.InputInt("Player 1", cayocut1)
-	cayocut2, _ = ImGui.InputInt("Player 2", cayocut2)
-	cayocut3, _ = ImGui.InputInt("Player 3", cayocut3)
-	cayocut4, _ = ImGui.InputInt("Player 4", cayocut4)
-	if ImGui.Button("Apply Cuts##Cayo") then
+	ImGui.Text("分红：")
+	ImGui.Text("交易上限为 255 万。")
+	cayocut1, _ = ImGui.InputInt("玩家 1", cayocut1)
+	cayocut2, _ = ImGui.InputInt("玩家 2", cayocut2)
+	cayocut3, _ = ImGui.InputInt("玩家 3", cayocut3)
+	cayocut4, _ = ImGui.InputInt("玩家 4", cayocut4)
+	if ImGui.Button("应用分红##Cayo") then
 		local cayoValid = true
 		for _, v in ipairs({cayocut1, cayocut2, cayocut3, cayocut4}) do
 			if v < 0 or v > 100 then
@@ -7944,99 +7944,99 @@ CayoHeistEditorMenu:add_imgui(function()
 			end
 		end
 		if not cayoValid then
-			gui.show_error("Cayo Perico", "Cuts must be 0-100.")
+			gui.show_error("佩里科岛", "Cuts must be 0-100.")
 		else
 			SN_ApplyCayoCutsCherax(cayocut1, cayocut2, cayocut3, cayocut4)
-			gui.show_message("Cayo Perico", "Cuts should've been applied")
+			gui.show_message("佩里科岛", "Cuts should've been applied")
 		end
 	end
 
 	ImGui.Separator()
 
-	ImGui.Text("Presets:")
-	if ImGui.Button("All - 0%##Cayo") then
+	ImGui.Text("预设：")
+	if ImGui.Button("全员 - 0%##Cayo") then
 		cayocut1, cayocut2, cayocut3, cayocut4 = 0, 0, 0, 0
 		SN_ApplyCayoCutsCherax(0, 0, 0, 0)
-		gui.show_message("Cayo Perico", "Cuts should've been applied")
+		gui.show_message("佩里科岛", "Cuts should've been applied")
 	end
 	ImGui.SameLine()
-	if ImGui.Button("All - 25%##Cayo") then
+	if ImGui.Button("全员 - 25%##Cayo") then
 		cayocut1, cayocut2, cayocut3, cayocut4 = 25, 25, 25, 25
 		SN_ApplyCayoCutsCherax(25, 25, 25, 25)
-		gui.show_message("Cayo Perico", "Cuts should've been applied")
+		gui.show_message("佩里科岛", "Cuts should've been applied")
 	end
-	if ImGui.Button("All - 85%##Cayo") then
+	if ImGui.Button("全员 - 85%##Cayo") then
 		cayocut1, cayocut2, cayocut3, cayocut4 = 85, 85, 85, 85
 		SN_ApplyCayoCutsCherax(85, 85, 85, 85)
-		gui.show_message("Cayo Perico", "Cuts should've been applied")
+		gui.show_message("佩里科岛", "Cuts should've been applied")
 	end
 	ImGui.SameLine()
-	if ImGui.Button("All - 100%##Cayo") then
+	if ImGui.Button("全员 - 100%##Cayo") then
 		cayocut1, cayocut2, cayocut3, cayocut4 = 100, 100, 100, 100
 		SN_ApplyCayoCutsCherax(100, 100, 100, 100)
-		gui.show_message("Cayo Perico", "Cuts should've been applied")
+		gui.show_message("佩里科岛", "Cuts should've been applied")
 	end
-	if ImGui.Button("2.55mil Payout##Cayo") then
+	if ImGui.Button("255 万收益") then
 		local maxCut = SN_CayoMaxCutCherax()
 		if maxCut then
 			cayocut1, cayocut2, cayocut3, cayocut4 = maxCut, maxCut, maxCut, maxCut
 			cayoCrewCuts = false
 			SN_ApplyCayoCutsCherax(maxCut, maxCut, maxCut, maxCut)
-			gui.show_message("Cayo Perico", "Cuts should've been applied (" .. maxCut .. "% each)")
+			gui.show_message("佩里科岛", "Cuts should've been applied (" .. maxCut .. "% each)")
 		else
-			gui.show_message("Cayo Perico", "Unknown primary target")
+			gui.show_message("佩里科岛", "Unknown primary target")
 		end
 	end
 
 	ImGui.Separator()
 
 	-- Reload Planning Screen
-	ImGui.Text("Reload Planning Screen")
-	if ImGui.Button("Reload Planning Screen") then
+	ImGui.Text("重载规划板")
+	if ImGui.Button("重载规划板") then
 		locals.set_int(HIP, CPRSl, 2)
-		gui.show_message("Cayo Perico Heist", "Screen should've been reloaded")
+		gui.show_message("佩里科岛豪劫", "Screen should've been reloaded")
 	end
 
 	ImGui.Separator()
 
 	-- Extras
-	ImGui.Text("Extras")
-	if ImGui.Button("Bypass Drainage Cut") then
+	ImGui.Text("额外功能")
+	if ImGui.Button("绕过排水管切割") then
 		locals.set_int(FMC2020, CPSTCl, 6)
-		gui.show_message("Cayo Perico Heist", "Cutting process should've been skipped")
+		gui.show_message("佩里科岛豪劫", "Cutting process should've been skipped")
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Bypass Fingerprint Scanner") then
+	if ImGui.Button("绕过指纹扫描") then
 		locals.set_int(FMC2020, CPFHl, 5)
-		gui.show_message("Cayo Perico Heist", "Hacking process should've been skipped")
+		gui.show_message("佩里科岛豪劫", "Hacking process should've been skipped")
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Bypass Plasma Cutter") then
+	if ImGui.Button("绕过等离子切割机") then
 		locals.set_float(FMC2020, CPPCCl, 100.0)
-		gui.show_message("Cayo Perico Heist", "Cutting process should've been skipped")
+		gui.show_message("佩里科岛豪劫", "Cutting process should've been skipped")
 	end
 
 	ImGui.Separator()
 
-	ImGui.Text("Team Lives:")
+	ImGui.Text("团队生命: ")
 	livesValueCayo, _ = ImGui.InputInt("##CayolivesValue", livesValueCayo)
-	if ImGui.Button("Set Lives") then
+	if ImGui.Button("设置生命数") then
 		if livesValueCayo < 1 then
-			gui.show_error("Cayo Perico Heist", "Lives must be at least 1.")
+			gui.show_error("佩里科岛豪劫", "Lives must be at least 1.")
 		elseif livesValueCayo > 999999 then
-			gui.show_error("Cayo Perico Heist", "Lives value too high.")
+			gui.show_error("佩里科岛豪劫", "Lives value too high.")
 		elseif not script.is_active(FMC2020) then
-			gui.show_error("Cayo Perico Heist", "Mission script not active.")
+			gui.show_error("佩里科岛豪劫", "Mission script not active.")
 		else
 			locals.set_int(FMC2020, CPLIVESL, livesValueCayo)
-			gui.show_message("Cayo Perico Heist", "Team Lives value set to " .. livesValueCayo)
+			gui.show_message("佩里科岛豪劫", "Team Lives value set to " .. livesValueCayo)
 		end
 	end
 	if ImGui.IsItemHovered() then
-		ImGui.SetTooltip("Default is 3. Infinite team lives for the heist (set to 999999 for unlimited)")
+		ImGui.SetTooltip("默认 3。为本次豪劫设置无限生命（设为 999999 即无限）")
 	end
 
-	if ImGui.Button("Remove All CCTV's") then
+	if ImGui.Button("移除全部监控") then
 		for _, ent in pairs(entities.get_all_objects_as_handles()) do
 			for __, cam in pairs(CamList) do
 				if ENTITY.GET_ENTITY_MODEL(ent) == cam then
@@ -8065,57 +8065,57 @@ CayoHeistEditorMenu:add_imgui(function()
 		joaat("xm_prop_x17_server_farm_cctv_01"),
 	}
 
-	if ImGui.Button("Instant Finish") then
+	if ImGui.Button("立即完成") then
 		-- FIX Bug#2: old code never took script host, so finish desynced and only host got payout.
 		-- Must be HOST (or force host) and cuts must already be set by HOST.
 		script.run_in_fiber(function(cayoFin)
 			if not script.is_active(FMC2020) then
-				gui.show_message("Cayo Perico Heist", "Start the finale first!")
+				gui.show_message("佩里科岛豪劫", "Start the finale first!")
 				return
 			end
 			network.force_script_host(FMC2020)
 			cayoFin:sleep(1000)
 			locals.set_int(FMC2020, CPXf1, 9)
 			locals.set_int(FMC2020, CPXf2, 50)
-			gui.show_message("Cayo Perico Heist", "Finished (HOST). If crew got 0, HOST forgot to set cuts to 100/100 before finale!")
+			gui.show_message("佩里科岛豪劫", "Finished (HOST). If crew got 0, HOST forgot to set cuts to 100/100 before finale!")
 		end)
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Skip Cutscene") then
+	if ImGui.Button("跳过过场动画") then
 		SkipCutscene()
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Force Ready") then
+	if ImGui.Button("强制就绪") then
 		script.run_in_fiber(function(script)
 			network.force_script_host(FMC2020)
 			script:sleep(1000)
 			for i = 0, 3 do
 				globals.set_int(CYFRg + 1 + (i * 27) + 7 + 1 + i, 1)
 			end
-			gui.show_message("Cayo Perico Heist", "Everyone should've been forced ready")
+			gui.show_message("佩里科岛豪劫", "Everyone should've been forced ready")
 		end)
 	end
 
-	if ImGui.Button("Kill Cooldown (after solo)") then
+	if ImGui.Button("清除击杀冷却（单人后）") then
 		stats.set_int(MPX() .. "H4_TARGET_POSIX", 1659643454)
 		stats.set_int(MPX() .. "H4_COOLDOWN", 0)
 		stats.set_int(MPX() .. "H4_COOLDOWN_HARD", 0)
-		gui.show_message("Cayo Perico Heist", "Cooldown should've been killed")
+		gui.show_message("佩里科岛豪劫", "Cooldown should've been killed")
 	end
 	ImGui.SameLine()
-	if ImGui.Button("Kill Cooldown (after team)") then
+	if ImGui.Button("清除击杀冷却（组队后）") then
 		stats.set_int(MPX() .. "H4_TARGET_POSIX", 1659429119)
 		stats.set_int(MPX() .. "H4_COOLDOWN", 0)
 		stats.set_int(MPX() .. "H4_COOLDOWN_HARD", 0)
-		gui.show_message("Cayo Perico Heist", "Cooldown should've been killed")
+		gui.show_message("佩里科岛豪劫", "Cooldown should've been killed")
 	end
 
-	ImGui.Text("After clicking the Kill Cooldown button, go offline and then come back online")
+	ImGui.Text("点击清除冷却后，先离线再回到线上")
 
 	CayoDrawMisc()
 
 	-- Teleports
-	ImGui.Text("Teleports")
+	ImGui.Text("传送")
 
 	for i, location in ipairs(cayoLocations) do
 		if ImGui.Button(location.name) then
@@ -8170,7 +8170,7 @@ glassCaseTypes = {
 }
 
 -- Create menu tab
-KortzCenterHeistMenu = HeistsDataEditorMenu:add_tab("Kortz Center Heist")
+KortzCenterHeistMenu = HeistsDataEditorMenu:add_tab("科兹中心豪劫")
 
 -- State
 k26_heist_target = 0
@@ -8246,24 +8246,24 @@ function EnableSoloSecondaryTargets()
         globals.set_int(base + 68, 0)
         globals.set_int(base + 143, 0)
     end
-    gui.show_message("Kortz Center", "Solo secondary targets enabled")
+    gui.show_message("科兹中心", "Solo secondary targets enabled")
 end
 
 function SetKortzTarget(target_index)
     stats.set_int(MPX() .. "K26_HEIST_TARGET", target_index)
     locals.set_int(KORTZPL, KCBRL, 2)
-    gui.show_message("Kortz Center Heist", "Target set to: " .. targetShortNames[target_index + 1])
+    gui.show_message("科兹中心豪劫", "Target set to: " .. targetShortNames[target_index + 1])
 end
 
 function KortzReloadBoard()
     locals.set_int(KORTZPL, KCBRL, 2)
-    gui.show_message("Kortz Center Heist", "Planning board reloaded")
+    gui.show_message("科兹中心豪劫", "Planning board reloaded")
 end
 
 function KortzSkipCooldown()
     globals.set_int(KCCDG, 0)
     globals.set_int(KCCD2G, 0)
-    gui.show_message("Kortz Center Heist", "Cooldowns reset to 0")
+    gui.show_message("科兹中心豪劫", "Cooldowns reset to 0")
 end
 
 -- Smooth rainbow fade info helper
@@ -8279,16 +8279,16 @@ end
 function ToggleBitDropdown(label, stat_name, bit, tooltip)
     local current = stats.get_int(MPX() .. stat_name)
     local is_set = (current & bit) ~= 0
-    local options = { "Not Done", "Done" }
+    local options = { "未完成", "已完成" }
     local idx = is_set and 1 or 0
     local new_idx, changed = ImGui.Combo(label, idx, options, 2)
     if changed then
         if new_idx == 1 then
             stats.set_int(MPX() .. stat_name, current | bit)
-            gui.show_message("Kortz Center Heist", label .. " completed")
+            gui.show_message("科兹中心豪劫", label .. " 已完成")
         else
             stats.set_int(MPX() .. stat_name, current & ~bit)
-            gui.show_message("Kortz Center Heist", label .. " undone")
+            gui.show_message("科兹中心豪劫", label .. " 已取消")
         end
     end
     if ImGui.IsItemHovered() then
@@ -8303,27 +8303,27 @@ local function KortzSkipDataCrack()
             locals.set_int(FMCV3, KCDCL + 1 + (b * 4), 1)
         end
         locals.set_int(FMCV3, KCDCL, 1)
-        gui.show_message("Kortz Center Cracker", "Data crack bypassed")
+        gui.show_message("科兹中心破解器", "Data crack bypassed")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
 local function KortzSkipFingerprint()
     if isKortzHeistActive() then
         locals.set_int(FMCV3, KCFHL, 5)
-        gui.show_message("Kortz Center Cracker", "Fingerprint scanner bypassed")
+        gui.show_message("科兹中心破解器", "Fingerprint scanner bypassed")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
 local function KortzSkipVaultDoor()
     if isKortzHeistActive() then
         locals.set_int(FMCV3, KCVLL, 5)
-        gui.show_message("Kortz Center Cracker", "Vault door bypassed")
+        gui.show_message("科兹中心破解器", "Vault door bypassed")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
@@ -8333,9 +8333,9 @@ local function KortzAutoAccessCode()
         locals.set_int(FMCV3, KCAC_BASE + (1 * 2), 0)
         locals.set_int(FMCV3, KCAC_BASE + (2 * 2), 0)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(0, 237, 1.0)
-        gui.show_message("Kortz Center Cracker", "Access code entered: 00-00-00")
+        gui.show_message("科兹中心破解器", "Access code entered: 00-00-00")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
@@ -8343,35 +8343,35 @@ local function KortzDisableLasers()
     if isKortzHeistActive() then
         locals.set_int(FMCV3, KCLGL, 4294784)
         globals.set_int(KCLDG, 1)
-        gui.show_message("Kortz Center Cracker", "Laser grid neutralized")
+        gui.show_message("科兹中心破解器", "Laser grid neutralized")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
 local function KortzSetLasersEasy()
     locals.set_int(FMMLASERS, KCLDIF1, 1)
     locals.set_int(FMMLASERS, KCLDIF2, 0)
-    gui.show_message("Kortz Center Cracker", "Lasers set to Easy")
+    gui.show_message("科兹中心破解器", "Lasers set to Easy")
 end
 
 local function KortzSetLasersHard()
     locals.set_int(FMMLASERS, KCLDIF1, 0)
     locals.set_int(FMMLASERS, KCLDIF2, 1)
-    gui.show_message("Kortz Center Cracker", "Lasers set to Hard")
+    gui.show_message("科兹中心破解器", "Lasers set to Hard")
 end
 
 local function KortzNoDamageLasers()
     locals.set_int(FMMLASERS, KCNoDmg, 1)
-    gui.show_message("Kortz Center Cracker", "No damage lasers enabled")
+    gui.show_message("科兹中心破解器", "No damage lasers enabled")
 end
 
 local function KortzSetLootTake(value)
     if isKortzHeistActive() then
         locals.set_int(FMCV3, KCLootTake, value)
-        gui.show_message("Kortz Center Cracker", "Loot take set to " .. value)
+        gui.show_message("科兹中心破解器", "Loot take set to " .. value)
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
@@ -8385,45 +8385,45 @@ end
 local function CutVenus()
     if isKortzHeistActive() then
         locals.set_float(FMCV3, KCCGL_BASE + (0 * 13) + KCCGL_OFFSET, 100.0)
-        gui.show_message("Kortz Center Cracker", "Venus d'Algernon cut")
+        gui.show_message("科兹中心破解器", "Venus d'Algernon cut")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
 local function CutGemstone()
     if isKortzHeistActive() then
         locals.set_float(FMCV3, KCCGL_BASE + (1 * 13) + KCCGL_OFFSET, 100.0)
-        gui.show_message("Kortz Center Cracker", "Gemstone cut")
+        gui.show_message("科兹中心破解器", "Gemstone cut")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
 local function CutHorse()
     if isKortzHeistActive() then
         locals.set_float(FMCV3, KCCGL_BASE + (2 * 13) + KCCGL_OFFSET, 100.0)
-        gui.show_message("Kortz Center Cracker", "Horse cut")
+        gui.show_message("科兹中心破解器", "Horse cut")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
 local function CutCoquard()
     if isKortzHeistActive() then
         locals.set_float(FMCV3, KCCGL_BASE + (3 * 13) + KCCGL_OFFSET, 100.0)
-        gui.show_message("Kortz Center Cracker", "Coquard Carcanet cut")
+        gui.show_message("科兹中心破解器", "Coquard Carcanet cut")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
 local function CutMemento()
     if isKortzHeistActive() then
         locals.set_float(FMCV3, KCCGL_BASE + (4 * 13) + KCCGL_OFFSET, 100.0)
-        gui.show_message("Kortz Center Cracker", "Memento Non Mori cut")
+        gui.show_message("科兹中心破解器", "Memento Non Mori cut")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
@@ -8432,9 +8432,9 @@ local function KortzCutAllGlass()
         for i = 0, 4 do
             locals.set_float(FMCV3, KCCGL_BASE + (i * 13) + KCCGL_OFFSET, 100.0)
         end
-        gui.show_message("Kortz Center Cracker", "All glass cases cut")
+        gui.show_message("科兹中心破解器", "All glass cases cut")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
@@ -8443,9 +8443,9 @@ local function KortzTakePrimary()
         locals.set_int(FMCV3, KCPT_STATE, 15)
         locals.set_int(FMCV3, KCPT_STATE, 17)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(0, 237, 1.0)
-        gui.show_message("Kortz Center Cracker", "Primary target acquired")
+        gui.show_message("科兹中心破解器", "Primary target acquired")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
@@ -8453,9 +8453,9 @@ local function KortzTakeSecondary()
     if isKortzHeistActive() then
         locals.set_int(FMCV3, KCST_STATE, 3)
         PAD.SET_CONTROL_VALUE_NEXT_FRAME(0, 219, 1.0)
-        gui.show_message("Kortz Center Cracker", "Secondary target secured")
+        gui.show_message("科兹中心破解器", "Secondary target secured")
     else
-        gui.show_message("Kortz Center Cracker", "Heist not active")
+        gui.show_message("科兹中心破解器", "Heist not active")
     end
 end
 
@@ -8499,7 +8499,7 @@ script.register_looped("KortzCenterAutoHack", function(s)
             end
             locals.set_int(FMCV3, KCDCL, 1)
             dataCrackTriggered = true
-            gui.show_message("Kortz Center Cracker", "Auto: Data crack bypassed")
+            gui.show_message("科兹中心破解器", "Auto: Data crack bypassed")
             s:sleep(1000)
             return
         end
@@ -8510,7 +8510,7 @@ script.register_looped("KortzCenterAutoHack", function(s)
         if val ~= nil and val >= 0 and val <= 4 then
             locals.set_int(FMCV3, KCFHL, 5)
             fingerprintTriggered = true
-            gui.show_message("Kortz Center Cracker", "Auto: Fingerprint bypassed")
+            gui.show_message("科兹中心破解器", "Auto: Fingerprint bypassed")
             s:sleep(1000)
             return
         end
@@ -8521,7 +8521,7 @@ script.register_looped("KortzCenterAutoHack", function(s)
         if val ~= nil and val >= 0 and val <= 4 then
             locals.set_int(FMCV3, KCVLL, 5)
             vaultDoorTriggered = true
-            gui.show_message("Kortz Center Cracker", "Auto: Vault door bypassed")
+            gui.show_message("科兹中心破解器", "Auto: Vault door bypassed")
             s:sleep(1000)
             return
         end
@@ -8548,7 +8548,7 @@ KortzCenterHeistMenu:add_imgui(function()
     -- PRIMARY TARGET
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "PRIMARY TARGET")
     ImGui.SameLine()
-    RainbowInfo("Select the main painting you want to steal.\nClick SET TARGET to apply it.")
+    RainbowInfo("选择你想偷走的主画作。\n点「设定目标」应用。")
     ImGui.Separator()
 
     local nIndex, changed = ImGui.Combo("##PrimaryTarget", k26_heist_target, targetShortNames, #targetShortNames)
@@ -8556,56 +8556,56 @@ KortzCenterHeistMenu:add_imgui(function()
         k26_heist_target = nIndex
     end
 
-    if ImGui.Button("SET TARGET") then
+    if ImGui.Button("设定目标") then
         SetKortzTarget(k26_heist_target)
         selectedPayoutTarget = k26_heist_target
     end
     ImGui.SameLine()
-    ImGui.Text("Selected: " .. targetShortNames[k26_heist_target + 1])
+    ImGui.Text("已选择: " .. targetShortNames[k26_heist_target + 1])
     ImGui.Dummy(0, 8)
 
     -- PAYOUT SETTINGS
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "PAYOUT SETTINGS")
     ImGui.SameLine()
-    RainbowInfo("Adjust the payout for the selected target.")
+    RainbowInfo("调整所选目标的收益。")
     ImGui.Separator()
 
     selectedPayoutTarget = k26_heist_target
     local targetIdx = selectedPayoutTarget + 1
 
     if targetIdx >= 1 and targetIdx <= 27 then
-        ImGui.Text("Target: " .. targetShortNames[targetIdx])
+        ImGui.Text("目标: " .. targetShortNames[targetIdx])
         ImGui.TextColored(0.0, 1.0, 0.0, 1.0, "Payout: $" .. string.format("%.0f", targetBasePayouts[targetIdx]))
         ImGui.Text(GetKortzTakeText())
 
         ImGui.Dummy(0, 5)
-        ImGui.Text("Multiplier:")
+        ImGui.Text("倍率: ")
         payoutModifiers[targetIdx], _ = ImGui.InputFloat("##Multiplier" .. targetIdx, payoutModifiers[targetIdx], 0.1, 0.5, "%.1f")
-        ImGui.Text("Custom Value:")
+        ImGui.Text("自定义数值: ")
         payoutCustomValues[targetIdx], _ = ImGui.InputInt("##CustomValue" .. targetIdx, payoutCustomValues[targetIdx], 1000, 10000)
         ImGui.Dummy(0, 5)
 
-        if ImGui.Button("Apply Multiplier") then
+        if ImGui.Button("应用倍率") then
             local newPayout = math.floor(targetBasePayouts[targetIdx] * payoutModifiers[targetIdx])
             setPayout(targetIdx - 1, newPayout)
             KortzReloadBoard()
-            gui.show_message("Kortz Center Heist", "Payout set to $" .. string.format("%.0f", newPayout))
+            gui.show_message("科兹中心豪劫", "Payout set to $" .. string.format("%.0f", newPayout))
         end
         ImGui.SameLine()
-        if ImGui.Button("Apply Custom Value") then
+        if ImGui.Button("应用自定义数值") then
             if payoutCustomValues[targetIdx] > 0 then
                 setPayout(targetIdx - 1, payoutCustomValues[targetIdx])
                 KortzReloadBoard()
-                gui.show_message("Kortz Center Heist", "Payout set to $" .. string.format("%.0f", payoutCustomValues[targetIdx]))
+                gui.show_message("科兹中心豪劫", "Payout set to $" .. string.format("%.0f", payoutCustomValues[targetIdx]))
             end
         end
         ImGui.SameLine()
-        if ImGui.Button("Reset This Target") then
+        if ImGui.Button("重置此目标") then
             setPayout(targetIdx - 1, targetBasePayouts[targetIdx])
             KortzReloadBoard()
             payoutModifiers[targetIdx] = 1.0
             payoutCustomValues[targetIdx] = 0
-            gui.show_message("Kortz Center Heist", "Payout reset to base")
+            gui.show_message("科兹中心豪劫", "Payout reset to base")
         end
     end
     ImGui.Dummy(0, 8)
@@ -8613,46 +8613,46 @@ KortzCenterHeistMenu:add_imgui(function()
     -- GENERAL SETTINGS
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "GENERAL SETTINGS")
     ImGui.SameLine()
-    RainbowInfo("Adjust bag size, team lives, weekly multiplier, difficulty, and cooldowns.")
+    RainbowInfo("调整背包容量、团队生命、每周倍率、难度与冷却。")
     ImGui.Separator()
 
     local currentBag = getCurrentBagSize()
-    ImGui.Text("Bag Capacity: " .. currentBag)
+    ImGui.Text("背包容量: " .. currentBag)
     bagSizeValue, _ = ImGui.InputInt("##BagSize", bagSizeValue)
-    if ImGui.Button("Set Bag Size") then
+    if ImGui.Button("设置背包容量") then
         if bagSizeValue < 0 or bagSizeValue > 10000 then
-            gui.show_error("Kortz Center Heist", "Bag size must be 0-10000.")
+            gui.show_error("科兹中心豪劫", "Bag size must be 0-10000.")
         else
             globals.set_int(KCBGL, bagSizeValue)
-            gui.show_message("Kortz Center Heist", "Bag capacity set to " .. bagSizeValue)
+            gui.show_message("科兹中心豪劫", "Bag capacity set to " .. bagSizeValue)
         end
     end
 
     ImGui.Separator()
 
     local currentLives = getCurrentLives()
-    ImGui.Text("Team Lives: " .. currentLives)
+    ImGui.Text("团队生命: " .. currentLives)
     livesValue, _ = ImGui.InputInt("##Lives", livesValue)
-    if ImGui.Button("Set Lives") then
+    if ImGui.Button("设置生命数") then
         if livesValue < 1 then
-            gui.show_error("Kortz Center Heist", "Lives must be at least 1.")
+            gui.show_error("科兹中心豪劫", "Lives must be at least 1.")
         elseif livesValue > 999999 then
-            gui.show_error("Kortz Center Heist", "Lives value too high.")
+            gui.show_error("科兹中心豪劫", "Lives value too high.")
         elseif not script.is_active(FMCV3) then
-            gui.show_error("Kortz Center Heist", "Mission script not active.")
+            gui.show_error("科兹中心豪劫", "Mission script not active.")
         else
             locals.set_int(FMCV3, KCLIVESL, livesValue)
-            gui.show_message("Kortz Center Heist", "Team lives set to " .. livesValue)
+            gui.show_message("科兹中心豪劫", "Team lives set to " .. livesValue)
         end
     end
 
     ImGui.Separator()
 
-    ImGui.Text("Weekly Bonus Multiplier:")
+    ImGui.Text("每周奖金倍率: ")
     weeklyMultiplierValue, _ = ImGui.InputFloat("##WeeklyMultiplier", weeklyMultiplierValue)
-    if ImGui.Button("Set Weekly Multiplier") then
+    if ImGui.Button("设置每周倍率") then
         globals.set_float(KCWMG, weeklyMultiplierValue)
-        gui.show_message("Kortz Center Heist", "Weekly multiplier set to " .. weeklyMultiplierValue .. "x")
+        gui.show_message("科兹中心豪劫", "Weekly multiplier set to " .. weeklyMultiplierValue .. "x")
     end
 
     ImGui.Separator()
@@ -8665,151 +8665,151 @@ KortzCenterHeistMenu:add_imgui(function()
         ImGui.TextColored(0.0, 1.0, 0.0, 1.0, "NORMAL MODE: ACTIVE")
     end
 
-    if ImGui.Button("Hard Mode") then
+    if ImGui.Button("困难模式") then
         stats.set_int(MPX() .. "K26_GENERAL_BS", stats.get_int(MPX() .. "K26_GENERAL_BS") | (1 << 28))
         KortzReloadBoard()
-        gui.show_message("Kortz Center Heist", "Hard Mode enabled")
+        gui.show_message("科兹中心豪劫", "Hard Mode enabled")
     end
     if ImGui.IsItemHovered() then
-        ImGui.SetTooltip("Enable Hard Mode")
+        ImGui.SetTooltip("启用困难模式")
     end
     ImGui.SameLine()
-    if ImGui.Button("Normal Mode") then
+    if ImGui.Button("普通模式") then
         stats.set_int(MPX() .. "K26_GENERAL_BS", stats.get_int(MPX() .. "K26_GENERAL_BS") & ~(1 << 28))
         KortzReloadBoard()
-        gui.show_message("Kortz Center Heist", "Normal Mode enabled")
+        gui.show_message("科兹中心豪劫", "Normal Mode enabled")
     end
     if ImGui.IsItemHovered() then
-        ImGui.SetTooltip("Enable Normal Mode")
+        ImGui.SetTooltip("启用普通模式")
     end
 
     ImGui.Separator()
 
-    if ImGui.Button("Skip Cooldown") then
+    if ImGui.Button("跳过冷却") then
         KortzSkipCooldown()
     end
     ImGui.SameLine()
-    if ImGui.Button("Unlock All Paintings") then
+    if ImGui.Button("解锁全部画作") then
         stats.set_int(MPX() .. "K26_TARGETS_OWNED_BS", -1)
-        gui.show_message("Kortz Center Heist", "All paintings unlocked")
+        gui.show_message("科兹中心豪劫", "All paintings unlocked")
     end
     ImGui.Dummy(0, 8)
 
     -- HIGH PRIORITY
     ImGui.TextColored(1.0, 0.8, 0.0, 1.0, "HIGH PRIORITY (STRONGLY RECOMMENDED)")
     ImGui.SameLine()
-    RainbowInfo("These preps make the heist much easier.\nStrongly recommended for a smooth run.")
+    RainbowInfo("这些前置会大幅简化豪劫。\n强烈建议完成。")
     ImGui.Separator()
 
-    ToggleBitDropdown("Unmarked Weapons", "K26_ROBBERY_PROG", 128, "Weapons that can't be traced")
-    ToggleBitDropdown("Getaway Vehicle", "K26_ROBBERY_PROG", 256, "Armored getaway vehicle")
-    ToggleBitDropdown("Guard Routes", "K26_GENERAL_BS", 32, "Reveals guard patrol patterns")
-    ToggleBitDropdown("Glass Cutter", "K26_GENERAL_BS", 64, "Tool for cutting display cases")
-    ToggleBitDropdown("Power Drills", "K26_GENERAL_BS", 128, "Drills for certain locks")
+    ToggleBitDropdown("无标识武器", "K26_ROBBERY_PROG", 128, "Weapons that can't be traced")
+    ToggleBitDropdown("撤离载具", "K26_ROBBERY_PROG", 256, "Armored getaway vehicle")
+    ToggleBitDropdown("守卫路线", "K26_GENERAL_BS", 32, "Reveals guard patrol patterns")
+    ToggleBitDropdown("玻璃切割器", "K26_GENERAL_BS", 64, "Tool for cutting display cases")
+    ToggleBitDropdown("电钻", "K26_GENERAL_BS", 128, "Drills for certain locks")
     ImGui.Dummy(0, 8)
 
     -- REQUIRED PREPS
     ImGui.TextColored(1.0, 0.5, 0.5, 1.0, "REQUIRED PREPS")
     ImGui.SameLine()
-    RainbowInfo("These are mandatory to start the heist.")
+    RainbowInfo("开始豪劫的必要前置。")
     ImGui.Separator()
 
     local scope_current = stats.get_int(MPX() .. "K26_ROBBERY_PROG")
     local scope_done = (scope_current & 1) ~= 0
     local scope_idx = scope_done and 1 or 0
-    local scope_new, scope_changed = ImGui.Combo("Scope Out Kortz Center", scope_idx, { "Not Done", "Done" }, 2)
+    local scope_new, scope_changed = ImGui.Combo("踩点科兹中心", scope_idx, { "未完成", "已完成" }, 2)
     if scope_changed then
         if scope_new == 1 then
             stats.set_int(MPX() .. "K26_ROBBERY_PROG", scope_current | 1)
             stats.set_int(MPX() .. "K26_SCOPING_BS", -1)
             stats.set_int(MPX() .. "K26_POI_BS", -1)
-            gui.show_message("Kortz Center Heist", "Scope Out completed")
+            gui.show_message("科兹中心豪劫", "Scope Out completed")
         else
             stats.set_int(MPX() .. "K26_ROBBERY_PROG", scope_current & ~1)
-            gui.show_message("Kortz Center Heist", "Scope Out undone")
+            gui.show_message("科兹中心豪劫", "Scope Out undone")
         end
     end
 
-    ToggleBitDropdown("Alpha Mail Disguise", "K26_ROBBERY_PROG", 2, "Disguise to enter building")
-    ToggleBitDropdown("Staff Key Card", "K26_ROBBERY_PROG", 8, "Access to staff areas")
-    ToggleBitDropdown("Hacking Device", "K26_ROBBERY_PROG", 32, "Required for vault door")
-    ToggleBitDropdown("Access Code", "K26_ROBBERY_PROG", 64, "Code for security terminal")
+    ToggleBitDropdown("阿尔法邮件伪装", "K26_ROBBERY_PROG", 2, "Disguise to enter building")
+    ToggleBitDropdown("员工门禁卡", "K26_ROBBERY_PROG", 8, "Access to staff areas")
+    ToggleBitDropdown("黑客设备", "K26_ROBBERY_PROG", 32, "Required for vault door")
+    ToggleBitDropdown("访问代码", "K26_ROBBERY_PROG", 64, "Code for security terminal")
     ImGui.Dummy(0, 8)
 
     -- OPTIONAL PREPS
     ImGui.TextColored(0.6, 0.6, 0.6, 1.0, "OPTIONAL PREPS")
     ImGui.SameLine()
-    RainbowInfo("Optional preps that can help but aren't required.")
+    RainbowInfo("可选的前置，可有可无。")
     ImGui.Separator()
 
-    ToggleBitDropdown("Hazmat Suit", "K26_ROBBERY_PROG", 4, "Access to chemical area")
-    ToggleBitDropdown("Tactical Equipment", "K26_ROBBERY_PROG", 16, "Body armor and gear")
-    ToggleBitDropdown("Annihilator Stealth", "K26_ROBBERY_PROG", 512, "Stealth helicopter")
-    ToggleBitDropdown("Manchez", "K26_ROBBERY_PROG", 1024, "Motorcycle")
-    ToggleBitDropdown("EMP Charges", "K26_ROBBERY_PROG", 2048, "Disable electronics")
-    ToggleBitDropdown("Guard Shipments", "K26_ROBBERY_PROG", 4096, "Weaken security")
+    ToggleBitDropdown("防化服", "K26_ROBBERY_PROG", 4, "Access to chemical area")
+    ToggleBitDropdown("战术装备", "K26_ROBBERY_PROG", 16, "Body armor and gear")
+    ToggleBitDropdown("歼灭者隐形版", "K26_ROBBERY_PROG", 512, "Stealth helicopter")
+    ToggleBitDropdown("曼切兹", "K26_ROBBERY_PROG", 1024, "Motorcycle")
+    ToggleBitDropdown("EMP 炸药", "K26_ROBBERY_PROG", 2048, "Disable electronics")
+    ToggleBitDropdown("守卫货物", "K26_ROBBERY_PROG", 4096, "Weaken security")
     ImGui.Dummy(0, 8)
 
     -- OPTIONAL UPGRADES
     ImGui.TextColored(0.6, 0.6, 0.6, 1.0, "OPTIONAL UPGRADES")
     ImGui.SameLine()
-    RainbowInfo("Extra upgrades for loadouts, entrances, and vehicles.")
+    RainbowInfo("装备、入口与载具的额外升级。")
     ImGui.Separator()
 
-    ToggleBitDropdown("Vault Keypad", "K26_GENERAL_BS", 16, "Bypass vault keypad")
-    ToggleBitDropdown("EMP Charges (Upgrade)", "K26_GENERAL_BS", 256, "EMP upgrade")
-    ToggleBitDropdown("Street Loadout", "K26_GENERAL_BS", 512, "Basic weapons")
-    ToggleBitDropdown("Security Loadout", "K26_GENERAL_BS", 1024, "Better weapons")
-    ToggleBitDropdown("Military Loadout", "K26_GENERAL_BS", 2048, "Top weapons")
-    ToggleBitDropdown("Staff Entrance", "K26_GENERAL_BS", 4096, "Staff entry point")
-    ToggleBitDropdown("Sewer", "K26_GENERAL_BS", 32768, "Sewer entry point")
-    ToggleBitDropdown("Manhole Key Location", "K26_GENERAL_BS", 65536, "Find manhole key")
-    ToggleBitDropdown("Red Manchez", "K26_GENERAL_BS", 131072, "Red motorcycle")
-    ToggleBitDropdown("Blue Manchez", "K26_GENERAL_BS", 262144, "Blue motorcycle")
-    ToggleBitDropdown("Green Manchez", "K26_GENERAL_BS", 524288, "Green motorcycle")
-    ToggleBitDropdown("Yellow Manchez", "K26_GENERAL_BS", 1048576, "Yellow motorcycle")
-    ToggleBitDropdown("Advanced Avionics", "K26_GENERAL_BS", 8388608, "Better helicopter")
-    ToggleBitDropdown("Manhole Key", "K26_GENERAL_BS", 134217728, "Sewer access key")
-    ToggleBitDropdown("Weak Guards", "K26_GENERAL_BS", -2147483648, "Easier guards")
+    ToggleBitDropdown("金库键盘锁", "K26_GENERAL_BS", 16, "Bypass vault keypad")
+    ToggleBitDropdown("EMP 炸药（升级）", "K26_GENERAL_BS", 256, "EMP upgrade")
+    ToggleBitDropdown("街头装备", "K26_GENERAL_BS", 512, "Basic weapons")
+    ToggleBitDropdown("安保装备", "K26_GENERAL_BS", 1024, "Better weapons")
+    ToggleBitDropdown("军用装备", "K26_GENERAL_BS", 2048, "Top weapons")
+    ToggleBitDropdown("员工入口", "K26_GENERAL_BS", 4096, "Staff entry point")
+    ToggleBitDropdown("下水道", "K26_GENERAL_BS", 32768, "Sewer entry point")
+    ToggleBitDropdown("井盖钥匙位置", "K26_GENERAL_BS", 65536, "Find manhole key")
+    ToggleBitDropdown("红色曼切兹", "K26_GENERAL_BS", 131072, "Red motorcycle")
+    ToggleBitDropdown("蓝色曼切兹", "K26_GENERAL_BS", 262144, "Blue motorcycle")
+    ToggleBitDropdown("绿色曼切兹", "K26_GENERAL_BS", 524288, "Green motorcycle")
+    ToggleBitDropdown("黄色曼切兹", "K26_GENERAL_BS", 1048576, "Yellow motorcycle")
+    ToggleBitDropdown("高级航电", "K26_GENERAL_BS", 8388608, "Better helicopter")
+    ToggleBitDropdown("井盖钥匙", "K26_GENERAL_BS", 134217728, "Sewer access key")
+    ToggleBitDropdown("弱化守卫", "K26_GENERAL_BS", -2147483648, "Easier guards")
     ImGui.Dummy(0, 8)
 
     -- POINTS OF INTEREST
     ImGui.TextColored(0.6, 0.6, 0.6, 1.0, "POINTS OF INTEREST")
     ImGui.SameLine()
-    RainbowInfo("Scope all points of interest to unlock optional preps.")
+    RainbowInfo("踩点所有兴趣点以解锁可选前置。")
     ImGui.Separator()
 
     local poi_current = stats.get_int(MPX() .. "K26_POI_BS")
     local poi_idx = (poi_current == -1) and 1 or 0
-    local poi_new, poi_changed = ImGui.Combo("Points of Interest Scoped", poi_idx, { "Not Done", "Done" }, 2)
+    local poi_new, poi_changed = ImGui.Combo("已踩点兴趣点", poi_idx, { "未完成", "已完成" }, 2)
     if poi_changed then
         stats.set_int(MPX() .. "K26_POI_BS", poi_new == 1 and -1 or 0)
-        gui.show_message("Kortz Center Heist", poi_new == 1 and "POI scoped" or "POI unscoped")
+        gui.show_message("科兹中心豪劫", poi_new == 1 and "POI scoped" or "POI unscoped")
     end
     ImGui.Dummy(0, 8)
 
     -- SECONDARY TARGETS
     ImGui.TextColored(0.6, 0.6, 0.6, 1.0, "SECONDARY TARGETS")
     ImGui.SameLine()
-    RainbowInfo("Scope all secondary targets for extra loot.")
+    RainbowInfo("踩点所有次要目标以获取额外战利品。")
     ImGui.Separator()
 
     local scop_current = stats.get_int(MPX() .. "K26_SCOPING_BS")
     local scop_idx = (scop_current == -1) and 1 or 0
-    local scop_new, scop_changed = ImGui.Combo("All Secondary Targets Scoped", scop_idx, { "Not Done", "Done" }, 2)
+    local scop_new, scop_changed = ImGui.Combo("已踩点全部次要目标", scop_idx, { "未完成", "已完成" }, 2)
     if scop_changed then
         stats.set_int(MPX() .. "K26_SCOPING_BS", scop_new == 1 and -1 or 0)
-        gui.show_message("Kortz Center Heist", scop_new == 1 and "Secondary targets scoped" or "Secondary targets unscoped")
+        gui.show_message("科兹中心豪劫", scop_new == 1 and "Secondary targets scoped" or "Secondary targets unscoped")
     end
     ImGui.Dummy(0, 8)
 
     -- QUICK ACTIONS
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "QUICK ACTIONS")
     ImGui.SameLine()
-    RainbowInfo("Complete all selections or reset to just show selected target.")
+    RainbowInfo("完成全部选项，或重置为仅显示所选目标。")
     ImGui.Separator()
 
-    if ImGui.Button("Complete All Selections") then
+    if ImGui.Button("完成全部选项") then
         local general_bits = -1
         general_bits = general_bits & ~(1 << 28)
         stats.set_int(MPX() .. "K26_GENERAL_BS", general_bits)
@@ -8818,25 +8818,25 @@ KortzCenterHeistMenu:add_imgui(function()
         stats.set_int(MPX() .. "K26_POI_BS", -1)
         stats.set_int(MPX() .. "K26_HEIST_TARGET", k26_heist_target)
         KortzReloadBoard()
-        gui.show_message("Kortz Center Heist", "All selections completed in Normal Mode")
+        gui.show_message("科兹中心豪劫", "All selections completed in Normal Mode")
     end
     if ImGui.IsItemHovered() then
-        ImGui.SetTooltip("Complete ALL dropdown selections.\nKeeps Normal Mode active (Hard Mode NOT enabled).")
+        ImGui.SetTooltip("完成所有下拉选项。\n保持普通模式（不启用困难模式）。")
     end
 
     ImGui.SameLine()
 
-    if ImGui.Button("Reset (Keep Target Only)") then
+    if ImGui.Button("重置（仅保留目标）") then
         stats.set_int(MPX() .. "K26_ROBBERY_PROG", 1)
         stats.set_int(MPX() .. "K26_SCOPING_BS", -1)
         stats.set_int(MPX() .. "K26_POI_BS", -1)
         stats.set_int(MPX() .. "K26_GENERAL_BS", 0)
         stats.set_int(MPX() .. "K26_HEIST_TARGET", k26_heist_target)
         KortzReloadBoard()
-        gui.show_message("Kortz Center Heist", "Reset done, target kept: " .. targetShortNames[k26_heist_target + 1])
+        gui.show_message("科兹中心豪劫", "Reset done, target kept: " .. targetShortNames[k26_heist_target + 1])
     end
     if ImGui.IsItemHovered() then
-        ImGui.SetTooltip("Reset all preps and upgrades.\nOnly the currently selected target from dropdown will remain.")
+        ImGui.SetTooltip("重置所有前置与升级。\n仅保留下拉中当前选中的目标。")
     end
 
     ImGui.Dummy(0, 8)
@@ -8844,10 +8844,10 @@ KortzCenterHeistMenu:add_imgui(function()
     -- BOARD MANAGEMENT
     ImGui.TextColored(0.6, 0.6, 0.6, 1.0, "BOARD MANAGEMENT")
     ImGui.SameLine()
-    RainbowInfo("Refresh the planning board to see changes.")
+    RainbowInfo("刷新规划板以查看更改。")
     ImGui.Separator()
 
-    if ImGui.Button("Reload Planning Board") then
+    if ImGui.Button("重载规划板") then
         KortzReloadBoard()
     end
     ImGui.Dummy(0, 8)
@@ -8855,12 +8855,12 @@ KortzCenterHeistMenu:add_imgui(function()
     -- EXTRAS
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "EXTRAS")
     ImGui.SameLine()
-    RainbowInfo("Additional tools for the heist.")
+    RainbowInfo("豪劫的附加工具。")
     ImGui.Separator()
 
-    if ImGui.Button("Skip Cutscene") then
+    if ImGui.Button("跳过过场动画") then
         SkipCutscene()
-        gui.show_message("Kortz Center Heist", "Cutscene skipped")
+        gui.show_message("科兹中心豪劫", "Cutscene skipped")
     end
 end)
 
@@ -8868,7 +8868,7 @@ end)
 -- MISSION CRACKER TAB
 -- ============================================
 
-KortzCenterCrackerMenu = KortzCenterHeistMenu:add_tab("Mission Cracker")
+KortzCenterCrackerMenu = KortzCenterHeistMenu:add_tab("任务破解器")
 
 KortzCenterCrackerMenu:add_imgui(function()
     if isOffline() then return end
@@ -8877,10 +8877,10 @@ KortzCenterCrackerMenu:add_imgui(function()
 
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "AUTO DOOR HACKS")
     ImGui.SameLine()
-    RainbowInfo("Automatically bypass hacks when they appear.")
+    RainbowInfo("出现破解时自动绕过。")
     ImGui.Separator()
 
-    autoHacks, _ = ImGui.Checkbox("Enable Auto Door Hacks", autoHacks)
+    autoHacks, _ = ImGui.Checkbox("启用自动门破解", autoHacks)
     if not heistActive then
         ImGui.TextColored(1.0, 0.8, 0.0, 1.0, "Start heist first to use auto hacks")
     end
@@ -8888,59 +8888,59 @@ KortzCenterCrackerMenu:add_imgui(function()
 
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "MANUAL DOOR HACKS")
     ImGui.SameLine()
-    RainbowInfo("Click to bypass hacks manually.")
+    RainbowInfo("手动点击绕过破解。")
     ImGui.Separator()
 
-    if ImGui.Button("Skip Data Crack") then KortzSkipDataCrack() end
+    if ImGui.Button("跳过数据破解") then KortzSkipDataCrack() end
     ImGui.SameLine()
-    if ImGui.Button("Skip Fingerprint Hack") then KortzSkipFingerprint() end
+    if ImGui.Button("跳过指纹破解") then KortzSkipFingerprint() end
     ImGui.SameLine()
-    if ImGui.Button("Skip Vault Door Hack") then KortzSkipVaultDoor() end
+    if ImGui.Button("跳过金库门破解") then KortzSkipVaultDoor() end
 
     ImGui.Dummy(0, 5)
 
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "ACCESS & SECURITY")
     ImGui.SameLine()
-    RainbowInfo("Bypass security systems.")
+    RainbowInfo("绕过安保系统。")
     ImGui.Separator()
 
-    if ImGui.Button("Auto-Enter Access Code") then KortzAutoAccessCode() end
+    if ImGui.Button("自动输入访问代码") then KortzAutoAccessCode() end
     ImGui.SameLine()
-    if ImGui.Button("Disable Lasers") then KortzDisableLasers() end
+    if ImGui.Button("关闭激光") then KortzDisableLasers() end
 
-    if ImGui.Button("Lasers: Easy") then KortzSetLasersEasy() end
+    if ImGui.Button("激光：简单") then KortzSetLasersEasy() end
     ImGui.SameLine()
-    if ImGui.Button("Lasers: Hard") then KortzSetLasersHard() end
+    if ImGui.Button("激光：困难") then KortzSetLasersHard() end
     ImGui.SameLine()
-    if ImGui.Button("No Damage Lasers") then KortzNoDamageLasers() end
+    if ImGui.Button("激光无伤害") then KortzNoDamageLasers() end
 
     ImGui.Dummy(0, 5)
 
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "GLASS CUTTING")
     ImGui.SameLine()
-    RainbowInfo("Cut display case glass instantly.")
+    RainbowInfo("瞬间切开展示柜玻璃。")
     ImGui.Separator()
 
-    if ImGui.Button("Cut All Glass") then KortzCutAllGlass() end
+    if ImGui.Button("切割全部玻璃") then KortzCutAllGlass() end
     ImGui.SameLine()
-    if ImGui.Button("Venus d'Algernon") then CutVenus() end
+    if ImGui.Button("维纳斯·达尔热农") then CutVenus() end
     ImGui.SameLine()
-    if ImGui.Button("Gemstone") then CutGemstone() end
+    if ImGui.Button("宝石") then CutGemstone() end
 
-    if ImGui.Button("Horse") then CutHorse() end
+    if ImGui.Button("骏马") then CutHorse() end
     ImGui.SameLine()
-    if ImGui.Button("Coquard Carcanet") then CutCoquard() end
+    if ImGui.Button("科卡尔项链") then CutCoquard() end
     ImGui.SameLine()
-    if ImGui.Button("Memento Non Mori") then CutMemento() end
+    if ImGui.Button("死亡纪念") then CutMemento() end
 
     ImGui.Dummy(0, 5)
 
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "SOLO SECONDARY TARGETS")
     ImGui.SameLine()
-    RainbowInfo("Enable secondary targets for solo play.")
+    RainbowInfo("启用单人可玩的次要目标。")
     ImGui.Separator()
 
-    if ImGui.Button("Enable Solo Secondary Targets (B2 Floor)") then
+    if ImGui.Button("启用单人次要目标（B2 层）") then
         EnableSoloSecondaryTargets()
     end
 
@@ -8948,29 +8948,29 @@ KortzCenterCrackerMenu:add_imgui(function()
 
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "TARGETS")
     ImGui.SameLine()
-    RainbowInfo("Grab targets instantly (stand near them).")
+    RainbowInfo("瞬间拿取目标（站在附近）。")
     ImGui.Separator()
 
-    if ImGui.Button("Take Primary Target") then KortzTakePrimary() end
+    if ImGui.Button("拿取主要目标") then KortzTakePrimary() end
     ImGui.SameLine()
-    if ImGui.Button("Take Secondary Target") then KortzTakeSecondary() end
+    if ImGui.Button("拿取次要目标") then KortzTakeSecondary() end
 
     ImGui.Dummy(0, 5)
 
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "LOOT TAKE")
     ImGui.SameLine()
-    RainbowInfo("Set loot take value.")
+    RainbowInfo("设置可拿取战利品数值。")
     ImGui.Separator()
 
     ImGui.Text(GetKortzTakeText())
     kortzLootTakeValue, _ = ImGui.InputInt("##KortzLootTake", kortzLootTakeValue)
-    if ImGui.Button("Set Loot Take") then KortzSetLootTake(kortzLootTakeValue) end
+    if ImGui.Button("设置可拿取战利品") then KortzSetLootTake(kortzLootTakeValue) end
 
     ImGui.Dummy(0, 5)
 
     ImGui.TextColored(1.0, 0.8, 0.2, 1.0, "GLASS CASE STATUS")
     ImGui.SameLine()
-    RainbowInfo("Current status of all display cases.")
+    RainbowInfo("所有展示柜的当前状态。")
     ImGui.Separator()
 
     for i = 0, 4 do
@@ -8992,7 +8992,7 @@ end)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- Heist Teleports (arcade, casino, robberies) --
-HeistTeleportsMenu = HeistsDataEditorMenu:add_tab("Heist Teleports")
+HeistTeleportsMenu = HeistsDataEditorMenu:add_tab("豪劫传送")
 
 local function TP_BlipOrFixed(blipId, fx, fy, fz, keepVehicle)
     script.run_in_fiber(function()
@@ -9015,182 +9015,182 @@ end
 HeistTeleportsMenu:add_imgui(function()
     if isOffline() then return end
 
-    ImGui.Text("Arcade / Casino Exterior")
+    ImGui.Text("游戏厅 / 赌场外部")
     ImGui.Separator()
-    if ImGui.Button("Arcade (Owned)") then
+    if ImGui.Button("游戏厅（已拥有）") then
         TP_BlipOrFixed(740, 1721.0, -1653.0, 13.0, false)
     end
     ImGui.SameLine()
-    if ImGui.Button("Videogeddon Arcade") then
+    if ImGui.Button("游戏天地游戏厅") then
         TP_Fixed(1721.0, -1653.0, 13.0, false)
     end
-    if ImGui.Button("Diamond Casino Entrance") then
+    if ImGui.Button("名钻赌场入口") then
         TP_Fixed(925.0, 46.0, 81.1, false)
     end
     ImGui.SameLine()
-    if ImGui.Button("Casino Parking") then
+    if ImGui.Button("赌场停车场") then
         TP_Fixed(900.0, -103.0, 75.0, true)
     end
 
     ImGui.Dummy(1, 8)
-    ImGui.Text("Casino Interior (from Kiddions)")
+    ImGui.Text("赌场内部（来自 Kiddions）")
     ImGui.Separator()
-    if ImGui.Button("Vault 1") then TP_Fixed(2510.261475, -224.366699, -72.037163, false) end
+    if ImGui.Button("金库 1") then TP_Fixed(2510.261475, -224.366699, -72.037163, false) end
     ImGui.SameLine()
-    if ImGui.Button("Vault 2") then TP_Fixed(2533.521729, -225.209366, -72.037163, false) end
+    if ImGui.Button("金库 2") then TP_Fixed(2533.521729, -225.209366, -72.037163, false) end
     ImGui.SameLine()
-    if ImGui.Button("Vault 3") then TP_Fixed(2537.823486, -237.452118, -72.037163, false) end
-    if ImGui.Button("Vault 4") then TP_Fixed(2534.049561, -248.194931, -72.037163, false) end
+    if ImGui.Button("金库 3") then TP_Fixed(2537.823486, -237.452118, -72.037163, false) end
+    if ImGui.Button("金库 4") then TP_Fixed(2534.049561, -248.194931, -72.037163, false) end
     ImGui.SameLine()
-    if ImGui.Button("Vault 5") then TP_Fixed(2520.342773, -255.425705, -72.037178, false) end
+    if ImGui.Button("金库 5") then TP_Fixed(2520.342773, -255.425705, -72.037178, false) end
     ImGui.SameLine()
-    if ImGui.Button("Vault 6") then TP_Fixed(2509.844238, -250.968552, -72.03717, false) end
-    if ImGui.Button("Vault Lobby Enter") then TP_Fixed(2521.761719, -287.359192, -60.022976, false) end
+    if ImGui.Button("金库 6") then TP_Fixed(2509.844238, -250.968552, -72.03717, false) end
+    if ImGui.Button("金库大厅入口") then TP_Fixed(2521.761719, -287.359192, -60.022976, false) end
     ImGui.SameLine()
-    if ImGui.Button("Vault Lobby Exit") then TP_Fixed(2521.876709, -284.334869, -60.022999, false) end
+    if ImGui.Button("金库大厅出口") then TP_Fixed(2521.876709, -284.334869, -60.022999, false) end
 
     ImGui.Dummy(1, 8)
-    ImGui.Text("Cayo Perico (from Kiddions)")
+    ImGui.Text("佩里科岛（来自 Kiddions）")
     ImGui.Separator()
-    if ImGui.Button("Main Dock") then TP_Fixed(4947.496094, -5168.458008, 1.23427, true) end
+    if ImGui.Button("主码头") then TP_Fixed(4947.496094, -5168.458008, 1.23427, true) end
     ImGui.SameLine()
-    if ImGui.Button("Main Loot") then TP_Fixed(5010.06543, -5751.291504, 14.184451, false) end
+    if ImGui.Button("主战利品") then TP_Fixed(5010.06543, -5751.291504, 14.184451, false) end
     ImGui.SameLine()
-    if ImGui.Button("Office") then TP_Fixed(5010.203613, -5753.518555, 27.545284, false) end
-    if ImGui.Button("Vault Loot") then TP_Fixed(4999.76416, -5747.86377, 14.84, false) end
+    if ImGui.Button("办公室") then TP_Fixed(5010.203613, -5753.518555, 27.545284, false) end
+    if ImGui.Button("金库战利品") then TP_Fixed(4999.76416, -5747.86377, 14.84, false) end
     ImGui.SameLine()
-    if ImGui.Button("Main Loot Gate") then TP_Fixed(5009.156738, -5753.71582, 14.173852, false) end
+    if ImGui.Button("主战利品大门") then TP_Fixed(5009.156738, -5753.71582, 14.173852, false) end
     ImGui.SameLine()
-    if ImGui.Button("North Safe") then TP_Fixed(4961.050781, -5791.280762, 24.966309, false) end
-    if ImGui.Button("Storage 1") then TP_Fixed(5080.922852, -5756.109375, 14.529856, false) end
+    if ImGui.Button("北侧保险箱") then TP_Fixed(4961.050781, -5791.280762, 24.966309, false) end
+    if ImGui.Button("仓库 1") then TP_Fixed(5080.922852, -5756.109375, 14.529856, false) end
     ImGui.SameLine()
-    if ImGui.Button("Storage 2") then TP_Fixed(5028.794922, -5735.571777, 16.565603, false) end
+    if ImGui.Button("仓库 2") then TP_Fixed(5028.794922, -5735.571777, 16.565603, false) end
     ImGui.SameLine()
-    if ImGui.Button("Storage 3") then TP_Fixed(5008.02002, -5787.345215, 16.531713, false) end
-    if ImGui.Button("Storage 4") then TP_Fixed(5000.289062, -5749.532715, 13.540483, false) end
+    if ImGui.Button("仓库 3") then TP_Fixed(5008.02002, -5787.345215, 16.531713, false) end
+    if ImGui.Button("仓库 4") then TP_Fixed(5000.289062, -5749.532715, 13.540483, false) end
     ImGui.SameLine()
-    if ImGui.Button("Power Station") then TP_Fixed(4477.102539, -4597.295898, 4.283014, true) end
+    if ImGui.Button("发电站") then TP_Fixed(4477.102539, -4597.295898, 4.283014, true) end
     ImGui.SameLine()
-    if ImGui.Button("Comm Tower") then TP_Fixed(5266.018555, -5427.736328, 64.297134, false) end
-    if ImGui.Button("Cayo Exit") then TP_Fixed(4990.778809, -5716.004395, 18.58021, false) end
+    if ImGui.Button("通讯塔") then TP_Fixed(5266.018555, -5427.736328, 64.297134, false) end
+    if ImGui.Button("佩里科岛出口") then TP_Fixed(4990.778809, -5716.004395, 18.58021, false) end
     ImGui.SameLine()
-    if ImGui.Button("Cayo Airstrip") then TP_Fixed(4437.779785, -4447.757812, 3.028435, true) end
+    if ImGui.Button("佩里科岛简易机场") then TP_Fixed(4437.779785, -4447.757812, 3.028435, true) end
 
     ImGui.Dummy(1, 8)
-    ImGui.Text("Classic Robberies")
+    ImGui.Text("经典抢劫")
     ImGui.Separator()
-    if ImGui.Button("Fleeca Bank (Burton)") then
+    if ImGui.Button("全福银行（伯顿）") then
         TP_Fixed(147.0, -1045.0, 29.4, false)
     end
     ImGui.SameLine()
-    if ImGui.Button("Pacific Standard Bank") then
+    if ImGui.Button("太平洋标准银行") then
         TP_Fixed(235.0, 217.0, 106.3, false)
     end
-    if ImGui.Button("Doomsday Facility (Owned)") then
+    if ImGui.Button("末日设施（已拥有）") then
         TP_BlipOrFixed(590, 1274.0, 4126.0, 31.0, true)
     end
 
     ImGui.Dummy(1, 8)
-    ImGui.Text("Agency / Dre (from Kiddions)")
+    ImGui.Text("事务所 / 德瑞（来自 Kiddions）")
     ImGui.Separator()
-    if ImGui.Button("Dre 1") then TP_Fixed(507.766602, -605.932678, 23.451139, false) end
+    if ImGui.Button("德瑞 1") then TP_Fixed(507.766602, -605.932678, 23.451139, false) end
     ImGui.SameLine()
-    if ImGui.Button("Dre 2") then TP_Fixed(-927.370483, -2923.859131, 12.644426, false) end
+    if ImGui.Button("德瑞 2") then TP_Fixed(-927.370483, -2923.859131, 12.644426, false) end
     ImGui.SameLine()
-    if ImGui.Button("Dre 3") then TP_Fixed(-933.519897, -3010.231201, 18.540413, false) end
+    if ImGui.Button("德瑞 3") then TP_Fixed(-933.519897, -3010.231201, 18.540413, false) end
     ImGui.SameLine()
-    if ImGui.Button("Dre 4") then TP_Fixed(-3036.250488, 111.499924, 10.599296, false) end
-    if ImGui.Button("ULP Place") then TP_Fixed(101.928909, -662.696899, 43.792946, false) end
+    if ImGui.Button("德瑞 4") then TP_Fixed(-3036.250488, 111.499924, 10.599296, false) end
+    if ImGui.Button("ULP 据点") then TP_Fixed(101.928909, -662.696899, 43.792946, false) end
     ImGui.SameLine()
-    if ImGui.Button("Intelligence A") then TP_Fixed(102.285995, -743.904236, 44.454739, false) end
+    if ImGui.Button("情报 A") then TP_Fixed(102.285995, -743.904236, 44.454739, false) end
     ImGui.SameLine()
-    if ImGui.Button("Intelligence B") then TP_Fixed(853.439697, -2339.465088, 29.033638, true) end
+    if ImGui.Button("情报 B") then TP_Fixed(853.439697, -2339.465088, 29.033638, true) end
 
     ImGui.Dummy(1, 8)
-    ImGui.Text("New Robberies")
+    ImGui.Text("新式抢劫")
     ImGui.Separator()
-    if ImGui.Button("Kortz Center Entrance") then
+    if ImGui.Button("科兹中心入口") then
         TP_Fixed(-2243.0, -325.0, 33.0, false)
     end
     ImGui.SameLine()
-    if ImGui.Button("Cluckin Bell Factory") then
+    if ImGui.Button("克劳金钟工厂") then
         TP_Fixed(-139.0, 6261.0, 31.5, true)
     end
-    if ImGui.Button("Agency (Owned)") then
+    if ImGui.Button("事务所（已拥有）") then
         TP_BlipOrFixed(826, 375.0, -66.0, 92.0, false)
     end
     ImGui.SameLine()
-    if ImGui.Button("Auto Shop (Owned)") then
+    if ImGui.Button("改装铺（已拥有）") then
         TP_BlipOrFixed(779, 124.0, -1799.0, 29.0, false)
     end
-    if ImGui.Button("Salvage Yard (Owned)") then
+    if ImGui.Button("赃车店（已拥有）") then
         TP_BlipOrFixed(867, 1145.0, -1792.0, 23.0, false)
     end
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-MissionsSelectorAndCooldownMenu = makeOnlineTab(L7NEG:add_tab("Missions Selector And cooldown Menu"))
+MissionsSelectorAndCooldownMenu = makeOnlineTab(L7NEG:add_tab("任务选择与冷却菜单"))
 
-MissionsSelectorAndCooldownMenu:add_button("Remove Dax Fooligan missions CoolDown ", function()
+MissionsSelectorAndCooldownMenu:add_button("清除达克斯愚者任务冷却", function()
 	stats.set_int(MPX() .. "XM22JUGGALOWORKCDTIMER", -1)
 end)
 
-MissionsSelectorAndCooldownMenu:add_button("Remove VIP/MC Cooldown", function()
+MissionsSelectorAndCooldownMenu:add_button("移除 VIP/摩托帮冷却", function()
 	stats.set_int("MPPLY_VIPGAMEPLAYDISABLEDTIMER", 0)
 end)
 
-MissionsSelectorAndCooldownMenu:add_button("Skip Yacht Missions", function()
+MissionsSelectorAndCooldownMenu:add_button("跳过游艇任务", function()
 	stats.set_int(MPX() .. "YACHT_MISSION_PROG", 0)
 	stats.set_int(MPX() .. "YACHT_MISSION_FLOW", 21845)
 	stats.set_int(MPX() .. "CASINO_DECORATION_GIFT_1", -1)
 end)
 
-MissionsSelectorAndCooldownMenu:add_button("LSA Operations Instant-Finish", function()
+MissionsSelectorAndCooldownMenu:add_button("LSA 行动立即完成", function()
 	locals.set_int(SMUGOPS, LSAIFl1, 1)
 	locals.set_int(SMUGOPS, LSAIFl2, -2145370496)
-	gui.show_message("LSA Operations", "Mission should've been finished")
+	gui.show_message("LSA 行动", "Mission should've been finished")
 end)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-CreditsMenu = L7NEG:add_tab("Credits")
+CreditsMenu = L7NEG:add_tab("致谢")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Yimura = CreditsMenu:add_tab("Yimura and his team/maintainers")
-Yimura:add_text("Source:")
+Yimura = CreditsMenu:add_tab("Yimura 及其团队/维护者")
+Yimura:add_text("来源：")
 Yimura:add_text("https://github.com/Mr-X-GTA/YimMenu")
 Yimura:add_text("https://github.com/YimMenu/YimMenuV2")
 
 SILENTSALO = CreditsMenu:add_tab("Silent")
-SILENTSALO:add_text("Source:")
+SILENTSALO:add_text("来源：")
 SILENTSALO:add_text("https://github.com/SilentSal0/Silent-Night")
-SILENTSALO:add_text("Maintained by nightli:")
+SILENTSALO:add_text("由 nightli 维护：")
 SILENTSALO:add_text("https://github.com/xnightli06x/Silent-Night")
 
 XESDDOOG = CreditsMenu:add_tab("SAMURAI aka xesdoog")
-XESDDOOG:add_text("Source:")
+XESDDOOG:add_text("来源：")
 XESDDOOG:add_text("https://github.com/YimMenu-Lua/YimResupplier")
 
 IMAGINENOTHING = CreditsMenu:add_tab("ImagineNothing")
-IMAGINENOTHING:add_text("For Kortz Center Heist stats and Locals/globals:")
+IMAGINENOTHING:add_text("科兹中心豪劫的 stats 与 locals/globals 数据来源：")
 IMAGINENOTHING:add_text("https://www.unknowncheats.me/forum/4742522-post603.html")
 IMAGINENOTHING:add_text("https://www.unknowncheats.me/forum/4746347-post762.html")
 
 SLON = CreditsMenu:add_tab("SLON")
-SLON:add_text("Source:")
+SLON:add_text("来源：")
 SLON:add_text("https://www.unknowncheats.me/forum/grand-theft-auto-v/591335-yimceo-ceo-crates-method-yimmenu.html")
 
 Alestarov = CreditsMenu:add_tab("Alestarov")
-Alestarov:add_text("Source:")
+Alestarov:add_text("来源：")
 Alestarov:add_text("https://github.com/YimMenu-Lua/Alestarov-Menu")
 
-YOUMENU = CreditsMenu:add_tab("And You <3")
+YOUMENU = CreditsMenu:add_tab("以及你 <3")
 YOUMENU:add_text(
-	"Yes You Without You Or Your PRs and support You Give Me This Script Would Be Nothing Fr So Big Thanks To You All"
+	"也感谢你——没有你的 PR 与支持，这个脚本什么都不是，衷心感谢所有人！"
 )
-YOUMENU:add_text("You can report Bugs And Make PRs With Features Down Bellow:")
+YOUMENU:add_text("你可以在下方提交 Bug 与功能 PR：")
 YOUMENU:add_text("https://github.com/UltimateMenu/UltimateMenu/issues")
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
