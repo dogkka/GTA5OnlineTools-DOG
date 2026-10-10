@@ -24,7 +24,8 @@ public partial class CloudModeNoticeWindow
     private void Button_Cancel_Click(object sender, RoutedEventArgs e)
     {
         Confirmed = false;
-        Close();
+        // [DOG] 必须设置 DialogResult：仅 Close() 时 ShowDialog() 返回 null，调用方会误判为未确认
+        DialogResult = false;
     }
 
     private void Button_Confirm_Click(object sender, RoutedEventArgs e)
@@ -33,6 +34,7 @@ public partial class CloudModeNoticeWindow
             return;
 
         Confirmed = true;
-        Close();
+        // [DOG] 同上：设置 DialogResult 才会让 ShowDialog() 返回 true，并自动关闭窗口
+        DialogResult = true;
     }
 }

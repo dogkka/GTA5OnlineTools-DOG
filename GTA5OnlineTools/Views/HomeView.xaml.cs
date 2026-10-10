@@ -137,7 +137,9 @@ public partial class HomeView : UserControl
             if (!local)
             {
                 var notice = new CloudModeNoticeWindow { Owner = MainWindow.MainWindowInstance };
-                if (notice.ShowDialog() != true || !notice.Confirmed)
+                notice.ShowDialog();
+                // [DOG] 以 Confirmed 为唯一判据（兼容窗口被 X / 取消关闭时 ShowDialog 返回 null 的情况）
+                if (!notice.Confirmed)
                     return;
             }
 
