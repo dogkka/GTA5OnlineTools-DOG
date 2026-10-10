@@ -18,7 +18,7 @@ public static class GameProcessResolver
     /// <summary>
     /// 解析目标游戏进程。
     /// </summary>
-    /// <param name="wantEnhanced">true = 增强版（YimMenu V2 卡片）；false = 传承版（YimMenu 卡片）</param>
+    /// <param name="wantEnhanced">true = 增强版卡片；false = 传承版卡片</param>
     /// <returns>(是否找到, 进程对象, 失败时的人类可读指引)</returns>
     public static (bool ok, System.Diagnostics.Process proc, string message) Resolve(bool wantEnhanced)
     {

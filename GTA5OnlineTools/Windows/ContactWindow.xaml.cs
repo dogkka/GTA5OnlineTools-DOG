@@ -1,3 +1,4 @@
+using GTA5OnlineTools.Utils;
 using GTA5Shared.Helper;
 
 namespace GTA5OnlineTools.Windows;
@@ -23,16 +24,11 @@ public partial class ContactWindow
     /// <summary>
     /// [DOG] 复制 QQ 群号
     /// </summary>
-    private void Button_CopyQQGroup_Click(object sender, RoutedEventArgs e)
+    private async void Button_CopyQQGroup_Click(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            Clipboard.SetText("1121769473");
+        if (await ClipboardHelper.TrySetTextAsync("1121769473"))
             NotifierHelper.Show(NotifierType.Success, "QQ 交流群号 1121769473 已复制到剪贴板");
-        }
-        catch (Exception ex)
-        {
-            NotifierHelper.ShowException(ex);
-        }
+        else
+            NotifierHelper.Show(NotifierType.Warning, "剪贴板被其他程序占用，复制失败，请稍后再点一次。");
     }
 }

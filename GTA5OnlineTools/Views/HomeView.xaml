@@ -16,9 +16,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />        </Grid.RowDefinitions>
 
         <RichTextBox Grid.Row="0" Margin="5,5,2.5,5" Style="{StaticResource RichTextBoxStyle_ReadMe}">
             <FlowDocument>
@@ -179,106 +177,96 @@
             </StackPanel>
         </Border>
 
-        <Border
-            x:Name="Border_OpenTutorial"
+                <!--  [DOG] 底部快捷入口：教程 / 自检 / 打赏（横向三按钮，2026-10-11 紧凑化原三张通栏大卡）  -->
+        <Grid
             Grid.Row="2"
-            Height="58"
-            Margin="10,0,12.5,10"
-            Cursor="Hand"
-            MouseLeftButtonUp="Border_OpenTutorial_MouseLeftButtonUp">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Background" Value="#21A366" />
-                    <Setter Property="CornerRadius" Value="8" />
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#2AB573" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="17"
-                    FontWeight="Bold"
-                    Foreground="White"
-                    Text="打开使用教程" />
-                <TextBlock
-                    Margin="0,2,0,0"
-                    HorizontalAlignment="Center"
-                    FontSize="11"
-                    Foreground="#EAFFF4"
-                    Text="图文教程 · 全功能说明 · 常见问题 · 支持浅色 / 深色模式" />
-            </StackPanel>
-        </Border>
+            Height="46"
+            Margin="10,0,12.5,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-        <Border
-            x:Name="Border_HealthCheck"
-            Grid.Row="3"
-            Height="58"
-            Margin="10,0,12.5,10"
-            Cursor="Hand"
-            MouseLeftButtonUp="Border_HealthCheck_MouseLeftButtonUp">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Background" Value="#3E7BFA" />
-                    <Setter Property="CornerRadius" Value="8" />
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#5C90FF" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-            <StackPanel VerticalAlignment="Center">
+            <Border
+                x:Name="Border_OpenTutorial"
+                Grid.Column="0"
+                Cursor="Hand"
+                MouseLeftButtonUp="Border_OpenTutorial_MouseLeftButtonUp"
+                ToolTip="图文教程 · 全功能说明 · 常见问题 · 支持浅色 / 深色模式">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="#21A366" />
+                        <Setter Property="CornerRadius" Value="6" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2AB573" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <TextBlock
                     HorizontalAlignment="Center"
-                    FontSize="17"
+                    VerticalAlignment="Center"
+                    FontSize="14"
                     FontWeight="Bold"
                     Foreground="White"
-                    Text="环境自检 · 一键体检" />
-                <TextBlock
-                    Margin="0,2,0,0"
-                    HorizontalAlignment="Center"
-                    FontSize="11"
-                    Foreground="#EAF2FF"
-                    Text="游戏 / FSL / 脚本 / 数据模式 / 呼出键 全检查 · 结果可复制发群" />
-            </StackPanel>
-        </Border>
+                    Text="使用教程" />
+            </Border>
 
-        <Border
-            x:Name="Border_Reward"
-            Grid.Row="4"
-            Height="58"
-            Margin="10,0,12.5,10"
-            Cursor="Hand"
-            MouseLeftButtonUp="Border_Reward_MouseLeftButtonUp">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Background" Value="#F0761C" />
-                    <Setter Property="CornerRadius" Value="8" />
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FD8A36" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-            <StackPanel VerticalAlignment="Center">
+            <Border
+                x:Name="Border_HealthCheck"
+                Grid.Column="2"
+                Cursor="Hand"
+                MouseLeftButtonUp="Border_HealthCheck_MouseLeftButtonUp"
+                ToolTip="游戏 / FSL / 脚本 / 数据模式 / 呼出键 全检查 · 结果可复制发群">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="#3E7BFA" />
+                        <Setter Property="CornerRadius" Value="6" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#5C90FF" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <TextBlock
                     HorizontalAlignment="Center"
-                    FontSize="17"
+                    VerticalAlignment="Center"
+                    FontSize="14"
                     FontWeight="Bold"
                     Foreground="White"
-                    Text="打赏支持 · 请作者喝杯水" />
+                    Text="环境自检" />
+            </Border>
+
+            <Border
+                x:Name="Border_Reward"
+                Grid.Column="4"
+                Cursor="Hand"
+                MouseLeftButtonUp="Border_Reward_MouseLeftButtonUp"
+                ToolTip="个人开发不易 · 完全自愿，不影响免费使用">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="#F0761C" />
+                        <Setter Property="CornerRadius" Value="6" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FD8A36" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <TextBlock
-                    Margin="0,2,0,0"
                     HorizontalAlignment="Center"
-                    FontSize="11"
-                    Foreground="#FFF3E8"
-                    Text="个人开发不易 · 完全自愿，不影响免费使用" />
-            </StackPanel>
-        </Border>
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Text="打赏支持" />
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

@@ -5,11 +5,20 @@ using System.Text;
 namespace GTA5OnlineTools.Utils;
 
 /// <summary>
-/// [DOG] 环境自检：一键检查「游戏 / FSL / 菜单文件 / 脚本 / 数据模式 / 呼出键」等关键环节。
-/// 面向不同用户习惯设计：纯只读检查、不修改任何文件；结果可一键复制，直接发群求助。
+/// [DOG] 环境自检：一键检查「运行环境 / 游戏 / FSL / 菜单文件 / 玩法脚本 / 数据模式 / 呼出键」等关键环节，
+/// 并在顶部给出「能否进游戏注入」的结论 —— 关键文件齐全 + 前置满足 = 可以进游戏注入。
+/// 纯只读检查（仅目录可写性探针会临时建删一个探针文件）；结果可一键复制，直接发群求助。
 /// </summary>
 public static class HealthCheckHelper
 {
+    // ===== 内置版本期望哈希（随菜单 / 脚本包版本更新） =====
+    /// <summary>传承版菜单 YimMenu.dll（Mr-X 社区构建）</summary>
+    private const string LegacyDllSha256 = "CDF29AECA6269BAC3A5899F556BD0545EF98621395FD4A8F3B14A1305911EB08";
+    /// <summary>增强版菜单 NewBase.dll（2.1.41 · 控制台隐藏版）</summary>
+    private const string EnhancedDllSha256 = "3F40AB16FB1454E3E12E873838E31AA8B018534E66D684202EE4FEA0DFD64ED7";
+    /// <summary>传承版注入动画 DOG_InjectFx.lua</summary>
+    private const string InjectFxSha256 = "76D1B7B74366D47E356D064436B8DE6B82B2F4ECD5F59CA64BD93A8904C5CC2C";
+
     public class Item
     {
         public string Icon { get; set; } = "ℹ️";
@@ -28,20 +37,46 @@ public static class HealthCheckHelper
         };
     }
 
+    /// <summary>检查过程中的关键状态（用于汇总「能否注入」结论）</summary>
+    private class Context
+    {
+        public bool Elevated;
+        public bool LegacyInstallSeen;
+        public bool LegacyGameOk;
+        public bool LegacyFslOk;
+        public bool EnhancedInstallSeen;
+        public bool EnhancedGameOk;
+        public bool EnhancedFslOk;
+        public bool LegacyDllExists;
+        public bool LegacyDllFresh;
+        public bool LegacyScriptsOk;
+        public bool LegacyAnimOk;
+        public bool EnhancedDllExists;
+        public bool EnhancedDllFresh;
+        public bool EnhancedFontOk;
+        public bool ScriptsDirWritable = true;
+        public bool BaseDirWritable = true;
+    }
+
     /// <summary>运行全部检查（只读，不抛异常）</summary>
     public static List<Item> RunAll()
     {
+        var ctx = new Context();
         var items = new List<Item>();
-        try { CheckVersion(items); } catch { }
         List<(string game, string platform, string path)> installs = new();
-        try { installs = FindGameInstalls(); CheckGameInstall(items, installs); } catch { }
+
+        try { CheckRuntime(items, ctx); } catch { }
+        try { installs = FindGameInstalls(); CheckGameInstall(items, ctx, installs); } catch { }
         try { CheckGameProcess(items); } catch { }
-        try { CheckFSL(items, installs); } catch { }
+        try { CheckFSL(items, ctx, installs); } catch { }
         try { CheckDataMode(items); } catch { }
-        try { CheckEnhanced(items); } catch { }
-        try { CheckLegacy(items); } catch { }
+        try { CheckEnhanced(items, ctx); } catch { }
+        try { CheckLegacy(items, ctx); } catch { }
+        try { CheckWritable(items, ctx); } catch { }
         try { CheckTranslation(items); } catch { }
         try { CheckLogs(items); } catch { }
+        try { InsertReadinessSummary(items, ctx); } catch { }
+
         return items;
     }
 
@@ -74,14 +109,25 @@ public static class HealthCheckHelper
 
     //////////////////////////////////////////////////////////////////
 
-    private static void CheckVersion(List<Item> items)
+    private static void CheckRuntime(List<Item> items, Context ctx)
     {
         var ver = Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "未知";
+        bool elevated = false;
+        try
+        {
+            using var identity = System.Security.Principal.WindowsIdentity.GetCurrent();
+            elevated = new System.Security.Principal.WindowsPrincipal(identity)
+                .IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
+        }
+        catch { }
+        ctx.Elevated = elevated;
+
         items.Add(new Item
         {
-            Icon = "ℹ️",
-            Title = "工具版本",
-            Detail = $"v{ver}（完全离线运行）"
+            Icon = elevated ? "✅" : "❌",
+            Title = "运行环境",
+            Detail = $"工具版本 v{ver}（完全离线运行）；管理员权限：{(elevated ? "有（注入必需）" : "无")}",
+            Hint = elevated ? "" : "关闭本工具 → 右键 → 以管理员身份运行（注入游戏需要管理员权限）"
         });
     }
 
@@ -106,7 +152,7 @@ public static class HealthCheckHelper
         return list;
     }
 
-    private static void CheckGameInstall(List<Item> items, List<(string game, string platform, string path)> installs)
+    private static void CheckGameInstall(List<Item> items, Context ctx, List<(string game, string platform, string path)> installs)
     {
         if (installs.Count == 0)
         {
@@ -126,6 +172,16 @@ public static class HealthCheckHelper
         {
             var exe = Path.Combine(path, game == "增强版" ? "GTA5_Enhanced.exe" : "GTA5.exe");
             var exeOk = File.Exists(exe);
+            if (game == "增强版")
+            {
+                ctx.EnhancedInstallSeen = true;
+                if (exeOk) ctx.EnhancedGameOk = true;
+            }
+            else
+            {
+                ctx.LegacyInstallSeen = true;
+                if (exeOk) ctx.LegacyGameOk = true;
+            }
             if (!exeOk) exeMissing.Add($"{game}-{platform}");
             sb.AppendLine($"{game}-{platform} → {path}{(exeOk ? "" : "（未找到游戏主程序！）")}");
         }
@@ -156,7 +212,7 @@ public static class HealthCheckHelper
         });
     }
 
-    private static void CheckFSL(List<Item> items, List<(string game, string platform, string path)> installs)
+    private static void CheckFSL(List<Item> items, Context ctx, List<(string game, string platform, string path)> installs)
     {
         if (installs.Count == 0)
         {
@@ -172,26 +228,44 @@ public static class HealthCheckHelper
 
         var sb = new StringBuilder();
         var missing = new List<string>();
+        var legacyCount = 0;
+        var legacyMissingCount = 0;
+        var enhancedCount = 0;
+        var enhancedMissingCount = 0;
         foreach (var (game, platform, path) in installs)
         {
+            if (game == "增强版") enhancedCount++;
+            else legacyCount++;
             var winmm = Path.Combine(path, "WINMM.dll");
             if (File.Exists(winmm))
             {
-                var len = new FileInfo(winmm).Length;
-                sb.AppendLine($"{game}-{platform}：已安装（{len:N0} 字节）");
+                var (kind, hash8) = FslInstallHelper.Inspect(path);
+                sb.AppendLine(kind switch
+                {
+                    FslInstallHelper.FslInstallKind.Bundled => $"{game}-{platform}：已安装（内置同款官方 V6 hotfix 1）",
+                    FslInstallHelper.FslInstallKind.OtherFsl => $"{game}-{platform}：已安装其他版本 FSL（{hash8}…，能正常游戏就无需重装/更新）",
+                    FslInstallHelper.FslInstallKind.Foreign => $"{game}-{platform}：⚠ WINMM.dll 不是 FSL（{hash8}…，可能来自其他模组）",
+                    _ => $"{game}-{platform}：已安装"
+                });
             }
             else
             {
                 sb.AppendLine($"{game}-{platform}：未安装");
                 missing.Add($"{game}-{platform}");
+                if (game == "增强版") enhancedMissingCount++;
+                else legacyMissingCount++;
             }
         }
+        ctx.LegacyFslOk = legacyCount > 0 && legacyMissingCount == 0;
+        ctx.EnhancedFslOk = enhancedCount > 0 && enhancedMissingCount == 0;
         items.Add(new Item
         {
             Icon = missing.Count == 0 ? "✅" : "❌",
             Title = "FSL 安装",
             Detail = sb.ToString().TrimEnd(),
-            Hint = missing.Count == 0 ? "" : "未安装：" + string.Join("、", missing) + " → 点右侧按钮直接安装（等同 FSL 管理内的一键安装）",
+            Hint = missing.Count == 0
+                ? "装过 FSL 的用户无需重复安装，直接进游戏点「内嵌版」注入即可"
+                : "未安装：" + string.Join("、", missing) + " → 点右侧按钮直接安装（等同 FSL 管理内的一键安装；已存在的文件不会被动）",
             ActionKey = missing.Count == 0 ? "" : "fix_fsl",
             ActionLabel = "一键安装 FSL"
         });
@@ -214,85 +288,107 @@ public static class HealthCheckHelper
         });
     }
 
-    private static void CheckEnhanced(List<Item> items)
+    private static void CheckEnhanced(List<Item> items, Context ctx)
     {
         var dll = FileHelper.File_YimMenu_DLL_V2;
         var font = FileHelper.File_AppData_YimMenu_V2_Font;
+
         if (!File.Exists(dll))
         {
+            ctx.EnhancedDllExists = false;
             items.Add(new Item
             {
                 Icon = "❌",
                 Title = "增强版菜单文件",
                 Detail = "未找到（NewBase.dll 未释放）",
-                Hint = "重新打开本工具即可自动释放；仍失败请检查杀软拦截"
+                Hint = "点右侧按钮释放；仍失败请检查杀软拦截",
+                ActionKey = "fix_v2",
+                ActionLabel = "重新释放文件"
             });
             return;
         }
+
+        ctx.EnhancedDllExists = true;
+        ctx.EnhancedDllFresh = HashEquals(dll, EnhancedDllSha256);
+        ctx.EnhancedFontOk = File.Exists(font);
+
         var hash8 = Sha256Prefix(dll, 8);
-        var fontOk = File.Exists(font);
+        var ok = ctx.EnhancedDllFresh && ctx.EnhancedFontOk;
         items.Add(new Item
         {
-            Icon = fontOk ? "✅" : "⚠️",
+            Icon = ok ? "✅" : "⚠️",
             Title = "增强版菜单文件",
-            Detail = $"NewBase.dll 已就绪（SHA256 前 8 位 {hash8}）" + (fontOk ? "；字体已就绪" : "；字体缺失（中文字形可能异常）"),
-            Hint = fontOk ? "" : "点右侧按钮重新释放；若反复失败请检查杀软是否拦截了 font.ttf",
-            ActionKey = fontOk ? "" : "fix_v2",
-            ActionLabel = "重新释放文件"
+            Detail = $"NewBase.dll 已就绪（SHA256 前 8 位 {hash8}{(ctx.EnhancedDllFresh ? "，版本校验一致" : "，与内置最新版不一致")}）" +
+                     (ctx.EnhancedFontOk ? "；字体已就绪" : "；字体缺失（中文字形可能异常）"),
+            Hint = ok ? "" : (ctx.EnhancedDllFresh ? "点右侧按钮重新释放字体" : "版本不一致（可能为旧版）：点右侧按钮更新为最新版"),
+            ActionKey = ok ? "" : "fix_v2",
+            ActionLabel = ctx.EnhancedDllFresh ? "重新释放文件" : "更新为最新版"
         });
     }
 
-    private static void CheckLegacy(List<Item> items)
+    private static void CheckLegacy(List<Item> items, Context ctx)
     {
         var sb = new StringBuilder();
         var problems = new List<string>();
 
+        // 菜单 DLL（存在 + 版本校验）
         var dll = FileHelper.File_YimMenu_DLL_X;
-        sb.AppendLine(File.Exists(dll) ? "菜单 DLL：已就绪" : "菜单 DLL：缺失");
-        if (!File.Exists(dll)) problems.Add("菜单 DLL 缺失（重开本工具自动释放）");
+        ctx.LegacyDllExists = File.Exists(dll);
+        ctx.LegacyDllFresh = ctx.LegacyDllExists && HashEquals(dll, LegacyDllSha256);
+        if (!ctx.LegacyDllExists)
+        {
+            sb.AppendLine("菜单 DLL：缺失");
+            problems.Add("菜单 DLL 缺失（重开本工具或点修复自动释放）");
+        }
+        else if (!ctx.LegacyDllFresh)
+        {
+            sb.AppendLine("菜单 DLL：存在但版本不一致（可能为旧版，建议重新释放）");
+            problems.Add("菜单 DLL 非最新内置版（点修复重新释放）");
+        }
+        else
+        {
+            sb.AppendLine("菜单 DLL：已就绪（版本校验一致）");
+        }
 
+        // 玩法脚本（存在 + 版本识别）
         var scriptsDir = FileHelper.Dir_AppData_YimMenu_Scripts;
-        var umFound = "";
+        var umFile = "";
         if (Directory.Exists(scriptsDir))
         {
             var ums = Directory.GetFiles(scriptsDir, "Ultimate_Menu*.lua");
-            if (ums.Length > 0) umFound = Path.GetFileName(ums[0]);
+            if (ums.Length > 0) umFile = ums[0];
         }
-        var animOk = File.Exists(Path.Combine(scriptsDir, "DOG_InjectFx.lua"));
-
-        sb.AppendLine(umFound.Length > 0 ? $"玩法脚本：已安装（{umFound}）" : "玩法脚本：未安装");
-        sb.AppendLine(animOk ? "注入动画：已安装" : "注入动画：未安装");
-        if (umFound.Length == 0) problems.Add("玩法脚本未装（点「安装脚本包」或注入一次自动补齐）");
-        if (!animOk) problems.Add("注入动画缺失（一键补齐会自动装）");
-
-        var keyName = "INSERT（默认）";
-        if (File.Exists(FileHelper.File_AppData_YimMenu_Settings))
+        ctx.LegacyScriptsOk = umFile.Length > 0;
+        if (umFile.Length > 0)
+            sb.AppendLine($"玩法脚本：已安装（{Path.GetFileName(umFile)} · {DescribeUmVersion(Sha256Full(umFile))}）");
+        else
         {
-            try
-            {
-                var json = File.ReadAllText(FileHelper.File_AppData_YimMenu_Settings);
-                var m = System.Text.RegularExpressions.Regex.Match(json, "\"menu_toggle\"\\s*:\\s*(\\d+)");
-                if (m.Success)
-                {
-                    var vk = int.Parse(m.Groups[1].Value);
-                    keyName = vk switch
-                    {
-                        0x2D => "INSERT",
-                        0x76 => "F7",
-                        >= 0x70 and <= 0x7B => $"F{vk - 0x6F}",
-                        0x0D => "Enter",
-                        0x20 => "Space",
-                        _ => $"VK 0x{vk:X2}"
-                    };
-                }
-                else
-                {
-                    keyName = "INSERT（默认）";
-                }
-            }
-            catch { }
+            sb.AppendLine("玩法脚本：未安装");
+            problems.Add("玩法脚本未装（点「安装脚本包」或注入一次自动补齐）");
         }
-        sb.AppendLine($"呼出键：{keyName}（可在菜单 设置 → 热键 内修改）");
+
+        // 注入动画（存在 + 版本校验）
+        var animPath = Path.Combine(scriptsDir, "DOG_InjectFx.lua");
+        var animExists = File.Exists(animPath);
+        var animFresh = animExists && HashEquals(animPath, InjectFxSha256);
+        ctx.LegacyAnimOk = animExists && animFresh;
+        if (!animExists)
+        {
+            sb.AppendLine("注入动画：未安装");
+            problems.Add("注入动画缺失（一键补齐会自动装）");
+        }
+        else if (!animFresh)
+        {
+            sb.AppendLine("注入动画：存在但非最新内置版");
+            problems.Add("注入动画非最新版（点修复重新部署）");
+        }
+        else
+        {
+            sb.AppendLine("注入动画：已就绪（版本校验一致）");
+        }
+
+        // 呼出键
+        sb.AppendLine($"呼出键：{ReadToggleKeyDescription()}");
 
         items.Add(new Item
         {
@@ -302,6 +398,43 @@ public static class HealthCheckHelper
             Hint = problems.Count == 0 ? "" : string.Join("；", problems),
             ActionKey = problems.Count == 0 ? "" : "fix_legacy",
             ActionLabel = "一键补齐（脚本 / 动画 / 按键）"
+        });
+    }
+
+    private static void CheckWritable(List<Item> items, Context ctx)
+    {
+        var targets = new (string name, string dir, string tag)[]
+        {
+            ("脚本目录", FileHelper.Dir_AppData_YimMenu_Scripts, "scripts"),
+            ("工具数据目录", FileHelper.Dir_Base, "base"),
+        };
+        var problems = new List<string>();
+        var sb = new StringBuilder();
+        foreach (var (name, dir, tag) in targets)
+        {
+            var ok = false;
+            try
+            {
+                Directory.CreateDirectory(dir);
+                var probe = Path.Combine(dir, $".dog_write_probe_{Environment.TickCount64}");
+                File.WriteAllText(probe, "probe");
+                File.Delete(probe);
+                ok = true;
+            }
+            catch { }
+
+            if (tag == "scripts") ctx.ScriptsDirWritable = ok;
+            else ctx.BaseDirWritable = ok;
+
+            sb.AppendLine($"{name}：{(ok ? "可写" : "不可写")}（{dir}）");
+            if (!ok) problems.Add($"{name}不可写");
+        }
+        items.Add(new Item
+        {
+            Icon = problems.Count == 0 ? "✅" : "❌",
+            Title = "目录写入权限",
+            Detail = sb.ToString().TrimEnd(),
+            Hint = problems.Count == 0 ? "" : string.Join("、", problems) + "：多为杀软 / 安全软件拦截，请把本工具及其数据目录加入白名单后重试"
         });
     }
 
@@ -334,21 +467,163 @@ public static class HealthCheckHelper
         });
     }
 
-    private static string Sha256Prefix(string path, int chars)
+    /// <summary>汇总「能否进游戏注入」结论（插到列表第 2 位，紧跟在运行环境之后）</summary>
+    private static void InsertReadinessSummary(List<Item> items, Context ctx)
+    {
+        // ---- 按版本独立判定（未安装的版本给中性提示，不算缺失项） ----
+        var legacyBlockers = new List<string>();
+        var enhancedBlockers = new List<string>();
+
+        string legacyLine;
+        if (!ctx.LegacyInstallSeen)
+        {
+            legacyLine = "【传承版】未检测到安装（如需使用，请先安装传承版游戏）。";
+        }
+        else
+        {
+            if (!ctx.LegacyGameOk) legacyBlockers.Add("游戏主程序");
+            if (!ctx.LegacyFslOk) legacyBlockers.Add("FSL");
+            if (!ctx.Elevated) legacyBlockers.Add("管理员权限");
+            if (!ctx.LegacyDllExists) legacyBlockers.Add("菜单 DLL");
+            else if (!ctx.LegacyDllFresh) legacyBlockers.Add("菜单需重新释放");
+            if (!ctx.LegacyScriptsOk) legacyBlockers.Add("玩法脚本");
+            if (!ctx.LegacyAnimOk) legacyBlockers.Add("注入动画");
+            if (!ctx.ScriptsDirWritable) legacyBlockers.Add("脚本目录权限");
+            if (!ctx.BaseDirWritable) legacyBlockers.Add("工具目录权限");
+            legacyLine = legacyBlockers.Count == 0
+                ? "【传承版】就绪，可以注入。"
+                : $"【传承版】还差：{string.Join("、", legacyBlockers)}。";
+        }
+
+        string enhancedLine;
+        if (!ctx.EnhancedInstallSeen)
+        {
+            enhancedLine = "【增强版】未检测到安装（如需使用，请先安装增强版游戏）。";
+        }
+        else
+        {
+            if (!ctx.EnhancedGameOk) enhancedBlockers.Add("游戏主程序");
+            if (!ctx.EnhancedFslOk) enhancedBlockers.Add("FSL");
+            if (!ctx.Elevated) enhancedBlockers.Add("管理员权限");
+            if (!ctx.EnhancedDllExists) enhancedBlockers.Add("增强版菜单");
+            else if (!ctx.EnhancedDllFresh) enhancedBlockers.Add("增强版菜单需重新释放");
+            if (!ctx.EnhancedFontOk) enhancedBlockers.Add("菜单字体");
+            if (!ctx.BaseDirWritable) enhancedBlockers.Add("工具目录权限");
+            enhancedLine = enhancedBlockers.Count == 0
+                ? "【增强版】就绪，可以注入。"
+                : $"【增强版】还差：{string.Join("、", enhancedBlockers)}。";
+        }
+
+        var anySeen = ctx.LegacyInstallSeen || ctx.EnhancedInstallSeen;
+        var anyBlockers = legacyBlockers.Count > 0 || enhancedBlockers.Count > 0;
+        var readyCount = (ctx.LegacyInstallSeen && legacyBlockers.Count == 0 ? 1 : 0)
+                       + (ctx.EnhancedInstallSeen && enhancedBlockers.Count == 0 ? 1 : 0);
+
+        string icon;
+        string detail;
+        string hint;
+        if (!anySeen)
+        {
+            icon = "⚠️";
+            detail = "未检测到游戏安装：请先安装并运行一次游戏（Steam / Epic 均可），再回到本页重新检查。";
+            hint = "装好游戏后，安装 FSL 并检查菜单文件是否齐全";
+        }
+        else if (!anyBlockers)
+        {
+            icon = "✅";
+            detail = "关键文件全部就绪：\n" + legacyLine + "\n" + enhancedLine + "\n" +
+                     "下一步：关闭 BattlEye → 启动游戏到主菜单 → 回来点对应卡片的「内嵌版」。";
+            hint = "";
+        }
+        else
+        {
+            icon = readyCount > 0 ? "⚠️" : "❌";
+            detail = legacyLine + "\n" + enhancedLine;
+            hint = "按下方对应条目处理；可一键修复的直接点按钮";
+        }
+
+        items.Insert(1, new Item
+        {
+            Icon = icon,
+            Title = "能否进游戏注入？",
+            Detail = detail,
+            Hint = hint
+        });
+    }
+
+    //////////////////////////////////////////////////////////////////
+
+    private static string ReadToggleKeyDescription()
+    {
+        if (!File.Exists(FileHelper.File_AppData_YimMenu_Settings))
+            return "未生成（首次注入会自动写入 F7）";
+        try
+        {
+            var json = File.ReadAllText(FileHelper.File_AppData_YimMenu_Settings);
+            var m = System.Text.RegularExpressions.Regex.Match(json, "\"menu_toggle\"\\s*:\\s*(\\d+)");
+            if (!m.Success)
+                return "配置未含呼出键（首次注入会自动补写）";
+            var vk = int.Parse(m.Groups[1].Value);
+            var keyName = vk switch
+            {
+                0x2D => "INSERT",
+                0x76 => "F7",
+                >= 0x70 and <= 0x7B => $"F{vk - 0x6F}",
+                0x0D => "Enter",
+                0x20 => "Space",
+                _ => $"VK 0x{vk:X2}"
+            };
+            return keyName + "（可在菜单 设置 → 热键 内修改）";
+        }
+        catch
+        {
+            return "读取失败";
+        }
+    }
+
+    /// <summary>识别玩法脚本版本（按已知哈希）</summary>
+    private static string DescribeUmVersion(string fullSha)
+    {
+        return fullSha.ToUpperInvariant() switch
+        {
+            "EB379F9A34DA9B6B048DBFD3E3EBAC7A8062BB259B842FD2D244E82173EA8289" => "最新汉化版 v3",
+            "468A79F9EB7B1FFC2C1110F64ABAE8C452809BD629F84E3CCA5835608EDB0E5F" => "汉化版（中间版，首次注入会自动升级）",
+            "5E28B9225BD3BD49A53452E536A93539EACFC427379EE237AFC148A1739C2326" => "汉化版（首版，首次注入会自动升级）",
+            "1A8A9EA7A7272F797A8CAEFF2BB45C25E7977BF87D368AFF4E48D101EDE3A9F7" => "英文原版（首次注入会自动升级为汉化版）",
+            "A08DEBF5336C2468038DDF386EA4A8E4BBFE2BD884FC3ADEBF778B8E3E15AE30" => "英文原版（换行变体，首次注入会自动升级为汉化版）",
+            "" => "未知",
+            _ => "未知版本（可点「安装脚本包」重新部署为内置版）"
+        };
+    }
+
+    private static string Sha256Full(string path)
     {
         try
         {
             using var sha = System.Security.Cryptography.SHA256.Create();
             using var fs = File.OpenRead(path);
-            var hash = sha.ComputeHash(fs);
-            var hex = Convert.ToHexString(hash);
-            return hex[..Math.Min(chars, hex.Length)];
+            return Convert.ToHexString(sha.ComputeHash(fs));
         }
         catch
         {
-            return "未知";
+            return "";
         }
     }
+
+    private static bool HashEquals(string path, string expectedHex)
+    {
+        var hex = Sha256Full(path);
+        return hex.Length > 0 && hex.Equals(expectedHex, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string Sha256Prefix(string path, int chars)
+    {
+        var hex = Sha256Full(path);
+        if (hex.Length == 0) return "未知";
+        return hex[..Math.Min(chars, hex.Length)];
+    }
+
+    //////////////////////////////////////////////////////////////////
 
     /// <summary>执行修复动作（供自检窗口「一键修复」按钮调用）</summary>
     /// <returns>(是否成功, 结果消息)</returns>
@@ -367,25 +642,44 @@ public static class HealthCheckHelper
                     var (changed, msg) = FileHelper.EnsureLegacyLuaPack();
                     if (changed)
                         parts.Add(msg);
-                    if (!File.Exists(FileHelper.File_YimMenu_DLL_X))
+
+                    // 菜单 DLL：缺失或版本不一致 → 重新释放为内置版
+                    var dll = FileHelper.File_YimMenu_DLL_X;
+                    if (!File.Exists(dll) || !HashEquals(dll, LegacyDllSha256))
                     {
-                        FileHelper.ExtractResFile(FileHelper.Res_YimMenu_YimMenu_X, FileHelper.File_YimMenu_DLL_X);
+                        FileHelper.CreateDirectory(FileHelper.Dir_YimMenu);
+                        FileHelper.ExtractResFile(FileHelper.Res_YimMenu_YimMenu_X, dll);
                         parts.Add("传承版菜单 DLL 已重新释放");
                     }
+
+                    // 注入动画：缺失或版本不一致 → 重新部署
+                    var animPath = Path.Combine(FileHelper.Dir_AppData_YimMenu_Scripts, "DOG_InjectFx.lua");
+                    if (!File.Exists(animPath) || !HashEquals(animPath, InjectFxSha256))
+                    {
+                        FileHelper.CreateDirectory(FileHelper.Dir_AppData_YimMenu_Scripts);
+                        FileHelper.ExtractResFile(FileHelper.Res_Lua_DogInjectFx, animPath);
+                        parts.Add("注入动画已重新部署");
+                    }
+
                     return (true, parts.Count > 0 ? string.Join("；", parts) : "传承版组件已就绪，无需修复");
                 }
 
                 case "fix_v2":
                 {
                     var parts = new List<string>();
-                    if (!File.Exists(FileHelper.File_YimMenu_DLL_V2))
+
+                    // 菜单 DLL：缺失或版本不一致 → 重新释放为内置版
+                    var dll = FileHelper.File_YimMenu_DLL_V2;
+                    if (!File.Exists(dll) || !HashEquals(dll, EnhancedDllSha256))
                     {
-                        FileHelper.ExtractResFile(FileHelper.Res_YimMenu_YimMenu_V2, FileHelper.File_YimMenu_DLL_V2);
+                        FileHelper.CreateDirectory(FileHelper.Dir_YimMenu);
+                        FileHelper.ExtractResFile(FileHelper.Res_YimMenu_YimMenu_V2, dll);
                         parts.Add("NewBase.dll 已重新释放");
                     }
+
                     if (!File.Exists(FileHelper.File_AppData_YimMenu_V2_Font))
                     {
-                        Directory.CreateDirectory(FileHelper.Dir_AppData_YimMenu_V2);
+                        FileHelper.CreateDirectory(FileHelper.Dir_AppData_YimMenu_V2);
                         FileHelper.ExtractResFile(FileHelper.Res_YimMenu_YimMenu_V2_Font, FileHelper.File_AppData_YimMenu_V2_Font);
                         parts.Add("中文字体已重新释放");
                     }

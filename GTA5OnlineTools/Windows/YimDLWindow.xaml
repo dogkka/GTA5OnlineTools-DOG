@@ -97,9 +97,9 @@
                 </Grid.ColumnDefinitions>
                 <TextBox
                     x:Name="TextBox_Logger"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource TextBoxStyle_Logger}" Height="418" Width="716" Grid.ColumnSpan="2" Margin="10,0,0,0"/>
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Style="{StaticResource TextBoxStyle_Logger}" Grid.ColumnSpan="2" Margin="10,0,0,0"/>
             </Grid>
         </DockPanel>
         <!--  //////////////////////  -->

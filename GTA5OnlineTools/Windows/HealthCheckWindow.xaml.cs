@@ -135,17 +135,13 @@ public partial class HealthCheckWindow
         Refresh();
     }
 
-    private void Button_Copy_Click(object sender, RoutedEventArgs e)
+    private async void Button_Copy_Click(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            Clipboard.SetText(HealthCheckHelper.ToText(_items));
+        var ok = await ClipboardHelper.TrySetTextAsync(HealthCheckHelper.ToText(_items));
+        if (ok)
             NotifierHelper.Show(NotifierType.Success, "自检结果已复制，可直接粘贴到 QQ 群求助。");
-        }
-        catch (Exception ex)
-        {
-            NotifierHelper.ShowException(ex);
-        }
+        else
+            NotifierHelper.Show(NotifierType.Warning, "剪贴板被其他程序占用，复制失败，请稍后再点一次。");
     }
 
     private void Button_Bundle_Click(object sender, RoutedEventArgs e)

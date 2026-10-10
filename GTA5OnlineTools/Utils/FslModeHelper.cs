@@ -97,7 +97,7 @@ public static class FslModeHelper
     /// [DOG] 备份 %appdata%\FSL 到 ProgramData\GTA5OnlineTools\Backups（zip，保留最近 10 份）。
     /// </summary>
     /// <returns>(是否可继续, 成功时=zip 路径 / 失败时=错误信息；无内容可备份时 = (true, ""))</returns>
-    private static (bool ok, string msg) BackupSaves(string tag)
+    public static (bool ok, string msg) BackupSaves(string tag)
     {
         try
         {

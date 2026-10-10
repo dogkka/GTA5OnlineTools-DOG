@@ -50,8 +50,8 @@
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            Margin="5,6,5,0"
-            Orientation="Horizontal">
+            Margin="5,6,5,0">
+            <StackPanel Orientation="Horizontal">
             <TextBlock
                 x:Name="TextBlock_Detected"
                 Margin="4,0,16,0"
@@ -77,6 +77,14 @@
                 x:Name="Button_CreateShortcut"
                 Click="Button_CreateShortcut_Click"
                 Content="生成无BE桌面快捷方式" />
+            </StackPanel>
+            <TextBlock
+                x:Name="TextBlock_FslStatus"
+                Margin="4,4,10,0"
+                FontSize="11.5"
+                Foreground="#555555"
+                TextWrapping="Wrap"
+                Text="FSL 状态：检测中…" />
         </StackPanel>
         <!--  //////////////////////  -->
         <StackPanel
@@ -179,6 +187,19 @@
                 Foreground="#21A366"
                 TextWrapping="Wrap"
                 Text="当前模式：检测中…" />
+            <Button
+                x:Name="Button_BackupSaves"
+                Margin="0,12,0,0"
+                Background="#FE780A"
+                Click="Button_BackupSaves_Click"
+                Content="备份FSL存档"
+                Foreground="White" />
+            <TextBlock
+                Margin="0,4,0,0"
+                FontSize="11"
+                Foreground="#555555"
+                TextWrapping="Wrap"
+                Text="手动打包一份 %appdata%\FSL（存档 + 配置）到 ProgramData\GTA5OnlineTools\Backups（保留最近 10 份）。换机 / 重装 / 更新 FSL 前建议先点一次。" />
         </StackPanel>
         <!--  //////////////////////  -->
         <DockPanel Grid.Row="2" Grid.Column="0">
@@ -200,12 +221,12 @@
                     Text="0KB / 0MB" />
             </Grid>
             <!--  ///////////  -->
-            <Grid Grid.Row="1" Margin="0,0,5,5">
+            <Grid Margin="0,0,5,5">
                 <TextBox
                     x:Name="TextBox_Logger"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource TextBoxStyle_Logger}" Height="418" Width="716"/>
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Style="{StaticResource TextBoxStyle_Logger}" />
             </Grid>
         </DockPanel>
         <!--  //////////////////////  -->

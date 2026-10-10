@@ -15,7 +15,7 @@
     <WrapPanel>
         <!--  YimMenu 注入式菜单  -->
         <ui:GroupBoxHack
-            Title="YimMenu 一代 (可用)"
+            Title="传承版（可用）"
             Image="pack://application:,,,/GTA5OnlineTools;component/Assets/Hacks/YimMenu.png" Width="541" Height="186" Background="White">
             <ui:GroupBoxHack.TitleContent>
                 <StackPanel Orientation="Horizontal">
@@ -85,11 +85,11 @@
             Title="FSL管理"
             Command="{Binding HacksFuncClickCommand}"
             CommandParameter="FSLmanage"
-            Description="为传承版和增强版 安装FSL V6(内置)"
+            Description="安装/更新 FSL V6（装过会跳过）"
             Icon="&#xE72E;"
             Style="{StaticResource ButtonStyle_HacksFunc}" />
         <ui:GroupBoxHack
-            Title="YimMenu V2 (可用)"
+            Title="增强版（可用）"
             Image="pack://application:,,,/GTA5OnlineTools;component/Assets/Hacks/NewBase.png" Width="541" Height="186" Background="White">
             <ui:GroupBoxHack.TitleContent>
                 <StackPanel Orientation="Horizontal">

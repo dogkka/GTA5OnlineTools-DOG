@@ -55,7 +55,7 @@ public partial class UpdateWindow
     /// <summary>
     /// 复制下载链接（浏览器打不开时可以贴到下载工具里）
     /// </summary>
-    private void Button_Copy_Click(object sender, RoutedEventArgs e)
+    private async void Button_Copy_Click(object sender, RoutedEventArgs e)
     {
         var url = string.IsNullOrWhiteSpace(_result?.DownloadUrl) ? _result?.ReleasePage : _result.DownloadUrl;
 
@@ -65,15 +65,10 @@ public partial class UpdateWindow
             return;
         }
 
-        try
-        {
-            Clipboard.SetText(url);
+        if (await ClipboardHelper.TrySetTextAsync(url))
             TextBlock_Status.Text = $"下载链接已复制到剪贴板：{url}";
-        }
-        catch (Exception ex)
-        {
-            NotifierHelper.ShowException(ex);
-        }
+        else
+            NotifierHelper.Show(NotifierType.Warning, "剪贴板被其他程序占用，复制失败，请稍后再点一次。");
     }
 
     /// <summary>

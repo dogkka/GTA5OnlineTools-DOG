@@ -337,16 +337,23 @@ public static class FileHelper
 
             var installed = new List<string>();
 
-            // 0) 旧英文版玩法脚本自动升级为汉化版（按上游原版哈希精确识别，先备份再覆盖）
+            // 0) 旧英文版（含工具内置 CRLF 变体）/ 旧汉化版脚本自动升级为最新汉化版（按已知哈希精确识别，先备份再覆盖）
             var standardPath = Path.Combine(targetDir, "Ultimate_Menu_V3_1.73_Legacy.lua");
-            if (File.Exists(standardPath) && IsFileSha256(standardPath, LegacyUmEnglishSha256))
+            var isEnglishLegacy = File.Exists(standardPath) &&
+                (IsFileSha256(standardPath, LegacyUmEnglishSha256) || IsFileSha256(standardPath, LegacyUmEmbeddedEnSha256));
+            var isOldZhLegacy = File.Exists(standardPath) &&
+                (IsFileSha256(standardPath, LegacyUmZhV1Sha256) || IsFileSha256(standardPath, LegacyUmZhV2Sha256));
+            if (isEnglishLegacy || isOldZhLegacy)
             {
                 var upgradeBackupDir = Path.Combine(targetDir, $"_备份_{DateTime.Now:yyyyMMdd_HH-mm-ss}");
                 CreateDirectory(upgradeBackupDir);
-                File.Copy(standardPath, Path.Combine(upgradeBackupDir, "Ultimate_Menu_V3_1.73_Legacy_英文原版.lua"), true);
+                var backupName = isEnglishLegacy
+                    ? "Ultimate_Menu_V3_1.73_Legacy_英文原版.lua"
+                    : "Ultimate_Menu_V3_1.73_Legacy_旧汉化版.lua";
+                File.Copy(standardPath, Path.Combine(upgradeBackupDir, backupName), true);
 
                 if (ExtractNamedResFile(assembly, Res_Lua_UltimateMenuLegacy, standardPath))
-                    installed.Add("Ultimate_Menu_V3_1.73_Legacy.lua（英文版已自动升级为汉化版）");
+                    installed.Add("Ultimate_Menu_V3_1.73_Legacy.lua（" + (isEnglishLegacy ? "英文版" : "旧汉化版") + "已自动升级为最新汉化版）");
             }
 
             // 1) 玩法脚本（Ultimate Menu V3）：已有任意 UM 版本则不覆盖
@@ -401,6 +408,15 @@ public static class FileHelper
 
     /// <summary>上游英文原版 UltimateMenu V3 1.73 的 SHA256（用于识别并升级为汉化版）</summary>
     private const string LegacyUmEnglishSha256 = "1A8A9EA7A7272F797A8CAEFF2BB45C25E7977BF87D368AFF4E48D101EDE3A9F7";
+
+    /// <summary>v2.1.40 工具内置英文版（内容与上游一致，CRLF 行尾）的 SHA256（同样升级为最新汉化版）</summary>
+    private const string LegacyUmEmbeddedEnSha256 = "A08DEBF5336C2468038DDF386EA4A8E4BBFE2BD884FC3ADEBF778B8E3E15AE30";
+
+    /// <summary>v2.1.40 内置的第一版汉化 UltimateMenu V3 1.73 的 SHA256（同样升级为最新汉化版）</summary>
+    private const string LegacyUmZhV1Sha256 = "5E28B9225BD3BD49A53452E536A93539EACFC427379EE237AFC148A1739C2326";
+
+    /// <summary>v2.1.41 开发期第二版汉化（中间版）的 SHA256（同样升级为最新汉化版）</summary>
+    private const string LegacyUmZhV2Sha256 = "468A79F9EB7B1FFC2C1110F64ABAE8C452809BD629F84E3CCA5835608EDB0E5F";
 
     /// <summary>文件 SHA256 是否等于指定值（读取失败返回 false）</summary>
     private static bool IsFileSha256(string path, string expectedHex)

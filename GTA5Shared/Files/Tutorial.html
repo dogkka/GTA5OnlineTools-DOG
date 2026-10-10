@@ -413,8 +413,8 @@ footer{border-top:1px solid var(--line);padding:48px 24px 60px;background:var(--
     </div>
     <div class="steps">
       <div class="step"><b>关闭反作弊</b>：Rockstar 启动器 → 设置 → 我的已安装游戏 → GTA V Enhanced → 取消勾选 <b>BattlEye</b>。<br>（Steam：启动项加 <kbd>-nobattleye</kbd>；Epic：用 FSL 管理里的「无BE模式启动游戏」或桌面快捷方式）</div>
-      <div class="step"><b>安装 FSL</b>：打开本程序 → <b>YimMenu</b> 页 → FSL 管理 → 点「<b>一键安装FSL（自动检测）</b>」——程序会自动识别 Steam / Epic 平台与增强版 / 传承版并安装。（内置 FSL V6，离线安装）</div>
-      <div class="step"><b>注入菜单</b>：游戏进入<b>主菜单</b> → YimMenu 页 → 「YimMenu V2」卡片 → 点<b>内嵌版</b> → 注入成功后屏幕中央播放「注入成功 · DOG」启动动画（约 8 秒），游戏内按 <kbd>F7</kbd> 呼出中文菜单（默认键，可自定义）。</div>
+      <div class="step"><b>安装 FSL</b>：打开本程序 → <b>YimMenu</b> 页 → FSL 管理 → 点「<b>一键安装FSL（自动检测）</b>」——程序会自动识别 Steam / Epic 平台与增强版 / 传承版并安装。（内置官方 FSL V6，离线安装；<b>装过 FSL 的用户会自动识别、无需重装</b>）</div>
+      <div class="step"><b>注入菜单</b>：游戏进入<b>主菜单</b> → YimMenu 页 → 「增强版」卡片 → 点<b>内嵌版</b> → 注入成功后屏幕中央播放「注入成功 · DOG」启动动画（约 8 秒），游戏内按 <kbd>F7</kbd> 呼出中文菜单（默认键，可自定义）。</div>
     </div>
     <div class="grid" style="margin-top:14px">
       <div class="card"><h3><span class="ico"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-keyboard"/></svg></span>呼出 / 关闭菜单</h3>
@@ -754,11 +754,11 @@ footer{border-top:1px solid var(--line);padding:48px 24px 60px;background:var(--
     <details><summary>如何彻底卸载「小助手」？</summary>
       <div class="dbody">打开工具 <b>关于</b> 页 → 点「<b>一键卸载（清理配置与缓存）</b>」→ 按提示清理完成后，删除程序文件（exe / 整个工具文件夹）即可完成卸载。清理范围：C:\ProgramData\GTA5OnlineTools、%appdata%\YimMenu、%appdata%\YimMenuV2 及桌面「GTA5 无BE启动」快捷方式；<b>不会删除</b> FSL 本地存档（%appdata%\FSL）与游戏存档。游戏目录里安装过的 FSL 如需移除，请到「FSL 管理」操作。</div></details>
     <details><summary>注入失败？</summary>
-      <div class="dbody">点「内嵌版」报“未检测到游戏进程 / 检测到你正在运行的是…”？按提示对号入座：&#10;① 玩增强版请点「<b>YimMenu V2</b>」卡片的内嵌版；玩传承版请点「<b>YimMenu</b>」卡片的内嵌版（点错卡片工具会直接提示你该点哪张）；&#10;② 确保游戏已进入<b>主菜单</b>再点（启动器 / 加载阶段还没有游戏进程；游戏目录里的 <kbd>GTA5_Enhanced_BE.exe</kbd> 是 BE 启动器壳，实际游戏进程应为 <kbd>GTA5_Enhanced.exe</kbd>，且需要先关闭 BattlEye）；&#10;③ 仍失败：主页「环境自检」→ 看「游戏进程」一项显示的是什么，再尝试以管理员身份运行本工具。</div></details>
+      <div class="dbody">点「内嵌版」报“未检测到游戏进程 / 检测到你正在运行的是…”？按提示对号入座：&#10;① 玩增强版请点「<b>增强版</b>」卡片的内嵌版；玩传承版请点「<b>传承版</b>」卡片的内嵌版（点错卡片工具会直接提示你该点哪张）；&#10;② 确保游戏已进入<b>主菜单</b>再点（启动器 / 加载阶段还没有游戏进程；游戏目录里的 <kbd>GTA5_Enhanced_BE.exe</kbd> 是 BE 启动器壳，实际游戏进程应为 <kbd>GTA5_Enhanced.exe</kbd>，且需要先关闭 BattlEye）；&#10;③ 仍失败：主页「环境自检」→ 看「游戏进程」一项显示的是什么，再尝试以管理员身份运行本工具。</div></details>
     <details><summary>菜单呼不出来？</summary>
       <div class="dbody">确认注入提示成功；游戏里按 <kbd>F7</kbd>（默认键；传承版 / 增强版同为 F7，可在菜单 设置 → 热键 改；增强版另有备用 <kbd>Ctrl</kbd>+<kbd>\</kbd>）；日志：传承版 %appdata%\YimMenu\cout.log、增强版 %appdata%\YimMenuV2\cout.log。</div></details>
     <details><summary>增强版和传承版，我该用哪个？</summary>
-      <div class="dbody">看你的游戏版本：<b>增强版（Enhanced）</b>用「YimMenu V2」卡片（内置自编译中文菜单）；<b>传承版（Legacy）</b>用「YimMenu」卡片（社区维护版 + Ultimate Menu V3 玩法脚本）。<b>两个版本的小助手功能一致</b>（数据模式、脚本包、任务 / 刷钱 / 等级玩法都支持）；不确定就先点主页「<b>环境自检</b>」，它会列出你电脑上装了哪个版本。</div></details>
+      <div class="dbody">看你的游戏版本：<b>增强版（Enhanced）</b>用「增强版」卡片（内置自编译中文菜单）；<b>传承版（Legacy）</b>用「传承版」卡片（社区维护版 + Ultimate Menu V3 玩法脚本）。<b>两个版本的小助手功能一致</b>（数据模式、脚本包、任务 / 刷钱 / 等级玩法都支持）；不确定就先点主页「<b>环境自检</b>」，它会列出你电脑上装了哪个版本。</div></details>
     <details><summary>杀软报毒 / 文件被杀软删除了？</summary>
       <div class="dbody">本类工具（注入器 + 菜单 DLL）被 360 / 火绒 / Windows Defender 误报是常态，属于<b>误报</b>。处理：① 在杀软里把<b>小助手所在文件夹</b>和 <kbd>%appdata%\YimMenu</kbd>、<kbd>%appdata%\YimMenuV2</kbd>、<kbd>C:\ProgramData\GTA5OnlineTools</kbd> 加入白名单 / 信任区；② 若文件已被删，从杀软<b>隔离区恢复</b>，或重新打开小助手自动重新释放菜单文件；③ 仍异常：主页「环境自检」看哪一项缺失。</div></details>
     <details><summary>功能点了没反应 / 想反馈问题，怎么给信息最快？</summary>
@@ -767,6 +767,12 @@ footer{border-top:1px solid var(--line);padding:48px 24px 60px;background:var(--
       <div class="dbody">菜单 <b>2.1.37</b> 已修复：打开菜单时自动解除光标钳制（ClipCursor）。若仍偶现：① 游戏<b>设置 → 鼠标 / 键盘 → 输入方式</b>改为「<b>原始输入</b>」；② 按一次 <kbd>Alt</kbd>+<kbd>Tab</kbd> 或 <kbd>Alt</kbd>+<kbd>Enter</kbd> 切一下窗口即可恢复。</div></details>
     <details><summary>FSL 安装失败？</summary>
       <div class="dbody">先关闭游戏再安装；确认游戏目录有写入权限。卸载：FSL 管理 → 移除对应平台的 FSL。</div></details>
+    <details><summary>装过 FSL，更新小助手后要不要重装？</summary>
+      <div class="dbody">不用。装过 FSL 的用户直接<b>打开游戏 → 点「内嵌版」注入</b>即可。FSL 管理页顶部会显示检测结果：内置同款会提示「无需重复安装」并自动跳过；检测到其他版本会先弹窗询问，更新前自动备份旧文件与本地存档。小助手不会删除 <kbd>%appdata%\FSL</kbd> 里的任何存档。</div></details>
+    <details><summary>FSL 存档在哪？怎么备份？</summary>
+      <div class="dbody">存档与配置都在 <kbd>%appdata%\FSL</kbd>（资源管理器地址栏输入 <kbd>%appdata%</kbd> 回车即可打开）。备份：FSL 管理 → 点「<b>备份FSL存档</b>」；另外切换数据模式、更新 FSL 版本时都会自动备份到 <kbd>C:\ProgramData\GTA5OnlineTools\Backups</kbd>（保留最近 10 份）。换电脑拷贝整个 FSL 文件夹即可。</div></details>
+    <details><summary>以前玩传承版（本地存档），换增强版后进度没了？</summary>
+      <div class="dbody">两种版本的存档文件名不同：传承版为 <kbd>save_char0001.pso</kbd>，增强版为 <kbd>save_char0001_pcrosalt.pso</kbd>。社区做法：把 <kbd>%appdata%\FSL</kbd> 里的 .pso 文件复制一份、文件名加 <kbd>_pcrosalt</kbd> 后缀即可让增强版读取（反过来去掉后缀即回到传承版）。操作前先备份整个 FSL 文件夹。</div></details>
     <details><summary>Epic 平台提示「需要启动 BE 反作弊」进不去游戏？</summary>
       <div class="dbody">Epic 启动器不会给游戏传启动参数，因此关闭 BattlEye 后会被拦。解决：FSL 管理 → 点「<b>无BE模式启动游戏（Epic适用）</b>」；或点「生成无BE桌面快捷方式」，以后双击桌面快捷方式启动（等效于 Steam 的 -nobattleye 启动选项）。</div></details>
     <details><summary>弹出 DirectX 错误 / 内存不足（ERR_GFX_D3D_DEFERRED_MEM）？</summary>

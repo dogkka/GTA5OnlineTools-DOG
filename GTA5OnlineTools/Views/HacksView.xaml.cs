@@ -258,11 +258,14 @@ public partial class HacksView : UserControl
             gta5Process = Memory.GTA5Process;
         }
 
-        var result = Injector.DLLInjector(gta5Process.Id, FileHelper.File_YimMenu_DLL_X, true);
-        if (result.IsSuccess)
+       var result = Injector.DLLInjector(gta5Process.Id, FileHelper.File_YimMenu_DLL_X, true);
+       if (result.IsSuccess)
+        {
             NotifierHelper.Show(NotifierType.Success, "YimMenu菜单注入成功");
-        else
-            NotifierHelper.Show(NotifierType.Error, $"YimMenu菜单注入失败\n错误信息：{result.Content}");
+            _ = ConsoleWindowHelper.HideGameConsoleAfterInjectAsync(gta5Process.Id);
+        }
+       else
+           NotifierHelper.Show(NotifierType.Error, $"YimMenu菜单注入失败\n错误信息：{result.Content}");
     }
     private async void YimMenuClick_Online()
     {
@@ -344,11 +347,14 @@ public partial class HacksView : UserControl
             gta5Process = Memory.GTA5Process;
         }
 
-        var result = Injector.DLLInjector(gta5Process.Id, FileHelper.File_YimMenu_DLL_V2, true);
-        if (result.IsSuccess)
+       var result = Injector.DLLInjector(gta5Process.Id, FileHelper.File_YimMenu_DLL_V2, true);
+       if (result.IsSuccess)
+        {
             NotifierHelper.Show(NotifierType.Success, "YimMenu V2菜单注入成功");
-        else
-            NotifierHelper.Show(NotifierType.Error, $"YimMenu V2菜单注入失败\n错误信息：{result.Content}");
+            _ = ConsoleWindowHelper.HideGameConsoleAfterInjectAsync(gta5Process.Id);
+        }
+       else
+           NotifierHelper.Show(NotifierType.Error, $"YimMenu V2菜单注入失败\n错误信息：{result.Content}");
     }
     private static void YimMenu_V2_Online_Click()
     {

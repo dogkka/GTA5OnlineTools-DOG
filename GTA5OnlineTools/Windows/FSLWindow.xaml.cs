@@ -250,6 +250,8 @@ public partial class FSLWindow
 
         UpdateDetectedText();
 
+        RefreshFslStatus();
+
     }
 
 
@@ -344,6 +346,8 @@ public partial class FSLWindow
 
         var targets = GetPreferredTargets();
 
+
+
         if (targets.Count == 0)
 
         {
@@ -358,41 +362,157 @@ public partial class FSLWindow
 
         Button_AutoInstall.IsEnabled = false;
 
+
+
         try
 
         {
+
+            // 先整体体检（只读检测，不做任何修改）
+
+            var toInstall = new List<string>();
+
+            var toUpdate  = new List<(string dir, string hash8)>();
+
+            var bundled   = new List<string>();
+
+            var foreign   = new List<(string dir, string hash8)>();
+
+
 
             foreach (var dir in targets)
 
             {
 
-                AppendLogger("检测到安装目录：" + dir);
+                var (kind, hash8) = FslInstallHelper.Inspect(dir);
 
 
 
-                RemoveFile(dir, true);
+                switch (kind)
 
+                {
 
+                    case FslInstallHelper.FslInstallKind.Missing:  toInstall.Add(dir); break;
 
-                var dst = Path.Combine(dir, "WINMM.dll");
+                    case FslInstallHelper.FslInstallKind.Bundled:  bundled.Add(dir); break;
 
-                await Task.Run(() => File.Copy(FileHelper.File_FSL_WINMM, dst, true));
+                    case FslInstallHelper.FslInstallKind.OtherFsl: toUpdate.Add((dir, hash8)); break;
 
+                    default:                                       foreign.Add((dir, hash8)); break;
 
-
-                ProgressBar_Download.Value = ProgressBar_Download.Maximum;
-
-                TaskbarItemInfo.ProgressValue = 1;
-
-                TextBlock_Percentage.Text = CoreUtil.GetFileForamtSize(new FileInfo(dst).Length);
-
-                AppendLogger("安装完成（内置 FSL V6）：" + dst);
+                }
 
             }
 
 
 
-            AppendLogger("√ 一键安装完成，下次启动 GTA 时 FSL 将自动加载");
+            foreach (var dir in bundled)
+
+                AppendLogger("√ 已是内置同款 FSL V6（官方 hotfix 1），无需重复安装：" + dir);
+
+
+
+            foreach (var (dir, hash8) in foreign)
+
+                AppendLogger($"⚠ 检测到非 FSL 的 WINMM.dll（哈希 {hash8}…，可能来自其他模组）：为避免冲突已跳过 → {dir}");
+
+
+
+            if (toUpdate.Count > 0)
+
+            {
+
+                var text = "检测到已安装其他版本的 FSL（非内置版）：\n\n"
+
+                         + string.Join("\n", toUpdate.ConvertAll(t => "  • " + t.dir + $"（哈希 {t.hash8}…）")) + "\n\n"
+
+                         + "是否更新为内置的官方最新版 FSL V6 hotfix 1？\n\n"
+
+                         + "更新前会自动备份：\n"
+
+                         + "① 旧版 WINMM.dll → ProgramData\\GTA5OnlineTools\\Backups\n"
+
+                         + "② 本地存档（%appdata%\\FSL）→ 同上\n\n"
+
+                         + "【提示】装过 FSL 且游戏一切正常的用户无需重复安装/更新，点「否」保持现状即可。";
+
+
+
+                if (System.Windows.MessageBox.Show(text, "FSL 版本检测 — 是否更新？", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question, System.Windows.MessageBoxResult.No) == System.Windows.MessageBoxResult.Yes)
+
+                {
+
+                    var (backupOk, backupMsg) = FslModeHelper.BackupSaves("覆盖更新FSL前");
+
+
+
+                    if (!backupOk)
+
+                    {
+
+                        AppendLogger($"⚠ 本地存档备份失败，已取消更新（防止丢档）：{backupMsg}");
+
+                    }
+
+                    else
+
+                    {
+
+                        if (!string.IsNullOrEmpty(backupMsg))
+
+                            AppendLogger("更新前存档已备份：" + backupMsg);
+
+
+
+                        foreach (var (dir, hash8) in toUpdate)
+
+                        {
+
+                            RemoveFile(dir, true);
+
+                            await InstallBundledAsync(dir, hash8);
+
+                        }
+
+                    }
+
+                }
+
+                else
+
+                {
+
+                    AppendLogger("已选择保持现状：未做任何修改（装过 FSL 无需重复安装，直接进游戏点「内嵌版」即可）。");
+
+                }
+
+            }
+
+
+
+            foreach (var dir in toInstall)
+
+            {
+
+                RemoveFile(dir, true);
+
+                await InstallBundledAsync(dir, "");
+
+            }
+
+
+
+            if (toInstall.Count > 0)
+
+                AppendLogger("√ 安装完成，下次启动 GTA 时 FSL 将自动加载。装过 FSL 的用户直接进游戏点「内嵌版」注入即可。");
+
+            else if (bundled.Count > 0 && toUpdate.Count == 0)
+
+                AppendLogger("√ 检查完成：FSL 已就绪，无需任何操作。");
+
+
+
+            RefreshFslStatus();
 
         }
 
@@ -415,8 +535,6 @@ public partial class FSLWindow
     }
 
 
-
-    /// <summary>
 
     /// [DOG] 查找优先使用的游戏目录（无BE启动/快捷方式用）
 
@@ -638,33 +756,41 @@ public partial class FSLWindow
 
     {
 
-        if (!string.IsNullOrEmpty(GTA5_InstallPath_Steam_enhanced))
+        Button_StartDownload_Steam.IsEnabled = false;
+
+        Button_StartDownload_Epic.IsEnabled = false;
+
+
+
+        try
 
         {
 
-            RemoveFile(GTA5_InstallPath_Steam_enhanced, true);
+            if (!string.IsNullOrEmpty(GTA5_InstallPath_Steam_enhanced))
 
-            AppendLogger("开始为GTA5增强版-Steam 下载FSL");
+                await InstallOrUpdateOne(GTA5_InstallPath_Steam_enhanced, "增强版-Steam");
 
-            await StartDownload(GTA5_InstallPath_Steam_enhanced, true);
+
+
+            if (!string.IsNullOrEmpty(GTA5_InstallPath_Steam))
+
+                await InstallOrUpdateOne(GTA5_InstallPath_Steam, "传承版-Steam");
 
         }
 
-        if (!string.IsNullOrEmpty(GTA5_InstallPath_Steam))
+        finally
 
         {
 
-            RemoveFile(GTA5_InstallPath_Steam, true);
+            Button_StartDownload_Steam.IsEnabled = true;
 
-            AppendLogger("开始为GTA5传承版-Steam 下载FSL");
+            Button_StartDownload_Epic.IsEnabled = true;
 
-            await StartDownload(GTA5_InstallPath_Steam, false);
+            Button_RM_FSL_Steam.IsEnabled = true;
+
+            RefreshFslStatus();
 
         }
-
-
-
-        Button_RM_FSL_Steam.IsEnabled = true;
 
     }
 
@@ -674,59 +800,9 @@ public partial class FSLWindow
 
     {
 
-        if (!string.IsNullOrEmpty(GTA5_InstallPath_Epic_enhanced))
-
-        {
-
-            RemoveFile(GTA5_InstallPath_Epic_enhanced, true);
-
-            AppendLogger("开始为GTA5增强版-Epic 下载FSL");
-
-            await StartDownload(GTA5_InstallPath_Epic_enhanced, true);
-
-        }
-
-        if (!string.IsNullOrEmpty(GTA5_InstallPath_Epic))
-
-        {
-
-            RemoveFile(GTA5_InstallPath_Epic, true);
-
-            AppendLogger("开始为GTA5传承版-Epic 下载FSL");
-
-            await StartDownload(GTA5_InstallPath_Epic, false);
-
-        }
-
-
-
-        Button_RM_FSL_Epic.IsEnabled = true;
-
-    }
-
-
-
-    private async Task StartDownload(string installPath, bool isEnhanced)
-
-    {
-
         Button_StartDownload_Steam.IsEnabled = false;
 
         Button_StartDownload_Epic.IsEnabled = false;
-
-        Button_RM_FSL_Steam.IsEnabled = false;
-
-        Button_RM_FSL_Epic.IsEnabled = false;
-
-
-
-        ResetUIState();
-
-
-
-        tempPath = Path.Combine(installPath, "WINMM.dll");
-
-        AppendLogger("开始安装内置 FSL V6 ...");
 
 
 
@@ -734,33 +810,15 @@ public partial class FSLWindow
 
         {
 
-            await Task.Run(() =>
+            if (!string.IsNullOrEmpty(GTA5_InstallPath_Epic_enhanced))
 
-            {
-
-                File.Copy(FileHelper.File_FSL_WINMM, tempPath, true);
-
-            });
+                await InstallOrUpdateOne(GTA5_InstallPath_Epic_enhanced, "增强版-Epic");
 
 
 
-            ProgressBar_Download.Maximum = 100;
+            if (!string.IsNullOrEmpty(GTA5_InstallPath_Epic))
 
-            ProgressBar_Download.Value = 100;
-
-            TaskbarItemInfo.ProgressValue = 1;
-
-            TextBlock_Percentage.Text = CoreUtil.GetFileForamtSize(new FileInfo(tempPath).Length);
-
-            AppendLogger("安装完成（内置 FSL V6），下次启动 GTA 时 FSL 将自动加载");
-
-        }
-
-        catch (Exception ex)
-
-        {
-
-            AppendLogger($"安装失败，请确认小助手数据目录完整。错误信息: {ex.Message}");
+                await InstallOrUpdateOne(GTA5_InstallPath_Epic, "传承版-Epic");
 
         }
 
@@ -768,7 +826,13 @@ public partial class FSLWindow
 
         {
 
-            ResetButtons(installPath);
+            Button_StartDownload_Steam.IsEnabled = true;
+
+            Button_StartDownload_Epic.IsEnabled = true;
+
+            Button_RM_FSL_Epic.IsEnabled = true;
+
+            RefreshFslStatus();
 
         }
 
@@ -776,33 +840,157 @@ public partial class FSLWindow
 
 
 
-    private void ResetButtons(string installPath)
+    /// <summary>
+
+    /// [DOG] 单个游戏目录的版本感知安装/更新：同款跳过；其他版本先确认、先备份；非 FSL 拒绝覆盖。
+
+    /// </summary>
+
+    private async Task InstallOrUpdateOne(string dir, string label)
 
     {
 
-        if (installPath == GTA5_InstallPath_Steam)
+        var (kind, hash8) = FslInstallHelper.Inspect(dir);
+
+
+
+        switch (kind)
 
         {
 
-            Button_GTA_STEAM_Dir.IsEnabled = true;
+            case FslInstallHelper.FslInstallKind.Missing:
 
-            Button_StartDownload_Steam.IsEnabled = true;
+                AppendLogger($"[{label}] 未安装 FSL，开始安装内置 V6 ...");
 
-            Button_RM_FSL_Steam.IsEnabled = true;
+                RemoveFile(dir, true);
+
+                await InstallBundledAsync(dir, "");
+
+                break;
+
+
+
+            case FslInstallHelper.FslInstallKind.Bundled:
+
+                AppendLogger($"[{label}] 已是内置同款 FSL V6，无需重复安装（跳过）。");
+
+                break;
+
+
+
+            case FslInstallHelper.FslInstallKind.OtherFsl:
+
+                {
+
+                    var text = $"[{label}] 检测到已安装其他版本的 FSL（哈希 {hash8}…）。\n\n"
+
+                             + "是否更新为内置的官方最新版 FSL V6 hotfix 1？\n\n"
+
+                             + "更新前会自动备份：\n"
+
+                             + "① 旧版 WINMM.dll → ProgramData\\GTA5OnlineTools\\Backups\n"
+
+                             + "② 本地存档（%appdata%\\FSL）→ 同上\n\n"
+
+                             + "【提示】装过 FSL 且游戏一切正常的用户无需更新，点「否」保持现状即可。";
+
+
+
+                    if (System.Windows.MessageBox.Show(text, "FSL 版本检测 — 是否更新？", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question, System.Windows.MessageBoxResult.No) == System.Windows.MessageBoxResult.Yes)
+
+                    {
+
+                        var (backupOk, backupMsg) = FslModeHelper.BackupSaves("覆盖更新FSL前");
+
+
+
+                        if (!backupOk)
+
+                        {
+
+                            AppendLogger($"[{label}] ⚠ 本地存档备份失败，已取消更新（防止丢档）：{backupMsg}");
+
+                            break;
+
+                        }
+
+
+
+                        if (!string.IsNullOrEmpty(backupMsg))
+
+                            AppendLogger($"[{label}] 更新前存档已备份：{backupMsg}");
+
+
+
+                        RemoveFile(dir, true);
+
+                        await InstallBundledAsync(dir, hash8);
+
+                    }
+
+                    else
+
+                    {
+
+                        AppendLogger($"[{label}] 已保持现状：未做任何修改。");
+
+                    }
+
+                    break;
+
+                }
+
+
+
+            default:
+
+                AppendLogger($"[{label}] ⚠ 检测到非 FSL 的 WINMM.dll（哈希 {hash8}…，可能来自其他模组）：为避免冲突已跳过。");
+
+                break;
 
         }
 
-        else if (installPath == GTA5_InstallPath_Epic)
+    }
+
+
+
+    /// <summary>
+
+    /// [DOG] 用内置 FSL 覆盖安装到指定目录（oldHash8 非空时先备份旧 DLL），并刷新日志与进度。
+
+    /// </summary>
+
+    private async Task InstallBundledAsync(string dir, string oldHash8)
+
+    {
+
+        var (ok, message) = await Task.Run(() => FslInstallHelper.ApplyBundled(dir, oldHash8));
+
+        AppendLogger((ok ? "√ " : "⚠ ") + message);
+
+
+
+        if (!ok)
+
+            return;
+
+
+
+        try
 
         {
 
-            Button_GTA_EPIC_Dir.IsEnabled = true;
+            var dst = Path.Combine(dir, "WINMM.dll");
 
-            Button_StartDownload_Epic.IsEnabled = true;
+            ProgressBar_Download.Value = ProgressBar_Download.Maximum;
 
-            Button_RM_FSL_Epic.IsEnabled = true;
+            TaskbarItemInfo.ProgressValue = 1;
+
+            TextBlock_Percentage.Text = CoreUtil.GetFileForamtSize(new FileInfo(dst).Length);
 
         }
+
+        catch { }
 
     }
 
@@ -1055,6 +1243,136 @@ public partial class FSLWindow
         ApplySaveMode(false);
 
     }
+
+    /// <summary>
+
+    /// [DOG] 刷新顶部「FSL 状态」行：逐目录判定 未安装 / 内置同款 / 其他版本 / 非 FSL。
+
+    /// </summary>
+
+    private void RefreshFslStatus()
+
+    {
+
+        try
+
+        {
+
+            var parts = new List<string>();
+
+
+
+            void Add(string label, string dir)
+
+            {
+
+                if (string.IsNullOrEmpty(dir) || !Directory.Exists(dir))
+
+                    return;
+
+
+
+                var (kind, hash8) = FslInstallHelper.Inspect(dir);
+
+
+
+                parts.Add(kind switch
+
+                {
+
+                    FslInstallHelper.FslInstallKind.Missing => $"{label}：未安装",
+
+                    FslInstallHelper.FslInstallKind.Bundled => $"{label}：已安装（内置同款 V6）",
+
+                    FslInstallHelper.FslInstallKind.OtherFsl => $"{label}：已安装其他版本（{hash8}…）",
+
+                    _ => $"{label}：WINMM.dll 非 FSL（可能为其他模组）"
+
+                });
+
+            }
+
+
+
+            Add("增强版-Steam", GTA5_InstallPath_Steam_enhanced);
+
+            Add("增强版-Epic", GTA5_InstallPath_Epic_enhanced);
+
+            Add("传承版-Steam", GTA5_InstallPath_Steam);
+
+            Add("传承版-Epic", GTA5_InstallPath_Epic);
+
+
+
+            TextBlock_FslStatus.Text = parts.Count == 0
+
+                ? "FSL 状态：未检测到游戏安装（先运行一次游戏再进本页）"
+
+                : "FSL 状态：" + string.Join("；", parts) + "。装过 FSL 的无需重复安装，直接进游戏点「内嵌版」注入即可；仅当游戏大版本更新导致 FSL 失效时才需要更新。";
+
+        }
+
+        catch (Exception ex)
+
+        {
+
+            TextBlock_FslStatus.Text = "FSL 状态检测失败：" + ex.Message;
+
+        }
+
+    }
+
+
+
+    /// <summary>
+
+    /// [DOG] 手动备份 FSL 本地存档（%appdata%\FSL → ProgramData\GTA5OnlineTools\Backups，zip）。
+
+    /// </summary>
+
+    private void Button_BackupSaves_Click(object sender, RoutedEventArgs e)
+
+    {
+
+        var (ok, message) = FslModeHelper.BackupSaves("手动备份");
+
+
+
+        if (!ok)
+
+        {
+
+            AppendLogger("⚠ FSL 存档备份失败：" + message);
+
+            NotifierHelper.Show(NotifierType.Error, "FSL 存档备份失败：" + message);
+
+            return;
+
+        }
+
+
+
+        if (string.IsNullOrEmpty(message))
+
+        {
+
+            AppendLogger("FSL 存档目录为空：暂无可备份的存档（%appdata%\\FSL）。");
+
+            NotifierHelper.Show(NotifierType.Warning, "未发现 FSL 存档（%appdata%\\FSL 为空）");
+
+            return;
+
+        }
+
+
+
+        AppendLogger("√ 已备份 FSL 存档（含配置）：" + message);
+
+        NotifierHelper.Show(NotifierType.Success, "FSL 存档已备份到 ProgramData\\GTA5OnlineTools\\Backups");
+
+    }
+
+
 
 }
 
