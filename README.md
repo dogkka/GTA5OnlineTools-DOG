@@ -1,4 +1,4 @@
-# GTA5 线上小助手 · DOG 二次开发版
+﻿# GTA5 线上小助手 · DOG 二次开发版
 
 基于原作者 **CrazyZhang** 的《GTA5 线上小助手》（MIT 许可）二次开发，作者：**DOG**。
 
@@ -36,18 +36,22 @@
 
 ## 交流反馈
 
-使用问题、反馈建议、更新通知都在群里；**1 群满员时请加备用群**：
+使用问题、反馈建议、更新通知都在群里；**主群与备用 1 群均已满员，请直接加「备用 2 群」**：
 
 <table>
   <tr>
-    <th align="center">交流 1 群</th>
-    <th align="center">备用群（1 群满员时加）</th>
+    <th align="center">主群（已满）</th>
+    <th align="center">备用 1 群（已满）</th>
+    <th align="center">备用 2 群（新群 · 推荐加入）</th>
   </tr>
   <tr>
-    <td align="center"><b>472770575</b><br /><img src="qq-group.jpg" alt="QQ 交流群二维码" width="220" /></td>
-    <td align="center"><b>1121769473</b><br /><img src="qq-group-backup.jpg" alt="备用群二维码" width="220" /></td>
+    <td align="center"><b>472770575</b><br /><img src="qq-group.jpg" alt="主群二维码" width="200" /></td>
+    <td align="center"><b>1121769473</b><br /><img src="qq-group-backup.jpg" alt="备用 1 群二维码" width="200" /></td>
+    <td align="center"><b>1129626000</b><br /><img src="qq-group-2.jpg" alt="备用 2 群二维码" width="200" /></td>
   </tr>
 </table>
+
+（群进满速度很快；也可以直接用群号搜索加群，已满的群无需尝试。）
 
 **防诈骗提醒**：本项目完全免费、公益性质。如果你遇到收费，那就是被骗了，请务必联系卖软件给你的那个人退款；官方发布渠道只有本仓库的 Releases 页面。
 
