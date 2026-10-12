@@ -12,8 +12,8 @@ namespace GTA5OnlineTools.Utils;
 public static class HealthCheckHelper
 {
     // ===== 内置版本期望哈希（随菜单 / 脚本包版本更新） =====
-    /// <summary>传承版菜单 YimMenu.dll（Mr-X 社区构建）</summary>
-    private const string LegacyDllSha256 = "CDF29AECA6269BAC3A5899F556BD0545EF98621395FD4A8F3B14A1305911EB08";
+    /// <summary>传承版菜单 YimMenu.dll（Mr-X 源 + DOG 自建线增强 2026-10-12：掉线自动归队 / 任务守卫）</summary>
+    private const string LegacyDllSha256 = "8BA02D8B1A6C6E540F08438DC234E4F2049EECA3CD98FEBF104985F51106826C";
     /// <summary>增强版菜单 NewBase.dll（2.1.41 · 上游同步+审查加固版）</summary>
     private const string EnhancedDllSha256 = "51FA55ACBC1428BBD4679A260BB0D6502E7F3764A98A4C37A7FE6784072F2CCC";
     /// <summary>传承版注入动画 DOG_InjectFx.lua</summary>
