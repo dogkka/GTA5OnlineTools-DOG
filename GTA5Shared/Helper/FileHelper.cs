@@ -342,7 +342,7 @@ public static class FileHelper
             var isEnglishLegacy = File.Exists(standardPath) &&
                 (IsFileSha256(standardPath, LegacyUmEnglishSha256) || IsFileSha256(standardPath, LegacyUmEmbeddedEnSha256));
             var isOldZhLegacy = File.Exists(standardPath) &&
-                (IsFileSha256(standardPath, LegacyUmZhV1Sha256) || IsFileSha256(standardPath, LegacyUmZhV2Sha256));
+                (IsFileSha256(standardPath, LegacyUmZhV1Sha256) || IsFileSha256(standardPath, LegacyUmZhV2Sha256) || IsFileSha256(standardPath, LegacyUmZhV3Sha256));
             if (isEnglishLegacy || isOldZhLegacy)
             {
                 var upgradeBackupDir = Path.Combine(targetDir, $"_备份_{DateTime.Now:yyyyMMdd_HH-mm-ss}");
@@ -417,6 +417,9 @@ public static class FileHelper
 
     /// <summary>v2.1.41 开发期第二版汉化（中间版）的 SHA256（同样升级为最新汉化版）</summary>
     private const string LegacyUmZhV2Sha256 = "468A79F9EB7B1FFC2C1110F64ABAE8C452809BD629F84E3CCA5835608EDB0E5F";
+
+    /// <summary>v2.1.41 开发期第三版汉化（阶段性版本）的 SHA256（同样升级为最新汉化版）</summary>
+    private const string LegacyUmZhV3Sha256 = "EB379F9A34DA9B6B048DBFD3E3EBAC7A8062BB259B842FD2D244E82173EA8289";
 
     /// <summary>文件 SHA256 是否等于指定值（读取失败返回 false）</summary>
     private static bool IsFileSha256(string path, string expectedHex)

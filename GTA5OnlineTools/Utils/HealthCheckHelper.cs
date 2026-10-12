@@ -16,8 +16,8 @@ public static class HealthCheckHelper
     private const string LegacyDllSha256 = "8BA02D8B1A6C6E540F08438DC234E4F2049EECA3CD98FEBF104985F51106826C";
     /// <summary>增强版菜单 NewBase.dll（2.1.42 · 赌场必中/防锁 + 转盘修复与必中 + 保存载具/速度表/修复载具/武器持久化）</summary>
     private const string EnhancedDllSha256 = "C8AA7401395AEA53E45417A7E98ACF2406EA3FA02123C89BA702EC037E04AFB1";
-    /// <summary>传承版注入动画 DOG_InjectFx.lua</summary>
-    private const string InjectFxSha256 = "76D1B7B74366D47E356D064436B8DE6B82B2F4ECD5F59CA64BD93A8904C5CC2C";
+    /// <summary>传承版注入动画 DOG_InjectFx.lua（与内置文件实算一致；修复 2.1.41 起的误报"版本不一致"）</summary>
+    private const string InjectFxSha256 = "A68CF29CAB3ED090334A7C04F890CA306A616FA500A230EFEFEDFD1964CC5203";
 
     public class Item
     {
@@ -586,7 +586,8 @@ public static class HealthCheckHelper
     {
         return fullSha.ToUpperInvariant() switch
         {
-            "EB379F9A34DA9B6B048DBFD3E3EBAC7A8062BB259B842FD2D244E82173EA8289" => "最新汉化版 v3",
+            "8452A4AAEA33FABB6D22E1700DE0421F07008C0B800A8E4C053E62CE1B3397FB" => "最新汉化版 v3（内置版）",
+            "EB379F9A34DA9B6B048DBFD3E3EBAC7A8062BB259B842FD2D244E82173EA8289" => "汉化版（v3 阶段性版本，首次注入会自动升级）",
             "468A79F9EB7B1FFC2C1110F64ABAE8C452809BD629F84E3CCA5835608EDB0E5F" => "汉化版（中间版，首次注入会自动升级）",
             "5E28B9225BD3BD49A53452E536A93539EACFC427379EE237AFC148A1739C2326" => "汉化版（首版，首次注入会自动升级）",
             "1A8A9EA7A7272F797A8CAEFF2BB45C25E7977BF87D368AFF4E48D101EDE3A9F7" => "英文原版（首次注入会自动升级为汉化版）",
