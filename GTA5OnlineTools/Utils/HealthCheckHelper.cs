@@ -649,8 +649,15 @@ public static class HealthCheckHelper
                     if (!File.Exists(dll) || !HashEquals(dll, LegacyDllSha256))
                     {
                         FileHelper.CreateDirectory(FileHelper.Dir_YimMenu);
-                        FileHelper.ExtractResFile(FileHelper.Res_YimMenu_YimMenu_X, dll);
-                        parts.Add("传承版菜单 DLL 已重新释放");
+                        try
+                        {
+                            FileHelper.ExtractResFile(FileHelper.Res_YimMenu_YimMenu_X, dll);
+                            parts.Add("传承版菜单 DLL 已重新释放");
+                        }
+                        catch (Exception ex) when (ex is System.IO.IOException || ex is UnauthorizedAccessException)
+                        {
+                            return (false, "更新失败：菜单文件正被游戏占用（菜单不能运行中替换）——请先完全退出游戏，再点「更新」重试；仍失败请以管理员身份运行工具。");
+                        }
                     }
 
                     // 注入动画：缺失或版本不一致 → 重新部署
@@ -674,8 +681,15 @@ public static class HealthCheckHelper
                     if (!File.Exists(dll) || !HashEquals(dll, EnhancedDllSha256))
                     {
                         FileHelper.CreateDirectory(FileHelper.Dir_YimMenu);
-                        FileHelper.ExtractResFile(FileHelper.Res_YimMenu_YimMenu_V2, dll);
-                        parts.Add("NewBase.dll 已重新释放");
+                        try
+                        {
+                            FileHelper.ExtractResFile(FileHelper.Res_YimMenu_YimMenu_V2, dll);
+                            parts.Add("NewBase.dll 已重新释放");
+                        }
+                        catch (Exception ex) when (ex is System.IO.IOException || ex is UnauthorizedAccessException)
+                        {
+                            return (false, "更新失败：菜单文件正被游戏占用（菜单不能运行中替换）——请先完全退出游戏，再点「更新为最新版」重试；仍失败请以管理员身份运行工具。");
+                        }
                     }
 
                     if (!File.Exists(FileHelper.File_AppData_YimMenu_V2_Font))
