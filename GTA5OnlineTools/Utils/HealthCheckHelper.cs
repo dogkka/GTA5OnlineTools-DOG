@@ -14,8 +14,8 @@ public static class HealthCheckHelper
     // ===== 内置版本期望哈希（随菜单 / 脚本包版本更新） =====
     /// <summary>传承版菜单 YimMenu.dll（Mr-X 源 + DOG 自建线增强 2026-10-12：掉线自动归队 / 任务守卫）</summary>
     private const string LegacyDllSha256 = "8BA02D8B1A6C6E540F08438DC234E4F2049EECA3CD98FEBF104985F51106826C";
-    /// <summary>增强版菜单 NewBase.dll（2.1.41 · 含崩溃面包屑/联机守卫/掉线自动归队/任务守卫；自动归队已补菜单开关·联机>战局>增强）</summary>
-    private const string EnhancedDllSha256 = "BADFCD903B6BBF97E6B1187ED279A38D79F6445D484FD87734EAFDD0CFCC4494";
+        /// <summary>增强版菜单 NewBase.dll（2.1.41 修复版 · 修复"设置→Lua 脚本"在路径重定向环境下不显示脚本 + 脚本路径线程安全(P3-1) + disabled 精确匹配(P3-2)）</summary>
+        private const string EnhancedDllSha256 = "418BD7A0B0C41236F2D71029335820CB553127DC91A7515FE94490FB2D25F679";
     /// <summary>传承版注入动画 DOG_InjectFx.lua</summary>
     private const string InjectFxSha256 = "76D1B7B74366D47E356D064436B8DE6B82B2F4ECD5F59CA64BD93A8904C5CC2C";
 
