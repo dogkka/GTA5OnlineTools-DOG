@@ -222,6 +222,11 @@ footer{border-top:1px solid var(--line);padding:48px 24px 60px;background:var(--
 .ver-all{max-height:46vh;overflow:auto;margin-top:10px;padding-right:4px}
 .ver-all::-webkit-scrollbar{width:5px}
 .ver-all::-webkit-scrollbar-thumb{background:rgba(var(--glow1),.25);border-radius:3px}
+.ver-card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px 19px 16px}
+.ver-card .vrow{font-size:14px}
+.ver-card .ver-latest ul li{font-size:13.5px;line-height:1.85;padding-left:14px;margin:5px 0}
+.ver-card .ver-latest ul li::before{top:11px;width:5px;height:5px}
+.ver-card .ver-latest ul li.sub{font-size:12.5px;opacity:.85}
 .ver-item{border-top:1px dashed var(--line);padding:8px 0}
 .ver-item:first-child{border-top:0}
 .ver-item .vrow{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px}
@@ -389,12 +394,6 @@ footer{border-top:1px solid var(--line);padding:48px 24px 60px;background:var(--
 
 <div class="layout">
   <aside class="toc" id="toc">
-    <div class="side-box">
-      <div class="side-title">版 本 更 新</div>
-      <div class="ver-latest" id="verLatest"></div>
-      <button class="ver-more" id="verToggle">展开全部更新</button>
-      <div class="ver-all" id="verAll" hidden></div>
-    </div>
     <div class="side-box">
       <div class="side-title">作 者 推 荐</div>
       <a class="side-ad" href="https://dogbot.top/" target="_blank" rel="noopener"><b>可言AI</b><span>AI 接入微信 · 虚拟陪伴服务</span></a>
@@ -786,8 +785,10 @@ footer{border-top:1px solid var(--line);padding:48px 24px 60px;background:var(--
       <div class="dbody">需要等待适配新版游戏的菜单 DLL 发布（本版本完全离线，不联网自动更新）。</div></details>
     <details><summary>有人说这个收费？</summary>
       <div class="dbody"><b>本项目完全免费、公益性质。</b>如果你遇到收费，那就是被骗了，请务必联系卖软件给你的那个人退款，并可发邮件至作者邮箱、或加入 QQ 交流群（备用2群：1129626000）反馈。</div></details>
-  </section>
-
+  </section>
+
+
+
   <section id="feedback" data-name="群友问题 TOP">
     <div class="sec-head"><span class="no">14</span><h2>群友问得最多的（照着做就行）</h2><span class="tagline">按群友原话 + 官方答复整理 · 2026-10-13</span></div>
     <div class="sec-line"></div>
@@ -819,6 +820,12 @@ footer{border-top:1px solid var(--line);padding:48px 24px 60px;background:var(--
       <div class="dbody">先排除三样：加速器节点、后台下载 / 录屏、游戏画质设置（帧生成先关）。如果只在开菜单后卡，把电脑配置 + 哪个页面卡发群——这类问题在持续优化中。</div></details>
     <details><summary>「提示交易失败——R星收到过多请求，钱没到账，咋办？」</summary>
       <div class="dbody">这是服务端<b>交易限流</b>（不是封号、也不是官方故障）。常见诱因：网络差 / 加速器节点烂 + 短时间内连续结算 + 交易数值太离谱。处理：① 停手 30~60 分钟，<b>别连续重试</b>；② 完全重启游戏、换加速器节点（或裸连试试）；③ 之后放慢节奏——结算 / 领取间隔几秒到几十秒，别把金额调得离谱；④ 工具里结算 / 领取类功能已加 <b>3 秒防连点</b>；连续多天一直弹就停一两天再做高强度操作。</div></details>
+  </section>
+
+  <section id="changelog" data-name="更新记录">
+    <div class="sec-head"><span class="no">15</span><h2>更新记录</h2><span class="tagline">仅展示当前版本 · 2026-10-13</span></div>
+    <div class="sec-line"></div>
+    <div class="ver-card"><div class="ver-latest" id="verLatest"></div></div>
   </section>
 
   <div class="empty" id="empty">没有找到相关功能，换个关键词试试？</div>
@@ -1054,22 +1061,8 @@ footer{border-top:1px solid var(--line);padding:48px 24px 60px;background:var(--
     return h + '</ul>';
   }
   var latest = document.getElementById('verLatest');
-  var all = document.getElementById('verAll');
-  var toggle = document.getElementById('verToggle');
-  if (latest && all && toggle && VERSIONS.length){
+  if (latest && VERSIONS.length)
     latest.innerHTML = row(VERSIONS[0]);
-    var h = '';
-    VERSIONS.slice(1).forEach(function(v){ h += '<div class="ver-item">' + row(v) + '</div>'; });
-    all.innerHTML = h;
-    var open = false;
-    toggle.addEventListener('click', function(){
-      open = !open;
-      all.hidden = !open;
-      toggle.textContent = open ? '收起更新记录' : '展开全部更新';
-    });
-  } else if (toggle){
-    toggle.style.display = 'none';
-  }
 
   /* right-edge floating ad dock */
   var adSide = document.getElementById('adSide');
