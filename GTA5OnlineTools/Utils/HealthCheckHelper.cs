@@ -14,8 +14,8 @@ public static class HealthCheckHelper
     // ===== 内置版本期望哈希（随菜单 / 脚本包版本更新） =====
     /// <summary>传承版菜单 YimMenu.dll（Mr-X 源 + DOG 自建线增强 2026-10-12：掉线自动归队 / 任务守卫）</summary>
     private const string LegacyDllSha256 = "8BA02D8B1A6C6E540F08438DC234E4F2049EECA3CD98FEBF104985F51106826C";
-    /// <summary>增强版菜单 NewBase.dll（2.1.42 · 赌场必中/防锁 + 转盘修复与必中 + 保存载具/速度表/修复载具/武器持久化）</summary>
-    private const string EnhancedDllSha256 = "C8AA7401395AEA53E45417A7E98ACF2406EA3FA02123C89BA702EC037E04AFB1";
+    /// <summary>增强版菜单 NewBase.dll（2.1.42 · 赌场必中/防锁 + 转盘修复与必中 + 保存载具/速度表/修复载具/武器持久化 + 低配模式）</summary>
+    private const string EnhancedDllSha256 = "E3D284EEA9DBDB333C612CEAE0F3F2F09E68C4C408368CB7430B35CD385A427A";
     /// <summary>传承版注入动画 DOG_InjectFx.lua（与内置文件实算一致；修复 2.1.41 起的误报"版本不一致"）</summary>
     private const string InjectFxSha256 = "A68CF29CAB3ED090334A7C04F890CA306A616FA500A230EFEFEDFD1964CC5203";
 
