@@ -40,18 +40,20 @@
 
 ## 交流反馈
 
-使用问题、反馈建议、更新通知都在群里；**主群与备用 1 群均已满员，请直接加「备用 2 群」**：
+使用问题、反馈建议、更新通知都在群里；**主群、备用 1 群、备用 2 群均已满员，请直接加「备用 3 群」**：
 
 <table>
   <tr>
     <th align="center">主群（已满）</th>
     <th align="center">备用 1 群（已满）</th>
-    <th align="center">备用 2 群（新群 · 推荐加入）</th>
+    <th align="center">备用 2 群（已满）</th>
+    <th align="center">备用 3 群（新群 · 推荐加入）</th>
   </tr>
   <tr>
     <td align="center"><b>472770575</b><br /><img src="qq-group.jpg" alt="主群二维码" width="200" /></td>
     <td align="center"><b>1121769473</b><br /><img src="qq-group-backup.jpg" alt="备用 1 群二维码" width="200" /></td>
     <td align="center"><b>1129626000</b><br /><img src="qq-group-2.jpg" alt="备用 2 群二维码" width="200" /></td>
+    <td align="center"><b>1128353048</b><br /><img src="qq-group-3.png" alt="备用 3 群二维码" width="200" /></td>
   </tr>
 </table>
 
