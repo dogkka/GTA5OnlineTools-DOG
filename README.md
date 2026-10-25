@@ -1,7 +1,7 @@
 > **本仓库是 DOG 增强版菜单（NewBase）的开源分支**，基于 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)（GPL-2.0）。
 >
 > - 汉化 / 优化 / 新增功能说明：见 [CHANGES-VS-UPSTREAM.md](CHANGES-VS-UPSTREAM.md)
-> - 传承版（Legacy）与 K9 商业线不在本仓库
+> - 传承版（Legacy）与商业版组件不在本仓库
 > - 许可证：GPL-2.0，见 [LICENSE](LICENSE)
 
 # YimMenuV2
