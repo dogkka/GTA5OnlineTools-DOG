@@ -100,12 +100,13 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 
 ## 许可
 
-- 小助手本体：**MIT License**（原作者 CrazyZhang / sch-lda；DOG 二次开发部分同样 MIT），
-  源码见 [`source-archive`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/source-archive) 分支。
-- 内置的 YimMenuV2 中文版 DLL：基于 **GPL-2.0** 源码编译（上游 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)）。
+- 小助手本体：**MIT License**（原作者 CrazyZhang / sch-lda；DOG 二次开发部分同样 MIT）。
+- 内置的增强版菜单（`NewBase.dll`）：**GPL-2.0**，源码已开源，见
+  [`open-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/open-source) 分支
+  （基于 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)，汉化/优化/新增功能见该分支 `CHANGES-VS-UPSTREAM.md`）。
 - 内置传承版 YimMenu DLL：**GPL-2.0**（[Mr-X-GTA/YimMenu](https://github.com/Mr-X-GTA/YimMenu)）。
 - 内置 FSL V6：来自 UnknownCheats 帖子 616977（作者发布，未见公开源码）。
 
 完整的第三方组件、许可证与源码状态见 **[THIRD-PARTY.md](THIRD-PARTY.md)**；GPL-2.0 全文见 [`LICENSES/GPL-2.0.txt`](LICENSES/GPL-2.0.txt)。
 
-> K9 产品线（控制台、服务端、K9 菜单核心）不在本仓库，闭源；本仓库只开源小助手这一条线。
+> 本仓库只开源**增强版菜单**。传承版（Legacy）相关代码/文件不上传；K9 产品线（控制台、服务端、BE 通道）不在本仓库，闭源。
