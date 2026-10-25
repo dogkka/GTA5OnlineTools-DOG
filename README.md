@@ -55,8 +55,6 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 
 [![Star History Chart](https://api.star-history.com/svg?repos=dogkka/GTA5OnlineTools-DOG&type=Date)](https://star-history.com/#dogkka/GTA5OnlineTools-DOG&Date)
 
-> GitHub 官方只提供"当前累计下载量"，没有历史曲线。下载量趋势图中的数据由仓库内
-> `scripts/downloads_chart.py` 每日抓取并追加到 `data/downloads.json`，图表会自动更新。
 
 ## 三步使用
 
