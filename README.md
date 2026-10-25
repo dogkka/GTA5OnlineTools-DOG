@@ -5,7 +5,7 @@
 > **本仓库 = 发布页 + 源码分支**：Releases 放成品，源码按组件分别开源（见下方「源码」章节）。
 
 - 完全离线运行，只保留向本仓库 GitHub 接口查询新版本
-- 内置简体中文 YimMenuV2 增强版菜单：百余项增强功能、30+ 类脚本事件防护、全量中文化
+- 内置简体中文 YimMenuV2 增强版菜单：大量增强功能、27 类脚本事件防护、中文化（2292 条翻译）
 - 内置 FSL V6，一键离线安装
 - 教程式界面与《关于 / 使用说明》弹窗，顶部导航带“联系”按钮
 - 免安装单文件 exe，已内置 .NET 运行时，换电脑直接跑
@@ -24,7 +24,7 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 
 | 分支 | 内容 | 许可证 | 说明 |
 |---|---|---|---|
-| [`open-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/open-source) | **增强版菜单源码**（`NewBase.dll`） | GPL-2.0 | 基于 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)；全量中文化、界面/防护/功能增强，改动清单见分支内 `CHANGES-VS-UPSTREAM.md` |
+| [`open-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/open-source) | **增强版菜单源码**（`NewBase.dll`） | GPL-2.0 | 基于 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)；中文化（2292 条）、防护/功能增强，改动清单见分支内 `CHANGES-VS-UPSTREAM.md` |
 | [`tool-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/tool-source) | **纯净上游工具本体** | MIT | 来自 [sch-lda/GTA5OnlineTools](https://github.com/sch-lda/GTA5OnlineTools)，**不含 DOG 改造**、不含任何菜单 DLL；适合开发者做干净起点 |
 
 说明：
