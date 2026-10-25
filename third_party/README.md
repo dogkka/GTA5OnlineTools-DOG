@@ -1,6 +1,6 @@
 # 第三方源码
 
-这里只放**上游开源项目**的说明与链接，不放 K9 核心代码。
+这里只放**上游开源项目**的说明与链接，不放任何商业产品或闭源核心代码。
 
 - YimMenuV2（GPL-2.0）：https://github.com/YimMenu/YimMenuV2
 - YimMenu 传承版（GPL-2.0）：https://github.com/Mr-X-GTA/YimMenu
