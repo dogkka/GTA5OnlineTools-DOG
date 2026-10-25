@@ -41,21 +41,6 @@ Rockstar 在 GTA 线上引入 BattlEye 之后，匹配是按 BE 状态分流的�
 
 Releases 里同时保留上一版：最新版万一有问题，可以先退回上一版用。
 
-## 数据
-
-![Stars](https://img.shields.io/github/stars/dogkka/GTA5OnlineTools-DOG?style=flat-square&label=Stars)
-![Downloads](https://img.shields.io/github/downloads/dogkka/GTA5OnlineTools-DOG/total?style=flat-square&label=Downloads)
-![Last commit](https://img.shields.io/github/last-commit/dogkka/GTA5OnlineTools-DOG?style=flat-square&label=Last%20update)
-
-**下载量趋势**（每日快照累积）
-
-![Downloads over time](assets/downloads.svg)
-
-**Star 增长**
-
-[![Star History Chart](https://api.star-history.com/svg?repos=dogkka/GTA5OnlineTools-DOG&type=Date)](https://star-history.com/#dogkka/GTA5OnlineTools-DOG&Date)
-
-
 ## 三步使用
 
 1. **关闭反作弊**：Rockstar 启动器 → 设置 → 我的已安装游戏 → Grand Theft Auto V Enhanced → 取消勾选 **BattlEye**
@@ -91,6 +76,22 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 （群进满速度很快；也可以直接用群号搜索加群，已满的群无需尝试。）
 
 **防诈骗提醒**：本项目完全免费、公益性质。如果你遇到收费，那就是被骗了，请务必联系卖软件给你的那个人退款；官方发布渠道只有本仓库的 Releases 页面。
+
+## 数据
+
+![Stars](https://img.shields.io/github/stars/dogkka/GTA5OnlineTools-DOG?style=flat-square&label=Stars)
+![Downloads](https://img.shields.io/github/downloads/dogkka/GTA5OnlineTools-DOG/total?style=flat-square&label=Downloads)
+![Last commit](https://img.shields.io/github/last-commit/dogkka/GTA5OnlineTools-DOG?style=flat-square&label=Last%20update)
+
+**下载量趋势**（每日快照累积）
+
+![Downloads over time](assets/downloads.svg)
+
+**Star 增长**
+
+[![Star History Chart](https://api.star-history.com/svg?repos=dogkka/GTA5OnlineTools-DOG&type=Date)](https://star-history.com/#dogkka/GTA5OnlineTools-DOG&Date)
+
+
 
 ## 参与贡献
 
