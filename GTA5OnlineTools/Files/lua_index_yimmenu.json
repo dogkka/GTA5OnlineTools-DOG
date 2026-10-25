@@ -1,0 +1,82 @@
+[
+  {
+    "Name": "Heist Lua",
+    "Author": "wangzixuan",
+    "Description": "佩岛/赌场/末日任务脚本",
+    "Version": "[正在使用离线索引]",
+    "Update": "[Lua索引下载失败]",
+    "Size": "[正在使用离线索引]",
+    "Download": [
+      "https://blog.1007890.xyz/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/HeistLua.zip",
+      "https://ghproxy.net/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/HeistLua.zip",
+      "https://gcore.jsdelivr.net/gh/sch-lda/GTA5OnlineLua@main/YimMenu/HeistLua.zip",
+      "https://jsdelivr.b-cdn.net/gh/sch-lda/GTA5OnlineLua@main/YimMenu/HeistLua.zip",
+      "https://github.moeyy.xyz/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/HeistLua.zip",
+      "https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/HeistLua.zip"
+    ]
+  },
+  {
+    "Name": "RScript",
+    "Author": "Rostal",
+    "Description": "载具、NPC实体管理控制，任务助手，和其它若干功能",
+    "Version": "[正在使用离线索引]",
+    "Update": "[Lua索引下载失败]",
+    "Size": "[正在使用离线索引]",
+    "Download": [
+      "https://blog.1007890.xyz/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/RScript.zip",
+      "https://ghproxy.net/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/RScript.zip",
+      "https://gcore.jsdelivr.net/gh/sch-lda/GTA5OnlineLua@main/YimMenu/RScript.zip",
+      "https://jsdelivr.b-cdn.net/gh/sch-lda/GTA5OnlineLua@main/YimMenu/RScript.zip",
+      "https://github.moeyy.xyz/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/RScript.zip",
+      "https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/RScript.zip"
+    ]
+  },
+  {
+    "Name": "RS_Missions",
+    "Author": "Rostal",
+    "Description": "任务脚本",
+    "Version": "[正在使用离线索引]",
+    "Update": "[Lua索引下载失败]",
+    "Size": "[正在使用离线索引]",
+    "Download": [
+      "https://blog.1007890.xyz/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/RS_Missions.zip",
+      "https://ghproxy.net/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/RS_Missions.zip",
+      "https://gcore.jsdelivr.net/gh/sch-lda/GTA5OnlineLua@main/YimMenu/RS_Missions.zip",
+      "https://jsdelivr.b-cdn.net/gh/sch-lda/GTA5OnlineLua@main/YimMenu/RS_Missions.zip",
+      "https://github.moeyy.xyz/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/RS_Missions.zip",
+      "https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/RS_Missions.zip"
+    ]
+  },
+  {
+    "Name": "SCH Lua",
+    "Author": "sch",
+    "Description": "discord用户yeahsch的自用脚本,第一个开源yim开发者示例lua",
+    "Version": "[正在使用离线索引]",
+    "Update": "[Lua索引下载失败]",
+    "Size": "[正在使用离线索引]",
+    "Download": [
+      "https://blog.1007890.xyz/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/SchLua.zip",
+      "https://ghproxy.net/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/SchLua.zip",
+      "https://gcore.jsdelivr.net/gh/sch-lda/GTA5OnlineLua@main/YimMenu/SchLua.zip",
+      "https://jsdelivr.b-cdn.net/gh/sch-lda/GTA5OnlineLua@main/YimMenu/SchLua.zip",
+      "https://github.moeyy.xyz/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/SchLua.zip",
+      "https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/SchLua.zip"
+    ]
+  },
+  {
+    "Name": "WeaponAttribute",
+    "Author": "Rostal",
+    "Description": "武器属性修改",
+    "Version": "[正在使用离线索引]",
+    "Update": "[Lua索引下载失败]",
+    "Size": "[正在使用离线索引]",
+    "Download": [
+      "https://blog.1007890.xyz/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/WeaponAttribute.zip",
+      "https://ghproxy.net/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/WeaponAttribute.zip",
+      "https://gcore.jsdelivr.net/gh/sch-lda/GTA5OnlineLua@main/YimMenu/WeaponAttribute.zip",
+      "https://jsdelivr.b-cdn.net/gh/sch-lda/GTA5OnlineLua@main/YimMenu/WeaponAttribute.zip",
+      "https://github.moeyy.xyz/https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/WeaponAttribute.zip",
+      "https://raw.githubusercontent.com/sch-lda/GTA5OnlineLua/main/YimMenu/WeaponAttribute.zip"
+    ]
+  }
+]

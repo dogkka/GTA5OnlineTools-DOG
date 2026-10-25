@@ -1,0 +1,105 @@
+﻿<UserControl
+    x:Class="GTA5MenuExtra.Views.HeistsEditor.Perico.MoneyView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="600"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <Border Margin="5" Background="#F0F0F0">
+            <WrapPanel Margin="3" HorizontalAlignment="Center">
+                <Button
+                    x:Name="Button_Read"
+                    Click="Button_Read_Click"
+                    Content="读取数据" />
+                <Button
+                    x:Name="Button_Write"
+                    Click="Button_Write_Click"
+                    Content="写入数据" />
+            </WrapPanel>
+        </Border>
+        <!--  ##########  -->
+        <UniformGrid Columns="4">
+            <UniformGrid.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="HorizontalAlignment" Value="Right" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+            </UniformGrid.Resources>
+            <StackPanel Margin="5">
+                <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="分红比例" />
+                <UniformGrid Columns="2">
+                    <TextBlock Text="（房主）玩家1" />
+                    <TextBox x:Name="TextBox_Cayo_Player1" />
+                    <TextBlock Text="玩家2" />
+                    <TextBox x:Name="TextBox_Cayo_Player2" />
+                    <TextBlock Text="玩家3" />
+                    <TextBox x:Name="TextBox_Cayo_Player3" />
+                    <TextBlock Text="玩家4" />
+                    <TextBox x:Name="TextBox_Cayo_Player4" />
+                </UniformGrid>
+
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    类型：整数型INT，范围大于等于0
+                </TextBlock>
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    提示：请在抢劫任务分红关组队界面读取数据，否则可能读取不到
+                </TextBlock>
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    提示：需要是房主修改才有效
+                </TextBlock>
+            </StackPanel>
+
+            <StackPanel Margin="5">
+                <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="主要目标价值" />
+                <UniformGrid Columns="2">
+                    <TextBlock Text="西西米托龙舌兰" />
+                    <TextBox x:Name="TextBox_Cayo_Tequila" />
+                    <TextBlock Text="红宝石项链" />
+                    <TextBox x:Name="TextBox_Cayo_RubyNecklace" />
+                    <TextBlock Text="不记名债券" />
+                    <TextBox x:Name="TextBox_Cayo_BearerBonds" />
+                    <TextBlock Text="粉钻" />
+                    <TextBox x:Name="TextBox_Cayo_PinkDiamond" />
+                    <TextBlock Text="玛德拉索文件" />
+                    <TextBox x:Name="TextBox_Cayo_MadrazoFiles" />
+                    <TextBlock Text="猎豹雕像" />
+                    <TextBox x:Name="TextBox_Cayo_BlackPanther" />
+                </UniformGrid>
+
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    类型：整数型INT，范围大于等于0
+                </TextBlock>
+            </StackPanel>
+
+            <StackPanel Margin="5">
+                <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="背包大小" />
+                <UniformGrid Columns="2">
+                    <TextBlock Text="背包大小" />
+                    <TextBox x:Name="TextBox_Cayo_LocalBagSize" />
+                </UniformGrid>
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    类型：整数型INT，范围大于等于0
+                </TextBlock>
+
+                <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="其他费用" />
+                <UniformGrid Columns="2">
+                    <TextBlock Text="倒卖费用" />
+                    <TextBox x:Name="TextBox_Cayo_FencingFee" />
+                    <TextBlock Text="帕维尔费用" />
+                    <TextBox x:Name="TextBox_Cayo_PavelCut" />
+                </UniformGrid>
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    类型：小数型FLOAT，可为负数
+                </TextBlock>
+            </StackPanel>
+        </UniformGrid>
+    </StackPanel>
+
+</UserControl>

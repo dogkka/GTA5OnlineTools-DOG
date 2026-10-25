@@ -1,0 +1,66 @@
+﻿<ui:Window
+    x:Class="GTA5OnlineTools.Windows.ProfilesWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    x:Name="Window_Profiles"
+    Title="GTA5线上小助手 - 替换故事模式完美存档"
+    Width="500"
+    Height="300"
+    Closing="Window_Profiles_Closing"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    Loaded="Window_Profiles_Loaded"
+    ResizeMode="CanMinimize"
+    Style="{StaticResource SystemWindowStyle}"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <ui:Window.TitleContent>
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+            <Image
+                Height="20"
+                Margin="5"
+                Source="/Assets/Favicon.ico"
+                Style="{StaticResource ImageStyle_HighQuality}" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="14"
+                FontWeight="Bold"
+                Text="{Binding ElementName=Window_Profiles, Path=Title}" />
+        </StackPanel>
+    </ui:Window.TitleContent>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--  ///////////////////////  -->
+        <StackPanel
+            Margin="5,5,5,0"
+            DockPanel.Dock="Right"
+            Orientation="Horizontal">
+            <Button
+                x:Name="Button_ReplaceStroyModeProfiles"
+                Click="Button_ReplaceStroyModeProfiles_Click"
+                Content="替换存档(传承版)" />
+            <Button
+                x:Name="Button_ReplaceStroyModeProfiles_Enhanced"
+                Click="Button_ReplaceStroyModeProfiles_Enhanced_Click"
+                Content="替换存档(增强版)" />
+
+            <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                提示：替换的存档为 SGTA50000 文件
+            </TextBlock>
+        </StackPanel>
+        <!--  ///////////////////////  -->
+        <TextBox
+            x:Name="TextBox_Logger"
+            Grid.Row="1"
+            Margin="5"
+            Style="{StaticResource TextBoxStyle_Logger}" />
+    </Grid>
+
+</ui:Window>

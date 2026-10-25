@@ -1,0 +1,76 @@
+﻿<UserControl
+    x:Class="GTA5OnlineTools.Views.ReadMe.YimMenu"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="600"
+    d:DesignWidth="1100"
+    Style="{StaticResource UserControlStyle_Loaded}"
+    mc:Ignorable="d">
+
+    <UniformGrid Columns="2">
+        <RichTextBox Margin="5,5,2.5,5" Style="{StaticResource RichTextBoxStyle_ReadMe}">
+            <FlowDocument>
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}">
+                    注意
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}">
+                    现在使用Yimmenu请确保实时关注Yimmenu unknowncheats论坛、Matrix群组(可以从Github discussion获取链接)、小助手Discord内的消息，并随时做好被封禁的心理准备。非必要不建议开挂。
+                </Paragraph>
+
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}">
+                    Yimmenu官方GitHub仓库
+                    <Hyperlink NavigateUri="https://github.com/YimMenu/YimMenu" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/YimMenu/YimMenu</Hyperlink> 由于使用了GTA V泄漏源码被R星母公司T2投诉(当然根本原因可能还是因为R星对Yim公开绕过be状态的方法感到不满)，Yimura决定不再公开源代码以减少潜在的法律问题。GitHub 仓库仅保留lua等功能的文档和说明。Yimmenu二进制文件YimMenu.dll将在Unknowncheats论坛
+                    <Hyperlink NavigateUri="https://www.unknowncheats.me/forum/grand-theft-auto-v/476972-yimmenu-1-69-b3337.html" RequestNavigate="Hyperlink_RequestNavigate">https://www.unknowncheats.me/forum/grand-theft-auto-v/476972-yimmenu-1-69-b3337.html</Hyperlink> 发布和更新，像以前的kiddion一样，除此之外没有变化
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}">
+                    小助手内同时提供Yimmenu官方版和Mr-X-GTA的第三方版本。官方版本由maybegreat48等核心开发者维护，其可靠性理论上更高，但不再开源。Mr-X-GTA是Yimmenu贡献者之一，曾为yimmenu修复多个棘手的问题，Mr-X-GTA移除了R星指出的侵权代码，并继续开源。Mr-X-GTA开源地址
+                    <Hyperlink NavigateUri="https://github.com/Mr-X-GTA/YimMenu" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/Mr-X-GTA/YimMenu</Hyperlink>
+                </Paragraph>
+                <Paragraph>
+                    必须先安装FSL才能进入线上模式，但仍无法在多人战局停留太长时间，几分钟后就会被主机踢出，或者绿玩全部离开战局。
+                    FSL官方只在UC论坛发布:
+                    <Hyperlink NavigateUri="https://www.unknowncheats.me/forum/grand-theft-auto-v/616977-fsl-local-gtao-saves.html" RequestNavigate="Hyperlink_RequestNavigate">https://www.unknowncheats.me/forum/grand-theft-auto-v/616977-fsl-local-gtao-saves.html</Hyperlink> .您也可以使用 YimMenu页面的 FSL管理 功能一键安装FSL
+                </Paragraph>
+                <Paragraph>
+                    FSL在第一次使用时会将在线存档现在到本地，之后不再使用在线存档，将绝大多数更改重定向到本地，因此可以输入作弊码快速获取大量金钱，同时避免大部分作弊检测(但不是全部)。但是下载到本地的存档无法再上传到云端，当你卸载FSL时，使用FSL时的一切更改都将无效，除非再次安装FSL。使用FSL管理菜单卸载FSL并不会删除存档，你可以进入存档目录手动操作，不同玩家也可以共享自己的FSL存档。使用FSL时一定不要在游戏中删除角色，否则将破坏线上存档。
+                </Paragraph>
+                <Paragraph Style ="{StaticResource ParagraphStyle_Head1}">
+                    2025年4月更新: Yimmenu开发者已基本转向适用于增强版的Yimmenu v2的开发，传承版的官方版Yimmenu不可用，Mr-X-GTA版也存在部分功能不可用的问题，建议下载GTA V增强版。如果你正在寻找可以开be无多人战局限制的菜单，请在小助手discord主频道内寻找 免费菜单分享 子频道。
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <!--  ////////////////////  -->
+        <RichTextBox Margin="2.5,5,5,5" Style="{StaticResource RichTextBoxStyle_ReadMe}">
+            <FlowDocument>
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}">
+                    崩溃问题
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}">
+                    如果注入后立刻就崩溃，这一般是缓存导致的，请重启游戏，并清空YimMenu配置文件（就是那个YimMenu文件夹），然后进入邀请战局（不建议去公共战局，故事模式也可以），这时再注入YimMenu，然后按照提示在线上模式更新游戏缓存即可
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}">
+                    如果更新缓存会导致崩溃游戏，可以使用预设GTA缓存功能（这是释放不会崩溃的GTA缓存文件），然后再进入游戏就不需要更新缓存了
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}">
+                    按钮
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}">
+                    注入成功后，按键盘上的Insert键(笔记本电脑可能需要配合Fn键)显示/隐藏菜单，使用鼠标操作
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}">
+                    如果鼠标卡在屏幕中心不动，请在游戏中按ESC->设置->键盘/鼠标->鼠标输入方法，改成原始输入即可
+                </Paragraph>
+
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}">
+                    提示
+                </Paragraph>
+                <Paragraph Style="{StaticResource ParagraphStyle_Content}">
+                    注入成功后，会出现一个YimMenu的控制台窗口，这个不要关闭，否则游戏会跟着一起关闭，为了防止被反作弊检测，Yimmenu已不允许在游戏运行时解除注入，只能完全退出游戏重新启动。
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+    </UniformGrid>
+
+</UserControl>

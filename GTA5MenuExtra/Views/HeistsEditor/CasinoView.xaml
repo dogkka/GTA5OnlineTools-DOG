@@ -1,0 +1,28 @@
+﻿<UserControl
+    x:Class="GTA5MenuExtra.Views.HeistsEditor.CasinoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    xmlns:views="clr-namespace:GTA5MenuExtra.Views.HeistsEditor.Casino"
+    d:DesignHeight="600"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    mc:Ignorable="d">
+
+    <TabControl Margin="5">
+        <ui:TabItemIcon Header="前置任务">
+            <views:MissionView />
+        </ui:TabItemIcon>
+        <!--  ///////////////////  -->
+        <ui:TabItemIcon Header="分红数据">
+            <views:MoneyView />
+        </ui:TabItemIcon>
+        <!--  ///////////////////  -->
+        <ui:TabItemIcon Header="高级选项">
+            <views:AdvancedView />
+        </ui:TabItemIcon>
+    </TabControl>
+
+</UserControl>

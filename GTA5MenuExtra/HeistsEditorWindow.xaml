@@ -1,0 +1,88 @@
+﻿<ui:Window
+    x:Class="GTA5MenuExtra.HeistsEditorWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    x:Name="Window_HeistsEditor"
+    Title="GTA5线上小助手 - 抢劫任务编辑器"
+    Width="1100"
+    Height="620"
+    Closing="Window_HeistsEditor_Closing"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    Loaded="Window_HeistsEditor_Loaded"
+    ResizeMode="CanMinimize"
+    Style="{StaticResource SystemWindowStyle}"
+    mc:Ignorable="d">
+
+    <ui:Window.TitleContent>
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+            <Image
+                Height="20"
+                Margin="5"
+                Source="/Assets/Favicon.ico"
+                Style="{StaticResource ImageStyle_HighQuality}" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="14"
+                FontWeight="Bold"
+                Text="{Binding ElementName=Window_HeistsEditor, Path=Title}" />
+        </StackPanel>
+    </ui:Window.TitleContent>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <!--  /////////////////////////  -->
+        <Border
+            Margin="0,5,0,5"
+            Padding="5,0,5,0"
+            BorderBrush="#C2C3C9"
+            BorderThickness="0,0,1,0">
+            <StackPanel x:Name="Grid_NavMenu">
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="ReadMeView"
+                    Content="README"
+                    IsChecked="True"
+                    Style="{StaticResource NavMenuStyle_Normal}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="AdvanceView"
+                    Content="高级功能"
+                    Style="{StaticResource NavMenuStyle_Normal}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="ContractView"
+                    Content="事所合约"
+                    Style="{StaticResource NavMenuStyle_Normal}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="PericoView"
+                    Content="佩里克岛"
+                    Style="{StaticResource NavMenuStyle_Normal}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="CasinoView"
+                    Content="赌场抢劫"
+                    Style="{StaticResource NavMenuStyle_Normal}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="DoomsdayView"
+                    Content="末日抢劫"
+                    Style="{StaticResource NavMenuStyle_Normal}" />
+                <ui:NavMenu
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="ApartmentView"
+                    Content="公寓抢劫"
+                    Style="{StaticResource NavMenuStyle_Normal}" />
+            </StackPanel>
+        </Border>
+        <!--  /////////////////////////  -->
+        <ContentControl x:Name="ContentControl_NavRegion" Grid.Column="1" />
+    </Grid>
+
+</ui:Window>

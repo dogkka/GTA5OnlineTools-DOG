@@ -1,0 +1,50 @@
+﻿<UserControl
+    x:Class="GTA5OnlineTools.Views.HomeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="620"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    Style="{StaticResource UserControlStyle_Loaded}"
+    mc:Ignorable="d">
+    <RichTextBox Margin="5,5,2.5,5" Style="{StaticResource RichTextBoxStyle_ReadMe}">
+        <FlowDocument>
+            <Paragraph Style="{StaticResource ParagraphStyle_Title}" FontSize="19" Foreground ="Red">
+                注意
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16">
+                GTAOL引入了BattlEye反作弊，GTA5线上小助手作者Crazyzhang已宣布永久停止更新。此版本为Discord用户yeahsch(不是开发者,只是一个普通用户)的第三方修改版,仅用于注入Yimmenu、下载Lua脚本和安装FSL。小助手自身的功能(例如小助手外置菜单)和其他第三方辅助(Kiddion等)将随着地址的过期而逐渐被移除，不会收到任何更新。
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16">
+                此修改版的作者不是软件工程师，也不是逆向工程师，无法对软件质量和安全性提供任何保障，仅用于C#编程语言的学习和交流。在引入Battleye反作弊的GTAV环境中使用任何菜单都有较高的概率被封禁，非必要不要使用任何菜单，不要在重要的账号上使用。
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16">
+                你需要从开始菜单打开Rockstar启动器，登录，在左边选中Grand Theft Auto V，然后点右上角的设置，关闭里面的Battleye开关，遵循Yimmenu页面的 说明 页面的要求使用Yimmenu。使用前请确保您已实时关注小助手官方Discord中的公告、常见问题解答、yimmenu-fsl、github频道的消息 以及 unknowncheats论坛的Yimmenu帖子、Yimmenu Matrix群组(可以从Github discussion获取链接)的消息，并随时做好被封禁的心理准备。
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16">
+                软件不会自动更新，请关注Discord群组中的Github频道获取更新推送。
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16">
+                此修改版的Github地址为(仅包含源码,不发布程序):
+                <Hyperlink NavigateUri="https://github.com/sch-lda/GTA5OnlineTools" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/sch-lda/GTA5OnlineTools</Hyperlink>
+                
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16">
+                自动构建仓库地址为(所有二进制文件汇总到此仓库构建发布)
+                <Hyperlink NavigateUri="https://github.com/sch-lda/yctest2" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/sch-lda/yctest2</Hyperlink>
+            </Paragraph>
+            <Paragraph Style="{StaticResource ParagraphStyle_Content}" FontSize="16" Foreground ="Red">
+                此程序最新版本下载地址为(点击访问)
+                <Hyperlink NavigateUri="https://redirect.1007890.xyz/res1" RequestNavigate="Hyperlink_RequestNavigate">https://redirect.1007890.xyz/res1</Hyperlink> 
+                <LineBreak/>如果无法访问，请使用备用Github地址
+                <Hyperlink NavigateUri="https://github.com/sch-lda/yctest2/releases/download/CI/GTA5OnlineTools.exe" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/sch-lda/yctest2/releases/download/CI/GTA5OnlineTools.exe</Hyperlink> 
+            </Paragraph>
+
+        </FlowDocument>
+    </RichTextBox>
+    
+
+</UserControl>

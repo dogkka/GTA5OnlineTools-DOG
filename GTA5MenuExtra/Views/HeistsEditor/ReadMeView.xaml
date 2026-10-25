@@ -1,0 +1,38 @@
+﻿<UserControl
+    x:Class="GTA5MenuExtra.Views.HeistsEditor.ReadMeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="600"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    mc:Ignorable="d">
+
+    <UniformGrid Columns="2">
+        <RichTextBox Style="{StaticResource RichTextBoxStyle_ReadMe}">
+            <FlowDocument>
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}">
+                    跳前置说明
+                </Paragraph>
+                <Paragraph>
+                    ● 如果你第一次玩该任务，建议手动完整做一遍，等下次玩此任务时在跳前置，否则可能会导致任务异常
+                </Paragraph>
+                <Paragraph>
+                    ● 跳前置不能太频繁，否则可能有封号风险（在线时间和金钱不平衡）
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+        <RichTextBox Style="{StaticResource RichTextBoxStyle_ReadMe}">
+            <FlowDocument>
+                <Paragraph Style="{StaticResource ParagraphStyle_Title}">
+                    功能说明
+                </Paragraph>
+
+            </FlowDocument>
+        </RichTextBox>
+    </UniformGrid>
+
+</UserControl>

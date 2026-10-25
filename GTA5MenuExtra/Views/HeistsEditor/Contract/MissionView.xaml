@@ -1,0 +1,69 @@
+﻿<UserControl
+    x:Class="GTA5MenuExtra.Views.HeistsEditor.Contract.MissionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="600"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    mc:Ignorable="d">
+
+    <UniformGrid Columns="3">
+        <!--  /////////////  -->
+        <StackPanel Margin="5">
+            <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="VIP合约" />
+            <Button
+                x:Name="Button_FIXER_GENERAL_BS"
+                Click="Button_FIXER_GENERAL_BS_Click"
+                Content="跳过前置任务" />
+            <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                提示：请等CD自然冷却好了再跳下一次前置，建议不要频繁跳
+            </TextBlock>
+
+            <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="改装铺合约" />
+            <ListBox
+                x:Name="ListBox_TUNER_CURRENT"
+                SelectedIndex="0"
+                Style="{StaticResource ListBoxStyle_Base}">
+                <ListBoxItem Content="联合储蓄" />
+                <ListBoxItem Content="大钞交易" />
+                <ListBoxItem Content="银行合约" />
+                <ListBoxItem Content="电控单元" />
+                <ListBoxItem Content="监狱合约" />
+                <ListBoxItem Content="IAA合约" />
+                <ListBoxItem Content="失落摩托帮合约" />
+                <ListBoxItem Content="数据合约" />
+            </ListBox>
+            <StackPanel Margin="0,2,0,0">
+                <Button
+                    x:Name="Button_TUNER_CURRENT"
+                    Click="Button_TUNER_CURRENT_Click"
+                    Content="跳过前置任务" />
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    提示：初始的警局偷车任务玩家需要自己做
+                </TextBlock>
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    提示：使用跳过改装铺前置任务后，离开改装铺再进来面板就会刷新
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <!--  /////////////  -->
+        <StackPanel Margin="5">
+            <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="高级选项" />
+            <Button
+                x:Name="Button_Reset_FIXER_STORY"
+                Click="Button_Reset_FIXER_STORY_Click"
+                Content="重置VIP合约" />
+            <Button
+                x:Name="Button_Reset_TUNER_STORY"
+                Click="Button_Reset_TUNER_STORY_Click"
+                Content="重置改装铺合约" />
+            <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                提示：如果你VIP合约或者改装铺合约卡任务，可以使用上面按钮重置
+            </TextBlock>
+        </StackPanel>
+    </UniformGrid>
+
+</UserControl>

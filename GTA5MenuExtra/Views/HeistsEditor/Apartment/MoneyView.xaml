@@ -1,0 +1,70 @@
+﻿<UserControl
+    x:Class="GTA5MenuExtra.Views.HeistsEditor.Apartment.MoneyView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="600"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <Border Margin="5" Background="#F0F0F0">
+            <WrapPanel Margin="3" HorizontalAlignment="Center">
+                <Button
+                    x:Name="Button_Read"
+                    Click="Button_Read_Click"
+                    Content="读取数据" />
+                <Button
+                    x:Name="Button_Write"
+                    Click="Button_Write_Click"
+                    Content="写入数据" />
+            </WrapPanel>
+        </Border>
+        <!--  ////////////  -->
+        <UniformGrid Columns="4">
+            <UniformGrid.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="HorizontalAlignment" Value="Right" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+            </UniformGrid.Resources>
+            <StackPanel Margin="5">
+                <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="分红比例" />
+                <UniformGrid Columns="2">
+                    <TextBlock Text="本地分红" />
+                    <TextBox x:Name="TextBox_Apart_Player1" />
+                </UniformGrid>
+
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    类型：整数型INT，范围大于等于0
+                </TextBlock>
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}"><Run Text="提示："/><Run Text="公寓抢劫只能修改自己的本地分红，请在完全进入任务地图后至任务完成动画出现前的任意时间修改。本地分红不会体现在计划面板上。"/></TextBlock>
+            </StackPanel>
+
+            <StackPanel Margin="5">
+                <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="分红金额" />
+                <UniformGrid Columns="2">
+                    <TextBlock Text="全福" />
+                    <TextBox x:Name="TextBox_Apart_Fleeca" />
+                    <TextBlock Text="越狱" />
+                    <TextBox x:Name="TextBox_Apart_PrisonBreak" />
+                    <TextBlock Text="人道实验室" />
+                    <TextBox x:Name="TextBox_Apart_HumaneLabs" />
+                    <TextBlock Text="首轮募资" />
+                    <TextBox x:Name="TextBox_Apart_SeriesA" />
+                    <TextBlock Text="太平洋" />
+                    <TextBox x:Name="TextBox_Apart_PacificStandard" />
+                </UniformGrid>
+
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    类型：整数型INT，范围大于等于0
+                </TextBlock>
+            </StackPanel>
+        </UniformGrid>
+    </StackPanel>
+
+</UserControl>

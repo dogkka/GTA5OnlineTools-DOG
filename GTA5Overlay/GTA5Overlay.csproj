@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>disable</Nullable>
+        <Platforms>x64</Platforms>
+        <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DebugType>full</DebugType>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DebugType>full</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Net.Http" Version="4.3.4" />
+      <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GTA5Core\GTA5Core.csproj" />
+      <ProjectReference Include="..\GTA5HotKey\GTA5HotKey.csproj" />
+      <ProjectReference Include="..\Vendor\GameOverlay\GameOverlay.csproj" />
+    </ItemGroup>
+
+</Project>

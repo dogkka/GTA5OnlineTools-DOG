@@ -1,0 +1,50 @@
+﻿<UserControl
+    x:Class="GTA5MenuExtra.Views.HeistsEditor.Perico.AdvancedView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="600"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    mc:Ignorable="d">
+
+    <UniformGrid Columns="3">
+        <StackPanel>
+            <ui:LabelIcon Content="重置" />
+            <StackPanel Margin="5,0,5,0">
+                <Button
+                    x:Name="Button_Reset_H4"
+                    Click="Button_Reset_H4_Click"
+                    Content="重置海岛面板" />
+
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    提示：如果需要重置虎鲸面板，我们点击【重置海岛面板】按钮，然后跑到直升机那里等待STAT代码执行完毕，回来等面板重启刷新，这样佩里克岛任务就恢复默认状态了
+                </TextBlock>
+                <TextBlock Margin="5">
+                    <Hyperlink NavigateUri="https://beholdmystuff.github.io/heist-stat.txt-maker" RequestNavigate="Hyperlink_RequestNavigate">
+                        抢劫任务STAT代码自定义（GitHub）
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <!--  //////////////  -->
+        <StackPanel>
+            <ui:LabelIcon Content="使用提示" />
+            <StackPanel Margin="5,0,5,0">
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    1. 提示：第一次游玩佩里克岛，请手动完整通关一边，第二次再跳过，否则可能会导致任务bug<LineBreak />
+                    2. 跑到虎鲸直升机那里是为了刷新大厅的面板，要不然看不到修改结果<LineBreak />
+                    3. 每人所获取金额不得超过255W（包括精英10w），否则任务结束不会到账<LineBreak />
+                    4. 耐心等待任务CD，不可跳过CD，否则会导致钱不到账而且会产生风险</TextBlock>
+                <Separator Margin="5" />
+                <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
+                    1. 在虎鲸开启任务佩里科岛抢劫，然后勾选上面需要的选项<LineBreak />
+                    2. 然后点击【生成STAT代码】，【执行生成的STAT代码】<LineBreak />
+                    3. 跑到直升机那里等待STAT代码执行完毕，回来等面板重启刷新，就可以开启终章了</TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </UniformGrid>
+
+</UserControl>

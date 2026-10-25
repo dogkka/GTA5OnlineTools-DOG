@@ -1,0 +1,167 @@
+﻿<UserControl
+    x:Class="GTA5MenuExtra.Views.StatsEditor.UserfulView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://crazyzhang.cn/ui/2023/xaml"
+    d:DesignHeight="600"
+    d:DesignWidth="1100"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+    mc:Ignorable="d">
+
+    <UniformGrid Columns="3">
+        <StackPanel>
+            <ui:LabelIcon Content="玩家" />
+            <WrapPanel Margin="5,0,5,0">
+                <Button
+                    x:Name="Button_MP_CHAR_ARMOUR"
+                    Click="Button_MP_CHAR_ARMOUR_Click"
+                    Content="护甲全满" />
+                <Button
+                    x:Name="Button_NO_BOUGHT"
+                    Click="Button_NO_BOUGHT_Click"
+                    Content="零食全满" />
+                <Button
+                    x:Name="Button_SCRIPT_INCREASE"
+                    Click="Button_SCRIPT_INCREASE_Click"
+                    Content="属性全满" />
+                <Button
+                    x:Name="Button_CHAR_ABILITY"
+                    Click="Button_CHAR_ABILITY_Click"
+                    Content="隐藏属性全满" />
+            </WrapPanel>
+
+            <ui:LabelIcon Content="性别" />
+            <WrapPanel Margin="5,0,5,0">
+                <Button
+                    x:Name="Button_CHAR_ABILITY0"
+                    Click="Button_CHAR_ABILITY0_Click"
+                    Content="重置隐藏属性" />
+                <Button
+                    x:Name="Button_PLAYER_MENTAL_STATE"
+                    Click="Button_PLAYER_MENTAL_STATE_Click"
+                    Content="清除精神状态" />
+            </WrapPanel>
+
+            <ui:LabelIcon Content="性别" />
+            <WrapPanel Margin="5,0,5,0">
+                <Button
+                    x:Name="Button_GENDER_CHANGE_ON"
+                    Click="Button_GENDER_CHANGE_ON_Click"
+                    Content="开启性别修改" />
+                <Button
+                    x:Name="Button_GENDER_CHANGE_OFF"
+                    Click="Button_GENDER_CHANGE_OFF_Click"
+                    Content="关闭性别修改" />
+                <Button
+                    x:Name="Button_FreeChangeAppearance"
+                    Click="Button_FreeChangeAppearance_Click"
+                    Content="免费捏脸" />
+                <Button
+                    x:Name="Button_ChangeAppearanceCooldown"
+                    Click="Button_ChangeAppearanceCooldown_Click"
+                    Content="移除捏脸CD" />
+            </WrapPanel>
+        </StackPanel>
+        <!--  //////////////////////  -->
+        <StackPanel>
+            <ui:LabelIcon Content="等级" />
+            <StackPanel Margin="5,0,5,0">
+                <DockPanel>
+                    <Button
+                        x:Name="Button_ChangePlayerRank"
+                        Click="Button_ChangePlayerRank_Click"
+                        Content="修改"
+                        DockPanel.Dock="Right" />
+                    <ui:SliderIcon
+                        x:Name="Slider_PlayerRank"
+                        Title="玩家等级"
+                        Maximum="8000"
+                        Minimum="1"
+                        Style="{StaticResource SliderIconStyle_Int}" />
+                </DockPanel>
+                <DockPanel>
+                    <Button
+                        x:Name="Button_ChangeClubRank"
+                        Click="Button_ChangeClubRank_Click"
+                        Content="修改"
+                        DockPanel.Dock="Right" />
+                    <ui:SliderIcon
+                        x:Name="Slider_ClubRank"
+                        Title="车友会等级"
+                        Maximum="1000"
+                        Minimum="1"
+                        Style="{StaticResource SliderIconStyle_Int}" />
+                </DockPanel>
+                <Separator Margin="5" />
+                <DockPanel>
+                    <Button
+                        x:Name="Button_ChangeCrew1Rank"
+                        Click="Button_ChangeCrew1Rank_Click"
+                        Content="修改"
+                        DockPanel.Dock="Right" />
+                    <ui:SliderIcon
+                        x:Name="Slider_Crew1Rank"
+                        Title="帮会1等级"
+                        Maximum="8000"
+                        Minimum="1"
+                        Style="{StaticResource SliderIconStyle_Int}" />
+                </DockPanel>
+                <DockPanel>
+                    <Button
+                        x:Name="Button_ChangeCrew2Rank"
+                        Click="Button_ChangeCrew2Rank_Click"
+                        Content="修改"
+                        DockPanel.Dock="Right" />
+                    <ui:SliderIcon
+                        x:Name="Slider_Crew2Rank"
+                        Title="帮会2等级"
+                        Maximum="8000"
+                        Minimum="1"
+                        Style="{StaticResource SliderIconStyle_Int}" />
+                </DockPanel>
+                <DockPanel>
+                    <Button
+                        x:Name="Button_ChangeCrew3Rank"
+                        Click="Button_ChangeCrew3Rank_Click"
+                        Content="修改"
+                        DockPanel.Dock="Right" />
+                    <ui:SliderIcon
+                        x:Name="Slider_Crew3Rank"
+                        Title="帮会3等级"
+                        Maximum="8000"
+                        Minimum="1"
+                        Style="{StaticResource SliderIconStyle_Int}" />
+                </DockPanel>
+                <DockPanel>
+                    <Button
+                        x:Name="Button_ChangeCrew4Rank"
+                        Click="Button_ChangeCrew4Rank_Click"
+                        Content="修改"
+                        DockPanel.Dock="Right" />
+                    <ui:SliderIcon
+                        x:Name="Slider_Crew4Rank"
+                        Title="帮会4等级"
+                        Maximum="8000"
+                        Minimum="1"
+                        Style="{StaticResource SliderIconStyle_Int}" />
+                </DockPanel>
+                <DockPanel>
+                    <Button
+                        x:Name="Button_ChangeCrew5Rank"
+                        Click="Button_ChangeCrew5Rank_Click"
+                        Content="修改"
+                        DockPanel.Dock="Right" />
+                    <ui:SliderIcon
+                        x:Name="Slider_Crew5Rank"
+                        Title="帮会5等级"
+                        Maximum="8000"
+                        Minimum="1"
+                        Style="{StaticResource SliderIconStyle_Int}" />
+                </DockPanel>
+            </StackPanel>
+        </StackPanel>
+    </UniformGrid>
+
+</UserControl>
