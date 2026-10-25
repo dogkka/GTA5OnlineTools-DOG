@@ -2,7 +2,7 @@
 
 基于原作者 **CrazyZhang** 的《GTA5 线上小助手》（MIT 许可）二次开发，作者：**DOG**。
 
-> **本仓库为纯发布页**：仅保留本 README 与最新版 Release，历史版本与源代码不再保留。
+> **本仓库 = 发布页 + 源码分支**：Releases 放成品，源码按组件分别开源（见下方「源码」章节）。
 
 - 完全离线运行，只保留向本仓库 GitHub 接口查询新版本
 - 内置简体中文 YimMenuV2 增强版菜单：百余项增强功能、30+ 类脚本事件防护、全量中文化
@@ -40,6 +40,21 @@ Rockstar 在 GTA 线上引入 BattlEye 之后，匹配是按 BE 状态分流的�
 更新方式：下载新的 exe 覆盖旧文件即可，配置和网上存档都不会丢。
 
 Releases 里同时保留上一版：最新版万一有问题，可以先退回上一版用。
+
+## 源码
+
+本仓库只开源**增强版**相关代码；传承版（Legacy）与 K9 商业线不公开。
+
+| 分支 | 内容 | 许可证 | 说明 |
+|---|---|---|---|
+| [`open-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/open-source) | **增强版菜单源码**（`NewBase.dll`） | GPL-2.0 | 基于 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)；全量中文化、界面/防护/功能增强，改动清单见分支内 `CHANGES-VS-UPSTREAM.md` |
+| [`tool-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/tool-source) | **纯净上游工具本体** | MIT | 来自 [sch-lda/GTA5OnlineTools](https://github.com/sch-lda/GTA5OnlineTools)，**不含 DOG 改造**、不含任何菜单 DLL；适合开发者做干净起点 |
+
+说明：
+
+- **DOG 二次开发版工具**（二维码、离线化、FSL 安装、环境自检等）不单独公开源码，只随 Release 发包。
+- 传承版（Legacy）DLL、Lua 和相关文件**不公开、也不再随新版本分发**。
+- 第三方组件与许可证明细见 [THIRD-PARTY.md](THIRD-PARTY.md)。
 
 ## 三步使用
 
@@ -106,7 +121,7 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 - 内置的增强版菜单（`NewBase.dll`）：**GPL-2.0**，源码已开源，见
   [`open-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/open-source) 分支
   （基于 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)，汉化/优化/新增功能见该分支 `CHANGES-VS-UPSTREAM.md`）。
-- 内置传承版 YimMenu DLL：**GPL-2.0**（[Mr-X-GTA/YimMenu](https://github.com/Mr-X-GTA/YimMenu)）。
+- 传承版 YimMenu DLL：历史版本曾内置（GPL-2.0，[Mr-X-GTA/YimMenu](https://github.com/Mr-X-GTA/YimMenu)）；**新版本起不再分发**。
 - 内置 FSL V6：来自 UnknownCheats 帖子 616977（作者发布，未见公开源码）。
 
 完整的第三方组件、许可证与源码状态见 **[THIRD-PARTY.md](THIRD-PARTY.md)**；GPL-2.0 全文见 [`LICENSES/GPL-2.0.txt`](LICENSES/GPL-2.0.txt)。
