@@ -60,7 +60,7 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 
 1. **关闭反作弊**：Rockstar 启动器 → 设置 → 我的已安装游戏 → Grand Theft Auto V Enhanced → 取消勾选 **BattlEye**
    （Steam：启动项加 `-nobattleye`；**Epic 平台**：用程序内 FSL 管理里的「无BE模式启动游戏」或生成的桌面快捷方式）
-2. **装 FSL**：程序 `YimMenu` 页 → `FSL管理` → 点 **一键安装FSL（自动检测）**（自动识别 Steam / Epic 与增强版 / 传承版；内置 FSL V6，离线安装）
+2. **装 FSL**：程序 `YimMenu` 页 → `FSL管理` → 点 **一键安装FSL（自动检测）**（自动识别 Steam / Epic 与增强版；内置 FSL V6，离线安装）
 3. **注入菜单**：游戏进到 **主菜单** → `YimMenu` 页 → 点 **内嵌版** → 游戏里按 `F7`（默认键，可自定义；备用 `Ctrl+\`）呼出中文菜单
 
 ## 更新检测
