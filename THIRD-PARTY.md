@@ -6,7 +6,8 @@
 
 | 组件 | 许可证 | 上游 / 来源 | 本仓库是否含源码 |
 |---|---|---|---|
-| 小助手本体（GTA5OnlineTools DOG 二次开发） | MIT | 原项目 [sch-lda/GTA5OnlineTools](https://github.com/sch-lda/GTA5OnlineTools)（作者 CrazyZhang666） | 未公开（只随 Release 发包） |
+| 小助手工具本体（纯净上游） | MIT | [sch-lda/GTA5OnlineTools](https://github.com/sch-lda/GTA5OnlineTools)（作者 CrazyZhang666） | **是，`tool-source` 分支**（不含 DOG 改造） |
+| DOG 二次开发版工具（二维码/离线化/自检等） | MIT | 本仓库 | 否（只随 Release 发包） |
 | 内置增强版菜单 `NewBase.dll` | GPL-2.0（YimMenuV2 衍生） | [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2) | **是，`open-source` 分支**（含汉化/优化/新增功能说明） |
 | 内置传承版菜单 `YimMenu.dll` | GPL-2.0 | [Mr-X-GTA/YimMenu](https://github.com/Mr-X-GTA/YimMenu) | 否（见上游） |
 | FSL V6（`WINMM.dll`） | 作者发布，未见公开许可证 | [UnknownCheats 616977](https://www.unknowncheats.me/forum/grand-theft-auto-v/616977-fsl-local-gtao-saves.html) | 否（作者未公开源码） |
@@ -15,7 +16,8 @@
 
 ## 说明
 
-1. 增强版菜单 `NewBase.dll` 的源码已在 `open-source` 分支公开（GPL-2.0），并附 `CHANGES-VS-UPSTREAM.md` 说明汉化/优化/新增内容。
-2. 传承版 `YimMenu.dll` 为独立维护线，按项目决定**不公开**其源码与相关文件；本仓库也不放传承版的 DLL / Lua / 文案。
-3. FSL 为作者在 UnknownCheats 发布的成品，本仓库只按原样随小助手分发，不声明其为开源软件。
-4. 如果你要再分发本仓库的 Release，请自行遵守上述各组件许可证（尤其是 GPL-2.0 的源码提供义务）。
+1. 纯净上游工具本体的源码在 `tool-source` 分支（MIT）；DOG 二次开发版工具不单独公开源码。
+2. 增强版菜单 `NewBase.dll` 的源码已在 `open-source` 分支公开（GPL-2.0），并附 `CHANGES-VS-UPSTREAM.md` 说明汉化/优化/新增内容。
+3. 传承版 `YimMenu.dll` 为独立维护线，按项目决定**不公开**其源码与相关文件；本仓库也不放传承版的 DLL / Lua / 文案。
+4. FSL 为作者在 UnknownCheats 发布的成品，本仓库只按原样随小助手分发，不声明其为开源软件。
+5. 如果你要再分发本仓库的 Release，请自行遵守上述各组件许可证（尤其是 GPL-2.0 的源码提供义务）。

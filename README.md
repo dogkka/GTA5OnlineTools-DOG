@@ -100,7 +100,9 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 
 ## 许可
 
-- 小助手本体：**MIT License**（原作者 CrazyZhang / sch-lda；DOG 二次开发部分同样 MIT）。
+- 小助手工具本体：**MIT License**。纯净上游源码（不含 DOG 改造）已放在
+  [`tool-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/tool-source) 分支；
+  DOG 二次开发版（含二维码/离线化/自检等）不单独公开源码，只随 Release 发包。
 - 内置的增强版菜单（`NewBase.dll`）：**GPL-2.0**，源码已开源，见
   [`open-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/open-source) 分支
   （基于 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)，汉化/优化/新增功能见该分支 `CHANGES-VS-UPSTREAM.md`）。
