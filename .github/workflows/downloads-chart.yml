@@ -1,0 +1,32 @@
+name: downloads-chart
+
+on:
+  schedule:
+    - cron: "17 0 * * *"   # 每天 UTC 00:17(北京时间 08:17)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Snapshot downloads and render chart
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/downloads_chart.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/downloads.json assets/downloads.svg
+          if git diff --quiet --staged; then
+            echo "no change"
+          else
+            git commit -m "chore: update downloads chart"
+            git push
+          fi

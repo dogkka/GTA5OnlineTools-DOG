@@ -41,6 +41,23 @@ Rockstar 在 GTA 线上引入 BattlEye 之后，匹配是按 BE 状态分流的�
 
 Releases 里同时保留上一版：最新版万一有问题，可以先退回上一版用。
 
+## 数据
+
+![Stars](https://img.shields.io/github/stars/dogkka/GTA5OnlineTools-DOG?style=flat-square&label=Stars)
+![Downloads](https://img.shields.io/github/downloads/dogkka/GTA5OnlineTools-DOG/total?style=flat-square&label=Downloads)
+![Last commit](https://img.shields.io/github/last-commit/dogkka/GTA5OnlineTools-DOG?style=flat-square&label=Last%20update)
+
+**下载量趋势**（每日快照累积）
+
+![Downloads over time](assets/downloads.svg)
+
+**Star 增长**
+
+[![Star History Chart](https://api.star-history.com/svg?repos=dogkka/GTA5OnlineTools-DOG&type=Date)](https://star-history.com/#dogkka/GTA5OnlineTools-DOG&Date)
+
+> GitHub 官方只提供"当前累计下载量"，没有历史曲线。下载量趋势图中的数据由仓库内
+> `scripts/downloads_chart.py` 每日抓取并追加到 `data/downloads.json`，图表会自动更新。
+
 ## 三步使用
 
 1. **关闭反作弊**：Rockstar 启动器 → 设置 → 我的已安装游戏 → Grand Theft Auto V Enhanced → 取消勾选 **BattlEye**
