@@ -1,0 +1,80 @@
+name: CI
+
+on: [ push, pull_request ]
+
+jobs:
+  native-compilation:
+    runs-on: windows-latest
+    name: Native Compilation
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check CMake version
+        run: cmake --version
+
+      - name: Setup MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
+      - name: Generate CMake project
+        run: cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build -G Ninja
+
+      - name: Build 64bit RelWithDebInfo DLL
+        run: cmake --build ./build --config RelWithDebInfo --target YimMenuV2 --
+
+      - name: Check if DLL got built
+        run: if (-Not (Test-Path -path "build/YimMenuV2.dll")) {throw 1}
+
+      - name: Rename DLL to YimMenuV2-dev-{GITHUB_SHA}.dll
+        run: |
+          del YimMenuV2-dev-*.dll
+          del YimMenuV2-dev-*.pdb
+          ren YimMenuV2.dll YimMenuV2-dev-${{github.sha}}.dll
+          ren YimMenuV2.pdb YimMenuV2-dev-${{github.sha}}.pdb
+        working-directory: build/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RelWithDebInfo-Native-Clang
+          path: |
+            build/YimMenuV2-dev-*.dll
+            build/YimMenuV2-dev-*.pdb
+
+  cross-compilation:
+    runs-on: ubuntu-latest
+    name: Cross-compilation
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup CMake and build tools
+        run: |
+          sudo apt update
+          sudo apt install -y cmake ninja-build
+
+      - name: Setup Zig
+        uses: mlugg/setup-zig@v2
+
+      - name: Generate CMake project
+        run: cmake -DUSE_CROSSCOMPILER=Zig -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build -G Ninja
+
+      - name: Build 64bit RelWithDebInfo DLL
+        run: cmake --build ./build --config RelWithDebInfo --target YimMenuV2 --
+
+      - name: Check if DLL got built
+        run: if [ ! -f build/libYimMenuV2.dll ]; then exit 1; fi
+
+      - name: Rename DLL to libYimMenuV2-dev-{GITHUB_SHA}.dll
+        run: |
+          mv libYimMenuV2.dll libYimMenuV2-dev-${{github.sha}}.dll
+          mv libYimMenuV2.pdb libYimMenuV2-dev-${{github.sha}}.pdb
+        working-directory: build/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RelWithDebInfo-Cross
+          path: |
+            build/libYimMenuV2-dev-*.dll
+            build/libYimMenuV2-dev-*.pdb

@@ -1,0 +1,9 @@
+#pragma once
+
+#include <string_view>
+
+namespace YimMenu::Build
+{
+	inline constexpr std::string_view Version = "@PROJECT_VERSION@";
+	inline constexpr std::string_view Tag = "@YIMMENU_BUILD_TAG@";
+}

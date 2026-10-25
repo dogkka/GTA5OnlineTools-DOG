@@ -1,0 +1,154 @@
+#pragma once
+#include "BaseHook.hpp"
+#include "core/memory/PointerCalculator.hpp"
+
+#include <MinHook.h>
+#include <optional>
+#include <string_view>
+
+namespace YimMenu
+{
+	template<typename T = int*>
+	class DetourHook : public BaseHook
+	{
+	private:
+		void* m_TargetFunc;
+		void* m_DetourFunc;
+		void* m_OriginalFunc;
+		std::optional<bool> m_QueuedState;
+
+	public:
+		DetourHook(const std::string_view name, void* target, T detour);
+		virtual ~DetourHook() override;
+
+		bool Enable() override;
+		bool Disable() override;
+
+		bool EnableNow();
+		bool DisableNow();
+		virtual void CommitQueuedState(bool success) override;
+		virtual void ReconcileEnabledState(bool enabled) override;
+
+		T Original() const;
+
+	private:
+		void OptimizeHook();
+	};
+
+	template<typename T>
+	inline DetourHook<T>::DetourHook(const std::string_view name, void* target, T detour) :
+	    BaseHook(name),
+	    m_TargetFunc(target),
+	    m_DetourFunc(reinterpret_cast<void*>(detour)),
+	    m_OriginalFunc(nullptr)
+	{
+		OptimizeHook();
+
+		if (const auto result = MH_CreateHook(m_TargetFunc, m_DetourFunc, &m_OriginalFunc); result != MH_OK)
+		{
+			LOGF(FATAL, "Failed to create hook {}", name);
+			throw std::runtime_error("Failed to create hook!");
+		}
+	}
+
+	template<typename T>
+	inline DetourHook<T>::~DetourHook()
+	{
+		DisableNow();
+	}
+
+	template<typename T>
+	inline bool DetourHook<T>::Enable()
+	{
+		if (m_QueuedState.value_or(m_Enabled))
+			return false;
+
+		if (const auto result = MH_QueueEnableHook(m_TargetFunc); result != MH_OK)
+		{
+			LOGF(FATAL, "Failed to queue hook to be enabled: {}", Name());
+			return false;
+		}
+		m_QueuedState = true;
+		return true;
+	}
+
+	template<typename T>
+	inline bool DetourHook<T>::Disable()
+	{
+		if (!m_QueuedState.value_or(m_Enabled))
+			return false;
+
+		if (const auto result = MH_QueueDisableHook(m_TargetFunc); result != MH_OK)
+		{
+			LOGF(FATAL, "Failed to queue hook to be disabled: {}", Name());
+			return false;
+		}
+		m_QueuedState = false;
+		return true;
+	}
+
+	template<typename T>
+	inline void DetourHook<T>::CommitQueuedState(bool success)
+	{
+		if (!m_QueuedState)
+			return;
+
+		if (success)
+			m_Enabled = m_QueuedState.value();
+		m_QueuedState.reset();
+	}
+
+	template<typename T>
+	inline void DetourHook<T>::ReconcileEnabledState(bool enabled)
+	{
+		m_Enabled = enabled;
+		m_QueuedState.reset();
+	}
+
+	template<typename T>
+	inline bool DetourHook<T>::EnableNow()
+	{
+		if (m_Enabled)
+			return false;
+
+		if (const auto result = MH_EnableHook(m_TargetFunc); result != MH_OK)
+		{
+			LOGF(FATAL, "Failed to enable hook right now: {}", Name());
+			return false;
+		}
+		m_Enabled = true;
+		return true;
+	}
+
+	template<typename T>
+	inline bool DetourHook<T>::DisableNow()
+	{
+		if (!m_Enabled)
+			return false;
+
+		if (const auto result = MH_DisableHook(m_TargetFunc); result != MH_OK)
+		{
+			LOGF(FATAL, "Failed to disable hook right now: {}", Name());
+			return false;
+		}
+		m_Enabled = false;
+		return true;
+	}
+
+	template<typename T>
+	inline T DetourHook<T>::Original() const
+	{
+		return reinterpret_cast<T>(m_OriginalFunc);
+	}
+
+	template<typename T>
+	inline void DetourHook<T>::OptimizeHook()
+	{
+		auto ptr = PointerCalculator(m_TargetFunc);
+		while (ptr.As<std::uint8_t&>() == 0xE9)
+		{
+			ptr = ptr.Add(1).Rip();
+		}
+		m_TargetFunc = ptr.As<void*>();
+	}
+}
