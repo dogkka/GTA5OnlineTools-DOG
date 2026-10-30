@@ -16,14 +16,15 @@
 <text x="56" y="84.5" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">1500</text>
 <line x1="64" y1="28.0" x2="836" y2="28.0" stroke="#e6e9ef" stroke-width="1"/>
 <text x="56" y="32.0" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2000</text>
-<polygon points="64.0,238.0 64.0,127.5 257.0,125.3 450.0,122.3 643.0,121.0 836.0,119.5 836.0,238.0" fill="url(#g)"/>
-<polyline points="64.0,127.5 257.0,125.3 450.0,122.3 643.0,121.0 836.0,119.5" fill="none" stroke="#2f81f7" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="64.0,238.0 64.0,127.5 218.4,125.3 372.8,122.3 527.2,121.0 681.6,119.5 836.0,118.6 836.0,238.0" fill="url(#g)"/>
+<polyline points="64.0,127.5 218.4,125.3 372.8,122.3 527.2,121.0 681.6,119.5 836.0,118.6" fill="none" stroke="#2f81f7" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
 <circle cx="64.0" cy="127.5" r="3" fill="#2f81f7"/>
-<circle cx="257.0" cy="125.3" r="3" fill="#2f81f7"/>
-<circle cx="450.0" cy="122.3" r="3" fill="#2f81f7"/>
-<circle cx="643.0" cy="121.0" r="3" fill="#2f81f7"/>
-<circle cx="836.0" cy="119.5" r="3" fill="#2f81f7"/>
+<circle cx="218.4" cy="125.3" r="3" fill="#2f81f7"/>
+<circle cx="372.8" cy="122.3" r="3" fill="#2f81f7"/>
+<circle cx="527.2" cy="121.0" r="3" fill="#2f81f7"/>
+<circle cx="681.6" cy="119.5" r="3" fill="#2f81f7"/>
+<circle cx="836.0" cy="118.6" r="3" fill="#2f81f7"/>
 <text x="64" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7">2026-10-25</text>
-<text x="836" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2026-10-29</text>
-<text x="836" y="20" font-family="ui-monospace,monospace" font-size="12" fill="#1f2328" text-anchor="end">total 1129</text>
+<text x="836" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2026-10-30</text>
+<text x="836" y="20" font-family="ui-monospace,monospace" font-size="12" fill="#1f2328" text-anchor="end">total 1137</text>
 </svg>
