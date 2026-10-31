@@ -69,6 +69,16 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 
 **防诈骗提醒**：本项目完全免费、公益性质。如果你遇到收费，那就是被骗了，请务必联系卖软件给你的那个人退款；二改官方发布渠道只有本仓库的 Releases 页面。
 
+## 支持维护
+
+软件**完全免费**，不赞助也能用全部功能；群内下载和更新都不收费。
+
+如果它帮到了你，欢迎通过爱发电支持服务器与后续维护：
+
+[![爱发电](https://img.shields.io/badge/%E7%88%B1%E5%8F%91%E7%94%B5-%E6%94%AF%E6%8C%81%E7%BB%B4%E6%8A%A4-946ce6?style=flat-square)](https://afdian.com/a/k9game)
+
+**爱发电主页：<https://afdian.com/a/k9game>**
+
 ## 数据
 
 ![Stars](https://img.shields.io/github/stars/dogkka/GTA5OnlineTools-DOG?style=flat-square&label=Stars)
