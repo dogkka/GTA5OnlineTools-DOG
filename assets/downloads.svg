@@ -16,19 +16,20 @@
 <text x="56" y="84.5" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">1500</text>
 <line x1="64" y1="28.0" x2="836" y2="28.0" stroke="#e6e9ef" stroke-width="1"/>
 <text x="56" y="32.0" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2000</text>
-<polygon points="64.0,238.0 64.0,127.5 149.8,125.3 235.6,122.3 321.3,121.0 407.1,119.5 492.9,118.6 578.7,116.7 664.4,115.6 750.2,113.8 836.0,113.4 836.0,238.0" fill="url(#g)"/>
-<polyline points="64.0,127.5 149.8,125.3 235.6,122.3 321.3,121.0 407.1,119.5 492.9,118.6 578.7,116.7 664.4,115.6 750.2,113.8 836.0,113.4" fill="none" stroke="#2f81f7" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="64.0,238.0 64.0,127.5 141.2,125.3 218.4,122.3 295.6,121.0 372.8,119.5 450.0,118.6 527.2,116.7 604.4,115.6 681.6,113.8 758.8,113.4 836.0,112.3 836.0,238.0" fill="url(#g)"/>
+<polyline points="64.0,127.5 141.2,125.3 218.4,122.3 295.6,121.0 372.8,119.5 450.0,118.6 527.2,116.7 604.4,115.6 681.6,113.8 758.8,113.4 836.0,112.3" fill="none" stroke="#2f81f7" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
 <circle cx="64.0" cy="127.5" r="3" fill="#2f81f7"/>
-<circle cx="149.8" cy="125.3" r="3" fill="#2f81f7"/>
-<circle cx="235.6" cy="122.3" r="3" fill="#2f81f7"/>
-<circle cx="321.3" cy="121.0" r="3" fill="#2f81f7"/>
-<circle cx="407.1" cy="119.5" r="3" fill="#2f81f7"/>
-<circle cx="492.9" cy="118.6" r="3" fill="#2f81f7"/>
-<circle cx="578.7" cy="116.7" r="3" fill="#2f81f7"/>
-<circle cx="664.4" cy="115.6" r="3" fill="#2f81f7"/>
-<circle cx="750.2" cy="113.8" r="3" fill="#2f81f7"/>
-<circle cx="836.0" cy="113.4" r="3" fill="#2f81f7"/>
+<circle cx="141.2" cy="125.3" r="3" fill="#2f81f7"/>
+<circle cx="218.4" cy="122.3" r="3" fill="#2f81f7"/>
+<circle cx="295.6" cy="121.0" r="3" fill="#2f81f7"/>
+<circle cx="372.8" cy="119.5" r="3" fill="#2f81f7"/>
+<circle cx="450.0" cy="118.6" r="3" fill="#2f81f7"/>
+<circle cx="527.2" cy="116.7" r="3" fill="#2f81f7"/>
+<circle cx="604.4" cy="115.6" r="3" fill="#2f81f7"/>
+<circle cx="681.6" cy="113.8" r="3" fill="#2f81f7"/>
+<circle cx="758.8" cy="113.4" r="3" fill="#2f81f7"/>
+<circle cx="836.0" cy="112.3" r="3" fill="#2f81f7"/>
 <text x="64" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7">2026-10-25</text>
-<text x="836" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2026-11-03</text>
-<text x="836" y="20" font-family="ui-monospace,monospace" font-size="12" fill="#1f2328" text-anchor="end">total 1187</text>
+<text x="836" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2026-11-04</text>
+<text x="836" y="20" font-family="ui-monospace,monospace" font-size="12" fill="#1f2328" text-anchor="end">total 1197</text>
 </svg>
