@@ -16,24 +16,25 @@
 <text x="56" y="84.5" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">1500</text>
 <line x1="64" y1="28.0" x2="836" y2="28.0" stroke="#e6e9ef" stroke-width="1"/>
 <text x="56" y="32.0" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2000</text>
-<polygon points="64.0,238.0 64.0,127.5 119.1,125.3 174.3,122.3 229.4,121.0 284.6,119.5 339.7,118.6 394.9,116.7 450.0,115.6 505.1,113.8 560.3,113.4 615.4,112.3 670.6,111.6 725.7,110.6 780.9,109.0 836.0,107.7 836.0,238.0" fill="url(#g)"/>
-<polyline points="64.0,127.5 119.1,125.3 174.3,122.3 229.4,121.0 284.6,119.5 339.7,118.6 394.9,116.7 450.0,115.6 505.1,113.8 560.3,113.4 615.4,112.3 670.6,111.6 725.7,110.6 780.9,109.0 836.0,107.7" fill="none" stroke="#2f81f7" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="64.0,238.0 64.0,127.5 115.5,125.3 166.9,122.3 218.4,121.0 269.9,119.5 321.3,118.6 372.8,116.7 424.3,115.6 475.7,113.8 527.2,113.4 578.7,112.3 630.1,111.6 681.6,110.6 733.1,109.0 784.5,107.7 836.0,102.8 836.0,238.0" fill="url(#g)"/>
+<polyline points="64.0,127.5 115.5,125.3 166.9,122.3 218.4,121.0 269.9,119.5 321.3,118.6 372.8,116.7 424.3,115.6 475.7,113.8 527.2,113.4 578.7,112.3 630.1,111.6 681.6,110.6 733.1,109.0 784.5,107.7 836.0,102.8" fill="none" stroke="#2f81f7" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
 <circle cx="64.0" cy="127.5" r="3" fill="#2f81f7"/>
-<circle cx="119.1" cy="125.3" r="3" fill="#2f81f7"/>
-<circle cx="174.3" cy="122.3" r="3" fill="#2f81f7"/>
-<circle cx="229.4" cy="121.0" r="3" fill="#2f81f7"/>
-<circle cx="284.6" cy="119.5" r="3" fill="#2f81f7"/>
-<circle cx="339.7" cy="118.6" r="3" fill="#2f81f7"/>
-<circle cx="394.9" cy="116.7" r="3" fill="#2f81f7"/>
-<circle cx="450.0" cy="115.6" r="3" fill="#2f81f7"/>
-<circle cx="505.1" cy="113.8" r="3" fill="#2f81f7"/>
-<circle cx="560.3" cy="113.4" r="3" fill="#2f81f7"/>
-<circle cx="615.4" cy="112.3" r="3" fill="#2f81f7"/>
-<circle cx="670.6" cy="111.6" r="3" fill="#2f81f7"/>
-<circle cx="725.7" cy="110.6" r="3" fill="#2f81f7"/>
-<circle cx="780.9" cy="109.0" r="3" fill="#2f81f7"/>
-<circle cx="836.0" cy="107.7" r="3" fill="#2f81f7"/>
+<circle cx="115.5" cy="125.3" r="3" fill="#2f81f7"/>
+<circle cx="166.9" cy="122.3" r="3" fill="#2f81f7"/>
+<circle cx="218.4" cy="121.0" r="3" fill="#2f81f7"/>
+<circle cx="269.9" cy="119.5" r="3" fill="#2f81f7"/>
+<circle cx="321.3" cy="118.6" r="3" fill="#2f81f7"/>
+<circle cx="372.8" cy="116.7" r="3" fill="#2f81f7"/>
+<circle cx="424.3" cy="115.6" r="3" fill="#2f81f7"/>
+<circle cx="475.7" cy="113.8" r="3" fill="#2f81f7"/>
+<circle cx="527.2" cy="113.4" r="3" fill="#2f81f7"/>
+<circle cx="578.7" cy="112.3" r="3" fill="#2f81f7"/>
+<circle cx="630.1" cy="111.6" r="3" fill="#2f81f7"/>
+<circle cx="681.6" cy="110.6" r="3" fill="#2f81f7"/>
+<circle cx="733.1" cy="109.0" r="3" fill="#2f81f7"/>
+<circle cx="784.5" cy="107.7" r="3" fill="#2f81f7"/>
+<circle cx="836.0" cy="102.8" r="3" fill="#2f81f7"/>
 <text x="64" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7">2026-10-25</text>
-<text x="836" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2026-11-08</text>
-<text x="836" y="20" font-family="ui-monospace,monospace" font-size="12" fill="#1f2328" text-anchor="end">total 1241</text>
+<text x="836" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2026-11-09</text>
+<text x="836" y="20" font-family="ui-monospace,monospace" font-size="12" fill="#1f2328" text-anchor="end">total 1288</text>
 </svg>
