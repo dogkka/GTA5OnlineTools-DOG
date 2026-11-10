@@ -33,6 +33,7 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 说明：
 
 - **DOG 二次开发版工具**为确保页面干净，（二维码、离线化、FSL 安装、环境自检等）已剔除源代码，只随 Release 发包。
+- 本仓库只跟随**小助手自身的版本适配**与**上游作者的更新**，不包含其它产品线组件。
 - 第三方组件与许可证明细见 [THIRD-PARTY.md](THIRD-PARTY.md)。
 
 ## 三步使用
@@ -97,10 +98,18 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 
 
 
-## 参与贡献
+## 鸣谢
 
-- 欢迎有能力的开发者**一起参与共同开发**——提交 Pull Request 或 Issue 都欢迎；
-- 如果你只是路过，也欢迎**顺手点一个 Star** 支持一下，这对我们是最大的鼓励。
+小助手能跑起来，靠的是下面这些人这些项目，一并致谢：
+
+- **CrazyZhang（CrazyZhang666）** —— 《GTA5 线上小助手》原作者，工具本体 MIT 开源
+- **sch-lda** —— 上游工具本体维护者（[GTA5OnlineTools](https://github.com/sch-lda/GTA5OnlineTools)）
+- **Yimura / YimMenu 团队** —— 增强版菜单内核（[YimMenuV2](https://github.com/YimMenu/YimMenuV2)，GPL-2.0）
+- **Mr-X-GTA** —— 传承版菜单内核（[YimMenu](https://github.com/Mr-X-GTA/YimMenu)，GPL-2.0；历史版本曾内置）
+- **legeling** —— 中文本地化参考（[YimMenuV2-zh-cn](https://github.com/legeling/YimMenuV2-zh-cn)）
+- **FSL 作者** —— FSL（`WINMM.dll`），发布在 [UnknownCheats 616977](https://www.unknowncheats.me/forum/grand-theft-auto-v/616977-fsl-local-gtao-saves.html)
+- **Aure、Alice、Blue-Flag** —— 早期对小助手的贡献
+- **开源依赖** —— Dear ImGui、MinHook、nlohmann/json、LuaJIT、AsyncLogger、GameOverlay.NET、VirtualizingWrapPanel、MetroSkin、WinFormLib
 
 ## 许可
 
