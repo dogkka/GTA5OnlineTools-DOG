@@ -10,7 +10,7 @@
 | DOG 二次开发版工具（二维码/离线化/自检等） | MIT | 本仓库 | 否（只随 Release 发包） |
 | 内置增强版菜单 `NewBase.dll` | GPL-2.0（YimMenuV2 衍生） | [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2) | **是，`open-source` 分支**（含汉化/优化/新增功能说明） |
 | 传承版菜单 `YimMenu.dll`（历史版本） | GPL-2.0 | [Mr-X-GTA/YimMenu](https://github.com/Mr-X-GTA/YimMenu) | 否（新版本起不再分发） |
-| FSL V6（`WINMM.dll`） | 作者发布，未见公开许可证 | [UnknownCheats 616977](https://www.unknowncheats.me/forum/grand-theft-auto-v/616977-fsl-local-gtao-saves.html) | 否（作者未公开源码） |
+| FSL V6 hotfix 1（`WINMM.dll`） | 作者发布，未见公开许可证 | [UnknownCheats 616977](https://www.unknowncheats.me/forum/grand-theft-auto-v/616977-fsl-local-gtao-saves.html) | 否（作者未公开源码） |
 | 传承版 Lua 包 `UltimateMenu_V3_1.73_Legacy.lua` | 社区脚本，随包分发 | Ultimate Menu 社区维护版 | 否（传承版相关文件不上传） |
 | `Vendor/GameOverlay`、`Vendor/VirtualizingWrapPanel`、`Vendor/WinFormLib`、`MetroSkin` | 见各目录源码头部 | 各自上游 | 是 |
 
