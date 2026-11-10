@@ -17,7 +17,7 @@
 
 ## 二次开发了什么
 
-原版小助手只是"壳 + 注入器"，菜单是上游英文原版。我们做的是**菜单本体**的二次开发：
+原版小助手只是“壳 + 注入器”，菜单是上游英文原版。我们做的是**菜单本体**的二次开发：
 
 - **全量中文化**：2292 条翻译，菜单、通知、提示、防护日志全覆盖，自带中文字体
 - **脚本事件防护**：27 类恶意脚本事件拦截（崩溃攻击、声音轰炸、强制传送、室内踢出等），带中文通知与防护日志
@@ -29,7 +29,7 @@
 - **任务 / 回收**：抢劫与每日活动相关工具
 - **游戏适配**：`socialclub.dll` 2.4.0.296 起签名变化导致的 `Failed to find some patterns for Social Club` 已修（通配签名 + 可选扫描）
 
-**以上每一条都能核对**：完整清单和对应提交见 [CHANGES-VS-UPSTREAM.md](CHANGES-VS-UPSTREAM.md)（`open-source` 分支），上游原版是 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)。
+**以上每一条都能核对**：完整清单和对应提交见 [CHANGES-VS-UPSTREAM.md](https://github.com/dogkka/GTA5OnlineTools-DOG/blob/open-source/CHANGES-VS-UPSTREAM.md)（`open-source` 分支），上游原版是 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)。
 
 ## 下载
 到 **[Releases](https://github.com/dogkka/GTA5OnlineTools-DOG/releases/latest)** 页下载最新版 exe。
