@@ -1,6 +1,6 @@
 # YimMenuV2 · DOG 增强版（源码分支）
 
-本分支（`yimmenu-v2`）是 [GTA5OnlineTools-DOG](https://github.com/dogkka/GTA5OnlineTools-DOG)
+本分支（`open-source`）是 [GTA5OnlineTools-DOG](https://github.com/dogkka/GTA5OnlineTools-DOG)
 内置中文菜单 DLL（`NewBase.dll`）的源码，用于持续开发与构建。
 
 ## 基线
@@ -12,7 +12,7 @@
 ## 相对上游的主要内容
 
 - DOG 增强功能包：载具 / 玩家 / 个人 / 世界等多项实用与整活功能，全量中文化
-- 脚本事件防护：拦截 30+ 类恶意脚本事件（崩溃攻击、声音轰炸、强制传送、室内踢出等），带中文通知与防护日志
+- 脚本事件防护：拦截 27 类恶意脚本事件（崩溃攻击、声音轰炸、强制传送、室内踢出等），带中文通知与防护日志
 - 菜单界面：4 种界面样式（经典 / 现代 / 现代（纵向）/ 模块化），支持菜单位置自定义
 - 详细更新记录见主仓库的 Releases 页 / `CHANGES-DOG.md`
 
