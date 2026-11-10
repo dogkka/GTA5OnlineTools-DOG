@@ -111,7 +111,7 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
   [`open-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/open-source) 分支
   （基于 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)，汉化/优化/新增功能见该分支 `CHANGES-VS-UPSTREAM.md`）。
 - 传承版 YimMenu DLL：历史版本曾内置（GPL-2.0，[Mr-X-GTA/YimMenu](https://github.com/Mr-X-GTA/YimMenu)）；**新版本起不再分发**。
-- 内置 FSL V6：来自 UnknownCheats 帖子 616977（作者发布，未见公开源码）。
+- 内置 FSL V6 hotfix 1：来自 UnknownCheats 帖子 616977（作者发布，未见公开源码）。
 
 完整的第三方组件、许可证与源码状态见 **[THIRD-PARTY.md](THIRD-PARTY.md)**；GPL-2.0 全文见 [`LICENSES/GPL-2.0.txt`](LICENSES/GPL-2.0.txt)。
 
