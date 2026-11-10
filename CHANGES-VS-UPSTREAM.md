@@ -1,5 +1,8 @@
 # 相对上游 YimMenuV2 的改动
 
+> 主仓库 README 里「二次开发改动」指向的就是这份清单。
+> 下面每一条都能用 `git log` 和文件 diff 核对，上游已有的东西不列。
+
 本仓库是 **增强版菜单（NewBase）** 的开源源码，基于：
 
 - 上游：[YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)（GPL-2.0，基线 `39a0f22`）
