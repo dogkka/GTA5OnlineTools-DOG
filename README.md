@@ -8,7 +8,8 @@
 
 ## 下载
 
-[最新版本发布地址](https://github.com/CrazyZhang666/GTA5OnlineTools/releases)  
+本分支不发布二进制文件。DOG 版成品见 [Releases](https://github.com/dogkka/GTA5OnlineTools-DOG/releases)；
+上游作者的成品见 [sch-lda/yctest2](https://github.com/sch-lda/yctest2)。
 
 ## 编译
 
