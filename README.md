@@ -4,11 +4,12 @@
 
 > **本仓库 = 发布页 + 源码分支**：Releases 放成品，源码按组件分别开源（见下方「源码」章节）。
 
-> **想开 BattlEye 畅玩线上？** 用 K9：https://k9.dogbot.top/ · 增强版 / 传承版一份会员通用，不按版本分开收费。
+> **想开 BattlEye 畅玩线上？** 用我们的另一款产品：[开BE玩线上](https://k9.dogbot.top/) · 一份会员通用，不按版本分开收费。
 
 - 完全离线运行，只保留向本仓库 GitHub 接口查询新版本
 - 内置简体中文 YimMenuV2 增强版菜单：大量增强功能、27 类脚本事件防护、中文化（2292 条翻译）
 - 内置 FSL V6 hotfix 1（官方最新版），一键离线安装
+- 只做必要的版本跟进：游戏更新适配 / 可用性修复，不再新增功能
 - 教程式界面与《关于 / 使用说明》弹窗
 - 免安装单文件 exe，已内置 .NET 运行时，换电脑直接跑
 
@@ -38,7 +39,7 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 
 1. **关闭反作弊**：Rockstar 启动器 → 设置 → 我的已安装游戏 → Grand Theft Auto V Enhanced → 取消勾选 **BattlEye**
    （Steam：启动项加 `-nobattleye`；**Epic 平台**：用程序内 FSL 管理里的「无BE模式启动游戏」或生成的桌面快捷方式）
-2. **装 FSL**：程序 `YimMenu` 页 → `FSL管理` → 点 **一键安装FSL（自动检测）**（自动识别 Steam / Epic 与增强版；内置 FSL V6，离线安装）
+2. **装 FSL**：程序 `YimMenu` 页 → `FSL管理` → 点 **一键安装FSL（自动检测）**（自动识别 Steam / Epic 与增强版；内置 FSL V6 hotfix 1，离线安装）
 3. **注入菜单**：游戏进到 **主菜单** → `YimMenu` 页 → 点 **内嵌版** → 游戏里按 `F7`（默认键，可自定义；备用 `Ctrl+\`）呼出中文菜单
 
 ## 更新检测
@@ -105,7 +106,7 @@ Releases 里同时保留上一版：最新版万一有问题，可以先退回�
 
 - 小助手工具本体：**MIT License**。纯净上游源码（不含 DOG 改造）已放在
   [`tool-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/tool-source) 分支；
-  DOG 二次开发版：为确保页面干净，（二维码、离线化、FSL 安装、环境自检等）已剔除源代码，只随 Release 发包。。
+  DOG 二次开发版：为确保页面干净，（二维码、离线化、FSL 安装、环境自检等）已剔除源代码，只随 Release 发包。
 - 内置的增强版菜单（`NewBase.dll`）：**GPL-2.0**，源码已开源，见
   [`open-source`](https://github.com/dogkka/GTA5OnlineTools-DOG/tree/open-source) 分支
   （基于 [YimMenu/YimMenuV2](https://github.com/YimMenu/YimMenuV2)，汉化/优化/新增功能见该分支 `CHANGES-VS-UPSTREAM.md`）。
