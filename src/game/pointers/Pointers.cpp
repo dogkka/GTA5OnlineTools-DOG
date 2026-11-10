@@ -467,23 +467,27 @@ namespace YimMenu
 			GetPresenceAttributes = ptr.As<Functions::GetPresenceAttributes>();
 		});
 
-		constexpr auto numHandlesPatchPtrn = Pattern<"83 FD 20 0F 87 54 02 00 00">("NumHandlesPatch");
-		scanner.Add(numHandlesPatchPtrn, [this](PointerCalculator ptr) {
+		// socialclub.dll 2.4.0.296 起：`0F 87` 后面的 rel32 是分支位移，会随 SC 版本变化，
+		// 写死字节会让整批扫描失配（表现为 "Failed to find some patterns for Social Club"）。
+		constexpr auto numHandlesPatchPtrn = Pattern<"83 FD 20 0F 87 ? ? ? ?">("NumHandlesPatch");
+		// 下面这几个都只是「好友上限 / 属性读取 / 头像接口」补丁，缺失不影响核心功能，
+		// 注册为 Optional：扫不到就跳过，不再拖垮整批扫描。
+		scanner.AddOptional(numHandlesPatchPtrn, [this](PointerCalculator ptr) {
 			BytePatches::Add(ptr.Add(2).As<std::uint8_t*>(), 100)->Apply(); // change handle limit to 100
 		});
 
 		constexpr auto readAttributePatchPtrn = Pattern<"75 70 EB 23">("ReadAttributesPatch");
-		scanner.Add(readAttributePatchPtrn, [this](PointerCalculator ptr) {
+		scanner.AddOptional(readAttributePatchPtrn, [this](PointerCalculator ptr) {
 			BytePatches::Add(ptr.As<void*>(), std::to_array<std::uint8_t>({0x90, 0x90}))->Apply();
 		});
 
 		constexpr auto readAttributePatch2Ptrn = Pattern<"32 C0 EB ? C7 83">("ReadAttributesPatch2");
-		scanner.Add(readAttributePatch2Ptrn, [this](PointerCalculator ptr) {
+		scanner.AddOptional(readAttributePatch2Ptrn, [this](PointerCalculator ptr) {
 			BytePatches::Add(ptr.As<void*>(), std::to_array<std::uint8_t>({0xB0, 0x01}))->Apply();
 		});
 
 		constexpr auto getAvatarsPtrn = Pattern<"89 4B ? 48 8B CB E8 ? ? ? ? 84 C0">("GetAvatars");
-		scanner.Add(getAvatarsPtrn, [this](PointerCalculator ptr) {
+		scanner.AddOptional(getAvatarsPtrn, [this](PointerCalculator ptr) {
 			GetAvatars = ptr.Add(6).Add(1).Rip().As<Functions::GetAvatars>();
 		});
 
