@@ -34,6 +34,7 @@
 - **回收**：任务 / 抢劫相关、每日活动。
 - **速度表**：动态量程、转速警示、透明 HUD。
 - **稳定性**：D3D12 钩子 / 交换链重建相关修复。
+- **socialclub 兼容**：`NumHandlesPatch` 改用通配签名（`0F 87` 之后是分支位移，随 socialclub.dll 版本变化），好友上限 / 属性读取 / 头像接口补丁降级为**可选扫描**；socialclub 2.4.0.296 起不再整批失配（对应打包版的 `YimMenu Failed to find some patterns for Social Club` 修复）。
 
 ## 4. 没有包含
 
