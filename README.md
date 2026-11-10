@@ -33,11 +33,6 @@
 * CSharp
 * MVVM
 
-## 预览
-
-![02](https://github.com/CrazyZhang666/GTA5OnlineTools/assets/28080853/0e16eeb4-1774-4939-9152-6c756b971948)
-
-![03](https://github.com/CrazyZhang666/GTA5OnlineTools/assets/28080853/7ca772f3-31b4-40f3-8c67-6bb90bb0e77c)
 
 ## 鸣谢
 
