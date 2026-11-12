@@ -16,27 +16,28 @@
 <text x="56" y="84.5" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">1500</text>
 <line x1="64" y1="28.0" x2="836" y2="28.0" stroke="#e6e9ef" stroke-width="1"/>
 <text x="56" y="32.0" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2000</text>
-<polygon points="64.0,238.0 64.0,127.5 109.4,125.3 154.8,122.3 200.2,121.0 245.6,119.5 291.1,118.6 336.5,116.7 381.9,115.6 427.3,113.8 472.7,113.4 518.1,112.3 563.5,111.6 608.9,110.6 654.4,109.0 699.8,107.7 745.2,102.8 790.6,86.5 836.0,72.2 836.0,238.0" fill="url(#g)"/>
-<polyline points="64.0,127.5 109.4,125.3 154.8,122.3 200.2,121.0 245.6,119.5 291.1,118.6 336.5,116.7 381.9,115.6 427.3,113.8 472.7,113.4 518.1,112.3 563.5,111.6 608.9,110.6 654.4,109.0 699.8,107.7 745.2,102.8 790.6,86.5 836.0,72.2" fill="none" stroke="#2f81f7" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="64.0,238.0 64.0,127.5 106.9,125.3 149.8,122.3 192.7,121.0 235.6,119.5 278.4,118.6 321.3,116.7 364.2,115.6 407.1,113.8 450.0,113.4 492.9,112.3 535.8,111.6 578.7,110.6 621.6,109.0 664.4,107.7 707.3,102.8 750.2,86.5 793.1,72.2 836.0,63.6 836.0,238.0" fill="url(#g)"/>
+<polyline points="64.0,127.5 106.9,125.3 149.8,122.3 192.7,121.0 235.6,119.5 278.4,118.6 321.3,116.7 364.2,115.6 407.1,113.8 450.0,113.4 492.9,112.3 535.8,111.6 578.7,110.6 621.6,109.0 664.4,107.7 707.3,102.8 750.2,86.5 793.1,72.2 836.0,63.6" fill="none" stroke="#2f81f7" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
 <circle cx="64.0" cy="127.5" r="3" fill="#2f81f7"/>
-<circle cx="109.4" cy="125.3" r="3" fill="#2f81f7"/>
-<circle cx="154.8" cy="122.3" r="3" fill="#2f81f7"/>
-<circle cx="200.2" cy="121.0" r="3" fill="#2f81f7"/>
-<circle cx="245.6" cy="119.5" r="3" fill="#2f81f7"/>
-<circle cx="291.1" cy="118.6" r="3" fill="#2f81f7"/>
-<circle cx="336.5" cy="116.7" r="3" fill="#2f81f7"/>
-<circle cx="381.9" cy="115.6" r="3" fill="#2f81f7"/>
-<circle cx="427.3" cy="113.8" r="3" fill="#2f81f7"/>
-<circle cx="472.7" cy="113.4" r="3" fill="#2f81f7"/>
-<circle cx="518.1" cy="112.3" r="3" fill="#2f81f7"/>
-<circle cx="563.5" cy="111.6" r="3" fill="#2f81f7"/>
-<circle cx="608.9" cy="110.6" r="3" fill="#2f81f7"/>
-<circle cx="654.4" cy="109.0" r="3" fill="#2f81f7"/>
-<circle cx="699.8" cy="107.7" r="3" fill="#2f81f7"/>
-<circle cx="745.2" cy="102.8" r="3" fill="#2f81f7"/>
-<circle cx="790.6" cy="86.5" r="3" fill="#2f81f7"/>
-<circle cx="836.0" cy="72.2" r="3" fill="#2f81f7"/>
+<circle cx="106.9" cy="125.3" r="3" fill="#2f81f7"/>
+<circle cx="149.8" cy="122.3" r="3" fill="#2f81f7"/>
+<circle cx="192.7" cy="121.0" r="3" fill="#2f81f7"/>
+<circle cx="235.6" cy="119.5" r="3" fill="#2f81f7"/>
+<circle cx="278.4" cy="118.6" r="3" fill="#2f81f7"/>
+<circle cx="321.3" cy="116.7" r="3" fill="#2f81f7"/>
+<circle cx="364.2" cy="115.6" r="3" fill="#2f81f7"/>
+<circle cx="407.1" cy="113.8" r="3" fill="#2f81f7"/>
+<circle cx="450.0" cy="113.4" r="3" fill="#2f81f7"/>
+<circle cx="492.9" cy="112.3" r="3" fill="#2f81f7"/>
+<circle cx="535.8" cy="111.6" r="3" fill="#2f81f7"/>
+<circle cx="578.7" cy="110.6" r="3" fill="#2f81f7"/>
+<circle cx="621.6" cy="109.0" r="3" fill="#2f81f7"/>
+<circle cx="664.4" cy="107.7" r="3" fill="#2f81f7"/>
+<circle cx="707.3" cy="102.8" r="3" fill="#2f81f7"/>
+<circle cx="750.2" cy="86.5" r="3" fill="#2f81f7"/>
+<circle cx="793.1" cy="72.2" r="3" fill="#2f81f7"/>
+<circle cx="836.0" cy="63.6" r="3" fill="#2f81f7"/>
 <text x="64" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7">2026-10-25</text>
-<text x="836" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2026-11-11</text>
-<text x="836" y="20" font-family="ui-monospace,monospace" font-size="12" fill="#1f2328" text-anchor="end">total 1579</text>
+<text x="836" y="266" font-family="ui-monospace,monospace" font-size="11" fill="#8b95a7" text-anchor="end">2026-11-12</text>
+<text x="836" y="20" font-family="ui-monospace,monospace" font-size="12" fill="#1f2328" text-anchor="end">total 1661</text>
 </svg>
